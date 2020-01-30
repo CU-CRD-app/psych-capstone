@@ -13,4 +13,8 @@ export class Tab1Page {
   progress : number = 0;
 
   faces : string[] = [];
+
+  nextTask() {
+    this.progress++;
+  }
 }

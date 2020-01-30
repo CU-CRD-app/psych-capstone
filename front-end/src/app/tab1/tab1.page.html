@@ -50,18 +50,21 @@
     <ion-button color="success" (click)="progress=1">Start</ion-button>
   </div>
   <!--Learning Task-->
-  <app-learning-task *ngIf="progress==1" (finished)="progress=2"></app-learning-task>
-  <h1 *ngIf="progress>1">LEARNING TASK COMPLETED!</h1>
+  <app-learning-task *ngIf="progress==1" (finished)="nextTask()"></app-learning-task>
   <!--Name and Face-->
-  <!--<app-learning-task *ngIf="progress==2"></app-learning-task>-->
+  <app-name-face *ngIf="progress==2" (finished)="nextTask()"></app-name-face>
   <!--Who's New?-->
-  <!--<app-learning-task *ngIf="progress==3"></app-learning-task>-->
+  <app-whos-new *ngIf="progress==3" (finished)="nextTask()"></app-whos-new>
   <!--Memory Match-->
-  <!--<app-learning-task *ngIf="progress==4"></app-learning-task>-->
+  <app-memory-match *ngIf="progress==4" (finished)="nextTask()"></app-memory-match>
   <!--Shuffle-->
-  <!--<app-learning-task *ngIf="progress==5"></app-learning-task>-->
+  <app-shuffle *ngIf="progress==5" (finished)="nextTask()"></app-shuffle>
   <!--Forced Choice-->
-  <!--<app-learning-task *ngIf="progress==6"></app-learning-task>-->
+  <app-forced-choice *ngIf="progress==6" (finished)="nextTask()"></app-forced-choice>
   <!--Same-Different-->
-  <!--<app-learning-task *ngIf="progress==7"></app-learning-task>-->
+  <app-same-different *ngIf="progress==7" (finished)="nextTask()"></app-same-different>
+  <div style="text-align:center" *ngIf="progress==8">
+    <h1>You're All Done!</h1>
+    <h4>Come back tomorrow for your next training.</h4>
+  </div>
 </ion-content>

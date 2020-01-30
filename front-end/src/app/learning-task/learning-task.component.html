@@ -1,18 +1,18 @@
 <h1 style="text-align:center">Memorize the Faces</h1>
 <ion-card style="text-align:center">
-  <img style="height:400px; width:300px; margin: 0 auto" [src]="currentFace" />
+  <img style="height:400px; width:300px; margin: 0 auto" [src]="currentFace"/>
   <ion-card-header>
     <ion-card-title>{{currentName}}</ion-card-title>
   </ion-card-header>
 </ion-card>
 <h4 style="text-align:center; color:grey">#{{progress+1}}</h4>
-<ion-button style="float:right; margin-right: 500px" (click)="changeCard('next')" *ngIf="progress < 7">
+<ion-button style="float:right; margin-right: 500px" (click)="changeCard('next')" *ngIf="progress<7">
   <ion-icon name="skip-forward"></ion-icon>
 </ion-button>
-<ion-button style="float:left; margin-left: 500px" (click)="changeCard('back')" *ngIf="progress > 0">
+<ion-button style="float:left; margin-left: 500px" (click)="changeCard('back')" *ngIf="progress>0">
   <ion-icon name="skip-backward"></ion-icon>
 </ion-button>
 <br><br><br>
 <div style="text-align:center">
-  <ion-button color="success" *ngIf="progress == 7" (click)="finished.emit()">Finish</ion-button>
+  <ion-button color="success" *ngIf="progress==7" (click)="finished.emit()">Finish</ion-button>
 </div>

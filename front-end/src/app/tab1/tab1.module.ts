@@ -5,6 +5,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Tab1Page } from './tab1.page';
 import { LearningTaskComponent } from '../learning-task/learning-task.component';
+import { NameFaceComponent } from '../name-face/name-face.component';
+import { WhosNewComponent } from '../whos-new/whos-new.component';
+import { MemoryMatchComponent } from '../memory-match/memory-match.component';
+import { ShuffleComponent } from '../shuffle/shuffle.component';
+import { ForcedChoiceComponent } from '../forced-choice/forced-choice.component';
+import { SameDifferentComponent } from '../same-different/same-different.component';
 
 @NgModule({
   imports: [
@@ -13,6 +19,15 @@ import { LearningTaskComponent } from '../learning-task/learning-task.component'
     FormsModule,
     RouterModule.forChild([{ path: '', component: Tab1Page }])
   ],
-  declarations: [Tab1Page, LearningTaskComponent]
+  declarations: [
+    Tab1Page,
+    LearningTaskComponent,
+    NameFaceComponent,
+    WhosNewComponent,
+    MemoryMatchComponent,
+    ShuffleComponent,
+    ForcedChoiceComponent,
+    SameDifferentComponent
+  ]
 })
 export class Tab1PageModule {}
