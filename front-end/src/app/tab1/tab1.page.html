@@ -1,4 +1,4 @@
-<ion-header>
+<!--<ion-header>
   <ion-toolbar>
     <ion-title>
       Modules
@@ -41,4 +41,27 @@
         <ion-label>Same Different</ion-label>
       </ion-item>
     </ion-list>
+</ion-content>
+-->
+<ion-content>
+  <div style="text-align:center" *ngIf="progress==0">
+    <h1>Ready for training?</h1>
+    <h4>For best results, please give yourself 10 minutes where you can study uninterrupted.</h4>
+    <ion-button color="success" (click)="progress=1">Start</ion-button>
+  </div>
+  <!--Learning Task-->
+  <app-learning-task *ngIf="progress==1" (finished)="progress=2"></app-learning-task>
+  <h1 *ngIf="progress>1">LEARNING TASK COMPLETED!</h1>
+  <!--Name and Face-->
+  <!--<app-learning-task *ngIf="progress==2"></app-learning-task>-->
+  <!--Who's New?-->
+  <!--<app-learning-task *ngIf="progress==3"></app-learning-task>-->
+  <!--Memory Match-->
+  <!--<app-learning-task *ngIf="progress==4"></app-learning-task>-->
+  <!--Shuffle-->
+  <!--<app-learning-task *ngIf="progress==5"></app-learning-task>-->
+  <!--Forced Choice-->
+  <!--<app-learning-task *ngIf="progress==6"></app-learning-task>-->
+  <!--Same-Different-->
+  <!--<app-learning-task *ngIf="progress==7"></app-learning-task>-->
 </ion-content>

@@ -7,6 +7,10 @@ import { Component } from '@angular/core';
 })
 export class Tab1Page {
 
-  constructor() {}
+  constructor() {
+  }
 
+  progress : number = 0;
+
+  faces : string[] = [];
 }
