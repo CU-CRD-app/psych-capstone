@@ -10,12 +10,23 @@ export class LearningTaskComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    for (let i = 0; i < this.numFaces; i++)
+    {
+      this.setNames.push(this.namePool[Math.floor(Math.random() * this.numNames)]);
+    }
+    this.currentName = this.setNames[this.progress];
+  }
 
+  numFaces : number = 8; //hardcoded for now, happen to be 8 practice faces.
   progress : number = 0;
 
-  currentFace : string = "../../assets/sample-faces/0.png";
-  currentName : string = "Sam";
+  namePool : string[] = ["Sam", "Kenny", "Jones", "Dave", "John", "Gale", "Kent", "Tom", "Bill", "Greg", "Anthony", "Tony", "George", "Kevin", "Dick", "Richard"];
+  numNames : number = 16;
+  setNames : string[] = []
+
+  currentFace : string = `../../assets/sample-faces/${this.progress}.png`;
+  currentName : string;
 
   changeCard(direction : string) {
     if (direction == 'next') {
@@ -23,8 +34,8 @@ export class LearningTaskComponent implements OnInit {
     } else {
       this.progress--;
     }
-    //this.currentName change
-    //this.curretnFace change
+    this.currentFace = `../../assets/sample-faces/${this.progress}.png`;
+    this.currentName = this.setNames[this.progress];
   }
 
 }
