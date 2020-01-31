@@ -1,48 +1,3 @@
-<!--<ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Modules
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-    <ion-list lines="none">
-      <ion-list-header>
-        <ion-label>Practice Modules</ion-label>
-      </ion-list-header>
-      <ion-item href="">
-        <ion-icon slot="start" color="medium" name="happy"></ion-icon>
-        <ion-label>Name and Face</ion-label>
-      </ion-item>
-      <ion-item href="">
-        <ion-icon slot="start" color="medium" name="person-add"></ion-icon>
-        <ion-label>Who's New?</ion-label>
-      </ion-item>
-      <ion-item href="">
-        <ion-icon slot="start" color="medium" name="grid"></ion-icon>
-        <ion-label>Memory Match</ion-label>
-      </ion-item>
-      <ion-item href="">
-        <ion-icon slot="start" color="medium" name="swap"></ion-icon>
-        <ion-label>Shuffle</ion-label>
-      </ion-item>
-    </ion-list>
-    <ion-list lines="none">
-      <ion-list-header>
-        <ion-label>Testing Modules</ion-label>
-      </ion-list-header>
-      <ion-item href="">
-        <ion-icon slot="start" color="medium" name="checkmark-circle"></ion-icon>
-        <ion-label>Forced Choice</ion-label>
-      </ion-item>
-      <ion-item href="">
-        <ion-icon slot="start" color="medium" name="contacts"></ion-icon>
-        <ion-label>Same Different</ion-label>
-      </ion-item>
-    </ion-list>
-</ion-content>
--->
 <ion-content>
   <div style="text-align:center" *ngIf="progress==0">
     <h1>Ready for training?</h1>
@@ -67,4 +22,37 @@
     <h1>You're All Done!</h1>
     <h4>Come back tomorrow for your next training.</h4>
   </div>
+  <ion-list lines="none" style="cursor:pointer">
+    <ion-list-header>
+      <ion-label>For Development Purposes Only</ion-label>
+    </ion-list-header>
+    <ion-item (click)="progress=1">
+      <ion-icon slot="start" color="medium" name="albums"></ion-icon>
+      <ion-label>Learning Task</ion-label>
+    </ion-item>
+    <ion-item (click)="progress=2">
+      <ion-icon slot="start" color="medium" name="happy"></ion-icon>
+      <ion-label>Name and Face</ion-label>
+    </ion-item>
+    <ion-item (click)="progress=3">
+      <ion-icon slot="start" color="medium" name="person-add"></ion-icon>
+      <ion-label>Who's New?</ion-label>
+    </ion-item>
+    <ion-item (click)="progress=4">
+      <ion-icon slot="start" color="medium" name="grid"></ion-icon>
+      <ion-label>Memory Match</ion-label>
+    </ion-item>
+    <ion-item (click)="progress=5">
+      <ion-icon slot="start" color="medium" name="swap"></ion-icon>
+      <ion-label>Shuffle</ion-label>
+    </ion-item>
+    <ion-item (click)="progress=6">
+      <ion-icon slot="start" color="medium" name="checkmark-circle"></ion-icon>
+      <ion-label>Forced Choice</ion-label>
+    </ion-item>
+    <ion-item (click)="progress=7">
+      <ion-icon slot="start" color="medium" name="contacts"></ion-icon>
+      <ion-label>Same Different</ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>
