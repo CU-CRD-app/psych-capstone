@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 
 @Component({
   selector: 'app-learning-task',
@@ -6,24 +6,16 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./learning-task.component.scss'],
 })
 export class LearningTaskComponent implements OnInit {
+  @Input() setNames : string;
   @Output() finished = new EventEmitter<void>();
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
-    for (let i = 0; i < this.numFaces; i++)
-    {
-      this.setNames.push(this.namePool[Math.floor(Math.random() * this.numNames)]);
-    }
     this.currentName = this.setNames[this.progress];
   }
 
-  numFaces : number = 8; //hardcoded for now, happen to be 8 practice faces.
   progress : number = 0;
-
-  namePool : string[] = ["Sam", "Kenny", "Jones", "Dave", "John", "Gale", "Kent", "Tom", "Bill", "Greg", "Anthony", "Tony", "George", "Kevin", "Dick", "Richard"];
-  numNames : number = 16;
-  setNames : string[] = []
 
   currentFace : string = `../../assets/sample-faces/${this.progress}.png`;
   currentName : string;
