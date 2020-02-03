@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 
 @Component({
   selector: 'app-whos-new',
@@ -6,10 +6,13 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./whos-new.component.scss'],
 })
 export class WhosNewComponent implements OnInit {
-  @Output() finished = new EventEmitter<void>();
+  @Input() setNames : string;
+  @Output() finished = new EventEmitter<number>();
 
   constructor() { }
 
   ngOnInit() {}
+
+  score : number = 0;
 
 }

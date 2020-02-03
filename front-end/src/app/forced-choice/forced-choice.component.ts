@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 
 @Component({
   selector: 'app-forced-choice',
@@ -6,10 +6,13 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./forced-choice.component.scss'],
 })
 export class ForcedChoiceComponent implements OnInit {
-  @Output() finished = new EventEmitter<void>();
+  @Input() setNames : string;
+  @Output() finished = new EventEmitter<number>();
 
   constructor() { }
 
   ngOnInit() {}
+
+  score : number = 0;
 
 }
