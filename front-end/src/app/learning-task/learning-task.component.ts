@@ -7,17 +7,19 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 })
 export class LearningTaskComponent implements OnInit {
   @Input() setNames : string;
+  @Input() facePaths : string;
   @Output() finished = new EventEmitter<void>();
 
   constructor() {}
 
   ngOnInit() {
     this.currentName = this.setNames[this.progress];
+    this.currentFace = this.facePaths[this.progress];
   }
 
   progress : number = 0;
 
-  currentFace : string = `../../assets/sample-faces/${this.progress}.png`;
+  currentFace : string; // = `../../assets/sample-faces/${this.progress}.png`;
   currentName : string;
 
   changeCard(direction : string) {
@@ -26,7 +28,7 @@ export class LearningTaskComponent implements OnInit {
     } else {
       this.progress--;
     }
-    this.currentFace = `../../assets/sample-faces/${this.progress}.png`;
+    this.currentFace = this.facePaths[this.progress];//`../../assets/sample-faces/${this.progress}.png`;
     this.currentName = this.setNames[this.progress];
   }
 

@@ -32,6 +32,13 @@ ion-grid {
 
 ion-button {
 	width: 80%;
+	height: 80%;
+	padding: 0;
+	margin: 5px;
+}
+
+ion-icon {
+	font-size: 100%;
 }
 
 .imgContainer {
@@ -58,7 +65,7 @@ ion-button {
 	background-size: auto 100%; /*width, height*/
 	background-repeat: no-repeat;
 	#nameDisplay {
-		height: 95%;
+		height: 100%;
 		position: relative;
 		#nameText {
 			color: dodgerblue;
@@ -68,7 +75,7 @@ ion-button {
 			position: absolute;
 			left: 50%;
 			transform: translate(-55%, 0);
-			top: 25%;
+			bottom: 15%;
 		}
 	}
 }
