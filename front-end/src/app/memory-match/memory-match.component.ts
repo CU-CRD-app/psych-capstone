@@ -7,6 +7,7 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 })
 export class MemoryMatchComponent implements OnInit {
   @Input() setNames : string;
+  @Input() facePaths : string;
   @Output() finished = new EventEmitter<number>();
 
   constructor() { }

@@ -5,19 +5,19 @@
     <ion-button color="success" (click)="progress=1">Start</ion-button>
   </div>
   <!--Learning Task-->
-  <app-learning-task *ngIf="progress==1" [setNames]="setNames" (finished)="progress=2"></app-learning-task>
+  <app-learning-task *ngIf="progress==1" [setNames]="setNames" [facePaths] = "facePaths" (finished)="progress=2"></app-learning-task>
   <!--Name and Face-->
-  <app-name-face *ngIf="progress==2" [setNames]="setNames" (finished)="recordAndProgress($event)"></app-name-face>
+  <app-name-face *ngIf="progress==2" [setNames]="setNames" [facePaths] = "facePaths" (finished)="recordAndProgress($event)"></app-name-face>
   <!--Who's New?-->
-  <app-whos-new *ngIf="progress==3" [setNames]="setNames" (finished)="recordAndProgress($event)"></app-whos-new>
+  <app-whos-new *ngIf="progress==3" [setNames]="setNames" [facePaths] = "facePaths" (finished)="recordAndProgress($event)"></app-whos-new>
   <!--Memory Match-->
-  <app-memory-match *ngIf="progress==4" [setNames]="setNames" (finished)="recordAndProgress($event)"></app-memory-match>
+  <app-memory-match *ngIf="progress==4" [setNames]="setNames" [facePaths] = "facePaths" (finished)="recordAndProgress($event)"></app-memory-match>
   <!--Shuffle-->
-  <app-shuffle *ngIf="progress==5" [setNames]="setNames" (finished)="recordAndProgress($event)"></app-shuffle>
+  <app-shuffle *ngIf="progress==5" [setNames]="setNames" [facePaths] = "facePaths" (finished)="recordAndProgress($event)"></app-shuffle>
   <!--Forced Choice-->
-  <app-forced-choice *ngIf="progress==6" [setNames]="setNames" (finished)="recordAndProgress($event)"></app-forced-choice>
+  <app-forced-choice *ngIf="progress==6" [setNames]="setNames" [facePaths] = "facePaths" (finished)="recordAndProgress($event)"></app-forced-choice>
   <!--Same-Different-->
-  <app-same-different *ngIf="progress==7" [setNames]="setNames" (finished)="recordAndProgress($event)"></app-same-different>
+  <app-same-different *ngIf="progress==7" [setNames]="setNames" [facePaths] = "facePaths" (finished)="recordAndProgress($event)"></app-same-different>
   <div style="text-align:center" *ngIf="progress==8">
     <h1>You're All Done!</h1>
     <h4>Come back tomorrow for your next training.</h4>
