@@ -1,18 +1,52 @@
-<h1 style="text-align:center">Memorize the Faces</h1>
-<ion-card style="text-align:center">
-  <img style="height:400px; width:300px; margin: 0 auto" [src]="currentFace"/>
-  <ion-card-header>
-    <ion-card-title>{{currentName}}</ion-card-title>
-  </ion-card-header>
-</ion-card>
-<h4 style="text-align:center; color:grey">#{{progress+1}}</h4>
-<ion-button style="float:right; margin-right: 500px" (click)="changeCard('next')" *ngIf="progress<7">
-  <ion-icon name="skip-forward"></ion-icon>
-</ion-button>
-<ion-button style="float:left; margin-left: 500px" (click)="changeCard('back')" *ngIf="progress>0">
-  <ion-icon name="skip-backward"></ion-icon>
-</ion-button>
-<br><br><br>
-<div style="text-align:center">
-  <ion-button color="success" *ngIf="progress==7" (click)="finished.emit()">Finish</ion-button>
-</div>
+<!-- <h1 style="text-align:center; color:black; font-weight: bold">Meet Today's Faces</h1> -->
+<ion-content id="learningView">
+	<ion-header>
+	  <ion-toolbar style="border-bottom-width: medium; border-bottom-style: solid; border-bottom-color:dodgerblue"> 
+	    <ion-title style="text-align:center;">Meet Today's Faces</ion-title>
+	  </ion-toolbar>
+	</ion-header>
+	<ion-card>
+		<div class="imgContainer" style="margin-top:5px">
+			<img [src]="currentFace" id=faceImg>
+		</div>
+		<div class="nameContainer">
+			<<!-- ion-card-header>
+				<ion-card-title style="color:dodgerblue;" id="nameDisplay">{{currentName}}</ion-card-title>
+			</ion-card-header> -->
+			<div id="nameDisplay">
+				<p id="nameText">{{currentName}}</p>
+			</div>
+		</div>
+	</ion-card>
+	<ion-grid>
+		<ion-row class=progressDisplay>
+			<ion-col style="text-align: center; padding:0; margin-bottom: 0">
+				<p style="color:lightgray; margin-top: 0; margin-bottom: 0;">#{{progress+1}}/8</p>
+			</ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col width-50 style="text-align: right">
+				<ion-button (click)="changeCard('back')" *ngIf="progress>0">
+				  <ion-icon name="arrow-round-back"></ion-icon>
+				</ion-button>
+				<ion-button disabled=true *ngIf="progress==0">
+				  <ion-icon name="arrow-round-back"></ion-icon>
+				</ion-button>
+			</ion-col>
+			<ion-col width-50 style="text-align: left">
+				<ion-button (click)="changeCard('next')" *ngIf="progress<7">
+				  <ion-icon name="arrow-round-forward"></ion-icon>
+				</ion-button>
+				<ion-button disabled=true *ngIf="progress==7">
+				  <ion-icon name="arrow-round-forward"></ion-icon>
+				</ion-button>
+			</ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col style="text-align: center">
+		  		<ion-button color="success" *ngIf="progress==7" (click)="finished.emit()">Finish</ion-button>
+		  		<ion-button color="success" *ngIf="progress!=7" disabled=true>Finish</ion-button>
+		  	</ion-col>
+		</ion-row>
+	</ion-grid>
+</ion-content>>
