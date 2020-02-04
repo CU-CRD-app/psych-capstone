@@ -6,7 +6,7 @@
 <div *ngIf="progress<8">
   <ion-card style="text-align:center; color:dodgerblue">
     <h3 style="text-align:center; color:dodgerblue">Who is this?</h3>
-    <img style="height:180px; width:140px; margin: 0 auto" [src]="currentFace"/>
+    <img style="height:220px; width:160px; margin: 0 auto" [src]="currentFace"/>
     <br>
     <span *ngFor="let name of shuffledNames">
       <ion-button (click)="nextFace(name)">{{name}}</ion-button>
@@ -14,7 +14,7 @@
     <br><br>
   </ion-card>
 </div>
-<div style="text-align:center; color:dodgerblue" *ngIf="progress==8">
+<div *ngIf="progress==8" style="text-align: center; color: dodgerblue; margin-top: 180px">
   <h1>Your score: {{score}}/{{setNames.length}}</h1>
   <ion-button color="success" (click)="finished.emit(score)">Finish</ion-button>
 </div>

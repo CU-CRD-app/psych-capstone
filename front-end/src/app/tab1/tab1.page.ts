@@ -13,6 +13,19 @@ export class Tab1Page {
       let name = Math.floor(Math.random() * this.namePool.length);
       this.setNames.push(this.namePool[name]);
       this.namePool = this.namePool.slice(0, name).concat(this.namePool.slice(name + 1, this.namePool.length));
+      this.faceNums.push(i);
+    }
+
+    for (let i = this.faceNums.length-1; i > 0; i--) //shuffle the numbers up
+    {
+      let j = Math.floor(Math.random() * (i + 1)); //some index to the left of i
+      let tmp = this.faceNums[i]; //current num stored in tmp
+      this.faceNums[i] = this.faceNums[j]; //swap current slot with randomly chosen slot
+      this.faceNums[j] = tmp; //set the chosen slot to tmp
+    }
+    for (let num of this.faceNums) //creates array of faces in random order to be passed to components
+    {
+      this.facePaths.push(`./../../assets/sample-faces/${num}.png`);
     }
 
     for (let i = 0; i < this.numFaces; i++) //creates array of 0-numFaces, to be shuffled afterwards

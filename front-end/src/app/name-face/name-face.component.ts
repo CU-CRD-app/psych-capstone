@@ -14,6 +14,7 @@ export class NameFaceComponent implements OnInit {
 
   ngOnInit() {
     this.currentName = this.setNames[this.progress];
+    this.currentFace = this.facePaths[this.progress];
     for (let name of this.setNames) {
       this.shuffledNames.push(name);
     }
@@ -29,7 +30,7 @@ export class NameFaceComponent implements OnInit {
   progress : number = 0;
   score : number = 0;
 
-  currentFace : string = `../../assets/sample-faces/${this.progress}.png`;
+  currentFace : string;
   currentName : string;
 
   shuffledNames : any[] = [];
@@ -39,8 +40,8 @@ export class NameFaceComponent implements OnInit {
       this.score++;
     }
     this.progress++;
-    this.currentFace = `../../assets/sample-faces/${this.progress}.png`;
     this.currentName = this.setNames[this.progress];
+    this.currentFace = this.facePaths[this.progress];
   }
 
 }
