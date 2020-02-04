@@ -4,21 +4,17 @@
   </ion-toolbar>
 </ion-header>
 <div *ngIf="progress<8">
-  <h1 style="text-align:center; color:dodgerblue">Who is this?</h1>
   <ion-card style="text-align:center; color:dodgerblue">
-    <img style="height:400px; width:300px; margin: 0 auto" [src]="currentFace"/>
+    <h3 style="text-align:center; color:dodgerblue">Who is this?</h3>
+    <img style="height:180px; width:140px; margin: 0 auto" [src]="currentFace"/>
     <br>
-    <h1 style="size:500%; display:inline">Hello, my name is: </h1>
-    <input type="text" [(ngModel)]="nameInput" style="padding: 10px 10px; border: 1px solid #ccc; border-radius: 8px;">
-    <br><br>
     <span *ngFor="let name of shuffledNames">
-      <ion-button (click)="nameInput=name">{{name}}</ion-button>
+      <ion-button (click)="nextFace(name)">{{name}}</ion-button>
     </span>
     <br><br>
   </ion-card>
 </div>
-<div style="text-align:center; color:dodgerblue">
-  <ion-button *ngIf="progress<8" color="success" (click)="nextFace()">Submit</ion-button>
-  <h1 *ngIf="progress==8">Your score: {{score}}/{{setNames.length}}</h1>
-  <ion-button *ngIf="progress==8" color="success" (click)="finished.emit(score)">Finish</ion-button>
+<div style="text-align:center; color:dodgerblue" *ngIf="progress==8">
+  <h1>Your score: {{score}}/{{setNames.length}}</h1>
+  <ion-button color="success" (click)="finished.emit(score)">Finish</ion-button>
 </div>

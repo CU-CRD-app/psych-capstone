@@ -31,14 +31,12 @@ export class NameFaceComponent implements OnInit {
   currentFace : string = `../../assets/sample-faces/${this.progress}.png`;
   currentName : string;
 
-  nameInput : string;
   shuffledNames : any[] = [];
 
-  nextFace() {
-    if (this.nameInput.toLowerCase() == this.currentName.toLowerCase()) {
+  nextFace(name : string) {
+    if (name.toLowerCase() == this.currentName.toLowerCase()) {
       this.score++;
     }
-    this.nameInput = '';
     this.progress++;
     this.currentFace = `../../assets/sample-faces/${this.progress}.png`;
     this.currentName = this.setNames[this.progress];
