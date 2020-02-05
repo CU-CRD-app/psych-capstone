@@ -13,18 +13,27 @@ export class NameFaceComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    this.currentName = this.setNames[this.progress];
-    this.currentFace = this.facePaths[this.progress];
-    for (let name of this.setNames) {
-      this.shuffledNames.push(name);
+    // Initialize shuffled name and face lists
+    for (let name = 0; name < this.setNames.length; name++) {
+      this.shuffledNames.push(this.setNames[name]);
+      this.shuffledFaces.push(this.facePaths[name]);
     }
+    // Shuffle Names
     for (let i = this.shuffledNames.length - 1; i > 0; i -= 1) {
       let j = Math.floor(Math.random() * (i + 1));
       let temp = this.shuffledNames[i];
       this.shuffledNames[i] = this.shuffledNames[j];
       this.shuffledNames[j] = temp;
     }
-    //TO DO: shuffle pictures too
+    // Shuffle Faces
+    for (let i = this.shuffledNames.length - 1; i > 0; i -= 1) {
+      let j = Math.floor(Math.random() * (i + 1));
+      let temp = this.shuffledFaces[i];
+      this.shuffledFaces[i] = this.shuffledFaces[j];
+      this.shuffledFaces[j] = temp;
+    }
+    this.currentFace = this.shuffledFaces[this.progress];
+    this.currentName = this.setNames[this.facePaths.indexOf(this.currentFace)]; // Name is based off of displayed face
   }
 
   progress : number = 0;
@@ -32,16 +41,34 @@ export class NameFaceComponent implements OnInit {
 
   currentFace : string;
   currentName : string;
+  showFeedback : boolean = false;
+  feedback : boolean;
 
   shuffledNames : any[] = [];
+  shuffledFaces : any[] = [];
 
-  nextFace(name : string) {
-    if (name.toLowerCase() == this.currentName.toLowerCase()) {
+  chooseName(name : string) {
+    if (name == this.currentName) {
       this.score++;
+      this.feedback = true;
+    } else {
+      this.feedback = false;
     }
+    this.showFeedback = true;
+  }
+  
+  nextFace() {
+    this.showFeedback = false;
     this.progress++;
-    this.currentName = this.setNames[this.progress];
-    this.currentFace = this.facePaths[this.progress];
+    this.currentFace = this.shuffledFaces[this.progress];
+    this.currentName = this.setNames[this.facePaths.indexOf(this.currentFace)];
+    //Shuffle displayed names after each guess
+    for (let i = this.shuffledNames.length - 1; i > 0; i -= 1) {
+      let j = Math.floor(Math.random() * (i + 1));
+      let temp = this.shuffledNames[i];
+      this.shuffledNames[i] = this.shuffledNames[j];
+      this.shuffledNames[j] = temp;
+    }
   }
 
 }
