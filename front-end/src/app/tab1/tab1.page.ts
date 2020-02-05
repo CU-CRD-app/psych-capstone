@@ -41,10 +41,18 @@ export class Tab1Page {
   faceNums : number[] = []
   facePaths : string[] = []
 
-  scores : number[] = [0, 0, 0, 0, 0, 0];
+  learningDone : boolean = false;
+  scores : number[] = [-1, -1, -1, -1, -1, -1];
 
-  recordAndProgress(score : number) {
-    this.scores[this.progress - 2] = score; // developer score for each activity once completed
-    this.progress++;
+  getMenuStage() {
+    if (!this.learningDone) {
+      return 0;
+    } else if (this.scores[0]==-1 || this.scores[1]==-1 || this.scores[2]==-1 || this.scores[3]==-1) {
+      return 1;
+    } else if (this.scores.includes(-1)) {
+      return 2;
+    } else {
+      return 3;
+    }
   }
 }
