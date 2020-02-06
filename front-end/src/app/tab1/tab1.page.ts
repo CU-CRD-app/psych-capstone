@@ -13,12 +13,9 @@ export class Tab1Page {
       let name = Math.floor(Math.random() * this.namePool.length);
       this.setNames.push(this.namePool[name]);
       this.namePool = this.namePool.slice(0, name).concat(this.namePool.slice(name + 1, this.namePool.length));
-    }
-
-    for (let i = 0; i < this.numFaces; i++) //creates array of 0-numFaces, to be shuffled afterwards
-    {
       this.faceNums.push(i);
     }
+
     for (let i = this.faceNums.length-1; i > 0; i--) //shuffle the numbers up
     {
       let j = Math.floor(Math.random() * (i + 1)); //some index to the left of i
