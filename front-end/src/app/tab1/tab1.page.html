@@ -1,41 +1,76 @@
 <ion-content>
-  <div style="text-align:center" *ngIf="progress==0">
-    <h1>Ready for training?</h1>
-    <h4>For best results, please give yourself 10 minutes where you can study uninterrupted.</h4>
-    <ion-button color="success" (click)="progress=1">Start</ion-button>
+  <div *ngIf="progress==0">
+    <!--Start screen-->
+    <div *ngIf="getMenuStage()==0" style="text-align:center; margin-top:180px">
+      <h1>Ready for training?</h1>
+      <h4>For best results, please give yourself 10 minutes where you can study uninterrupted.</h4>
+      <ion-button color="success" (click)="progress=1">Start</ion-button>
+    </div>
+    <!--Learning tasks-->
+    <ion-list *ngIf="getMenuStage()==1" lines="none">
+      <ion-list-header>
+        <ion-label>Training Modules</ion-label>
+      </ion-list-header>
+      <ion-item *ngIf="scores[0]=='-1'" (click)="progress=2">
+        <ion-icon slot="start" color="medium" name="happy"></ion-icon>
+        <ion-label>Name and Face</ion-label>
+      </ion-item>
+      <ion-item *ngIf="scores[1]=='-1'" (click)="progress=3">
+        <ion-icon slot="start" color="medium" name="person-add"></ion-icon>
+        <ion-label>Who's New?</ion-label>
+      </ion-item>
+      <ion-item *ngIf="scores[2]=='-1'" (click)="progress=4">
+        <ion-icon slot="start" color="medium" name="grid"></ion-icon>
+        <ion-label>Memory Match</ion-label>
+      </ion-item>
+      <ion-item *ngIf="scores[3]=='-1'" (click)="progress=5">
+        <ion-icon slot="start" color="medium" name="swap"></ion-icon>
+        <ion-label>Shuffle</ion-label>
+      </ion-item>
+    </ion-list>
+    <!--Assessment tasks-->
+    <ion-list *ngIf="getMenuStage()==2" lines="none">
+      <ion-list-header>
+        <ion-label>Assessment Modules</ion-label>
+      </ion-list-header>
+      <ion-item *ngIf="scores[4]=='-1'" (click)="progress=6">
+        <ion-icon slot="start" color="medium" name="checkmark-circle"></ion-icon>
+        <ion-label>Forced Choice</ion-label>
+      </ion-item>
+      <ion-item *ngIf="scores[5]=='-1'" (click)="progress=7">
+        <ion-icon slot="start" color="medium" name="contacts"></ion-icon>
+        <ion-label>Same Different</ion-label>
+      </ion-item>
+    </ion-list>
+    <!--All tasks finished-->
+    <div *ngIf="getMenuStage()==3" style="text-align:center">
+      <h1>You're All Done!</h1>
+      <h4>Come back tomorrow for your next training.</h4>
+    </div>
   </div>
   <!--Learning Task-->
-  <app-learning-task *ngIf="progress==1" [setNames]="setNames" [facePaths] = "facePaths" (finished)="progress=2"></app-learning-task>
+  <app-learning-task *ngIf="progress==1" [setNames]="setNames" [facePaths]="facePaths" (finished)="learningDone=true;progress=0"></app-learning-task>
   <!--Name and Face-->
-  <app-name-face *ngIf="progress==2" [setNames]="setNames" [facePaths] = "facePaths" (finished)="recordAndProgress($event)"></app-name-face>
+  <app-name-face *ngIf="progress==2" [setNames]="setNames" [facePaths]="facePaths" (finished)="scores[0]=$event;progress=0"></app-name-face>
   <!--Who's New?-->
-  <app-whos-new *ngIf="progress==3" [setNames]="setNames" [facePaths] = "facePaths" (finished)="recordAndProgress($event)"></app-whos-new>
+  <app-whos-new *ngIf="progress==3" [setNames]="setNames" [facePaths]="facePaths" (finished)="scores[1]=$event;progress=0"></app-whos-new>
   <!--Memory Match-->
-  <app-memory-match *ngIf="progress==4" [setNames]="setNames" [facePaths] = "facePaths" (finished)="recordAndProgress($event)"></app-memory-match>
+  <app-memory-match *ngIf="progress==4" [setNames]="setNames" [facePaths]="facePaths" (finished)="scores[2]=$event;progress=0"></app-memory-match>
   <!--Shuffle-->
-  <app-shuffle *ngIf="progress==5" [setNames]="setNames" [facePaths] = "facePaths" (finished)="recordAndProgress($event)"></app-shuffle>
+  <app-shuffle *ngIf="progress==5" [setNames]="setNames" [facePaths]="facePaths" (finished)="scores[3]=$event;progress=0"></app-shuffle>
   <!--Forced Choice-->
-  <app-forced-choice *ngIf="progress==6" [setNames]="setNames" [facePaths] = "facePaths" (finished)="recordAndProgress($event)"></app-forced-choice>
+  <app-forced-choice *ngIf="progress==6" [setNames]="setNames" [facePaths]="facePaths" (finished)="scores[4]=$event;progress=0"></app-forced-choice>
   <!--Same-Different-->
-  <app-same-different *ngIf="progress==7" [setNames]="setNames" [facePaths] = "facePaths" (finished)="recordAndProgress($event)"></app-same-different>
-  <div style="text-align:center" *ngIf="progress==8">
-    <h1>You're All Done!</h1>
-    <h4>Come back tomorrow for your next training.</h4>
-  </div>
+  <app-same-different *ngIf="progress==7" [setNames]="setNames" [facePaths]="facePaths" (finished)="scores[5]=$event;progress=0"></app-same-different>
+
   <div style="text-align:center">
     <h3 style=color:red>For Development Only</h3>
     <ion-button (click)="progress=1">Learning</ion-button>
-    <ion-button (click)="progress=2">Name and Face</ion-button>
-    <ion-button (click)="progress=3">Who's New</ion-button>
-    <ion-button (click)="progress=4">Memory</ion-button>
-    <ion-button (click)="progress=5">Shuffle</ion-button>
-    <ion-button (click)="progress=6">Forced Choice</ion-button>
-    <ion-button (click)="progress=7">Same Different</ion-button>
-    <div>Name and Face: {{scores[0]}}</div>
-    <div>Who's New: {{scores[1]}}</div>
-    <div>Memory: {{scores[2]}}</div>
-    <div>Shuffle: {{scores[3]}}</div>
-    <div>Forced Choice: {{scores[4]}}</div>
-    <div>Same Different: {{scores[5]}}</div>
+    <ion-button (click)="progress=2">Name and Face: {{scores[0]}}</ion-button>
+    <ion-button (click)="progress=3">Who's New: {{scores[1]}}</ion-button>
+    <ion-button (click)="progress=4">Memory: {{scores[2]}}</ion-button>
+    <ion-button (click)="progress=5">Shuffle: {{scores[3]}}</ion-button>
+    <ion-button (click)="progress=6">Forced Choice: {{scores[4]}}</ion-button>
+    <ion-button (click)="progress=7">Same Different: {{scores[5]}}</ion-button>
   </div>
 </ion-content>
