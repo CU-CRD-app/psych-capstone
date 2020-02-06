@@ -1,4 +1,19 @@
 import { Component } from '@angular/core';
+import { AlertController } from '@ionic/angular';
+
+const helpMessages = {
+  start: ["Modules", "Welcome to your daily training."],
+  trainingTasks: ["Training Tasks", "Default Message"],
+  assessmentTasks: ["Assessment Tasks", "Default Message"],
+  done: ["Finished", "Default Message"],
+  learning: ["Meet Today's Faces", "Default Message"],
+  nameAndFace: ["Name and Face", "Default Message"],
+  whosNew: ["Who's New?", "Default Message"],
+  memory: ["Memory Match", "Default Message"],
+  shuffle: ["Shuffle", "Default Message"],
+  forcedChoice: ["Forced Choice", "Default Message"],
+  sameDifferent: ["Same-Different", "Default Message"]
+}
 
 @Component({
   selector: 'app-tab1',
@@ -7,7 +22,7 @@ import { Component } from '@angular/core';
 })
 export class Tab1Page {
 
-  constructor() {
+  constructor(public alertController: AlertController) {
     for (let i = 0; i < this.numFaces; i++) //randomly shuffles names from namePool into an array passed to activities
     {
       let name = Math.floor(Math.random() * this.namePool.length);
@@ -51,5 +66,53 @@ export class Tab1Page {
     } else {
       return 3;
     }
+  }
+
+  getMessage(title : number) {
+    if (title == 0 || title == 1) {
+      switch (this.progress) {
+        case 0:
+          switch (this.getMenuStage()) {
+            case 0:
+              return helpMessages['start'][title];
+            case 1:
+              return helpMessages['trainingTasks'][title];
+            case 2:
+              return helpMessages['assessmentTasks'][title];
+            case 3:
+              return helpMessages['done'][title];
+            default:
+              return "Modules";
+          }
+        case 1:
+          return helpMessages['learning'][title];
+        case 2:
+          return helpMessages['nameAndFace'][title];
+        case 3:
+          return helpMessages['whosNew'][title];
+        case 4:
+          return helpMessages['memory'][title];
+        case 5:
+          return helpMessages['shuffle'][title];
+        case 6:
+          return helpMessages['forcedChoice'][title];
+        case 7:
+          return helpMessages['sameDifferent'][title];
+        default:
+          return "Modules"
+      }
+    } else {
+      return null;
+    }
+  }
+
+  async getHelp() {
+    const alert = await this.alertController.create({
+      header: this.getMessage(0),
+      message: this.getMessage(1),
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 }

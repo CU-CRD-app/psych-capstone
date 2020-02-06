@@ -1,19 +1,22 @@
 <ion-content style="--background: gray">
+  <ion-header>
+    <ion-toolbar style="border-bottom-width: medium; border-bottom-style: solid; border-bottom-color:dodgerblue">
+      <ion-title>{{getMessage(0)}}</ion-title>
+      <ion-icon slot="start" color="medium" name="help-circle" style="margin-left: 10px; height: 30px; cursor: pointer" (click)="getHelp()"></ion-icon>
+    </ion-toolbar>
+  </ion-header>
   <div *ngIf="progress==0" style="color: white; text-align:center">
     <!--Start screen-->
-    <div *ngIf="getMenuStage()==0" style="margin-top:180px">
+    <div *ngIf="getMenuStage()==0" style="margin-top:140px">
       <h1>Ready for training?</h1>
       <h4>For best results, please give yourself 10 minutes where you can study uninterrupted.</h4>
       <ion-button color="success" (click)="progress=1">Start</ion-button>
     </div>
     <!--Learning tasks-->
-    <div *ngIf="getMenuStage()==1" style="margin-top: 50px">
+    <div *ngIf="getMenuStage()==1" style="margin-top: 20px">
       <h5>Time for training!</h5>
       <h5>What would you like to do next?</h5>
       <ion-list lines="inset">
-        <ion-list-header>
-          <ion-label style="color: dodgerblue">Training Modules</ion-label>
-        </ion-list-header>
         <ion-item *ngIf="scores[0]=='-1'" (click)="progress=2">
           <ion-icon slot="start" color="medium" name="happy"></ion-icon>
           <ion-label>Name and Face</ion-label>
@@ -33,13 +36,10 @@
       </ion-list>
     </div>
     <!--Assessment tasks-->
-    <div *ngIf="getMenuStage()==2" style="margin-top: 50px">
+    <div *ngIf="getMenuStage()==2" style="margin-top: 20px">
       <h5>Now to test what you've learned.</h5>
       <h5>What would you like to do next?</h5>
-      <ion-list lines="none">
-        <ion-list-header>
-          <ion-label style="color: dodgerblue">Assessment Modules</ion-label>
-        </ion-list-header>
+      <ion-list lines="inset">
         <ion-item *ngIf="scores[4]=='-1'" (click)="progress=6">
           <ion-icon slot="start" color="medium" name="checkmark-circle"></ion-icon>
           <ion-label>Forced Choice</ion-label>
@@ -51,7 +51,7 @@
       </ion-list>
     </div>
     <!--All tasks finished-->
-    <div *ngIf="getMenuStage()==3" style="margin-top:180px">
+    <div *ngIf="getMenuStage()==3" style="margin-top:140px">
       <h1>You're All Done!</h1>
       <h4>Come back tomorrow for your next training.</h4>
     </div>
@@ -70,7 +70,7 @@
   <app-forced-choice *ngIf="progress==6" [setNames]="setNames" [facePaths]="facePaths" (finished)="scores[4]=$event;progress=0"></app-forced-choice>
   <!--Same-Different-->
   <app-same-different *ngIf="progress==7" [setNames]="setNames" [facePaths]="facePaths" (finished)="scores[5]=$event;progress=0"></app-same-different>
-
+<!--
   <div style="text-align:center">
     <h3 style=color:red>For Development Only</h3>
     <ion-button (click)="progress=1">Learning</ion-button>
@@ -80,4 +80,5 @@
     <ion-button (click)="progress=5">Shuffle: {{scores[3]}}</ion-button>
     <ion-button (click)="progress=6">Forced Choice: {{scores[4]}}</ion-button>
     <ion-button (click)="progress=7">Same Different: {{scores[5]}}</ion-button>
-  </div>
+  </div>-->
+</ion-content>
