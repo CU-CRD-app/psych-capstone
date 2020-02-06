@@ -2,3 +2,16 @@
   max-height: 35vh;
   overflow: hidden;
 }
+
+ion-list {
+  margin-left: 10px;
+  margin-right: 10px;
+  border-radius: 30px
+}
+
+ion-item {
+  color: dodgerblue;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  cursor: pointer;
+}
