@@ -1,20 +1,26 @@
-<ion-content style="--background:gray">
+<ion-content [ngClass]="{'default-card': !showFeedback, 'success-card': showFeedback && feedback, 'failure-card': showFeedback && !feedback}">
   <div *ngIf="progress<8">
-    <ion-card style="text-align:center; background-color:gainsboro">
-      <h3 style="text-align:center; color:dodgerblue">Who is this?</h3>
-      <img style="height:220px; width:160px; margin: 0 auto" [src]="currentFace"/>
+    <ion-card *ngIf="!showFeedback" button="true" style="text-align:center; background-color: gainsboro">
+      <h3>Who is this?</h3>
+      <img style="height:200px; width:150px; margin: 0 auto" [src]="currentFace"/>
       <br>
-      <button *ngIf="showFeedback;feedback" (click)="nextFace()" style="font-size: 200%; color: white; padding: 20px; border-radius: 10px; height: 150px; width: 250px" [ngStyle]="{'background-color': feedback == true ? '#01DF3A' : 'red' }">
-        <span *ngIf="feedback">Correct!</span>
-        <span *ngIf="!feedback">Incorrect!</span>
-        <div> This is {{currentName}}</div>
-      </button>
-      <div *ngIf="!showFeedback">
-        <span *ngFor="let name of shuffledNames">
-          <ion-button (click)="chooseName(name)">{{name}}</ion-button>
-        </span>
-      </div>
+      <span *ngFor="let name of shuffledNames">
+        <ion-button (click)="chooseName(name)">{{name}}</ion-button>
+      </span>
       <br>
+    </ion-card>
+    <ion-card *ngIf="showFeedback" (click)="nextFace()" button="true" style="text-align:center; background-color: gainsboro">
+      <h3 *ngIf="feedback">Correct!</h3>
+      <h3 *ngIf="!feedback">Incorrect!</h3>
+      <img style="height:200px; width:150px; margin: 0 auto" [src]="currentFace"/>
+      <br>
+      <h1><b>{{currentName}}</b></h1>
+      <!--<div class="nameContainer">
+        <div id="nameDisplay">
+          <p id="nameText">{{currentName}}</p>
+        </div>
+      </div>-->
+      <br><br><br>
     </ion-card>
   </div>
   <div *ngIf="progress==8" style="text-align: center; color: white; margin-top: 180px">
