@@ -42,7 +42,7 @@ export class NameFaceComponent implements OnInit {
   currentFace : string;
   currentName : string;
   showFeedback : boolean = false;
-  feedback : boolean;
+  correctSelection : boolean;
 
   shuffledNames : any[] = [];
   shuffledFaces : any[] = [];
@@ -50,9 +50,9 @@ export class NameFaceComponent implements OnInit {
   chooseName(name : string) {
     if (name == this.currentName) {
       this.score++;
-      this.feedback = true;
+      this.correctSelection = true;
     } else {
-      this.feedback = false;
+      this.correctSelection = false;
     }
     this.showFeedback = true;
   }
