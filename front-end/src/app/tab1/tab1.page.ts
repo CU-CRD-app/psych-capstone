@@ -2,16 +2,16 @@ import { Component } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 
 const helpMessages = {
-  start: ["Modules", "Welcome to your daily training. Click to start the learning task."],
-  trainingTasks: ["Training Tasks", "Here is a list of the training tasks you still need to complete today. You can do them in any order you like.\nWhen you're done with these, you will have two assessment tasks to complete."],
-  assessmentTasks: ["Assessment Tasks", "Here are your assessment tasks for the day. These will test how much you learned today, and will be how your progress is tracked."],
-  done: ["Finished", "You're done today. Come back tomorrow for your next training. You can see your progress under the history tab."],
-  learning: ["Meet Today's Faces", "Memorize these faces and their names. You will use them in the next tasks."],
-  nameAndFace: ["Name and Face", "Select the name that goes to the face. The names are shuffled after each selection."],
+  start: ["Modules", "Welcome to your daily training.\nClick to start the learning task."],
+  trainingTasks: ["Training Tasks", "Here is a list of the training tasks you still need to complete today.\nYou can do them in any order you like.\nWhen you're done with these, you will have two assessment tasks to complete."],
+  assessmentTasks: ["Assessment Tasks", "Here are your assessment tasks for the day.\nThese will test how much you learned this session, and will be how your progress is tracked."],
+  done: ["Finished", "You're done today. Come back tomorrow for your next training.\nYou can see your progress under the history tab."],
+  learning: ["Meet Today's Faces", "Memorize these faces and their names.\nYou will use them in the next tasks."],
+  nameAndFace: ["Name and Face", "Select the name that goes to the face.\nThe names are shuffled after each selection."],
   whosNew: ["Who's New?", "Select the face that wasn't part of the original set."],
   memory: ["Memory Match", "Memorize the placement of the face pairs, then match them when they are turned over."],
   shuffle: ["Shuffle", "Put the cards in the same order that you saw them originally."],
-  forcedChoice: ["Forced Choice", "You will be shown one face to memorize, and then a set of faces. You will be asked to choose which face in the set matches the original"],
+  forcedChoice: ["Forced Choice", "You will be shown one face to memorize, and then a set of faces.\nYou will be asked to choose which face in the set matches the original"],
   sameDifferent: ["Same-Different", "You will be shown one face and then another, and you will decide whether they are the same."]
 }
 
