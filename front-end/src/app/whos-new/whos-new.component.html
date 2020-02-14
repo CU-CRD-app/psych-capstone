@@ -1,5 +1,16 @@
 <h1 style="text-align:center">Who's New</h1>
 <h4 style="text-align:center">Who haven't you seen before?.</h4>
-<div style="text-align:center">
+
+<div *ngIf="score<5">
+  <ion-card style="text-align:center; background-color:gainsboro">
+    <img style="height:220px; width:160px; margin: 0 auto; display: inline-block" [src]="currentFace"/>
+	<img style="height:220px; width:160px; margin: 0 auto; display: inline-block" [src]="currentFace"/>
+	<img style="height:220px; width:160px; margin: 0 auto; display: inline-block" [src]="currentFace"/>
+	<img style="height:220px; width:160px; margin: 0 auto; display: inline-block" [src]="currentFace"/>
+  </ion-card>
+</div>
+  
+<div *ngIf="score==5" style="text-align: center; color: white; margin-top: 180px">
+  <h1>Your score: {{score}}/{{correct_count}}</h1>
   <ion-button color="success" (click)="finished.emit(score)">Finish</ion-button>
 </div>

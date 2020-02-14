@@ -12,8 +12,20 @@ export class WhosNewComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() {
+	  // start by shuffling three faces from basic set
+	  this.currentFace = this.facePaths[this.progress];
+	  
+	  // then draw one from new set
+	  ;
+	  
+	  // lump all faces into new set, then shuffle them
+	  ;
+  }
 
   score : number = 0;
+  currentFace : string;
+  progress : number = 0;
+  correct_count: number = 0;
 
 }
