@@ -11,10 +11,11 @@
 }
 
 .selected-card {
-    background-color: dodgerblue;
+    background-color: gainsboro !important;
 }
 
 .disabled-card {
+    background-color: transparent;
     opacity: 0.5;
 }
 

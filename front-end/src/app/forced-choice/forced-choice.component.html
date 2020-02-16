@@ -13,9 +13,11 @@
       <div *ngIf="!showFeedback">Who did you see?</div>
       <div *ngIf="showFeedback && correctSelection">Correct!</div>
       <div *ngIf="showFeedback && !correctSelection">Incorrect!</div>
-      <ion-card *ngFor="let face of randomFaces" (click)="showFeedback ? nextFace() : selectFace(face)" button="true" style="float:left; margin-left: 21px" [ngClass]="{'selected-card': showFeedback && face == currentFace, 'disabled-card': showFeedback && face != selectedFace && face != currentFace}">
-        <img [src]="face" style="height:110px; width:80px; margin: 15px"/>
-      </ion-card>
+      <div style="margin-left: 0px; margin-right: 0px">
+        <ion-card *ngFor="let face of randomFaces" (click)="showFeedback ? nextFace() : selectFace(face)" button="true" style="float:left; margin-left: 21px" [ngClass]="{'selected-card': showFeedback && face != currentFace && face == selectedFace, 'disabled-card': showFeedback && face != currentFace}">
+          <img [src]="face" style="height:110px; width:80px; margin: 15px"/>
+        </ion-card>
+      </div>
     </div>
   </div>
   <div *ngIf="progress==8" style="text-align: center; color: white; margin-top: 180px">
