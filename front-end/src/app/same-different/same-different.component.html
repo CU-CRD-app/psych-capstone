@@ -1,18 +1,24 @@
 <ion-content [ngClass]="{'default': stage != 2, 'success': stage == 2 && correctSelection, 'failure': stage == 2 && !correctSelection}">
-  <div *ngIf="progress<8" style="text-align: center;">
+  
+  <div *ngIf="progress < 8" style="text-align: center;">
+
     <ion-card button="true" (click)="clickCard()" style="cursor: pointer">
-      <div *ngIf="stage == 0" style="margin-top: 20px">Memorize the face</div>
-      <div *ngIf="stage == 1" style="margin-top: 20px">Is this the same person?</div>
-      <div *ngIf="stage == 2 && correctSelection" style="margin-top: 20px">Correct!</div>
-      <div *ngIf="stage == 2 && !correctSelection" style="margin-top: 20px">Incorrect!</div>
+      <h3 *ngIf="stage == 0">Memorize the face</h3>
+      <h3 *ngIf="stage == 1">Is this the same person?</h3>
+      <h3 *ngIf="stage == 2 && correctSelection">Correct!</h3>
+      <h3 *ngIf="stage == 2 && !correctSelection">Incorrect!</h3>
       <img [src]="stage == 0 ? currentFace : randomFace" style="height:270px; width:190px; margin: 20px auto;"/>
     </ion-card>
+
     <ion-button *ngIf="stage == 1" style="width:130px" (click)="selectFace(currentFace)" color="danger">No</ion-button>
     <ion-button *ngIf="stage == 1" style="width:130px" (click)="selectFace(randomFace)" color="success">Yes</ion-button>
     <ion-button *ngIf="stage == 0 || stage == 2" style="width:130px" (click)="clickCard()">Next</ion-button>
+
   </div>
+
   <div *ngIf="progress == 8" style="text-align: center; color: white; margin-top: 180px">
     <h1>Your score: {{score}}/{{setNames.length}}</h1>
     <ion-button color="success" (click)="finished.emit(score)">Finish</ion-button>
   </div>
+
 </ion-content>
