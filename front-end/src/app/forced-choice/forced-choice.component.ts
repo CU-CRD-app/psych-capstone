@@ -29,17 +29,15 @@ export class ForcedChoiceComponent implements OnInit {
   numberOfOptions = 4; // Hard coded for now
   progress : number = 0;
   score : number = 0;
+  stage : number = 0; // memorize, choose, feedback
 
-  isMemorizing : boolean = true;
-  showFeedback : boolean = false;
   correctSelection : boolean;
-
   currentFace : string;
   randomFaces : any[] = [];
   selectedFace : string;
 
   selectFace(facePath : string) {
-    if (!this.showFeedback) {
+    if (this.stage != 2) {
       if (facePath == this.currentFace) {
         this.score++;
         this.correctSelection = true;
@@ -47,14 +45,13 @@ export class ForcedChoiceComponent implements OnInit {
         this.correctSelection = false;
       }
       this.selectedFace = facePath;
-      this.showFeedback = true;
+      this.stage = 2;
     }
   }
 
   nextFace() {
-    this.showFeedback = false;
+    this.stage = 0;
     this.progress++;
-    this.isMemorizing = true;
     this.selectedFace = null;
     this.currentFace = this.facePaths[this.progress];
     this.randomFaces = [];

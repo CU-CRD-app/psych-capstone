@@ -1,27 +1,43 @@
-<ion-content [ngClass]="{'default': !showFeedback, 'success': showFeedback && correctSelection, 'failure': showFeedback && !correctSelection}">
-  <div *ngIf="progress<8">
-    <div *ngIf="isMemorizing==true">
-    <ion-card button="true" (click)="isMemorizing=false">
-      <h4 style="color:dodgerblue">Memorize the Face</h4>
-      <img style="height:320px; width:230px; margin: 20px auto;" [src]="currentFace"/>
-      <br>
-    </ion-card>
-    </div>
-    <div *ngIf="isMemorizing==false" style="color:white; text-align:center; font-size:150%">
-      <div *ngIf="showFeedback" (click)="nextFace()" style="position:fixed; width:100%; height:100%; top:0px; left:0px; cursor: pointer"></div>
-      <br>
-      <div *ngIf="!showFeedback">Who did you see?</div>
-      <div *ngIf="showFeedback && correctSelection">Correct!</div>
-      <div *ngIf="showFeedback && !correctSelection">Incorrect!</div>
-      <div style="margin-left: 0px; margin-right: 0px">
-        <ion-card *ngFor="let face of randomFaces" (click)="showFeedback ? nextFace() : selectFace(face)" button="true" style="float:left; margin-left: 21px" [ngClass]="{'selected-card': showFeedback && face != currentFace && face == selectedFace, 'disabled-card': showFeedback && face != currentFace}">
-          <img [src]="face" style="height:110px; width:80px; margin: 15px"/>
-        </ion-card>
+<ion-content [ngClass]="{'default': stage != 2, 'success': stage == 2 && correctSelection, 'failure': stage == 2 && !correctSelection}">
+
+  <div *ngIf="progress < 8">
+
+    <!--Memorizing the face-->
+    <div *ngIf="stage == 0">
+      <ion-card button="true" (click)="stage=1">
+        <div style="color: dodgerblue; margin-top: 20px; font-size: 120%">Memorize the face</div>
+        <img style="height:270px; width:190px; margin: 20px auto;"[src]="currentFace"/>
+      </ion-card>
+      <div style="text-align: center">
+        <ion-button style="width:130px" (click)="stage=1">Next</ion-button>
       </div>
     </div>
+
+    <!--Choosing the face and feedback-->
+    <div *ngIf="stage != 0" style="color:white; text-align:center; font-size:120%">
+
+      <div *ngIf="stage == 1" style="margin-top: 20px;">Who did you see?</div>
+      <div *ngIf="stage == 2 && correctSelection" style="margin-top: 20px;">Correct!</div>
+      <div *ngIf="stage == 2 && !correctSelection" style="margin-top: 20px;">Incorrect!</div>
+
+      <div style="margin-left: 0px; margin-right: 0px">
+        <ion-card *ngFor="let face of randomFaces" (click)="stage == 2 ? nextFace() : selectFace(face)" button="true" style="float:left; margin-left: 21px" [ngClass]="{'selected-card': stage == 2 && face != currentFace && face == selectedFace, 'disabled-card': stage == 2 && face != currentFace}">
+          <img [src]="face" style="height:100px; width:75px; margin: 15px"/>
+        </ion-card>
+      </div>
+
+      <div *ngIf="stage == 2" style="text-align: center">
+        <ion-button style="width:130px" (click)="nextFace()">Next</ion-button>
+      </div>
+
+    </div>
+  
   </div>
+
+  <!--Score page-->
   <div *ngIf="progress==8" style="text-align: center; color: white; margin-top: 180px">
     <h1>Your score: {{score}}/{{setNames.length}}</h1>
     <ion-button color="success" (click)="finished.emit(score)">Finish</ion-button>
   </div>
+
 </ion-content>
