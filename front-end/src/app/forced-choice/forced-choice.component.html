@@ -5,7 +5,7 @@
     <!--Memorizing the face-->
     <div *ngIf="stage == 0">
       <ion-card button="true" (click)="stage=1">
-        <div style="color: dodgerblue; margin-top: 20px; font-size: 120%">Memorize the face</div>
+        <h3 style="color: dodgerblue;">Memorize the face</h3>
         <img style="height:270px; width:190px; margin: 20px auto;"[src]="currentFace"/>
       </ion-card>
       <div style="text-align: center">
@@ -16,9 +16,9 @@
     <!--Choosing the face and feedback-->
     <div *ngIf="stage != 0" style="color:white; text-align:center; font-size:120%">
 
-      <div *ngIf="stage == 1" style="margin-top: 20px;">Who did you see?</div>
-      <div *ngIf="stage == 2 && correctSelection" style="margin-top: 20px;">Correct!</div>
-      <div *ngIf="stage == 2 && !correctSelection" style="margin-top: 20px;">Incorrect!</div>
+      <h3 *ngIf="stage == 1">Who did you see?</h3>
+      <h3 *ngIf="stage == 2 && correctSelection">Correct!</h3>
+      <h3 *ngIf="stage == 2 && !correctSelection">Incorrect!</h3>
 
       <div style="margin-left: 0px; margin-right: 0px">
         <ion-card *ngFor="let face of randomFaces" (click)="stage == 2 ? nextFace() : selectFace(face)" button="true" style="float:left; margin-left: 21px" [ngClass]="{'selected-card': stage == 2 && face != currentFace && face == selectedFace, 'disabled-card': stage == 2 && face != currentFace}">
