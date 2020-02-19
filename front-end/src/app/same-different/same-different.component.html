@@ -1,18 +1,18 @@
-<ion-content [ngClass]="{'default': stage != Stage.Feedback, 'success': stage == Stage.Feedback && correctSelection, 'failure': stage == Stage.Feedback && !correctSelection}">
+<ion-content [ngClass]="{'default': stage != Stage.FEEDBACK, 'success': stage == Stage.FEEDBACK && correctSelection, 'failure': stage == Stage.FEEDBACK && !correctSelection}">
   
   <div *ngIf="progress < 8" style="text-align: center;">
 
     <ion-card button="true" (click)="clickCard()" style="cursor: pointer">
-      <h3 *ngIf="stage == Stage.Memorize">Memorize the face</h3>
-      <h3 *ngIf="stage == Stage.Select">Is this the same person?</h3>
-      <h3 *ngIf="stage == Stage.Feedback && correctSelection">Correct!</h3>
-      <h3 *ngIf="stage == Stage.Feedback && !correctSelection">Incorrect!</h3>
-      <img [src]="stage == Stage.Memorize ? currentFace : randomFace" style="height:270px; width:190px; margin: 20px auto;"/>
+      <h3 *ngIf="stage == Stage.MEMORIZE">Memorize the face</h3>
+      <h3 *ngIf="stage == Stage.SELECT">Is this the same person?</h3>
+      <h3 *ngIf="stage == Stage.FEEDBACK && correctSelection">Correct!</h3>
+      <h3 *ngIf="stage == Stage.FEEDBACK && !correctSelection">Incorrect!</h3>
+      <img [src]="stage == Stage.MEMORIZE ? currentFace : randomFace" style="height:270px; width:190px; margin: 20px auto;"/>
     </ion-card>
 
-    <ion-button *ngIf="stage == Stage.Select" style="width:130px" (click)="selectFace(currentFace)" color="danger">No</ion-button>
-    <ion-button *ngIf="stage == Stage.Select" style="width:130px" (click)="selectFace(randomFace)" color="success">Yes</ion-button>
-    <ion-button *ngIf="stage == Stage.Memorize || stage == Stage.Feedback" style="width:130px" (click)="clickCard()">Next</ion-button>
+    <ion-button *ngIf="stage == Stage.SELECT" style="width:130px" (click)="selectFace(currentFace)" color="danger">No</ion-button>
+    <ion-button *ngIf="stage == Stage.SELECT" style="width:130px" (click)="selectFace(randomFace)" color="success">Yes</ion-button>
+    <ion-button *ngIf="stage == Stage.MEMORIZE || stage == Stage.FEEDBACK" style="width:130px" (click)="clickCard()">Next</ion-button>
 
   </div>
 

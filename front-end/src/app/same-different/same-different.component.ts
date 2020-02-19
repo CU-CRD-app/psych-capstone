@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 
-enum Stage { Memorize, Select, Feedback }
+enum Stage { MEMORIZE, SELECT, FEEDBACK }
 
 @Component({
   selector: 'app-same-different',
@@ -25,7 +25,7 @@ export class SameDifferentComponent implements OnInit {
   Stage = Stage;
   progress : number = 0;
   score : number = 0;
-  stage : Stage = Stage.Memorize;
+  stage : Stage = Stage.MEMORIZE;
 
   correctSelection : boolean;
   currentFace : string;
@@ -38,11 +38,11 @@ export class SameDifferentComponent implements OnInit {
     } else {
       this.correctSelection = false;
     }
-    this.stage = Stage.Feedback;
+    this.stage = Stage.FEEDBACK;
   }
 
   nextFace() {
-    this.stage = Stage.Memorize;
+    this.stage = Stage.MEMORIZE;
     this.progress++;
     this.currentFace = this.facePaths[this.progress];
     this.randomFace = this.currentFace;
@@ -52,9 +52,9 @@ export class SameDifferentComponent implements OnInit {
   }
 
   clickCard() {
-    if (this.stage == Stage.Memorize) {
-      this.stage = Stage.Select;
-    } else if (this.stage == Stage.Feedback) {
+    if (this.stage == Stage.MEMORIZE) {
+      this.stage = Stage.SELECT;
+    } else if (this.stage == Stage.FEEDBACK) {
       this.nextFace()
     }
   }
