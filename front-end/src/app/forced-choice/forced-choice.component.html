@@ -1,5 +1,43 @@
-<h1 style="text-align:center">Forced Choice</h1>
-<h4 style="text-align:center">Select the face belonging to the name.</h4>
-<div style="text-align:center">
-  <ion-button color="success" (click)="finished.emit(score)">Finish</ion-button>
-</div>
+<ion-content [ngClass]="{'default': stage != Stage.FEEDBACK, 'success': stage == Stage.FEEDBACK && correctSelection, 'failure': stage == Stage.FEEDBACK && !correctSelection}">
+
+  <div *ngIf="progress < 8">
+
+    <!--Memorizing the face-->
+    <div *ngIf="stage == Stage.MEMORIZE">
+      <ion-card button="true" (click)="stage = Stage.SELECT">
+        <h3 style="color: dodgerblue;">Memorize the face</h3>
+        <img style="height:260px; width:180px; margin: 20px auto;"[src]="currentFace"/>
+      </ion-card>
+    </div>
+
+    <!--Choosing the face and feedback-->
+    <div *ngIf="stage != Stage.MEMORIZE" style="color:white; text-align:center; font-size:120%">
+
+      <h3 *ngIf="stage == Stage.SELECT">Who did you see?</h3>
+      <h3 *ngIf="stage == Stage.FEEDBACK && correctSelection">Correct!</h3>
+      <h3 *ngIf="stage == Stage.FEEDBACK && !correctSelection">Incorrect!</h3>
+
+      <div style="text-align: center;">
+        <ion-card *ngFor="let face of randomFaces" (click)="stage == Stage.FEEDBACK ? nextFace() : selectFace(face)" button="true" style="display: inline-block; margin-bottom: 20px; margin-top: 15px" [ngClass]="{'selected-card': stage == Stage.FEEDBACK && face != currentFace && face == selectedFace, 'disabled-card': stage == Stage.FEEDBACK && face != currentFace}">
+          <img [src]="face" style="height:100px; width:75px; margin: 15px"/>
+        </ion-card>
+      </div>
+
+    </div>
+
+    <!--Next Buttons-->
+    <div style="text-align: center; margin-bottom: 15px">
+      <ion-button *ngIf="stage == Stage.MEMORIZE" style="width:130px" (click)="stage = Stage.SELECT">Next</ion-button>
+      <ion-button *ngIf="stage == Stage.SELECT" style="width:130px" disabled="true">Next</ion-button>
+      <ion-button *ngIf="stage == Stage.FEEDBACK" style="width:130px" (click)="nextFace()">Next</ion-button>
+    </div>
+
+  </div>
+
+  <!--Score page-->
+  <div *ngIf="progress==8" style="text-align: center; color: white; margin-top: 180px">
+    <h1>Your score: {{score}}/{{setNames.length}}</h1>
+    <ion-button color="success" (click)="finished.emit(score)">Finish</ion-button>
+  </div>
+
+</ion-content>
