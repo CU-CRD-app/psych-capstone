@@ -31,8 +31,8 @@ export class SameDifferentComponent implements OnInit {
   currentFace : string;
   randomFace : string;
 
-  selectFace(facePath : string) {
-    if (facePath == this.currentFace) {
+  selectFace(sameFace : boolean) {
+    if ((sameFace && this.randomFace == this.currentFace) || (!sameFace && this.randomFace != this.currentFace)) {
       this.score++;
       this.correctSelection = true;
     } else {

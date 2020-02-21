@@ -10,8 +10,8 @@
       <img [src]="stage == Stage.MEMORIZE ? currentFace : randomFace" style="height:270px; width:190px; margin: 20px auto;"/>
     </ion-card>
 
-    <ion-button *ngIf="stage == Stage.SELECT" style="width:130px" (click)="selectFace(currentFace)" color="danger">No</ion-button>
-    <ion-button *ngIf="stage == Stage.SELECT" style="width:130px" (click)="selectFace(randomFace)" color="success">Yes</ion-button>
+    <ion-button *ngIf="stage == Stage.SELECT" style="width:130px" (click)="selectFace(false)" color="danger">No</ion-button>
+    <ion-button *ngIf="stage == Stage.SELECT" style="width:130px" (click)="selectFace(true)" color="success">Yes</ion-button>
     <ion-button *ngIf="stage == Stage.MEMORIZE || stage == Stage.FEEDBACK" style="width:130px" (click)="clickCard()">Next</ion-button>
 
   </div>
