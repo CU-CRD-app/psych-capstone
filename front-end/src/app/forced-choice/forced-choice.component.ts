@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 
-enum Stage { MEMORIZE, SELECT, FEEDBACK }
+enum Stage { MEMORIZE, SELECT, CORRECT, INCORRECT, DONE }
 
 @Component({
   selector: 'app-forced-choice',
@@ -34,27 +34,25 @@ export class ForcedChoiceComponent implements OnInit {
   score : number = 0;
   stage : Stage = Stage.MEMORIZE;
 
-  correctSelection : boolean;
   currentFace : string;
-  randomFaces : any[] = [];
   selectedFace : string;
+  randomFaces : any[];
 
   selectFace(facePath : string) {
-    if (this.stage != Stage.FEEDBACK) {
+    if (this.stage != Stage.CORRECT && this.stage != Stage.INCORRECT) {
       if (facePath == this.currentFace) {
         this.score++;
-        this.correctSelection = true;
+        this.stage = Stage.CORRECT;
       } else {
-        this.correctSelection = false;
+        this.stage = Stage.INCORRECT;
       }
       this.selectedFace = facePath;
-      this.stage = Stage.FEEDBACK;
     }
   }
 
   nextFace() {
-    this.stage = Stage.MEMORIZE;
     this.progress++;
+    this.stage = this.progress == 8 ? Stage.DONE : Stage.MEMORIZE;
     this.selectedFace = null;
     this.currentFace = this.facePaths[this.progress];
     this.randomFaces = [];
@@ -67,5 +65,9 @@ export class ForcedChoiceComponent implements OnInit {
     }
     let j = Math.floor(Math.random() * this.numberOfOptions - 1);
     this.randomFaces.splice(j, 0, this.currentFace);
+  }
+
+  isFeedback() {
+    return this.stage == Stage.CORRECT || this.stage == Stage.INCORRECT;
   }
 }
