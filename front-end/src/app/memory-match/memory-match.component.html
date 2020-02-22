@@ -1,5 +1,60 @@
-<h1 style="text-align:center">Memory Match</h1>
-<h4 style="text-align:center">Match the pairs of faces.</h4>
-<div style="text-align:center">
-  <ion-button color="success" (click)="finished.emit(score)">Finish</ion-button>
-</div>
+<ion-content [ngClass]="{'default': stage != Stage.CORRECT && stage != Stage.INCORRECT, 'success': stage == Stage.CORRECT, 'failure': stage == Stage.INCORRECT}">
+
+    <div *ngIf="stage != Stage.DONE">
+    
+      <h5 *ngIf="stage == Stage.MEMORIZE">Memorize the faces</h5>
+      <h5 *ngIf="stage == Stage.SELECT">Match the faces</h5>
+      <h5 *ngIf="stage == Stage.CORRECT" style="color: white">Correct!</h5>
+      <h5 *ngIf="stage == Stage.INCORRECT" style="color: white">Incorrect!</h5>
+  
+      <ion-grid style="text-align: center">
+
+        <ion-row>
+
+          <ion-col *ngFor="let item of [].constructor(4); let i = index">
+            <ion-card button="true" (click)="clickFace(i)" [ngClass]="{'selected-card' : selectedFace == i}"><img [src]="getSrc(i)"/></ion-card>
+          </ion-col>
+
+        </ion-row>
+        <ion-row>
+
+          <ion-col *ngFor="let item of [].constructor(4); let i = index">
+            <ion-card button="true" (click)="clickFace(i + 4)" [ngClass]="{'selected-card' : selectedFace == i + 4}"><img [src]="getSrc(i + 4)"/></ion-card>
+          </ion-col>
+
+        </ion-row>
+        <ion-row>
+
+          <ion-col *ngFor="let item of [].constructor(4); let i = index">
+            <ion-card button="true" (click)="clickFace(i + 8)" [ngClass]="{'selected-card' : selectedFace == i + 8}"><img [src]="getSrc(i + 8)"/></ion-card>
+          </ion-col>
+
+        </ion-row>
+        <ion-row>
+
+          <ion-col *ngFor="let item of [].constructor(4); let i = index">
+            <ion-card button="true" (click)="clickFace(i + 12)" [ngClass]="{'selected-card' : selectedFace == i + 12}"><img [src]="getSrc(i + 12)"/></ion-card>
+          </ion-col>
+
+        </ion-row>
+
+      </ion-grid>
+    
+      <!--Next Buttons-->
+      <div style="text-align: center; margin-bottom: 15px">
+        <ion-button *ngIf="stage == Stage.MEMORIZE" style="width:130px" (click)="stage = Stage.SELECT">Next</ion-button>
+        <ion-button *ngIf="stage != Stage.MEMORIZE && stage != Stage.CORRECT && correctFaces.length < facePaths.length" style="width:130px" disabled="true" color="success">Done</ion-button>
+        <ion-button *ngIf="stage == Stage.CORRECT && correctFaces.length < facePaths.length" style="width:130px" disabled="true">Done</ion-button>
+        <ion-button *ngIf="correctFaces.length == facePaths.length && stage != Stage.CORRECT" style="width:130px" (click)="clickDone()" color="success">Done</ion-button>
+        <ion-button *ngIf="correctFaces.length == facePaths.length && stage == Stage.CORRECT" style="width:130px" (click)="clickDone()">Done</ion-button>
+      </div>
+  
+    </div>
+  
+    <!--Score page-->
+    <div *ngIf="stage == Stage.DONE" style="text-align: center; color: white; margin-top: 180px">
+      <h1>Your score: {{score}}/{{setNames.length}}</h1>
+      <ion-button color="success" (click)="finished.emit(score)">Finish</ion-button>
+    </div>
+  
+  </ion-content>
