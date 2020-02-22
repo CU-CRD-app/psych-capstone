@@ -1,7 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 
 enum Stage { MEMORIZE, SELECT, CORRECT, INCORRECT, DONE }
-const IONIC_CARD = '../../assets/background_imgs/ionic-card.png';
 
 @Component({
   selector: 'app-memory-match',
@@ -45,10 +44,6 @@ export class MemoryMatchComponent implements OnInit {
     if (this.stage != Stage.MEMORIZE) { // Waiting for feedback
       if (this.stage == Stage.CORRECT || this.stage == Stage.INCORRECT) {
         this.promise++;
-        /*if (this.getSrc(face) != IONIC_CARD) {
-          this.resetSelected();
-          return;
-        }*/
         this.selectedFace = null;
         this.resetSelected();
       }
@@ -75,14 +70,10 @@ export class MemoryMatchComponent implements OnInit {
     }
   }
 
-  getSrc(index : number) {
-    if (this.stage == Stage.MEMORIZE || 
+  isShown(index : number) {
+    return (this.stage == Stage.MEMORIZE || 
       this.incorrectFaces.indexOf(index) > -1 || 
-      this.correctFaces.indexOf(this.randomFaces[index]) > -1) 
-    {
-      return this.randomFaces[index]
-    }
-    return IONIC_CARD;
+      this.correctFaces.indexOf(this.randomFaces[index]) > -1)
   }
 
   resetSelected() {
