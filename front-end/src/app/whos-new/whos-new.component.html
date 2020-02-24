@@ -1,16 +1,24 @@
 <h1 style="text-align:center">Who's New</h1>
 <h4 style="text-align:center">Who haven't you seen before?.</h4>
 
-<div *ngIf="score<5">
+<div *ngIf="progress<5">
   <ion-card style="text-align:center; background-color:gainsboro">
-    <img style="height:220px; width:160px; margin: 0 auto; display: inline-block" [src]="currentFace"/>
-	<img style="height:220px; width:160px; margin: 0 auto; display: inline-block" [src]="currentFace"/>
-	<img style="height:220px; width:160px; margin: 0 auto; display: inline-block" [src]="currentFace"/>
-	<img style="height:220px; width:160px; margin: 0 auto; display: inline-block" [src]="currentFace"/>
+    <img style="height:220px; width:160px; margin: 1 auto; display: inline-block" [src]="shuffledFaces[0]"/>
+	<ion-button color="success" (click)="nextFaceSet()">1</ion-button>
+	
+	<img style="height:220px; width:160px; margin: 1 auto; display: inline-block" [src]="shuffledFaces[1]"/>
+	<ion-button color="success" (click)="nextFaceSet()">2</ion-button>
+	
+	<img style="height:220px; width:160px; margin: 1 auto; display: inline-block" [src]="shuffledFaces[2]"/>
+	<ion-button color="success" (click)="nextFaceSet()">3</ion-button>
+	
+	<img style="height:220px; width:160px; margin: 1 auto; display: inline-block" [src]="shuffledFaces[3]"/>
+	<ion-button color="success" (click)="nextFaceSet()">4</ion-button>
+	
   </ion-card>
 </div>
-  
-<div *ngIf="score==5" style="text-align: center; color: white; margin-top: 180px">
-  <h1>Your score: {{score}}/{{correct_count}}</h1>
+
+<div *ngIf="progress==5" style="text-align: center; color: white; margin-top: 180px">
+  <h1>Your score: {{score}}/5</h1>
   <ion-button color="success" (click)="finished.emit(score)">Finish</ion-button>
 </div>
