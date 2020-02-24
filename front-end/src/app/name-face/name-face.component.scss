@@ -10,29 +10,34 @@
     --background: gray
 }
 
-.nameContainer {
-	height: 20%;
-	width: 100%;
-	margin-top: 5px;
-	margin-bottom: 5px;
-	background-image: url("./../../assets/background_imgs/nametag.png");
-	background-position: center;
-	background-size: auto 100%; /*width, height*/
-	background-repeat: no-repeat;
-	#nameDisplay {
-		height: 100%;
-		position: relative;
-		#nameText {
-			color: dodgerblue;
-			font-weight: bold;
-			font-size: large;
-			margin: 5px;
-			position: absolute;
-			left: 50%;
-			transform: translate(-55%, 0);
-			bottom: 15%;
+ion-grid {
+	height: 100% !important;
+
+	ion-row {
+		height: 33.33% !important;
+		width: 100%;
+		ion-col {
+			width: auto;
+			height: 100%;
 		}
 	}
+}
+
+.nametagButton {
+	/*background-image: url("./../../assets/background_imgs/nametag_blank.png"); */
+	background-image: url("./../../assets/background_imgs/nametag.png");
+	background-position: center;
+	background-size: 100% 100%; /*width, height*/
+	background-repeat: no-repeat;
+}
+
+.nametagText {
+	padding-top: 30%; /*relative to WIDTH, not height, bc fuck me*/
+	padding-bottom: 20%;
+	margin: 0;
+
+	font-weight: bold;
+	color: dodgerblue;
 }
 
 ion-card {
