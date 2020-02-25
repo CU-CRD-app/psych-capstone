@@ -56,6 +56,8 @@
       <h4>Come back tomorrow for your next training.</h4>
     </div>
   </div>
+  <!--Login Page-->
+  <app-home *ngIf="progress==400"(finished)="progress=0"></app-home>
   <!--Learning Task-->
   <app-learning-task *ngIf="progress==1" [setNames]="setNames" [facePaths]="facePaths" (finished)="learningDone=true;progress=0"></app-learning-task>
   <!--Name and Face-->
@@ -71,7 +73,7 @@
   <!--Same-Different-->
   <app-same-different *ngIf="progress==7" [setNames]="setNames" [facePaths]="facePaths" (finished)="scores[5]=$event;progress=0"></app-same-different>
 
-  <div style="text-align:center">
+  <div style="text-align:center" *ngIf="progress < 300">
     <h3 style=color:red>For Development Only</h3>
     <ion-button (click)="progress=1">Learning</ion-button>
     <ion-button (click)="progress=2">Name and Face: {{scores[0]}}</ion-button>
@@ -80,4 +82,5 @@
     <ion-button (click)="progress=5">Shuffle: {{scores[3]}}</ion-button>
     <ion-button (click)="progress=6">Forced Choice: {{scores[4]}}</ion-button>
     <ion-button (click)="progress=7">Same Different: {{scores[5]}}</ion-button>
+    <ion-button (click)="progress=400">Login Page</ion-button>
   </div>

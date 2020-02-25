@@ -30,7 +30,7 @@ export class Tab1Page {
   }
 
   numFaces : number = 8; //hardcoded for now, happen to be 8 practice faces.
-  progress : number = 0;
+  progress : number = 400;
 
   namePool : string[] = ["Sam", "Kenny", "Jones", "Dave", "John", "Gale", "Kent", "Tom", "Bill", "Greg", "Anthony", "Tony", "George", "Kevin", "Dick", "Richard"];
   setNames : string[] = []
