@@ -1,20 +1,29 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title style="text-align:center">Name and Face</ion-title>
-  </ion-toolbar>
-</ion-header>
-<div *ngIf="progress<8">
-  <ion-card style="text-align:center; color:dodgerblue">
-    <h3 style="text-align:center; color:dodgerblue">Who is this?</h3>
-    <img style="height:180px; width:140px; margin: 0 auto" [src]="currentFace"/>
-    <br>
-    <span *ngFor="let name of shuffledNames">
-      <ion-button (click)="nextFace(name)">{{name}}</ion-button>
-    </span>
-    <br><br>
-  </ion-card>
-</div>
-<div style="text-align:center; color:dodgerblue" *ngIf="progress==8">
-  <h1>Your score: {{score}}/{{setNames.length}}</h1>
-  <ion-button color="success" (click)="finished.emit(score)">Finish</ion-button>
-</div>
+<ion-content style="--background:gray">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title style="text-align:center">Name and Face</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <div *ngIf="progress<8">
+    <ion-card style="text-align:center; background-color:gainsboro">
+      <h3 style="text-align:center; color:dodgerblue">Who is this?</h3>
+      <img style="height:220px; width:160px; margin: 0 auto" [src]="currentFace"/>
+      <br>
+      <button *ngIf="showFeedback;feedback" (click)="nextFace()" style="font-size: 200%; color: white; padding: 20px; border-radius: 10px; height: 150px; width: 250px" [ngStyle]="{'background-color': feedback == true ? '#01DF3A' : 'red' }">
+        <span *ngIf="feedback">Correct!</span>
+        <span *ngIf="!feedback">Incorrect!</span>
+        <div> This is {{currentName}}</div>
+      </button>
+      <div *ngIf="!showFeedback">
+        <span *ngFor="let name of shuffledNames">
+          <ion-button (click)="chooseName(name)">{{name}}</ion-button>
+        </span>
+      </div>
+      <br>
+    </ion-card>
+  </div>
+  <div *ngIf="progress==8" style="text-align: center; color: white; margin-top: 180px">
+    <h1>Your score: {{score}}/{{setNames.length}}</h1>
+    <ion-button color="success" (click)="finished.emit(score)">Finish</ion-button>
+  </div>
+</ion-content>
