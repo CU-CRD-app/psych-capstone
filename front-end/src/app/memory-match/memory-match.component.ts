@@ -47,10 +47,9 @@ export class MemoryMatchComponent implements OnInit {
         this.selectedFace = null;
         this.resetSelected();
       }
-      if (this.correctFaces.indexOf(this.randomFaces[face]) < 0) { // Faces not already revealed
-        if (face == this.selectedFace) { // First face selected
-          this.selectedFace = null;
-        } else if (this.selectedFace == null) { // Face deselected
+      if (this.correctFaces.indexOf(this.randomFaces[face]) < 0 && face != this.selectedFace) { // Click on a valid face
+
+        if (this.selectedFace == null) { // Select first face
           this.selectedFace = face;
 
         } else if (this.randomFaces[face] == this.randomFaces[this.selectedFace]) { // Correct
@@ -71,9 +70,12 @@ export class MemoryMatchComponent implements OnInit {
   }
 
   isShown(index : number) {
-    return (this.stage == Stage.MEMORIZE || 
+    return (
+      this.stage == Stage.MEMORIZE || 
       this.incorrectFaces.indexOf(index) > -1 || 
-      this.correctFaces.indexOf(this.randomFaces[index]) > -1)
+      this.correctFaces.indexOf(this.randomFaces[index]) > -1 ||
+      this.selectedFace == index
+    )
   }
 
   resetSelected() {
