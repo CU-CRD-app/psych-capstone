@@ -13,17 +13,13 @@
 
       <img style="height:200px; width:150px; margin: 0 auto; margin-bottom:10px" [src]="currentFace"/>
 
-      <!--<div *ngIf="!showFeedback" style="margin-bottom:10px">
+      <div *ngIf="!showFeedback" style="margin-bottom:10px">
         <span *ngFor="let name of shuffledNames">
           <ion-button (click)="chooseName(name)" class="nameContainer">{{name}}</ion-button>
-          <div class="nametagButton" (click)="chooseName(name)">
-            <img [src]="nametagSource" width=100%>
-            <p> {{name}} </p>
-          </div>
         </span>
-      </div>-->
+      </div>
 
-      <div *ngIf="!showFeedback" style="margin-bottom:10px">
+<!--       <div *ngIf="!showFeedback" style="margin-bottom:10px">
         <ion-grid>
           <ion-row *ngFor="let row of grid_names" style="height:33.33%">
             <ion-col *ngFor="let name of row" size=4>
@@ -33,7 +29,7 @@
             </ion-col>
           </ion-row>
         </ion-grid>
-      </div>
+      </div> -->
 
       <div *ngIf="showFeedback" style="margin-bottom:30px" class="resultCard">
         <p style="font-weight:bold" class="resultName">{{currentName}}<p>
