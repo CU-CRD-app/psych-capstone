@@ -1,4 +1,5 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -10,25 +11,45 @@ export class HomeComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    timer(1000).subscribe(()=>(this.home_popup = true))
+  }
 
+  home_popup : boolean = false;
   login_popup : boolean = false;
   register_popup : boolean = false;
+  why_popup : boolean = false;
   msg : string;
+  login : string = "/assets/icon/log-in.svg";
+  help : string = "help-circle-outline";
 
   Login() {
-  	this.finished.emit();
+    this.home_popup = false;
+    this.login_popup = true;
+  }
+
+  SubmitLogin() {
+    this.finished.emit();
   }
 
   Register() {
+    this.home_popup = false;
+    this.register_popup = true;
+  }
 
+  SubmitRegister() {
+    this.finished.emit();
   }
 
   Why() {
-  	this.msg = "Thank you for downloading our app, we know it can be annoying to have to make\
-  	a new account, but we hope you will consider doing so. The CU Psychology Department is\
-  	using anonymous data gathered by the app to research Cross-Race-Recognition Deficit, and\
-  	that data is only gatherable if you make an account. Thanks!"
-  	alert(msg);
+  	this.home_popup = false;
+    this.why_popup = true;
+  }
+
+  BackHome() {
+    this.home_popup = true;
+    this.login_popup = false;
+    this.register_popup = false;
+    this.why_popup = false;
   }
 }
