@@ -11,7 +11,7 @@ export class WhosNewComponent implements OnInit {
   @Output() finished = new EventEmitter<number>();
 
   constructor() {}
- // style="height:220px; width:160px; margin: 0 auto; display: inline-block"
+  // style="height:220px; width:160px; margin: 0 auto; display: inline-block"
   ngOnInit() {
 	  // Initialize set
 	  for (let i = 0; i < this.facePaths.length; i++) {
@@ -29,15 +29,22 @@ export class WhosNewComponent implements OnInit {
       // Replace one face with new, unseen one
       // Must be one of the first four that get displayed
       this.chosenNum = Math.floor(Math.random() * 4);
-      // this.shuffledFaces[chosenNum] = 
+      this.shuffledFaces[this.chosenNum] = this.addNewFace();
   }
 
   score : number = 0;
   progress : number = 0; 
   chosenNum : number = 0;
+  new_name : string = "";
   
   shuffledFaces : any[] = [];
   leftovers : any[] = [];
+
+  addNewFace() {
+      this.new_name = "./../../assets/sample-faces/CFD-BM-045-004-N.png"
+      
+      return this.new_name;
+  }
 
   nextFaceSet(input : number) {
       this.progress++;
