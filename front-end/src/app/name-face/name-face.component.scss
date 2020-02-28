@@ -1,0 +1,66 @@
+.success-card {
+    --background: #01DF74;
+}
+
+.failure-card {
+    --background: #FE2E2E;
+}
+
+.default-card {
+    --background: gray
+}
+
+ion-grid {
+	height: 100% !important;
+
+	ion-row {
+		height: 33.33% !important;
+		width: 100%;
+		ion-col {
+			width: auto;
+			height: 100%;
+		}
+	}
+}
+
+.nametagButton {
+	/*background-image: url("./../../assets/background_imgs/nametag.png"); */
+	background-image: url("./../../assets/background_imgs/nametag_blank.png");
+	background-position: center;
+	background-size: 100% 100%; /*width, height*/
+	background-repeat: no-repeat;
+}
+
+.nametagText {
+	padding-top: 30%; /*relative to WIDTH, not height, bc fuck me*/
+	padding-bottom: 20%;
+	margin: 0;
+
+	font-weight: bold;
+	color: dodgerblue;
+}
+
+.resultCard {
+	height: 100px;
+	background-image: url("./../../assets/background_imgs/nametag.png");
+	background-position: center;
+	background-size: auto 100%;
+	background-repeat: no-repeat;
+}
+
+.resultName {
+	padding-top: 55px;
+	font-size: large;
+	font-weight: bold;
+	color: dodgerblue;
+}
+
+
+ion-card {
+	text-align:center;
+	background-color: gainsboro
+}
+
+h3 {
+	color: dodgerblue
+}
