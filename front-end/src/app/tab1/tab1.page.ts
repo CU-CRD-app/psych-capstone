@@ -15,6 +15,9 @@ const helpMessages = {
   sameDifferent: ["Same-Different", "You will be shown one face and then another, and you will decide whether they are the same."]
 }
 
+enum Stage { START, TRAINING, ASSESSMENT, DONE }
+enum Task { LEARNING, NAME_FACE, WHOS_NEW, MEMORY, SHUFFLE, FORCED_CHOICE, SAME_DIFFERENT }
+
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
@@ -42,10 +45,21 @@ export class Tab1Page {
     {
       this.facePaths.push(`./../../assets/sample-faces/${num}.png`);
     }
+
+    // Pull user record, if they have completed today's tasks then stage = done
+    let userIsDone = false; // http request to database
+    if (userIsDone) { // This may change if we allow users to break in the middle of training
+      this.stage = Stage.DONE;
+    }
+
   }
 
-  numFaces : number = 8; //hardcoded for now, happen to be 8 practice faces.
-  progress : number = 0;
+  Stage = Stage;
+  Task = Task;
+  stage : Stage = Stage.START;
+  task : Task = null;
+
+  numFaces : number = 8; // hardcoded for now, happen to be 8 practice faces.
 
   namePool : string[] = ["Sam", "Kenny", "Jones", "Dave", "John", "Gale", "Kent", "Tom", "Bill", "Greg", "Anthony", "Tony", "George", "Kevin", "Dick", "Richard"];
   setNames : string[] = []
@@ -56,47 +70,48 @@ export class Tab1Page {
   learningDone : boolean = false;
   scores : number[] = [-1, -1, -1, -1, -1, -1];
 
-  getMenuStage() {
+  iterateStage() {
+    this.task = null;
     if (!this.learningDone) {
-      return 0;
-    } else if (this.scores[0]==-1 || this.scores[1]==-1 || this.scores[2]==-1 || this.scores[3]==-1) {
-      return 1;
+      this.stage = Stage.START;
+    } else if (this.scores[0] == -1 || this.scores[1] == -1 || this.scores[2] == -1 || this.scores[3] == -1) {
+      this.stage = Stage.TRAINING;
     } else if (this.scores.includes(-1)) {
-      return 2;
+      this.stage = Stage.ASSESSMENT;
     } else {
-      return 3;
+      this.stage = Stage.DONE;
     }
   }
 
   getMessage(title : number) {
     if (title == 0 || title == 1) {
-      switch (this.progress) {
-        case 0:
-          switch (this.getMenuStage()) {
-            case 0:
+      switch (this.task) {
+        case null:
+          switch (this.stage) {
+            case Stage.START:
               return helpMessages['start'][title];
-            case 1:
+            case Stage.TRAINING:
               return helpMessages['trainingTasks'][title];
-            case 2:
+            case Stage.ASSESSMENT:
               return helpMessages['assessmentTasks'][title];
-            case 3:
+            case Stage.DONE:
               return helpMessages['done'][title];
             default:
               return "Modules";
           }
-        case 1:
+        case Task.LEARNING:
           return helpMessages['learning'][title];
-        case 2:
+        case Task.LEARNING:
           return helpMessages['nameAndFace'][title];
-        case 3:
+        case Task.WHOS_NEW:
           return helpMessages['whosNew'][title];
-        case 4:
+        case Task.MEMORY:
           return helpMessages['memory'][title];
-        case 5:
+        case Task.SHUFFLE:
           return helpMessages['shuffle'][title];
-        case 6:
+        case Task.FORCED_CHOICE:
           return helpMessages['forcedChoice'][title];
-        case 7:
+        case Task.SAME_DIFFERENT:
           return helpMessages['sameDifferent'][title];
         default:
           return "Modules"
