@@ -1,29 +1,47 @@
-<ion-content style="--background:gray">
-  <ion-header>
-    <ion-toolbar>
-      <ion-title style="text-align:center">Name and Face</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [ngClass]="{'default-card': !showFeedback, 'success-card': showFeedback && correctSelection, 'failure-card': showFeedback && !correctSelection}">
+
   <div *ngIf="progress<8">
-    <ion-card style="text-align:center; background-color:gainsboro">
-      <h3 style="text-align:center; color:dodgerblue">Who is this?</h3>
-      <img style="height:220px; width:160px; margin: 0 auto" [src]="currentFace"/>
-      <br>
-      <button *ngIf="showFeedback;feedback" (click)="nextFace()" style="font-size: 200%; color: white; padding: 20px; border-radius: 10px; height: 150px; width: 250px" [ngStyle]="{'background-color': feedback == true ? '#01DF3A' : 'red' }">
-        <span *ngIf="feedback">Correct!</span>
-        <span *ngIf="!feedback">Incorrect!</span>
-        <div> This is {{currentName}}</div>
-      </button>
-      <div *ngIf="!showFeedback">
+
+    <ion-card button="true" style="text-align:center; background-color: gainsboro">
+
+      <!--Click overlay-->
+      <div *ngIf="showFeedback" (click)="nextFace()" style="position:fixed; width:100%; height:100%; cursor: pointer"></div>
+
+      <h3 *ngIf="!showFeedback">Who is this?</h3>
+      <h3 *ngIf="showFeedback && correctSelection">Correct!</h3>
+      <h3 *ngIf="showFeedback && !correctSelection">Incorrect!</h3>
+
+      <img style="height:200px; width:150px; margin: 0 auto; margin-bottom:10px" [src]="currentFace"/>
+
+      <div *ngIf="!showFeedback" style="margin-bottom:10px">
         <span *ngFor="let name of shuffledNames">
-          <ion-button (click)="chooseName(name)">{{name}}</ion-button>
+          <ion-button (click)="chooseName(name)" class="nameContainer">{{name}}</ion-button>
         </span>
       </div>
-      <br>
+
+<!--       <div *ngIf="!showFeedback" style="margin-bottom:10px">
+        <ion-grid>
+          <ion-row *ngFor="let row of grid_names" style="height:33.33%">
+            <ion-col *ngFor="let name of row" size=4>
+              <div class="nametagButton" (click)="chooseName(name)">
+                <p class="nametagText"> {{name}} </p>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div> -->
+
+      <div *ngIf="showFeedback" style="margin-bottom:30px" class="resultCard">
+        <p style="font-weight:bold" class="resultName">{{currentName}}<p>
+      </div>
+
     </ion-card>
+
   </div>
+
   <div *ngIf="progress==8" style="text-align: center; color: white; margin-top: 180px">
     <h1>Your score: {{score}}/{{setNames.length}}</h1>
     <ion-button color="success" (click)="finished.emit(score)">Finish</ion-button>
   </div>
+
 </ion-content>
