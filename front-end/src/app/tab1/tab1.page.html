@@ -1,6 +1,6 @@
 <ion-content style="--background: gray">
 
-  <ion-header>
+  <ion-header *ngIf="stage != Stage.LOGIN">
     <ion-toolbar style="border-bottom-width: medium; border-bottom-style: solid; border-bottom-color:dodgerblue">
       <ion-title>{{getMessage(0)}}</ion-title>
       <ion-icon slot="start" color="medium" name="help-circle" style="margin-left: 10px; height: 30px; cursor: pointer" (click)="getHelp()"></ion-icon>
@@ -66,7 +66,7 @@
   </div>
 
   <!--Login Page-->
-  <app-home *ngIf="progress==400"(finished)="progress=0"></app-home>
+  <app-home *ngIf="stage == Stage.LOGIN" (finished)="loggedIn = true; iterateStage()"></app-home>
   <!--Learning Task-->
   <app-learning-task *ngIf="task == Task.LEARNING" [setNames]="setNames" [facePaths]="facePaths" (finished)="learningDone = true; iterateStage()"></app-learning-task>
   <!--Name and Face-->

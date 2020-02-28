@@ -1,6 +1,8 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { timer } from 'rxjs';
 
+enum Popup { NULL, HOME, LOGIN, REGISTER, WHY }
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -12,20 +14,17 @@ export class HomeComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    timer(1000).subscribe(()=>(this.home_popup = true))
+    timer(1000).subscribe(()=>(this.popup = Popup.HOME))
   }
 
-  home_popup : boolean = false;
-  login_popup : boolean = false;
-  register_popup : boolean = false;
-  why_popup : boolean = false;
-  msg : string;
+  Popup = Popup;
+  popup : Popup = Popup.NULL;
+
   login : string = "/assets/icon/log-in.svg";
   help : string = "help-circle-outline";
 
   Login() {
-    this.home_popup = false;
-    this.login_popup = true;
+    this.popup = Popup.LOGIN;
   }
 
   SubmitLogin() {
@@ -33,8 +32,7 @@ export class HomeComponent implements OnInit {
   }
 
   Register() {
-    this.home_popup = false;
-    this.register_popup = true;
+    this.popup = Popup.REGISTER;
   }
 
   SubmitRegister() {
@@ -42,14 +40,10 @@ export class HomeComponent implements OnInit {
   }
 
   Why() {
-  	this.home_popup = false;
-    this.why_popup = true;
+  	this.popup = Popup.WHY;
   }
 
   BackHome() {
-    this.home_popup = true;
-    this.login_popup = false;
-    this.register_popup = false;
-    this.why_popup = false;
+    this.popup = Popup.HOME;
   }
 }
