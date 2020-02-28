@@ -54,12 +54,17 @@ export class Tab1Page {
 
   }
 
+  //legacy
+  //numFaces : number = 8; //hardcoded for now, happen to be 8 practice faces.
+  //progress : number = 400;
+
   Stage = Stage;
   Task = Task;
   stage : Stage = Stage.START;
   task : Task = null;
 
   numFaces : number = 8; // hardcoded for now, happen to be 8 practice faces.
+
 
   namePool : string[] = ["Sam", "Kenny", "Jones", "Dave", "John", "Gale", "Kent", "Tom", "Bill", "Greg", "Anthony", "Tony", "George", "Kevin", "Dick", "Richard"];
   setNames : string[] = []
