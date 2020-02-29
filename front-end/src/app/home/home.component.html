@@ -6,12 +6,12 @@
 		</ion-toolbar>
 	</ion-header>
 	<ion-grid>
-		<ion-row *ngIf="home_popup" id="blank-row-default"></ion-row>
-		<ion-row *ngIf="why_popup" id="blank-row-why"></ion-row>
-		<ion-row *ngIf="login_popup" id="blank-row-login"></ion-row>
-		<ion-row *ngIf="register_popup" id="blank-row-register"></ion-row>
+		<ion-row *ngIf="popup == Popup.HOME" id="blank-row-default"></ion-row>
+		<ion-row *ngIf="popup == Popup.WHY" id="blank-row-why"></ion-row>
+		<ion-row *ngIf="popup == Popup.LOGIN" id="blank-row-login"></ion-row>
+		<ion-row *ngIf="popup == Popup.REGISTER" id="blank-row-register"></ion-row>
 
-		<ion-row *ngIf="home_popup" id="row-with-default-card">
+		<ion-row *ngIf="popup == Popup.HOME" id="row-with-default-card">
 			<ion-col offset=3 size=6>
 				<ion-card id="default_card">
 					<ion-grid>
@@ -44,7 +44,7 @@
 			</ion-col>
 		</ion-row>
 
-		<ion-row *ngIf="why_popup" id="row-with-why-card">
+		<ion-row *ngIf="popup == Popup.WHY" id="row-with-why-card">
 			<ion-col offset=2 size=8>
 				<ion-card id="why_card">
 					<p id="why_msg">We understand it can be annoying to have to make an account for everything, nowadays. We hope you'll still consider doing so for our app. The Psychology Department at the University of Colorado, Boulder is collecting anonymous data to better understand Cross Race Recognition Deficit, and that data is associated with your login, which is why we need everyone to make an account. Thanks for understanding.</p>
@@ -56,7 +56,7 @@
 			</ion-col>
 		</ion-row>
 
-		<ion-row *ngIf="login_popup" id="row-with-login-card">
+		<ion-row *ngIf="popup == Popup.LOGIN" id="row-with-login-card">
 			<ion-col offset=1 size=10>
 				<ion-card id="login_card">
 					<ion-item>
@@ -78,7 +78,7 @@
 			</ion-col>
 		</ion-row>
 
-		<ion-row *ngIf="register_popup" id="row-with-register-card">
+		<ion-row *ngIf="popup == Popup.REGISTER" id="row-with-register-card">
 			<ion-col offset=1 size=10>
 				<ion-card id="register_card">
 					<ion-item>
