@@ -16,16 +16,7 @@ export class ForcedChoiceComponent implements OnInit {
 
   ngOnInit() {
     this.currentFace = this.facePaths[this.progress];
-    this.randomFaces = [];
-    for (let i = 0; i < this.numberOfOptions - 1; i++) {
-      let j = Math.floor(Math.random() * this.facePaths.length);
-      while (this.randomFaces.indexOf(this.facePaths[j]) > -1 || j == this.progress) {
-        j = Math.floor(Math.random() * this.facePaths.length);
-      }
-      this.randomFaces.push(this.facePaths[j]);
-    }
-    let j = Math.floor(Math.random() * this.numberOfOptions - 1);
-    this.randomFaces.splice(j, 0, this.currentFace);
+    this.makeRandomFaces();
   }
 
   Stage = Stage;
@@ -55,6 +46,14 @@ export class ForcedChoiceComponent implements OnInit {
     this.stage = this.progress == 8 ? Stage.DONE : Stage.MEMORIZE;
     this.selectedFace = null;
     this.currentFace = this.facePaths[this.progress];
+    this.makeRandomFaces();
+  }
+
+  isFeedback() {
+    return this.stage == Stage.CORRECT || this.stage == Stage.INCORRECT;
+  }
+
+  makeRandomFaces() {
     this.randomFaces = [];
     for (let i = 0; i < this.numberOfOptions - 1; i++) {
       let j = Math.floor(Math.random() * this.facePaths.length);
@@ -63,11 +62,7 @@ export class ForcedChoiceComponent implements OnInit {
       }
       this.randomFaces.push(this.facePaths[j]);
     }
-    let j = Math.floor(Math.random() * this.numberOfOptions - 1);
+    let j = Math.floor(Math.random() * this.numberOfOptions);
     this.randomFaces.splice(j, 0, this.currentFace);
-  }
-
-  isFeedback() {
-    return this.stage == Stage.CORRECT || this.stage == Stage.INCORRECT;
   }
 }
