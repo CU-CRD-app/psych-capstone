@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 
 const helpMessages = {
-  start: ["Modules", "Welcome to your daily training.\nClick to start the learning task."],
+  start: ["Start", "Welcome to your daily training.\nPlease give yourself about 10 minutes to complete the tasks. You won't be able to access other parts of the app until you have finished. Click to start the learning task."],
   trainingTasks: ["Training Tasks", "Here is a list of the training tasks you still need to complete today.\nYou can do them in any order you like.\nWhen you're done with these, you will have two assessment tasks to complete."],
   assessmentTasks: ["Assessment Tasks", "Here are your assessment tasks for the day.\nThese will test how much you learned this session, and will be how your progress is tracked."],
-  done: ["Finished", "You're done today. Come back tomorrow for your next training.\nYou can see your progress under the history tab."],
+  done: ["Finish", "You're done today. Come back tomorrow for your next training.\nYou can see your progress under the history tab."],
   learning: ["Meet Today's Faces", "Memorize these faces and their names.\nYou will use them in the next tasks."],
   nameAndFace: ["Name and Face", "Select the name that goes to the face.\nThe names are shuffled after each selection."],
   whosNew: ["Who's New?", "Select the face that wasn't part of the original set."],
@@ -101,7 +101,7 @@ export class Tab1Page {
           }
         case Task.LEARNING:
           return helpMessages['learning'][title];
-        case Task.LEARNING:
+        case Task.NAME_FACE:
           return helpMessages['nameAndFace'][title];
         case Task.WHOS_NEW:
           return helpMessages['whosNew'][title];
