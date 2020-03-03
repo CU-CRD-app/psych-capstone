@@ -1,5 +1,4 @@
 <ion-content [ngClass]="{'default': !isFeedback(), 'success': stage == Stage.CORRECT, 'failure': stage == Stage.INCORRECT}">
-  {{score}}
   <div *ngIf="stage != Stage.DONE">
 
     <!--Memorizing the face-->
