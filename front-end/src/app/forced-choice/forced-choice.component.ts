@@ -8,7 +8,6 @@ enum Stage { MEMORIZE, SELECT, CORRECT, INCORRECT, DONE }
   styleUrls: ['./forced-choice.component.scss'],
 })
 export class ForcedChoiceComponent implements OnInit {
-  @Input() setNames : string;
   @Input() facePaths : string;
   @Output() finished = new EventEmitter<number>();
 

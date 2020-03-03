@@ -8,7 +8,6 @@ enum Stage { MEMORIZE, SELECT, CORRECT, INCORRECT, DONE }
   styleUrls: ['./same-different.component.scss'],
 })
 export class SameDifferentComponent implements OnInit {
-  @Input() setNames : string;
   @Input() facePaths : string;
   @Output() finished = new EventEmitter<number>();
 

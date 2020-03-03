@@ -19,18 +19,6 @@
         </span>
       </div>
 
-<!--       <div *ngIf="!showFeedback" style="margin-bottom:10px">
-        <ion-grid>
-          <ion-row *ngFor="let row of grid_names" style="height:33.33%">
-            <ion-col *ngFor="let name of row" size=4>
-              <div class="nametagButton" (click)="chooseName(name)">
-                <p class="nametagText"> {{name}} </p>
-              </div>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </div> -->
-
       <div *ngIf="showFeedback" style="margin-bottom:30px" class="resultCard">
         <p style="font-weight:bold" class="resultName">{{currentName}}<p>
       </div>
@@ -40,7 +28,7 @@
   </div>
 
   <div *ngIf="progress==8" style="text-align: center; color: white; margin-top: 180px">
-    <h1>Your score: {{score}}/{{setNames.length}}</h1>
+    <h1>Your score: {{score}}/{{facePaths.length}}</h1>
     <ion-button color="success" (click)="finished.emit(score)">Finish</ion-button>
   </div>
 

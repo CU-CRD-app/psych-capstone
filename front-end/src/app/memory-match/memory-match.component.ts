@@ -8,7 +8,6 @@ enum Stage { MEMORIZE, SELECT, CORRECT, INCORRECT, DONE }
   styleUrls: ['./memory-match.component.scss'],
 })
 export class MemoryMatchComponent implements OnInit {
-  @Input() setNames : string;
   @Input() facePaths : string;
   @Output() finished = new EventEmitter<number>();
 
@@ -54,7 +53,6 @@ export class MemoryMatchComponent implements OnInit {
 
         } else if (this.randomFaces[face] == this.randomFaces[this.selectedFace]) { // Correct
           this.correctFaces.push(this.randomFaces[face]);
-          this.score++;
           this.stage = Stage.CORRECT;
           await this.waitForFeedback();
 
@@ -94,7 +92,8 @@ export class MemoryMatchComponent implements OnInit {
     if (this.correctFaces.length == this.facePaths.length) {
       this.promise++;
       this.stage = Stage.DONE;
-      this.score < 0 ? this.score = 0 : 0;
+      this.score = Math.ceil(this.score/2);
+      this.score += this.facePaths.length;
     }
   }
 }

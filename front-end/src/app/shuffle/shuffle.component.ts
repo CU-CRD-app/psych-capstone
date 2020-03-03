@@ -6,7 +6,6 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
   styleUrls: ['./shuffle.component.scss'],
 })
 export class ShuffleComponent implements OnInit {
-  @Input() setNames : string;
   @Input() facePaths : string;
   @Output() finished = new EventEmitter<number>();
 

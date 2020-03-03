@@ -4,7 +4,12 @@
 }
 
 .task-done {
-  --background: #A9F5A9 !important;
+  --background: rgb(142, 207, 142) !important;
+  color: black;
+}
+
+.task-failed {
+  --background: rgb(201, 139, 139) !important;
   color: black;
 }
 
@@ -12,8 +17,8 @@ ion-card {
   --background: gainsboro;
   color: dodgerblue;
   border-radius: 30px;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
   font-size: 75%;
   cursor: pointer;
 }

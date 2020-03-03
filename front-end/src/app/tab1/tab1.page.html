@@ -13,32 +13,40 @@
     <div *ngIf="stage == Stage.START" style="margin-top: 140px">
       <h1>Ready for training?</h1>
       <h4>For best results, please give yourself 10 minutes where you can study uninterrupted.</h4>
-      <ion-button color="success" (click)="task = Task.LEARNING">Start</ion-button>
+      <ion-button color="success" (click)="stage = Stage.TRAINING; task = Task.LEARNING">Start</ion-button>
     </div>
 
     <!--Learning tasks-->
     <div *ngIf="stage == Stage.TRAINING" style="margin-top: 20px">
       <h5>What would you like to do next?</h5>
 
-      <ion-card (click)="scores[0] == '-1' ? task = Task.NAME_FACE : task = null" button="true" [disabled]="scores[0] != '-1'" [ngClass]="{'task-done': scores[0] != '-1'}">
-        <ion-icon slot="start" [color]="scores[1] == '-1' ? medium : dark" name="happy" style="font-size: 300%"></ion-icon>
+      <ion-card (click)="task = Task.NAME_FACE" button="true" [ngClass]="{'task-done': scores[0] > 6, 'task-failed': scores[0] > -1 && scores[0] < 6}">
+        <ion-icon slot="start" [color]="scores[0] == '-1' ? medium : dark" name="happy" style="font-size: 300%"></ion-icon>
         <div>Name and Face</div>
       </ion-card>
 
-      <ion-card (click)="scores[1] == '-1' ? task = Task.WHOS_NEW : task = null" button="true" [disabled]="scores[1] != '-1'" [ngClass]="{'task-done': scores[1] != '-1'}">
+      <ion-card (click)="task = Task.WHOS_NEW" button="true" [ngClass]="{'task-done': scores[1] > 6, 'task-failed': scores[1] > -1 && scores[1] < 6}">
         <ion-icon slot="start" [color]="scores[1] == '-1' ? medium : dark" name="person-add" style="font-size: 300%"></ion-icon>
         <div>Who's New?</div>
       </ion-card>
 
-      <ion-card (click)="scores[2] == '-1' ? task = Task.MEMORY : task = null" button="true" [disabled]="scores[2] != '-1'" [ngClass]="{'task-done': scores[2] != '-1'}">
+      <ion-card (click)="task = Task.MEMORY" button="true" [ngClass]="{'task-done': scores[2] > 6, 'task-failed': scores[2] > -1 && scores[2] < 6}">
         <ion-icon slot="start" [color]="scores[2] == '-1' ? medium : dark" name="grid" style="font-size: 300%"></ion-icon>
         <div>Memory Match</div>
       </ion-card>
 
-      <ion-card (click)="scores[3] == '-1' ? task = Task.SHUFFLE : task = null" button="true" [disabled]="scores[3] != '-1'" [ngClass]="{'task-done': scores[3] != '-1'}">
+      <ion-card (click)="task = Task.SHUFFLE" button="true" [ngClass]="{'task-done': scores[3] > 6, 'task-failed': scores[3] > -1 && scores[3] < 6}">
         <ion-icon slot="start" [color]="scores[3] == '-1' ? medium : dark" name="swap" style="font-size: 300%"></ion-icon>
         <div>Shuffle</div>
       </ion-card>
+
+      <ion-button (click)="task = Task.LEARNING" style="width: 45%; padding: 0; margin: 5px">
+        <ion-icon name="arrow-round-back"></ion-icon>
+      </ion-button>
+
+      <ion-button (click)="iterateStage()" style="width: 45%; padding: 0; margin: 5px" [disabled]="this.scores[0] < 6 || this.scores[1] < 6 || this.scores[2] < 6 || this.scores[3] < 6">
+        <ion-icon name="arrow-round-forward"></ion-icon>
+      </ion-button>
 
     </div>
 
@@ -46,12 +54,12 @@
     <div *ngIf="stage == Stage.ASSESSMENT" style="margin-top: 20px">
       <h5>What would you like to do next?</h5>
 
-      <ion-card (click)="scores[4] == '-1' ? task = Task.FORCED_CHOICE : task = null" button="true" [disabled]="scores[4] != '-1'" [ngClass]="{'task-done': scores[4] != '-1'}">
+      <ion-card (click)="scores[4] == '-1' ? task = Task.FORCED_CHOICE : task = null" button="true" [ngClass]="{'task-done': scores[4] != '-1'}">
         <ion-icon slot="start" [color]="scores[4] == '-1' ? medium : dark" name="checkmark-circle" style="font-size: 300%"></ion-icon>
         <div>Forced Choice</div>
       </ion-card>
 
-      <ion-card (click)="scores[5] == '-1' ? task = Task.SAME_DIFFERENT : task = null" button="true" [disabled]="scores[5] != '-1'" [ngClass]="{'task-done': scores[5] != '-1'}">
+      <ion-card (click)="scores[5] == '-1' ? task = Task.SAME_DIFFERENT : task = null" button="true" [ngClass]="{'task-done': scores[5] != '-1'}">
         <ion-icon slot="start" [color]="scores[5] == '-1' ? medium : dark" name="contacts" style="font-size: 300%"></ion-icon>
         <div>Same Different</div>
       </ion-card>
@@ -68,35 +76,23 @@
   <!--Login Page-->
   <app-home *ngIf="stage == Stage.LOGIN" (finished)="loggedIn = true; iterateStage()"></app-home>
   <!--Learning Task-->
-  <app-learning-task *ngIf="task == Task.LEARNING" [setNames]="setNames" [facePaths]="facePaths" (finished)="learningDone = true; iterateStage()"></app-learning-task>
+  <app-learning-task *ngIf="task == Task.LEARNING" [setNames]="setNames" [facePaths]="trainingFacePaths" (finished)="learningDone = true; task = null"></app-learning-task>
   <!--Name and Face-->
-  <app-name-face *ngIf="task == Task.NAME_FACE" [setNames]="setNames" [facePaths]="facePaths" (finished)="scores[0] = $event; iterateStage()"></app-name-face>
+  <app-name-face *ngIf="task == Task.NAME_FACE" [setNames]="setNames" [facePaths]="trainingFacePaths" (finished)="scores[0] = $event; task = null"></app-name-face>
   <!--Who's New?-->
-  <app-whos-new *ngIf="task == Task.WHOS_NEW" [setNames]="setNames" [facePaths]="facePaths" (finished)="scores[1] = $event; iterateStage()"></app-whos-new>
+  <app-whos-new *ngIf="task == Task.WHOS_NEW" [facePaths]="trainingFacePaths" (finished)="scores[1] = $event; task = null"></app-whos-new>
   <!--Memory Match-->
-  <app-memory-match *ngIf="task == Task.MEMORY" [setNames]="setNames" [facePaths]="facePaths" (finished)="scores[2] = $event; iterateStage()"></app-memory-match>
+  <app-memory-match *ngIf="task == Task.MEMORY" [facePaths]="trainingFacePaths" (finished)="scores[2] = $event; task = null"></app-memory-match>
   <!--Shuffle-->
-  <app-shuffle *ngIf="task == Task.SHUFFLE" [setNames]="setNames" [facePaths]="facePaths" (finished)="scores[3] = $event; iterateStage()"></app-shuffle>
+  <app-shuffle *ngIf="task == Task.SHUFFLE" [facePaths]="trainingFacePaths" (finished)="scores[3] = $event; task = null"></app-shuffle>
   <!--Forced Choice-->
-  <app-forced-choice *ngIf="task == Task.FORCED_CHOICE" [setNames]="setNames" [facePaths]="facePaths" (finished)="scores[4] = $event; iterateStage()"></app-forced-choice>
+  <app-forced-choice *ngIf="task == Task.FORCED_CHOICE" [facePaths]="assessmentFacePaths" (finished)="scores[4] = $event; iterateStage()"></app-forced-choice>
   <!--Same-Different-->
-  <app-same-different *ngIf="task == Task.SAME_DIFFERENT" [setNames]="setNames" [facePaths]="facePaths" (finished)="scores[5] = $event; iterateStage()"></app-same-different>
-
-
-  <!--               
-  <div style="text-align:center" *ngIf="progress < 300">
-    <h3 style=color:red>For Development Only</h3>
-    <ion-button (click)="progress=1">Learning</ion-button>
-    <ion-button (click)="progress=2">Name and Face: {{scores[0]}}</ion-button>
-    <ion-button (click)="progress=3">Who's New: {{scores[1]}}</ion-button>
-    <ion-button (click)="progress=4">Memory: {{scores[2]}}</ion-button>
-    <ion-button (click)="progress=5">Shuffle: {{scores[3]}}</ion-button>
-    <ion-button (click)="progress=6">Forced Choice: {{scores[4]}}</ion-button>
-    <ion-button (click)="progress=7">Same Different: {{scores[5]}}</ion-button>
-    <ion-button (click)="progress=400">Login Page</ion-button> -->
+  <app-same-different *ngIf="task == Task.SAME_DIFFERENT" [facePaths]="assessmentFacePaths" (finished)="scores[5] = $event; iterateStage()"></app-same-different>
 
   <!--For development only-->
   <div style="text-align:center">
+    <br><br><br><br><br><br><br><br><br><br><br><br>
     <h3 style=color:red>For Development Only</h3>
     <ion-button (click)="task = Task.LEARNING">Learning</ion-button>
     <ion-button (click)="task = Task.NAME_FACE">Name and Face: {{scores[0]}}</ion-button>

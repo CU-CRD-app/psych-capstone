@@ -1,5 +1,5 @@
 <ion-content [ngClass]="{'default': !isFeedback(), 'success': stage == Stage.CORRECT, 'failure': stage == Stage.INCORRECT}">
-
+  {{score}}
   <div *ngIf="stage != Stage.DONE">
 
     <!--Memorizing the face-->
@@ -65,7 +65,7 @@
 
   <!--Score page-->
   <div *ngIf="stage == Stage.DONE" style="text-align: center; color: white; margin-top: 180px">
-    <h1>Your score: {{score}}/{{setNames.length}}</h1>
+    <h1>Your score: {{score}}/{{facePaths.length}}</h1>
     <ion-button color="success" (click)="finished.emit(score)">Finish</ion-button>
   </div>
 
