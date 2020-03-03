@@ -41,7 +41,7 @@ export class Tab1Page {
 
   Stage = Stage;
   Task = Task;
-  stage : Stage = Stage.START;
+  stage : Stage = Stage.LOGIN;
   task : Task = null;
 
   numFaces : number = 8; // hardcoded for now, happen to be 8 practice faces.
@@ -52,7 +52,7 @@ export class Tab1Page {
 
   loggedIn : boolean = false;
   learningDone : boolean = false;
-  scores : number[] = [8, 8, 8, 8, -1, -1];
+  scores : number[] = [-1, -1, -1, -1, -1, -1];
 
   iterateStage() {
     this.task = null;
