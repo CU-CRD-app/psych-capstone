@@ -2,7 +2,8 @@
 
     <div *ngIf="stage != Stage.DONE">
     
-      <h5 *ngIf="stage == Stage.MEMORIZE">Memorize the faces</h5>
+      <h5 *ngIf="stage == Stage.START">Remaining time to memorize: 10</h5>
+      <h5 *ngIf="stage == Stage.MEMORIZE">Remaining time to memorize: {{timeRemaining}}</h5>
       <h5 *ngIf="stage == Stage.SELECT">Match the faces</h5>
       <h5 *ngIf="stage == Stage.CORRECT">Correct!</h5>
       <h5 *ngIf="stage == Stage.INCORRECT">Incorrect!</h5>
@@ -50,6 +51,7 @@
     
       <!--Next Buttons-->
       <div style="text-align: center; margin-bottom: 15px">
+        <ion-button *ngIf="stage == Stage.START" style="width:130px" (click)="startMemorizeTimer()">Reveal</ion-button>
         <ion-button *ngIf="stage == Stage.MEMORIZE" style="width:130px" (click)="stage = Stage.SELECT">Next</ion-button>
         <ion-button *ngIf="(stage == Stage.SELECT || stage == Stage.INCORRECT) && correctFaces.length < facePaths.length" style="width:130px" disabled="true" color="success">Done</ion-button>
         <ion-button *ngIf="stage == Stage.CORRECT && correctFaces.length < facePaths.length" style="width:130px" disabled="true">Done</ion-button>

@@ -1,6 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { timer, interval } from 'rxjs';
 
-enum Stage { MEMORIZE, SELECT, CORRECT, INCORRECT, DONE }
+enum Stage { START, MEMORIZE, SELECT, CORRECT, INCORRECT, DONE }
 
 @Component({
   selector: 'app-memory-match',
@@ -30,9 +31,10 @@ export class MemoryMatchComponent implements OnInit {
   }
 
   Stage = Stage;  
-  stage : Stage = Stage.MEMORIZE;
+  stage : Stage = Stage.START;
   score : number = 0;
   promise : number = 0;
+  timeRemaining : number = null;
 
   randomFaces : string[];
   correctFaces : string[] = [];
@@ -40,7 +42,7 @@ export class MemoryMatchComponent implements OnInit {
   selectedFace : number = null;
 
   async clickFace(face : number) {
-    if (this.stage != Stage.MEMORIZE) { // Waiting for feedback
+    if (this.stage != Stage.START && this.stage != Stage.MEMORIZE) { // Waiting for feedback
       if (this.stage == Stage.CORRECT || this.stage == Stage.INCORRECT) {
         this.promise++;
         this.selectedFace = null;
@@ -95,5 +97,18 @@ export class MemoryMatchComponent implements OnInit {
       this.score = Math.ceil(this.score/2);
       this.score += this.facePaths.length;
     }
+  }
+
+  startMemorizeTimer() {
+    this.timeRemaining = 10;
+    this.stage = Stage.MEMORIZE;
+    interval(1000).subscribe(() => {
+      this.timeRemaining--;
+    });
+    timer(10000).subscribe(() => {
+      if (this.stage == Stage.MEMORIZE) {
+        this.stage = Stage.SELECT
+      }
+    });
   }
 }

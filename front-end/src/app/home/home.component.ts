@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { timer } from 'rxjs';
 
 enum Popup { NULL, HOME, LOGIN, REGISTER, WHY }
@@ -14,7 +14,7 @@ export class HomeComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    timer(1000).subscribe(()=>(this.popup = Popup.HOME))
+    timer(1000).subscribe(()=>(this.popup = Popup.HOME));
   }
 
   Popup = Popup;
