@@ -1,6 +1,6 @@
 <ion-content id="content" style="--background: gray">
 
-  <ion-header>
+  <ion-header *ngIf="stage != Stage.LOGIN">
     <ion-toolbar style="border-bottom-width: medium; border-bottom-style: solid; border-bottom-color:dodgerblue">
       <ion-title>{{getMessage(0)}}</ion-title>
       <ion-icon slot="start" color="medium" name="help-circle" style="margin-left: 10px; height: 30px; cursor: pointer" (click)="getHelp()"></ion-icon>
@@ -66,6 +66,8 @@
     </div>
   </div>
 
+  <!--Login Page-->
+  <app-home *ngIf="stage == Stage.LOGIN" (finished)="loggedIn = true; iterateStage()"></app-home>
   <!--Learning Task-->
   <app-learning-task *ngIf="task == Task.LEARNING" [setNames]="setNames" [facePaths]="facePaths" (finished)="learningDone = true; iterateStage()"></app-learning-task>
   <!--Name and Face-->
@@ -81,6 +83,19 @@
   <!--Same-Different-->
   <app-same-different *ngIf="task == Task.SAME_DIFFERENT" [setNames]="setNames" [facePaths]="facePaths" (finished)="scores[5] = $event; iterateStage()"></app-same-different>
 
+
+  <!--               
+  <div style="text-align:center" *ngIf="progress < 300">
+    <h3 style=color:red>For Development Only</h3>
+    <ion-button (click)="progress=1">Learning</ion-button>
+    <ion-button (click)="progress=2">Name and Face: {{scores[0]}}</ion-button>
+    <ion-button (click)="progress=3">Who's New: {{scores[1]}}</ion-button>
+    <ion-button (click)="progress=4">Memory: {{scores[2]}}</ion-button>
+    <ion-button (click)="progress=5">Shuffle: {{scores[3]}}</ion-button>
+    <ion-button (click)="progress=6">Forced Choice: {{scores[4]}}</ion-button>
+    <ion-button (click)="progress=7">Same Different: {{scores[5]}}</ion-button>
+    <ion-button (click)="progress=400">Login Page</ion-button> -->
+
   <!--For development only-->
   <br><br><br><br><br><br><br><br><br><br><br><br>
   <div style="text-align:center">
@@ -92,5 +107,6 @@
     <ion-button (click)="task = Task.SHUFFLE">Shuffle: {{scores[3]}}</ion-button>
     <ion-button (click)="task = Task.FORCED_CHOICE">Forced Choice: {{scores[4]}}</ion-button>
     <ion-button (click)="task = Task.SAME_DIFFERENT">Same Different: {{scores[5]}}</ion-button>
+
   </div>
 </ion-content>

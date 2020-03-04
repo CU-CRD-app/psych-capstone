@@ -15,7 +15,7 @@ const helpMessages = {
   sameDifferent: ["Same-Different", "You will be shown one face and then another, and you will decide whether they are the same."]
 }
 
-enum Stage { START, TRAINING, ASSESSMENT, DONE }
+enum Stage { LOGIN, START, TRAINING, ASSESSMENT, DONE }
 enum Task { LEARNING, NAME_FACE, WHOS_NEW, MEMORY, SHUFFLE, FORCED_CHOICE, SAME_DIFFERENT }
 
 @Component({
@@ -54,12 +54,17 @@ export class Tab1Page {
 
   }
 
+  //legacy
+  //numFaces : number = 8; //hardcoded for now, happen to be 8 practice faces.
+  //progress : number = 400;
+
   Stage = Stage;
   Task = Task;
-  stage : Stage = Stage.START;
+  stage : Stage = Stage.LOGIN;
   task : Task = null;
 
   numFaces : number = 8; // hardcoded for now, happen to be 8 practice faces.
+
 
   namePool : string[] = ["Sam", "Kenny", "Jones", "Dave", "John", "Gale", "Kent", "Tom", "Bill", "Greg", "Anthony", "Tony", "George", "Kevin", "Dick", "Richard"];
   setNames : string[] = []
@@ -67,12 +72,15 @@ export class Tab1Page {
   faceNums : number[] = []
   facePaths : string[] = []
 
+  loggedIn : boolean = false;
   learningDone : boolean = false;
   scores : number[] = [-1, -1, -1, -1, -1, -1];
 
   iterateStage() {
     this.task = null;
-    if (!this.learningDone) {
+    if (!this.loggedIn) {
+      this.stage = Stage.LOGIN;
+    } else if (!this.learningDone) {
       this.stage = Stage.START;
     } else if (this.scores[0] == -1 || this.scores[1] == -1 || this.scores[2] == -1 || this.scores[3] == -1) {
       this.stage = Stage.TRAINING;

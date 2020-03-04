@@ -1,0 +1,93 @@
+#login-view {
+	--background: gray url("/assets/background_imgs/face-outline-skin-tones.png") no-repeat center center / contain;
+	background-repeat: no-repeat;
+	align-items: center;
+}
+
+#blank-row-default {
+	height: 25vh;
+}
+#blank-row-why {
+	height: 15vh;
+}
+#blank-row-login {
+	height: 20vh;
+}
+#blank-row-register {
+	height: 17vh;
+}
+
+
+#row-with-default-card {
+	height: 25vh;
+}
+#row-with-why-card {
+	height: 35vh;
+}
+#row-with-login-card {
+	height: 35vh;
+}
+#row-with-register-card {
+	height: 35vh;
+}
+
+#default_card {
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	background-color: gainsboro;
+}
+#why_card {
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	background-color: gainsboro;
+}
+#login_card {
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	background-color: gainsboro;
+}
+#register_card {
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	background-color: gainsboro;
+}
+
+#why_msg {
+	color: black;
+	padding: 10px;
+	margin: 0;
+	text-align: center;
+}
+
+.button-col {
+	padding: 0;
+	margin: 0;
+}
+
+ion-button {
+	text-transform: none !important;
+}
+
+#login_but {
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+
+#register_but {
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+
+#back_but {
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+}
