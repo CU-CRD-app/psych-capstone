@@ -1,0 +1,39 @@
+.success {
+    --background: #01DF74;
+}
+
+.failure {
+    --background: #FE2E2E;
+}
+
+.default {
+    --background: gray
+}
+
+.selected-card {
+    background-color: dodgerblue !important;
+}
+
+.grid-card {
+    display: inline-block;
+    margin-bottom: 20px;
+    margin-top: 15px;
+}
+
+ion-card {
+    text-align: center;
+    background-color:gainsboro;
+    height: 125px;
+    width: 100px;
+}
+
+img {
+    height: 100px;
+    width: 75px;
+    margin: 15px;
+}
+
+h5 {
+    text-align:center;
+    color: white;
+}

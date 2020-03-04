@@ -1,3 +1,64 @@
-<div style="text-align:center">
-  <ion-button color="success" (click)="finished.emit(score)">Finish</ion-button>
-</div>
+<ion-content [ngClass]="{'default': !isFeedback(), 'success': stage == Stage.CORRECT, 'failure': stage == Stage.INCORRECT}">
+
+  <div *ngIf="stage != Stage.DONE" style="text-align:center">
+
+    <h5 *ngIf="stage == Stage.START">Memorize the face order: 5</h5>
+    <h5 *ngIf="stage == Stage.MEMORIZE">Memorize the face order: {{timeRemaining}}</h5>
+    <h5 *ngIf="stage == Stage.SELECT">Rearrange the faces</h5>
+    <h5 *ngIf="stage == Stage.CORRECT">Correct!</h5>
+    <h5 *ngIf="stage == Stage.INCORRECT && feedbackToggle">Incorrect! Correct solution:</h5>
+    <h5 *ngIf="stage == Stage.INCORRECT && !feedbackToggle">Incorrect! Your solution:</h5>
+
+    <ion-grid>
+
+      <ion-row>
+
+        <ion-col>
+          <ion-card (click)="stage == Stage.SELECT ? clickCard(0) : selectedFace = null" button="true" class="grid-card" [ngClass]="{'selected-card': stage != Stage.START && getSrc(0) == selectedFace}">
+            <img *ngIf="stage != Stage.START" [src]="getSrc(0)"/>
+          </ion-card>
+        </ion-col>
+
+        <ion-col>
+          <ion-card (click)="stage == Stage.SELECT ? clickCard(1) : selectedFace = null" button="true" class="grid-card" [ngClass]="{'selected-card': stage != Stage.START && getSrc(1) == selectedFace}">
+            <img *ngIf="stage != Stage.START" [src]="getSrc(1)"/>
+          </ion-card>
+        </ion-col>
+
+      </ion-row>
+      <ion-row>
+
+        <ion-col>
+          <ion-card (click)="stage == Stage.SELECT ? clickCard(2) : selectedFace = null" button="true" class="grid-card" [ngClass]="{'selected-card': stage != Stage.START && getSrc(2) == selectedFace}">
+            <img *ngIf="stage != Stage.START" [src]="getSrc(2)"/>
+          </ion-card>
+        </ion-col>
+
+        <ion-col>
+          <ion-card (click)="stage == Stage.SELECT ? clickCard(3) : selectedFace = null" button="true" class="grid-card" [ngClass]="{'selected-card': stage != Stage.START && getSrc(3) == selectedFace}">
+            <img *ngIf="stage != Stage.START" [src]="getSrc(3)"/>
+          </ion-card>
+        </ion-col>
+
+      </ion-row>
+
+    </ion-grid>
+
+    <!--Next Buttons-->
+    <div style="text-align: center; margin-bottom: 15px">
+      <ion-button *ngIf="stage == Stage.START" style="width: 130px" (click)="startMemorizeTimer()">Reveal</ion-button>
+      <ion-button *ngIf="stage == Stage.SELECT" style="width: 130px" (click)="clickDone()">Done</ion-button>
+      <ion-button *ngIf="stage == Stage.INCORRECT && feedbackToggle" style="width: 130px; --background: rgb(16, 95, 185);" (click)="feedbackToggle = !feedbackToggle">Your Solution</ion-button>
+      <ion-button *ngIf="stage == Stage.INCORRECT && !feedbackToggle" style="width: 130px; --background: rgb(16, 95, 185);" (click)="feedbackToggle = !feedbackToggle">Correct Solution</ion-button>
+      <ion-button *ngIf="isFeedback()" style="width: 130px" (click)="nextFace()">Next</ion-button>
+    </div>
+
+  </div>
+
+  <!--Score page-->
+  <div *ngIf="stage == Stage.DONE" style="text-align: center; color: white; margin-top: 180px">
+    <h1>Your score: {{score}}/{{facePaths.length}}</h1>
+    <ion-button color="success" (click)="finished.emit(score)">Finish</ion-button>
+  </div>
+
+</ion-content>
