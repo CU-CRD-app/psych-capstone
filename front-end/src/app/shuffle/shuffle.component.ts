@@ -9,7 +9,6 @@ enum Stage { START, MEMORIZE, MASK, SELECT, CORRECT, INCORRECT, DONE }
   styleUrls: ['./shuffle.component.scss'],
 })
 export class ShuffleComponent implements OnInit {
-  @Input() setNames : string;
   @Input() facePaths : string;
   @Output() finished = new EventEmitter<number>();
 
