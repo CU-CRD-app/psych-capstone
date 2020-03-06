@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { timer, interval } from 'rxjs';
 
-enum Stage { START, MEMORIZE, SELECT, CORRECT, INCORRECT, DONE }
+enum Stage { START, MEMORIZE, MASK, SELECT, CORRECT, INCORRECT, DONE }
 
 @Component({
   selector: 'app-shuffle',
@@ -102,15 +102,22 @@ export class ShuffleComponent implements OnInit {
     let counter : number = this.memorizeCounter;
     timer(this.timeRemaining * 1000).subscribe(() => {
       if (this.stage == Stage.MEMORIZE && counter == this.memorizeCounter) {
-        this.stage = Stage.SELECT
+        this.startMaskTimer();
       }
     });
   }
 
+  startMaskTimer() {
+    this.stage = Stage.MASK;
+    timer(2000).subscribe(() => {
+        this.stage = Stage.SELECT;
+    });
+  }
+
   getSrc(index : number) {
-    if (this.stage == Stage.SELECT) {
-      return this.randomFaceOrder[index];
-    } else if (this.stage == Stage.INCORRECT && !this.feedbackToggle) {
+    if (this.stage == Stage.MASK) {
+      return 'null'; // will return mask
+    } else if (this.stage == Stage.SELECT || (this.stage == Stage.INCORRECT && !this.feedbackToggle)) {
       return this.randomFaceOrder[index];
     } else {
       return this.correctFaceOrder[index];
@@ -127,7 +134,7 @@ export class ShuffleComponent implements OnInit {
         this.selectedFace = null;
       }
     } else if (this.stage == Stage.MEMORIZE) {
-      this.stage = Stage.SELECT;
+      this.startMaskTimer();
       this.memorizeCounter++;
     }
   }

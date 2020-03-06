@@ -1,6 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { timer } from 'rxjs';
 
-enum Stage { MEMORIZE, SELECT, CORRECT, INCORRECT, DONE }
+enum Stage { MEMORIZE, MASK, SELECT, CORRECT, INCORRECT, DONE }
 
 @Component({
   selector: 'app-same-different',
@@ -52,7 +53,7 @@ export class SameDifferentComponent implements OnInit {
 
   clickCard() {
     if (this.stage == Stage.MEMORIZE) {
-      this.stage = Stage.SELECT;
+      this.startMaskTimer();
     } else if (this.isFeedback()) {
       this.nextFace()
     }
@@ -60,5 +61,22 @@ export class SameDifferentComponent implements OnInit {
 
   isFeedback() {
     return this.stage == Stage.CORRECT || this.stage == Stage.INCORRECT;
+  }
+
+  startMaskTimer() {
+    this.stage = Stage.MASK;
+    timer(2000).subscribe(() => {
+        this.stage = Stage.SELECT;
+    });
+  }
+
+  getSrc() {
+    if (this.stage == Stage.MEMORIZE) {
+      return this.currentFace
+    } else if (this.stage == Stage.MASK) {
+      return null;
+    } else {
+      return this.randomFace;
+    }
   }
 }

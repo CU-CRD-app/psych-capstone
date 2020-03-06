@@ -1,6 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { timer } from 'rxjs';
 
-enum Stage { MEMORIZE, SELECT, CORRECT, INCORRECT, DONE }
+enum Stage { MEMORIZE, MASK, SELECT, CORRECT, INCORRECT, DONE }
 
 @Component({
   selector: 'app-forced-choice',
@@ -69,5 +70,12 @@ export class ForcedChoiceComponent implements OnInit {
 
   isFeedback() {
     return this.stage == Stage.CORRECT || this.stage == Stage.INCORRECT;
+  }
+
+  startMaskTimer() {
+    this.stage = Stage.MASK;
+    timer(2000).subscribe(() => {
+        this.stage = Stage.SELECT;
+    });
   }
 }
