@@ -151,4 +151,12 @@ export class Tab1Page {
     }
     return names;
   }
+
+  finished(score : number, task : number) {
+    this.scores[task] = Math.max(score, this.scores[task]);
+    this.task = null;
+    if (score > 3) {
+      this.iterateStage();
+    }
+  }
 }

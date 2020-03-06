@@ -78,17 +78,17 @@
   <!--Learning Task-->
   <app-learning-task *ngIf="task == Task.LEARNING" [setNames]="setNames" [facePaths]="trainingFacePaths" (finished)="learningDone = true; task = null"></app-learning-task>
   <!--Name and Face-->
-  <app-name-face *ngIf="task == Task.NAME_FACE" [setNames]="setNames" [facePaths]="trainingFacePaths" (finished)="scores[0] = $event; task = null"></app-name-face>
+  <app-name-face *ngIf="task == Task.NAME_FACE" [setNames]="setNames" [facePaths]="trainingFacePaths" (finished)="finished($event, 0)"></app-name-face>
   <!--Who's New?-->
-  <app-whos-new *ngIf="task == Task.WHOS_NEW" [facePaths]="trainingFacePaths" (finished)="scores[1] = $event; task = null"></app-whos-new>
+  <app-whos-new *ngIf="task == Task.WHOS_NEW" [facePaths]="trainingFacePaths" (finished)="finished($event, 1)"></app-whos-new>
   <!--Memory Match-->
-  <app-memory-match *ngIf="task == Task.MEMORY" [facePaths]="trainingFacePaths" (finished)="scores[2] = $event; task = null"></app-memory-match>
+  <app-memory-match *ngIf="task == Task.MEMORY" [facePaths]="trainingFacePaths" (finished)="finished($event, 2)"></app-memory-match>
   <!--Shuffle-->
-  <app-shuffle *ngIf="task == Task.SHUFFLE" [facePaths]="trainingFacePaths" (finished)="scores[3] = $event; task = null"></app-shuffle>
+  <app-shuffle *ngIf="task == Task.SHUFFLE" [facePaths]="trainingFacePaths" (finished)="finished($event, 3)"></app-shuffle>
   <!--Forced Choice-->
-  <app-forced-choice *ngIf="task == Task.FORCED_CHOICE" [facePaths]="assessmentFacePaths" (finished)="scores[4] = $event; iterateStage()"></app-forced-choice>
+  <app-forced-choice *ngIf="task == Task.FORCED_CHOICE" [facePaths]="assessmentFacePaths" (finished)="finished($event, 4)"></app-forced-choice>
   <!--Same-Different-->
-  <app-same-different *ngIf="task == Task.SAME_DIFFERENT" [facePaths]="assessmentFacePaths" (finished)="scores[5] = $event; iterateStage()"></app-same-different>
+  <app-same-different *ngIf="task == Task.SAME_DIFFERENT" [facePaths]="assessmentFacePaths" (finished)="finished($event, 5)"></app-same-different>
 
   <!--For development only-->
   <div style="text-align:center">
