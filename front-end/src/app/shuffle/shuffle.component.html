@@ -2,7 +2,7 @@
 
   <div *ngIf="stage != Stage.DONE" style="text-align:center">
 
-    <h5 *ngIf="stage == Stage.START">Memorize the face order: 5</h5>
+    <h5 *ngIf="stage == Stage.START">Memorize the face order: {{memorizeTime}}</h5>
     <h5 *ngIf="stage == Stage.MEMORIZE">Memorize the face order: {{timeRemaining}}</h5>
     <h5 *ngIf="stage == Stage.SELECT">Rearrange the faces</h5>
     <h5 *ngIf="stage == Stage.CORRECT">Correct!</h5>
@@ -14,13 +14,13 @@
       <ion-row>
 
         <ion-col>
-          <ion-card (click)="stage == Stage.SELECT ? clickCard(0) : selectedFace = null" button="true" class="grid-card" [ngClass]="{'selected-card': stage != Stage.START && getSrc(0) == selectedFace}">
+          <ion-card (click)="clickCard(0)" button="true" class="grid-card" [ngClass]="{'selected-card': stage != Stage.START && getSrc(0) == selectedFace}">
             <img *ngIf="stage != Stage.START" [src]="getSrc(0)"/>
           </ion-card>
         </ion-col>
 
         <ion-col>
-          <ion-card (click)="stage == Stage.SELECT ? clickCard(1) : selectedFace = null" button="true" class="grid-card" [ngClass]="{'selected-card': stage != Stage.START && getSrc(1) == selectedFace}">
+          <ion-card (click)="clickCard(1)" button="true" class="grid-card" [ngClass]="{'selected-card': stage != Stage.START && getSrc(1) == selectedFace}">
             <img *ngIf="stage != Stage.START" [src]="getSrc(1)"/>
           </ion-card>
         </ion-col>
@@ -29,13 +29,13 @@
       <ion-row>
 
         <ion-col>
-          <ion-card (click)="stage == Stage.SELECT ? clickCard(2) : selectedFace = null" button="true" class="grid-card" [ngClass]="{'selected-card': stage != Stage.START && getSrc(2) == selectedFace}">
+          <ion-card (click)="clickCard(2)" button="true" class="grid-card" [ngClass]="{'selected-card': stage != Stage.START && getSrc(2) == selectedFace}">
             <img *ngIf="stage != Stage.START" [src]="getSrc(2)"/>
           </ion-card>
         </ion-col>
 
         <ion-col>
-          <ion-card (click)="stage == Stage.SELECT ? clickCard(3) : selectedFace = null" button="true" class="grid-card" [ngClass]="{'selected-card': stage != Stage.START && getSrc(3) == selectedFace}">
+          <ion-card (click)="clickCard(3)" button="true" class="grid-card" [ngClass]="{'selected-card': stage != Stage.START && getSrc(3) == selectedFace}">
             <img *ngIf="stage != Stage.START" [src]="getSrc(3)"/>
           </ion-card>
         </ion-col>

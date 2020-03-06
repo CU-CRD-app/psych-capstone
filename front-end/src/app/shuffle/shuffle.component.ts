@@ -24,9 +24,11 @@ export class ShuffleComponent implements OnInit {
   }
 
   Stage = Stage;
-  numberOfOptions = 4; // Hard coded for now
+  numberOfOptions : number = 4; // Hard coded for now
+  memorizeTime : number = 8;
   progress : number = 0;
   score : number = 0;
+  memorizeCounter : number = 0;
   stage : Stage = Stage.START;
 
   currentFace : string;
@@ -95,10 +97,11 @@ export class ShuffleComponent implements OnInit {
   }
 
   startMemorizeTimer() {
-    this.timeRemaining = 5;
+    this.timeRemaining = this.memorizeTime;
     this.stage = Stage.MEMORIZE;
+    let counter : number = this.memorizeCounter;
     timer(this.timeRemaining * 1000).subscribe(() => {
-      if (this.stage == Stage.MEMORIZE) {
+      if (this.stage == Stage.MEMORIZE && counter == this.memorizeCounter) {
         this.stage = Stage.SELECT
       }
     });
@@ -115,24 +118,20 @@ export class ShuffleComponent implements OnInit {
   }
 
   clickCard(index : number) {
-    console.log(index)
-    console.log(this.randomFaceOrder)
     if (this.stage == Stage.SELECT) {
       if (this.selectedFace == null) {
         this.selectedFace = this.randomFaceOrder[index];
       } else {
-        [this.randomFaceOrder[index], this.randomFaceOrder[this.randomFaceOrder.indexOf(this.selectedFace)]] = [this.randomFaceOrder[this.randomFaceOrder.indexOf(this.selectedFace)], this.randomFaceOrder[index]];
-        /*let temp = this.randomFaceOrder[index];
-        this.randomFaceOrder[index] = this.selectedFace;
-        this.randomFaceOrder[this.randomFaceOrder.indexOf(this.selectedFace)] = temp;*/
+        let index_selected : number = this.randomFaceOrder.indexOf(this.selectedFace);
+        [this.randomFaceOrder[index], this.randomFaceOrder[index_selected]] = [this.randomFaceOrder[index_selected], this.randomFaceOrder[index]];
         this.selectedFace = null;
       }
+    } else if (this.stage == Stage.MEMORIZE) {
+      this.stage = Stage.SELECT;
+      this.memorizeCounter++;
     }
-    console.log(index)
-    console.log(this.randomFaceOrder)
   }
 }
 
 // timer?
 // mask
-// toggle feedback
