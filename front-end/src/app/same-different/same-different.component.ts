@@ -26,6 +26,7 @@ export class SameDifferentComponent implements OnInit {
   progress : number = 0;
   score : number = 0;
   stage : Stage = Stage.MEMORIZE;
+  mask : string = '../../assets/background_imgs/mask1.png';
 
   correctSelection : boolean;
   currentFace : string;
@@ -73,7 +74,7 @@ export class SameDifferentComponent implements OnInit {
     if (this.stage == Stage.MEMORIZE) {
       return this.currentFace
     } else if (this.stage == Stage.MASK) {
-      return null;
+      return this.mask;
     } else {
       return this.randomFace;
     }

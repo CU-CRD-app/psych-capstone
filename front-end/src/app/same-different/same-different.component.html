@@ -4,7 +4,7 @@
 
     <ion-card button="true" (click)="clickCard()" style="cursor: pointer">
       <h3 *ngIf="stage == Stage.MEMORIZE">Memorize the face</h3>
-      <h3 *ngIf="stage == Stage.MASK">Hold the face in your mind</h3>
+      <h3 *ngIf="stage == Stage.MASK">Hold the face in your mind...</h3>
       <h3 *ngIf="stage == Stage.SELECT">Is this the same person?</h3>
       <h3 *ngIf="stage == Stage.CORRECT">Correct!</h3>
       <h3 *ngIf="stage == Stage.INCORRECT">Incorrect!</h3>

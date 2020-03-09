@@ -5,8 +5,8 @@
     <div *ngIf="stage == Stage.MEMORIZE || stage == Stage.MASK">
       <ion-card button="true" (click)="startMaskTimer()">
         <h3 *ngIf="stage == Stage.MEMORIZE" style="color: dodgerblue;">Memorize the face</h3>
-        <h3 *ngIf="stage == Stage.MASK" style="color: dodgerblue;">Hold the face in your mind</h3>
-        <img style="height:260px; width:180px; margin: 20px auto;" [src]="stage == Stage.MEMORIZE ? currentFace : null"/>
+        <h3 *ngIf="stage == Stage.MASK" style="color: dodgerblue;">Hold the face in your mind...</h3>
+        <img style="height:260px; width:180px; margin: 20px auto;" [src]="stage == Stage.MEMORIZE ? currentFace : mask"/>
       </ion-card>
     </div>
 

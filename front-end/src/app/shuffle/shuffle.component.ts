@@ -29,6 +29,7 @@ export class ShuffleComponent implements OnInit {
   score : number = 0;
   memorizeCounter : number = 0;
   stage : Stage = Stage.START;
+  mask : string = '../../assets/background_imgs/mask1.png';
 
   currentFace : string;
   selectedFace : string;
@@ -115,7 +116,7 @@ export class ShuffleComponent implements OnInit {
 
   getSrc(index : number) {
     if (this.stage == Stage.MASK) {
-      return 'null'; // will return mask
+      return this.mask;
     } else if (this.stage == Stage.SELECT || (this.stage == Stage.INCORRECT && !this.feedbackToggle)) {
       return this.randomFaceOrder[index];
     } else {
