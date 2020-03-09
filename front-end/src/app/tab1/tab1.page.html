@@ -1,4 +1,4 @@
-<ion-content style="--background: gray">
+<ion-content id="content" style="--background: gray">
 
   <ion-header *ngIf="stage != Stage.LOGIN">
     <ion-toolbar style="border-bottom-width: medium; border-bottom-style: solid; border-bottom-color:dodgerblue">
@@ -10,9 +10,10 @@
   <div *ngIf="task == null" style="color: white; text-align:center">
 
     <!--Start screen-->
-    <div *ngIf="stage == Stage.START" style="margin-top: 140px">
-      <h1>Ready for training?</h1>
-      <h4>For best results, please give yourself 10 minutes where you can study uninterrupted.</h4>
+    <div *ngIf="stage == Stage.START" style="margin-top: 150px">
+      <h1><b>Welcome</b></h1>
+      <h5>Are you ready to train?</h5>
+      <br>
       <ion-button color="success" (click)="stage = Stage.TRAINING; task = Task.LEARNING">Start</ion-button>
     </div>
 
@@ -67,9 +68,9 @@
     </div>
 
     <!--All tasks finished-->
-    <div *ngIf="stage == Stage.DONE" style="margin-top: 140px">
-      <h1>You're All Done!</h1>
-      <h4>Come back tomorrow for your next training.</h4>
+    <div *ngIf="stage == Stage.DONE" style="margin-top: 160px">
+      <h1><b>Done!</b></h1>
+      <h5>Come back tomorrow for your next training.</h5>
     </div>
   </div>
 
@@ -91,6 +92,7 @@
   <app-same-different *ngIf="task == Task.SAME_DIFFERENT" [facePaths]="assessmentFacePaths" (finished)="finished($event, 5)"></app-same-different>
 
   <!--For development only-->
+  <br><br><br><br><br><br><br><br><br><br><br><br>
   <div style="text-align:center">
     <br><br><br><br><br><br><br><br><br><br><br><br>
     <h3 style=color:red>For Development Only</h3>

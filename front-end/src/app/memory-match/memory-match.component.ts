@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { timer, interval } from 'rxjs';
 
-enum Stage { START, MEMORIZE, SELECT, CORRECT, INCORRECT, DONE }
+enum Stage { START, MEMORIZE, MASK, SELECT, CORRECT, INCORRECT, DONE }
 
 @Component({
   selector: 'app-memory-match',
@@ -35,6 +35,7 @@ export class MemoryMatchComponent implements OnInit {
   score : number = 0;
   promise : number = 0;
   timeRemaining : number = null;
+  mask : string = '../../assets/background_imgs/mask1.png';
 
   randomFaces : string[];
   correctFaces : string[] = [];
@@ -71,8 +72,9 @@ export class MemoryMatchComponent implements OnInit {
 
   isShown(index : number) {
     return (
-      this.stage == Stage.MEMORIZE || 
-      this.incorrectFaces.indexOf(index) > -1 || 
+      this.stage == Stage.MEMORIZE ||
+      this.stage == Stage.MASK ||
+      this.incorrectFaces.indexOf(index) > -1 ||
       this.correctFaces.indexOf(this.randomFaces[index]) > -1 ||
       this.selectedFace == index
     )
@@ -107,8 +109,15 @@ export class MemoryMatchComponent implements OnInit {
     });
     timer(10000).subscribe(() => {
       if (this.stage == Stage.MEMORIZE) {
-        this.stage = Stage.SELECT
+        this.startMaskTimer();
       }
+    });
+  }
+
+  startMaskTimer() {
+    this.stage = Stage.MASK;
+    timer(2000).subscribe(() => {
+      this.stage = Stage.SELECT;
     });
   }
 }
