@@ -1,5 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { timer, interval } from 'rxjs';
+import { takeUntil} from 'rxjs/operators';
 
 enum Stage { START, MEMORIZE, MASK, SELECT, CORRECT, INCORRECT, DONE }
 
@@ -17,9 +18,6 @@ export class ShuffleComponent implements OnInit {
   ngOnInit() {
     this.currentFace = this.facePaths[this.progress];
     this.makeRandomFaces();
-    interval(1000).subscribe(() => {
-      this.timeRemaining--;
-    });
   }
 
   Stage = Stage;
@@ -105,12 +103,19 @@ export class ShuffleComponent implements OnInit {
         this.startMaskTimer();
       }
     });
+    interval(1000)
+    .pipe(
+      takeUntil(timer(this.timeRemaining * 1000))
+    )
+    .subscribe(() => {
+      this.timeRemaining--;
+    });
   }
 
   startMaskTimer() {
     this.stage = Stage.MASK;
     timer(2000).subscribe(() => {
-        this.stage = Stage.SELECT;
+      this.stage = Stage.SELECT;
     });
   }
 
@@ -139,6 +144,3 @@ export class ShuffleComponent implements OnInit {
     }
   }
 }
-
-// timer?
-// mask
