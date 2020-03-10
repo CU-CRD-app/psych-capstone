@@ -1,17 +1,17 @@
 <h1 style="text-align:center">Who's New</h1>
 <h4 style="text-align:center">Who haven't you seen before?.</h4>
 
-<div *ngIf="progress<5">
+<div *ngIf="progress<8">
   <ion-grid style="text-align: center">
   
     <ion-col>
       <ion-row>
       
-        <ion-card button="true" (click)="nextFaceSet(0)" style="text-align:center; display: inline-block; background-color:gainsboro">
+        <ion-card button="true" (click)="chooseCard(0)" style="text-align:center; display: inline-block; background-color:gainsboro">
             <img style="height:100px; width:75px; margin: 10px" [src]="shuffledFaces[0]" />
         </ion-card>
 	
-        <ion-card button="true" (click)="nextFaceSet(1)" style="text-align:center; display: inline-block; background-color:gainsboro">
+        <ion-card button="true" (click)="chooseCard(1)" style="text-align:center; display: inline-block; background-color:gainsboro">
             <img style="height:100px; width:75px; margin: 10px" [src]="shuffledFaces[1]" />
         </ion-card>
         
@@ -21,11 +21,11 @@
     <ion-col>
       <ion-row>
       
-        <ion-card button="true" (click)="nextFaceSet(2)" style="text-align:center; display: inline-block; background-color:gainsboro">
+        <ion-card button="true" (click)="chooseCard(2)" style="text-align:center; display: inline-block; background-color:gainsboro">
             <img style="height:100px; width:75px; margin: 10px" [src]="shuffledFaces[2]" />
         </ion-card>
     
-        <ion-card button="true" (click)="nextFaceSet(3)" style="text-align:center; display: inline-block; background-color:gainsboro">
+        <ion-card button="true" (click)="chooseCard(3)" style="text-align:center; display: inline-block; background-color:gainsboro">
             <img style="height:100px; width:75px; margin: 10px" [src]="shuffledFaces[3]" />
         </ion-card>
         
@@ -35,7 +35,7 @@
   </ion-grid>
 </div>
 
-<div *ngIf="progress==5" style="text-align: center; color: white; margin-top: 180px">
-  <h1>Your score: {{score}}/5</h1>
+<div *ngIf="progress==8" style="text-align: center; color: white; margin-top: 180px">
+  <h1>Your score: {{score}}/8</h1>
   <ion-button color="success" (click)="finished.emit(score)">Finish</ion-button>
 </div>

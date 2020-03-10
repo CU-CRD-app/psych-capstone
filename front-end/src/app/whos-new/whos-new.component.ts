@@ -46,13 +46,15 @@ export class WhosNewComponent implements OnInit {
       return this.new_name;
   }
 
-  nextFaceSet(input : number) {
+  chooseCard(input : number) {
       this.progress++;
       // determine if correct or not
       if (input == this.chosenNum) {
+        ;
         this.score++;
-	  }
-      // else nothing
+	  } else {
+        ;
+      }
       
 	  // dump old images, and repeat initalization process
       for (let i = 0; i < this.facePaths.length; i++) {
