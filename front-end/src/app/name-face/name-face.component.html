@@ -2,46 +2,43 @@
 
   <div *ngIf="progress < 8" style="text-align: center">
 
+    <br>
     <h3 *ngIf="!showFeedback">Who is <b>{{currentName}}</b>?</h3>
-    <h3 *ngIf="showFeedback && correctSelection">Correct! <b>{{currentName}}</b></h3>
+    <h3 *ngIf="showFeedback && correctSelection">Correct!</h3>
     <h3 *ngIf="showFeedback && !correctSelection">Incorrect!</h3>
 
     <br>
 
     <ion-grid>
 
-        <ion-row>
+      <ion-row>
 
-          <ion-col *ngFor="let item of [].constructor(3); let i = index">
-            <ion-card button="true" (click)="showFeedback ? nextFace() : chooseFace(shuffledFaces[i])" [ngClass]="{'selected-card': showFeedback && shuffledFaces[i] != currentFace && shuffledFaces[i] == selectedFace, 'disabled-card': showFeedback && shuffledFaces[i] != currentFace}">
-              <img [src]="shuffledFaces[i]"/>
-            </ion-card>
-          </ion-col>
+        <ion-col *ngFor="let item of [].constructor(3); let i = index">
+          
+          <ion-card button="true" (click)="showFeedback ? nextFace() : chooseFace(shuffledFaces[i])" [ngClass]="{'selected-card': showSelected(i), 'disabled-card': showDisabled(i)}">
+            <img [src]="shuffledFaces[i]"/>
+          </ion-card>
 
-        </ion-row>
-        <ion-row>
+          <div style="height: 25px; color: white">{{getName(i)}}</div>
+        
+        </ion-col>
 
-          <ion-col *ngFor="let item of [].constructor(3); let i = index">
-            <ion-card button="true" (click)="showFeedback ? nextFace() : chooseFace(shuffledFaces[i + 3])" [ngClass]="{'selected-card': showFeedback && shuffledFaces[i + 3] != currentFace && shuffledFaces[i + 3] == selectedFace, 'disabled-card': showFeedback && shuffledFaces[i + 3] != currentFace}">
-              <img [src]="shuffledFaces[i + 3]"/>
-            </ion-card>
-          </ion-col>
+      </ion-row>
+      <ion-row>
 
-        </ion-row>
-        <ion-row>
+        <ion-col *ngFor="let item of [].constructor(3); let i = index">
+          
+          <ion-card button="true" (click)="showFeedback ? nextFace() : chooseFace(shuffledFaces[i + 3])" [ngClass]="{'selected-card': showSelected(i + 3), 'disabled-card': showDisabled(i + 3)}">
+            <img [src]="shuffledFaces[i + 3]"/>
+          </ion-card>
+          
+          <div style="height: 25px; color: white">{{getName(i + 3)}}</div>
+        
+        </ion-col>
 
-            <ion-col>
-              <ion-card button="true" (click)="showFeedback ? nextFace() : chooseFace(shuffledFaces[6])" [ngClass]="{'selected-card': showFeedback && shuffledFaces[6] != currentFace && shuffledFaces[6] == selectedFace, 'disabled-card': showFeedback && shuffledFaces[6] != currentFace}">
-                <img [src]="shuffledFaces[6]"/>
-              </ion-card>
-              <ion-card style="margin-left: 30px" button="true" (click)="showFeedback ? nextFace() : chooseFace(shuffledFaces[7])" [ngClass]="{'selected-card': showFeedback && shuffledFaces[7] != currentFace && shuffledFaces[7] == selectedFace, 'disabled-card': showFeedback && shuffledFaces[7] != currentFace}">
-                <img [src]="shuffledFaces[7]"/>
-              </ion-card>
-            </ion-col>
-  
-          </ion-row>
+      </ion-row>
 
-      </ion-grid>
+    </ion-grid>
 
     <br>
 

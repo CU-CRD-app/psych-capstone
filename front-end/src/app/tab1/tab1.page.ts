@@ -143,11 +143,12 @@ export class Tab1Page {
 
   generateRandomNames() {
     let names : string[] = [];
-    let pool : string[] = this.namePool;
     for (let i = 0; i < this.numFaces; i++) { // randomly shuffles names from namePool into an array passed to activities
-      let name = Math.floor(Math.random() * pool.length);
-      names.push(pool[name]);
-      pool = pool.slice(0, name).concat(pool.slice(name + 1, pool.length));
+      let name = Math.floor(Math.random() * this.namePool.length);
+      while (names.indexOf(this.namePool[name]) > -1) { // Account for repeats
+        name = Math.floor(Math.random() * this.namePool.length);
+      }
+      names.push(this.namePool[name]);
     }
     return names;
   }
