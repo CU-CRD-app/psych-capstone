@@ -42,11 +42,13 @@
       </ion-card>
 
       <ion-button (click)="task = Task.LEARNING" style="width: 45%; padding: 0; margin: 5px">
-        <ion-icon name="arrow-round-back"></ion-icon>
+        <ion-icon [src]=replay_icon></ion-icon>
+        &nbsp;
+        <ion-icon [src]=face_icon></ion-icon>
       </ion-button>
 
       <ion-button (click)="iterateStage()" style="width: 45%; padding: 0; margin: 5px" [disabled]="this.scores[0] < 6 || this.scores[1] < 6 || this.scores[2] < 6 || this.scores[3] < 6">
-        <ion-icon name="arrow-round-forward"></ion-icon>
+        <ion-icon [src]=assessment_icon ></ion-icon>
       </ion-button>
 
     </div>

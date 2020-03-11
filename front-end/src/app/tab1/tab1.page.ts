@@ -54,6 +54,11 @@ export class Tab1Page {
   learningDone : boolean = false;
   scores : number[] = [-1, -1, -1, -1, -1, -1];
 
+  //Just icons
+  assessment_icon : string = "assets/icon/assessment.svg";
+  replay_icon : string = "assets/icon/replay.svg";
+  face_icon : string = "assets/icon/face.svg";
+
   iterateStage() {
     this.task = null;
     if (!this.loggedIn) {
