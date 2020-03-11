@@ -11,23 +11,20 @@ export class WhosNewComponent implements OnInit {
   @Output() finished = new EventEmitter<number>();
 
   constructor() {}
-  // style="height:220px; width:160px; margin: 0 auto; display: inline-block"
+  
   ngOnInit() {
-	  // Initialize set
-	  for (let i = 0; i < this.facePaths.length; i++) {
-        this.shuffledFaces.push(this.facePaths[i]);
-      }
-	  
-      // then shuffle set by swapping randomly chosen points
-      for (let i = this.shuffledFaces.length - 1; i > 0; i -= 1) {
-          let j = Math.floor(Math.random() * (i + 1));
-          let temp = this.shuffledFaces[i];
-          this.shuffledFaces[i] = this.shuffledFaces[j];
-          this.shuffledFaces[j] = temp;
-      }
+      this.resetRoundVals();
       
-      // Replace one face with new, unseen one
-      // Must be one of the first four that get displayed
+      // Initialize set first by selecting random numbers
+      for (let i = 0; i < 4; i++) {
+          
+          this.newNum = this.getNewNumber(this.usedNumbers);
+          
+          this.shuffledFaces[i] = this.facePaths[this.newNum];
+      }
+          
+          
+      // Add new face randomly
       this.chosenNum = Math.floor(Math.random() * 4);
       this.shuffledFaces[this.chosenNum] = this.addNewFace();
   }
@@ -35,33 +32,61 @@ export class WhosNewComponent implements OnInit {
   score : number = 0;
   progress : number = 0; 
   chosenNum : number = 0;
-  new_name : string = "";
+  newNum : number = 0;
   
+  new_name : string = "";
+  newFace : string = "";
+  
+  usedNumbers : number[] = [];
   shuffledFaces : any[] = [];
-  leftovers : any[] = [];
+
+  next_round : boolean = false;
+  res_correct : boolean = false;
 
   addNewFace() {
       this.new_name = "./../../assets/sample-faces/CFD-BM-045-004-N.png"
-      
       return this.new_name;
   }
+  
+  getNewNumber(numSet : number[]) {
+      // generate random number
+      this.newNum = Math.floor(Math.random() * 8);
+      
+      // if number generated already taken, get a new one
+      for (let i=0; i < numSet.length; i++) {
+          if (this.newNum == numSet[i]) {
+              return this.getNewNumber(numSet);
+          }
+      }
+      
+      this.usedNumbers.push(this.newNum);
+      
+      return this.newNum;
+  }
+  
+  resetRoundVals() {
+    this.next_round = false;
+    
+    // dump old images, and repeat initalization process
+    for (let i = 0; i < this.shuffledFaces.length; i++) {
+      this.shuffledFaces[i] = "";
+    }
+    for (let i = 0; i < this.usedNumbers.length; i++) {
+      this.usedNumbers[i] = null;
+    }   
+  }
+  
 
   chooseCard(input : number) {
+      this.next_round = true;
       this.progress++;
+      
       // determine if correct or not
       if (input == this.chosenNum) {
-        ;
+        this.res_correct = true;
         this.score++;
 	  } else {
-        ;
-      }
-      
-	  // dump old images, and repeat initalization process
-      for (let i = 0; i < this.facePaths.length; i++) {
-        this.shuffledFaces.splice(i, 1);
-      }
-      
-      this.ngOnInit();
-      
+        this.res_correct = false;
+      }      
   }
 }
