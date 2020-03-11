@@ -11,6 +11,7 @@ import { MemoryMatchComponent } from '../memory-match/memory-match.component';
 import { ShuffleComponent } from '../shuffle/shuffle.component';
 import { ForcedChoiceComponent } from '../forced-choice/forced-choice.component';
 import { SameDifferentComponent } from '../same-different/same-different.component';
+import { HomeComponent } from '../home/home.component';
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import { SameDifferentComponent } from '../same-different/same-different.compone
     MemoryMatchComponent,
     ShuffleComponent,
     ForcedChoiceComponent,
-    SameDifferentComponent
+    SameDifferentComponent,
+    HomeComponent
   ]
 })
 export class Tab1PageModule {}

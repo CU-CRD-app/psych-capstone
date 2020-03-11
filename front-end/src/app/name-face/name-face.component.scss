@@ -57,10 +57,35 @@ ion-grid {
 
 
 ion-card {
-	text-align:center;
-	background-color: gainsboro
+	text-align: center;
+	background-color: gainsboro;
+	display: inline-block;
+    margin: 0px;
+    height: 90px;
+    width: 67px;
 }
 
 h3 {
-	color: dodgerblue
+	text-align: center;
+	color: white
+}
+
+p {
+	color: white;
+}
+
+img {
+    height: 80px;
+    width: 60px;
+    margin-left: 4px;
+    margin-top: 5px;
+}
+
+.selected-card {
+    background-color: gainsboro !important;
+}
+
+.disabled-card {
+    background-color: transparent;
+    opacity: 0.5;
 }
