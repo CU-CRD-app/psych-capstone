@@ -49,9 +49,16 @@
     <div style="text-align: center; margin-bottom: 15px">
       <ion-button *ngIf="stage == Stage.START" style="width: 130px" (click)="startMemorizeTimer()">Reveal</ion-button>
       <ion-button *ngIf="stage == Stage.SELECT" style="width: 130px" (click)="clickDone()">Done</ion-button>
-      <ion-button *ngIf="stage == Stage.INCORRECT && feedbackToggle" style="width: 130px; --background: rgb(16, 95, 185);" (click)="feedbackToggle = !feedbackToggle">Your Solution</ion-button>
-      <ion-button *ngIf="stage == Stage.INCORRECT && !feedbackToggle" style="width: 130px; --background: rgb(16, 95, 185);" (click)="feedbackToggle = !feedbackToggle">Correct Solution</ion-button>
-      <ion-button *ngIf="isFeedback()" style="width: 130px" (click)="nextFace()">Next</ion-button>
+      <ion-grid>
+        <ion-row>
+          <ion-col style="padding-top: 15px">
+            <ion-toggle *ngIf="isFeedback()" [(ngModel)]="feedbackToggle"></ion-toggle>
+          </ion-col>
+          <ion-col>
+            <ion-button *ngIf="isFeedback()" style="width: 130px" (click)="nextFace()">Next</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </div>
 
   </div>
