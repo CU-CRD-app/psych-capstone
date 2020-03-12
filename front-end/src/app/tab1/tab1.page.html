@@ -21,22 +21,22 @@
     <div *ngIf="stage == Stage.TRAINING" style="margin-top: 20px">
       <h5>What would you like to do next?</h5>
 
-      <ion-card (click)="task = Task.NAME_FACE" button="true" [ngClass]="{'task-done': scores[0] > 6, 'task-failed': scores[0] > -1 && scores[0] < 6}">
+      <ion-card (click)="task = Task.NAME_FACE" button="true" [ngClass]="{'task-done': scores[0] >= 6, 'task-failed': scores[0] > -1 && scores[0] < 6}">
         <ion-icon slot="start" [color]="scores[0] == '-1' ? medium : dark" name="happy" style="font-size: 300%"></ion-icon>
         <div>Name and Face</div>
       </ion-card>
 
-      <ion-card (click)="task = Task.WHOS_NEW" button="true" [ngClass]="{'task-done': scores[1] > 6, 'task-failed': scores[1] > -1 && scores[1] < 6}">
+      <ion-card (click)="task = Task.WHOS_NEW" button="true" [ngClass]="{'task-done': scores[1] >= 6, 'task-failed': scores[1] > -1 && scores[1] < 6}">
         <ion-icon slot="start" [color]="scores[1] == '-1' ? medium : dark" name="person-add" style="font-size: 300%"></ion-icon>
         <div>Who's New?</div>
       </ion-card>
 
-      <ion-card (click)="task = Task.MEMORY" button="true" [ngClass]="{'task-done': scores[2] > 6, 'task-failed': scores[2] > -1 && scores[2] < 6}">
+      <ion-card (click)="task = Task.MEMORY" button="true" [ngClass]="{'task-done': scores[2] >= 6, 'task-failed': scores[2] > -1 && scores[2] < 6}">
         <ion-icon slot="start" [color]="scores[2] == '-1' ? medium : dark" name="grid" style="font-size: 300%"></ion-icon>
         <div>Memory Match</div>
       </ion-card>
 
-      <ion-card (click)="task = Task.SHUFFLE" button="true" [ngClass]="{'task-done': scores[3] > 6, 'task-failed': scores[3] > -1 && scores[3] < 6}">
+      <ion-card (click)="task = Task.SHUFFLE" button="true" [ngClass]="{'task-done': scores[3] >= 6, 'task-failed': scores[3] > -1 && scores[3] < 6}">
         <ion-icon slot="start" [color]="scores[3] == '-1' ? medium : dark" name="swap" style="font-size: 300%"></ion-icon>
         <div>Shuffle</div>
       </ion-card>
