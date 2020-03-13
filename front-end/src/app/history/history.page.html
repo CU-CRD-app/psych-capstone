@@ -3,6 +3,7 @@
     <ion-title>
       History
     </ion-title>
+    <ion-icon *ngIf="task == null" slot="start" color="medium" name="arrow-back" style="margin-left: 10px; height: 30px; cursor: pointer" routerLink="/dashboard" routerDirection="backward"></ion-icon>
   </ion-toolbar>
 </ion-header>
 

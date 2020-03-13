@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
   	this.popup = Popup.WHY;
   }
 
-  BackLogin() {
+  BackHome() {
     this.popup = Popup.HOME;
   }
 }

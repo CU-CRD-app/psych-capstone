@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   templateUrl: 'history.page.html',
   styleUrls: ['history.page.scss']
 })
-export class historyPage {
+export class HistoryPage {
 
   constructor() {}
 

@@ -1,6 +1,6 @@
 import { Component, ViewChildren } from '@angular/core';
 import { ModulesPage } from '../modules/modules.page';
-import { stringify } from '@angular/compiler/src/util';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,7 +10,7 @@ import { stringify } from '@angular/compiler/src/util';
 export class DashboardPage {
   @ViewChildren('modules') tabRef: ModulesPage;
 
-  constructor() {}
+  constructor(public alertController : AlertController) {}
 
   ngAfterViewInit() {
     this.viewReady = true;
@@ -27,5 +27,29 @@ export class DashboardPage {
     if (this.viewReady) {
       return this.tabRef.stage != this.tabRef.Stage.START && this.tabRef.stage != this.tabRef.Stage.DONE;
     }
+  }
+
+  async logoutAlert() {
+    const alert = await this.alertController.create({
+      header: 'Logout',
+      message: 'Do you want to logout?',
+      buttons: [
+        {
+          text: 'Cancel'
+        },
+        {
+          text: 'Logout',
+          handler: () => {
+            this.logout();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  logout() {
+    this.loggedIn = false;
   }
 }

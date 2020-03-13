@@ -11,12 +11,7 @@ import { LoginComponent } from '../login/login.component';
     IonicModule,
     CommonModule,
     FormsModule,
-    RouterModule.forChild([
-      {
-        path: '',
-        component: DashboardPage
-      }
-    ])
+    RouterModule.forChild([{path: '', component: DashboardPage}])
   ],
   declarations: [DashboardPage, LoginComponent]
 })

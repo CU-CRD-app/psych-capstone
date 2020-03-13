@@ -3,12 +3,14 @@
   <app-login *ngIf="!loggedIn" (finished)="loggedIn = true"></app-login>
 
   <div *ngIf="loggedIn">
+
     <ion-header>
-      <ion-toolbar style="border-bottom-width: medium; border-bottom-style: solid; border-bottom-color:dodgerblue">
+      <ion-toolbar style="border-bottom-width: medium; border-bottom-style: solid; border-bottom-color: dodgerblue">
         <ion-title>Dashboard</ion-title>
+        <ion-icon slot="end" color="medium" name="contact" style="margin-right: 10px; height: 30px; cursor: pointer" (click)="logoutAlert()"></ion-icon>
       </ion-toolbar>
     </ion-header>
-    
+
     <h1><b>Welcome, {{username}}</b></h1>
 
     <ion-grid>
@@ -22,7 +24,7 @@
         </div>
 
         <ion-col>
-          <ion-button color="success" href="/modules" style="width: 100%; height: 150px; font-size: 150%">
+          <ion-button color="success" routerLink="/train" routerDirection="forward" style="width: 100%; height: 150px; font-size: 150%">
             <div>Train</div>
             <ion-icon name="fitness"></ion-icon>
           </ion-button>
@@ -36,7 +38,7 @@
         </ion-col>
 
         <ion-col>
-          <ion-button href="/history" style="width: 100%; height: 150px; font-size: 150%">
+          <ion-button routerLink="/history" routerDirection="forward" style="width: 100%; height: 150px; font-size: 150%">
             <div>History</div>
             <ion-icon name="analytics"></ion-icon>
           </ion-button>
@@ -45,5 +47,7 @@
       </ion-row>
 
     </ion-grid>
+
   </div>
+
 </ion-content>
