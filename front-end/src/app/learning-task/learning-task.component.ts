@@ -19,7 +19,7 @@ export class LearningTaskComponent implements OnInit {
 
   progress : number = 0;
 
-  currentFace : string; // = `../../assets/sample-faces/${this.progress}.png`;
+  currentFace : string;
   currentName : string;
 
   changeCard(direction : string) {
@@ -28,7 +28,7 @@ export class LearningTaskComponent implements OnInit {
     } else {
       this.progress--;
     }
-    this.currentFace = this.facePaths[this.progress];//`../../assets/sample-faces/${this.progress}.png`;
+    this.currentFace = this.facePaths[this.progress];
     this.currentName = this.setNames[this.progress];
   }
 

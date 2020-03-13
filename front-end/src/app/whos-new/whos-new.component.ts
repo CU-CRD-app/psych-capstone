@@ -43,7 +43,7 @@ export class WhosNewComponent implements OnInit {
   res_correct : boolean = false;
 
   addNewFace() {
-      this.new_name = "./../../assets/sample-faces/CFD-BM-045-004-N.png"
+      this.new_name = "assets/sample-faces/CFD-BM-045-004-N.png"
       return this.new_name;
   }
   

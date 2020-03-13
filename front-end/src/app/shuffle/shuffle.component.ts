@@ -27,7 +27,7 @@ export class ShuffleComponent implements OnInit {
   score : number = 0;
   memorizeCounter : number = 0;
   stage : Stage = Stage.START;
-  mask : string = '../../assets/background_imgs/mask1.png';
+  mask : string = 'assets/background_imgs/mask1.png';
 
   currentFace : string;
   selectedFace : string;

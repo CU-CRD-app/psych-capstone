@@ -26,7 +26,7 @@ export class SameDifferentComponent implements OnInit {
   progress : number = 0;
   score : number = 0;
   stage : Stage = Stage.MEMORIZE;
-  mask : string = '../../assets/background_imgs/mask1.png';
+  mask : string = 'assets/background_imgs/mask1.png';
 
   correctSelection : boolean;
   currentFace : string;

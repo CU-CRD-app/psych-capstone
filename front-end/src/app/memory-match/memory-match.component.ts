@@ -36,7 +36,7 @@ export class MemoryMatchComponent implements OnInit {
   promise : number = 0;
   memorizeTime : number = 10;
   timeRemaining : number = null;
-  mask : string = '../../assets/background_imgs/mask1.png';
+  mask : string = 'assets/background_imgs/mask1.png';
 
   randomFaces : string[];
   correctFaces : string[] = [];
