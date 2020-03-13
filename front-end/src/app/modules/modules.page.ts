@@ -15,15 +15,15 @@ const helpMessages = {
   sameDifferent: ["Same-Different", "You will be shown one face and then another, and you will decide whether they are the same."]
 }
 
-enum Stage { LOGIN, START, TRAINING, ASSESSMENT, DONE }
+enum Stage { START, TRAINING, ASSESSMENT, DONE }
 enum Task { LEARNING, NAME_FACE, WHOS_NEW, MEMORY, SHUFFLE, FORCED_CHOICE, SAME_DIFFERENT }
 
 @Component({
-  selector: 'app-tab1',
-  templateUrl: 'tab1.page.html',
-  styleUrls: ['tab1.page.scss']
+  selector: 'app-modules',
+  templateUrl: 'modules.page.html',
+  styleUrls: ['modules.page.scss']
 })
-export class Tab1Page {
+export class ModulesPage {
 
   constructor(public alertController: AlertController) {
 
@@ -41,7 +41,7 @@ export class Tab1Page {
 
   Stage = Stage;
   Task = Task;
-  stage : Stage = Stage.LOGIN;
+  stage : Stage = Stage.START;
   task : Task = null;
 
   numFaces : number = 8; // hardcoded for now, happen to be 8 practice faces.
@@ -50,7 +50,6 @@ export class Tab1Page {
   trainingFacePaths : string[] = [];
   assessmentFacePaths : string[] = [];
 
-  loggedIn : boolean = false;
   learningDone : boolean = false;
   scores : number[] = [-1, -1, -1, -1, -1, -1];
 
@@ -61,9 +60,7 @@ export class Tab1Page {
 
   iterateStage() {
     this.task = null;
-    if (!this.loggedIn) {
-      this.stage = Stage.LOGIN;
-    } else if (!this.learningDone) {
+    if (!this.learningDone) {
       this.stage = Stage.START;
     } else if (this.scores[0] < 6 || this.scores[1] < 6 || this.scores[2] < 6 || this.scores[3] < 6) {
       this.stage = Stage.TRAINING;
