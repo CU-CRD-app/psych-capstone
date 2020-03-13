@@ -19,11 +19,11 @@ enum Stage { START, TRAINING, ASSESSMENT, DONE }
 enum Task { LEARNING, NAME_FACE, WHOS_NEW, MEMORY, SHUFFLE, FORCED_CHOICE, SAME_DIFFERENT }
 
 @Component({
-  selector: 'app-modules',
-  templateUrl: 'modules.page.html',
-  styleUrls: ['modules.page.scss']
+  selector: 'app-training',
+  templateUrl: 'training.page.html',
+  styleUrls: ['training.page.scss']
 })
-export class ModulesPage {
+export class TrainingPage {
 
   constructor(public alertController: AlertController) {
 

@@ -1,5 +1,5 @@
 import { Component, ViewChildren } from '@angular/core';
-import { ModulesPage } from '../modules/modules.page';
+import { TrainingPage } from '../training/training.page';
 import { AlertController } from '@ionic/angular';
 
 @Component({
@@ -8,7 +8,7 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['dashboard.page.scss']
 })
 export class DashboardPage {
-  @ViewChildren('modules') tabRef: ModulesPage;
+  @ViewChildren('training') tabRef: TrainingPage;
 
   constructor(public alertController : AlertController) {}
 

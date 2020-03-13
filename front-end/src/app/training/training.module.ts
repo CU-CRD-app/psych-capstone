@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ModulesPage } from './modules.page';
+import { TrainingPage } from './training.page';
 import { LearningTaskComponent } from '../learning-task/learning-task.component';
 import { NameFaceComponent } from '../name-face/name-face.component';
 import { WhosNewComponent } from '../whos-new/whos-new.component';
@@ -17,10 +17,10 @@ import { SameDifferentComponent } from '../same-different/same-different.compone
     IonicModule,
     CommonModule,
     FormsModule,
-    RouterModule.forChild([{ path: '', component: ModulesPage }])
+    RouterModule.forChild([{ path: '', component: TrainingPage }])
   ],
   declarations: [
-    ModulesPage,
+    TrainingPage,
     LearningTaskComponent,
     NameFaceComponent,
     WhosNewComponent,
@@ -30,4 +30,4 @@ import { SameDifferentComponent } from '../same-different/same-different.compone
     SameDifferentComponent
   ]
 })
-export class ModulesPageModule {}
+export class TrainingPageModule {}
