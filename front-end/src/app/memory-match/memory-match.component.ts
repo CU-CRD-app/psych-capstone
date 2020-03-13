@@ -34,6 +34,7 @@ export class MemoryMatchComponent implements OnInit {
   stage : Stage = Stage.START;
   score : number = 0;
   promise : number = 0;
+  memorizeTime : number = 10;
   timeRemaining : number = null;
   mask : string = '../../assets/background_imgs/mask1.png';
 
@@ -102,12 +103,12 @@ export class MemoryMatchComponent implements OnInit {
   }
 
   startMemorizeTimer() {
-    this.timeRemaining = 10;
+    this.timeRemaining = this.memorizeTime;
     this.stage = Stage.MEMORIZE;
     interval(1000).subscribe(() => {
       this.timeRemaining--;
     });
-    timer(10000).subscribe(() => {
+    timer(this.timeRemaining * 1000).subscribe(() => {
       if (this.stage == Stage.MEMORIZE) {
         this.startMaskTimer();
       }

@@ -140,7 +140,7 @@ export class Tab1Page {
     let facePaths : string[] = [];
 
     for (let num of faceNums) { // creates array of faces in random order to be passed to components
-      facePaths.push(`./../../assets/sample-faces/${num}.png`);
+      facePaths.push("assets/sample-faces/" + num + ".png");
     }
 
     return facePaths

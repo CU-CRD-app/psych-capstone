@@ -22,7 +22,7 @@ export class ShuffleComponent implements OnInit {
 
   Stage = Stage;
   numberOfOptions : number = 4; // Hard coded for now
-  memorizeTime : number = 8;
+  memorizeTime : number = 10;
   progress : number = 0;
   score : number = 0;
   memorizeCounter : number = 0;

@@ -2,7 +2,7 @@
 
   <div *ngIf="stage != Stage.DONE" style="text-align:center">
 
-    <h5 *ngIf="stage == Stage.START">Memorize the face order: {{memorizeTime}}</h5>
+    <h5 *ngIf="stage == Stage.START">Memorize the face placement: {{memorizeTime}}</h5>
     <h5 *ngIf="stage == Stage.MEMORIZE">Memorize the face order: {{timeRemaining}}</h5>
     <h5 *ngIf="stage == Stage.MASK">Hold the faces in your mind...</h5>
     <h5 *ngIf="stage == Stage.SELECT">Rearrange the faces</h5>

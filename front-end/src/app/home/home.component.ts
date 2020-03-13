@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
   Popup = Popup;
   popup : Popup = Popup.NULL;
 
-  login : string = "/assets/icon/log-in.svg";
+  login : string = "assets/icon/log-in.svg";
   help : string = "help-circle-outline";
 
   Login() {
