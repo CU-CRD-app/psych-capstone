@@ -112,7 +112,9 @@ export class ShuffleComponent implements OnInit {
       takeUntil(timer(this.timeRemaining * 1000))
     )
     .subscribe(() => {
-      this.timeRemaining--;
+      if (counter == this.memorizeCounter) {
+        this.timeRemaining--;
+      }
     });
   }
 
