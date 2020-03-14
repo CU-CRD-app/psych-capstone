@@ -39,8 +39,8 @@
 		</ion-row>
 		<ion-row>
 			<ion-col style="text-align: center">
-		  		<ion-button color="success" *ngIf="progress==7" (click)="finished.emit()">Finish</ion-button>
-		  		<ion-button color="success" *ngIf="progress!=7" disabled=true>Finish</ion-button>
+		  		<ion-button color="success" *ngIf="seenAll" (click)="finished.emit()">Finish</ion-button>
+		  		<ion-button color="success" *ngIf="!seenAll" disabled=true>Finish</ion-button>
 		  	</ion-col>
 		</ion-row>
 	</ion-grid>

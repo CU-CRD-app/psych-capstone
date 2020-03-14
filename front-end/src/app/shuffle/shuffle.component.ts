@@ -38,15 +38,17 @@ export class ShuffleComponent implements OnInit {
 
   clickDone() {
     let correct : boolean = true;
+    let score : number = 1;
     this.selectedFace = null;
     for (let i = 0; i < this.randomFaceOrder.length; i++) {
       if (this.randomFaceOrder[i] != this.correctFaceOrder[i]) {
         correct = false;
+        score -= 1/this.numberOfOptions;
       }
     }
+    this.score += score;
     if (correct) {
       this.stage = Stage.CORRECT;
-      this.score++;
     } else {
       this.stage = Stage.INCORRECT;
       this.feedbackToggle = true;
@@ -57,10 +59,12 @@ export class ShuffleComponent implements OnInit {
     this.progress++;
     this.stage = this.progress == 8 ? Stage.DONE : Stage.MEMORIZE;
     this.selectedFace = null;
-    this.currentFace = this.facePaths[this.progress];
-    this.makeRandomFaces();
     if (this.stage != Stage.DONE) {
+      this.currentFace = this.facePaths[this.progress];
+      this.makeRandomFaces();
       this.startMemorizeTimer();
+    } else {
+      this.score = Math.ceil(this.score);
     }
   }
 
@@ -122,7 +126,7 @@ export class ShuffleComponent implements OnInit {
   getSrc(index : number) {
     if (this.stage == Stage.MASK) {
       return this.mask;
-    } else if (this.stage == Stage.SELECT || (this.stage == Stage.INCORRECT && !this.feedbackToggle)) {
+    } else if (this.stage == Stage.SELECT || (this.stage == Stage.INCORRECT && this.feedbackToggle)) {
       return this.randomFaceOrder[index];
     } else {
       return this.correctFaceOrder[index];

@@ -9,8 +9,8 @@ const helpMessages = {
   learning: ["Meet Today's Faces", "Memorize these faces and their names.\nYou will use them in the next tasks."],
   nameAndFace: ["Name and Face", "Select the name that goes to the face.\nThe names are shuffled after each selection."],
   whosNew: ["Who's New?", "Select the face that wasn't part of the original set."],
-  memory: ["Memory Match", "Memorize the placement of the face pairs, then match them after they are turned over."],
-  shuffle: ["Shuffle", "Memorize the order of the cards, then put them back in order after they are shuffled."],
+  memory: ["Memory Match", "Memorize the placement of the face pairs in the given time, then match them after they are turned over."],
+  shuffle: ["Shuffle", "Memorize the order of the cards in the given time, then put them back in order after they are shuffled."],
   forcedChoice: ["Forced Choice", "You will be shown one face to memorize, and then a set of faces.\nYou will be asked to choose which face in the set matches the original"],
   sameDifferent: ["Same-Different", "You will be shown one face and then another, and you will decide whether they are the same."]
 }

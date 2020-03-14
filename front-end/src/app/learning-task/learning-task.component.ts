@@ -22,6 +22,8 @@ export class LearningTaskComponent implements OnInit {
   currentFace : string;
   currentName : string;
 
+  seenAll : boolean = false;
+
   changeCard(direction : string) {
     if (direction == 'next') {
       this.progress++;
@@ -30,6 +32,9 @@ export class LearningTaskComponent implements OnInit {
     }
     this.currentFace = this.facePaths[this.progress];
     this.currentName = this.setNames[this.progress];
+    if (this.progress == 7) {
+      this.seenAll = true;
+    }
   }
 
 }

@@ -54,18 +54,16 @@
       <div style="text-align: center; margin-bottom: 15px">
         <ion-button *ngIf="stage == Stage.START" style="width:130px" (click)="startMemorizeTimer()">Reveal</ion-button>
         <ion-button *ngIf="stage == Stage.MEMORIZE" style="width:130px" (click)="startMaskTimer()">Next</ion-button>
-        <ion-button *ngIf="(stage == Stage.SELECT || stage == Stage.INCORRECT) && correctFaces.length < facePaths.length" style="width:130px" disabled="true" color="success">Done</ion-button>
-        <ion-button *ngIf="stage == Stage.CORRECT && correctFaces.length < facePaths.length" style="width:130px" disabled="true">Done</ion-button>
-        <ion-button *ngIf="correctFaces.length == facePaths.length && stage != Stage.CORRECT" style="width:130px" (click)="clickDone()" color="success">Done</ion-button>
-        <ion-button *ngIf="correctFaces.length == facePaths.length && stage == Stage.CORRECT" style="width:130px" (click)="clickDone()">Done</ion-button>
+        <ion-button *ngIf="stage != Stage.MEMORIZE && stage != Stage.START" style="width:130px" (click)="clickDone()" [color]="stage != Stage.CORRECT ? 'success' : 'primary'" [disabled]="correctFaces.length == facePaths.length ? 'false' : 'true'">Done</ion-button>
       </div>
   
     </div>
   
     <!--Score page-->
-    <div *ngIf="stage == Stage.DONE" style="text-align: center; color: white; margin-top: 180px">
+    <div *ngIf="stage == Stage.DONE" style="text-align: center; color: white; margin-top: 150px">
       <h1>Your score: {{score}}/{{facePaths.length}}</h1>
-      <ion-button color="success" (click)="finished.emit(score)">Finish</ion-button>
+      <h6 *ngIf="score <= 6" style="margin: 20px">You need a score of at least 6/8 to pass this module</h6>
+      <ion-button [color]="score >= 6 ? 'success' : 'danger'" (click)="finished.emit(score)">Finish</ion-button>
     </div>
   
   </ion-content>
