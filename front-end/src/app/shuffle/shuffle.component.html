@@ -15,13 +15,13 @@
       <ion-row>
 
         <ion-col>
-          <ion-card (click)="clickCard(0)" button="true" class="grid-card" [ngClass]="{'wrong-card': stage == Stage.INCORRECT && feedbackToggle && randomFaceOrder[0] != correctFaceOrder[0]}">
+          <ion-card (click)="clickCard(0)" button="true" class="grid-card" [ngClass]="{'selected-card': stage != Stage.START && getSrc(0) == selectedFace, 'wrong-card': stage == Stage.INCORRECT && feedbackToggle && randomFaceOrder[0] != correctFaceOrder[0]}">
             <img *ngIf="stage != Stage.START" [src]="getSrc(0)"/>
           </ion-card>
         </ion-col>
 
         <ion-col>
-          <ion-card (click)="clickCard(1)" button="true" class="grid-card" [ngClass]="{'wrong-card': stage == Stage.INCORRECT && feedbackToggle && randomFaceOrder[1] != correctFaceOrder[1]}">
+          <ion-card (click)="clickCard(1)" button="true" class="grid-card" [ngClass]="{'selected-card': stage != Stage.START && getSrc(1) == selectedFace, 'wrong-card': stage == Stage.INCORRECT && feedbackToggle && randomFaceOrder[1] != correctFaceOrder[1]}">
             <img *ngIf="stage != Stage.START" [src]="getSrc(1)"/>
           </ion-card>
         </ion-col>
@@ -30,13 +30,13 @@
       <ion-row>
 
         <ion-col>
-          <ion-card (click)="clickCard(2)" button="true" class="grid-card" [ngClass]="{'wrong-card': stage == Stage.INCORRECT && feedbackToggle && randomFaceOrder[2] != correctFaceOrder[2]}">
+          <ion-card (click)="clickCard(2)" button="true" class="grid-card" [ngClass]="{'selected-card': stage != Stage.START && getSrc(2) == selectedFace, 'wrong-card': stage == Stage.INCORRECT && feedbackToggle && randomFaceOrder[2] != correctFaceOrder[2]}">
             <img *ngIf="stage != Stage.START" [src]="getSrc(2)"/>
           </ion-card>
         </ion-col>
 
         <ion-col>
-          <ion-card (click)="clickCard(3)" button="true" class="grid-card" [ngClass]="{'wrong-card': stage == Stage.INCORRECT && feedbackToggle && randomFaceOrder[3] != correctFaceOrder[3]}">
+          <ion-card (click)="clickCard(3)" button="true" class="grid-card" [ngClass]="{'selected-card': stage != Stage.START && getSrc(3) == selectedFace, 'wrong-card': stage == Stage.INCORRECT && feedbackToggle && randomFaceOrder[3] != correctFaceOrder[3]}">
             <img *ngIf="stage != Stage.START" [src]="getSrc(3)"/>
           </ion-card>
         </ion-col>
