@@ -1,5 +1,4 @@
-import { Component, ViewChildren } from '@angular/core';
-import { TrainingPage } from '../training/training.page';
+import { Component } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 
 @Component({
@@ -8,9 +7,10 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['dashboard.page.scss']
 })
 export class DashboardPage {
-  @ViewChildren('training') tabRef: TrainingPage;
 
-  constructor(public alertController : AlertController) {}
+  constructor(public alertController : AlertController) {
+    // set login creds
+  }
 
   ngAfterViewInit() {
     this.viewReady = true;
@@ -22,12 +22,6 @@ export class DashboardPage {
   username : string = 'USERNAME'
   level : number = 1;
   progressToday : number = 0.5;
-  
-  inTraining() {
-    if (this.viewReady) {
-      return this.tabRef.stage != this.tabRef.Stage.START && this.tabRef.stage != this.tabRef.Stage.DONE;
-    }
-  }
 
   async logoutAlert() {
     const alert = await this.alertController.create({

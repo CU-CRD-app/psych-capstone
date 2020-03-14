@@ -31,12 +31,7 @@ export class TrainingPage {
     this.assessmentFacePaths = this.generateShuffledFaces(8);
     this.setNames = this.generateRandomNames();
 
-    // Pull user record, if they have completed today's tasks then stage = done
-    let userIsDone = false; // http request to database
-    if (userIsDone) { // This may change if we allow users to break in the middle of training
-      this.stage = Stage.DONE;
-    }
-
+    // get today's progress from the database
   }
 
   Stage = Stage;
@@ -161,5 +156,26 @@ export class TrainingPage {
     if (score > 3) {
       this.iterateStage();
     }
+    // save today's progress to database
+  }
+
+  async taskExitAlert() {
+    const alert = await this.alertController.create({
+      header: 'Quit',
+      message: 'Do you want to quit? Your progress on this task will be lost.',
+      buttons: [
+        {
+          text: 'Cancel'
+        },
+        {
+          text: 'Quit',
+          handler: () => {
+            this.task = null;
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 }
