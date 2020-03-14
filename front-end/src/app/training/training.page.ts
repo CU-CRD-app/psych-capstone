@@ -153,7 +153,7 @@ export class TrainingPage {
   finished(score : number, task : number) {
     this.scores[task] = Math.max(score, this.scores[task]);
     this.task = null;
-    if (score > 3) {
+    if (task > 3) {
       this.iterateStage();
     }
     // save today's progress to database

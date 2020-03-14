@@ -16,7 +16,7 @@
       <h1><b>Welcome</b></h1>
       <h5>Are you ready to train?</h5>
       <br>
-      <ion-button color="success" style="width:130px" (click)="stage = Stage.TRAINING; task = Task.LEARNING">Start</ion-button>
+      <ion-button color="success" style="width:130px" (click)="task = Task.LEARNING">Start</ion-button>
     </div>
 
     <!--Learning tasks-->
@@ -80,7 +80,7 @@
   </div>
 
   <!--Learning Task-->
-  <app-learning-task *ngIf="task == Task.LEARNING" [setNames]="setNames" [facePaths]="trainingFacePaths" (finished)="learningDone = true; task = null"></app-learning-task>
+  <app-learning-task *ngIf="task == Task.LEARNING" [setNames]="setNames" [facePaths]="trainingFacePaths" (finished)="learningDone = true; iterateStage()"></app-learning-task>
   <!--Name and Face-->
   <app-name-face *ngIf="task == Task.NAME_FACE" [setNames]="setNames" [facePaths]="trainingFacePaths" (finished)="finished($event, 0)"></app-name-face>
   <!--Who's New?-->
