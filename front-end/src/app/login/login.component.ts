@@ -4,11 +4,11 @@ import { timer } from 'rxjs';
 enum Popup { NULL, HOME, LOGIN, REGISTER, WHY }
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
 })
-export class HomeComponent implements OnInit {
+export class LoginComponent implements OnInit {
   @Output() finished = new EventEmitter<void>();
 
   constructor() { }
