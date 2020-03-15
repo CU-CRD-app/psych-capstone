@@ -70,7 +70,7 @@ export class ShuffleComponent implements OnInit {
     }
   }
 
-  isFeedback() {
+  showFeedback() {
     return this.stage == Stage.CORRECT || this.stage == Stage.INCORRECT;
   }
 

@@ -32,7 +32,7 @@ export class ForcedChoiceComponent implements OnInit {
   randomFaces : any[];
 
   selectFace(facePath : string) {
-    if (!this.isFeedback()) {
+    if (!this.showFeedback()) {
       if (facePath == this.currentFace) {
         this.stage = Stage.CORRECT;
       } else {
@@ -54,7 +54,7 @@ export class ForcedChoiceComponent implements OnInit {
     this.makeRandomFaces();
   }
 
-  isFeedback() {
+  showFeedback() {
     return this.stage == Stage.CORRECT || this.stage == Stage.INCORRECT;
   }
 

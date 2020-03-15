@@ -1,4 +1,4 @@
-<ion-content [ngClass]="{'default': !isFeedback(), 'success': stage == Stage.CORRECT, 'failure': stage == Stage.INCORRECT}">
+<ion-content [ngClass]="{'default': !showFeedback(), 'success': stage == Stage.CORRECT, 'failure': stage == Stage.INCORRECT}">
 
   <ion-progress-bar style="margin-top: 0px" value={{progressPercent}}></ion-progress-bar>
 
@@ -15,7 +15,7 @@
 
     <ion-button *ngIf="stage == Stage.SELECT" style="width:130px" (click)="selectFace(false)" color="danger">No</ion-button>
     <ion-button *ngIf="stage == Stage.SELECT" style="width:130px" (click)="selectFace(true)" color="success">Yes</ion-button>
-    <ion-button *ngIf="stage == Stage.MEMORIZE || isFeedback()" style="width:130px" (click)="clickCard()">Next</ion-button>
+    <ion-button *ngIf="stage == Stage.MEMORIZE || showFeedback()" style="width:130px" (click)="clickCard()">Next</ion-button>
 
   </div>
 

@@ -56,12 +56,12 @@ export class SameDifferentComponent implements OnInit {
   clickCard() {
     if (this.stage == Stage.MEMORIZE) {
       this.startMaskTimer();
-    } else if (this.isFeedback()) {
+    } else if (this.showFeedback()) {
       this.nextFace()
     }
   }
 
-  isFeedback() {
+  showFeedback() {
     return this.stage == Stage.CORRECT || this.stage == Stage.INCORRECT;
   }
 
