@@ -59,7 +59,7 @@ export class ShuffleComponent implements OnInit {
 
   nextFace() {
     this.progress++;
-    this.stage = this.progress == 8 ? Stage.DONE : Stage.MEMORIZE;
+    this.stage = this.progress > 7 ? Stage.DONE : Stage.MEMORIZE;
     this.selectedFace = null;
     if (this.stage != Stage.DONE) {
       this.currentFace = this.facePaths[this.progress];

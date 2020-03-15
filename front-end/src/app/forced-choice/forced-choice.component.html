@@ -25,13 +25,13 @@
         <ion-row>
 
           <ion-col>
-            <ion-card (click)="isFeedback() ? nextFace() : selectFace(randomFaces[0])" button="true" class="grid-card" [ngClass]="{'selected-card': isFeedback() && randomFaces[0] != currentFace && randomFaces[0] == selectedFace, 'disabled-card': isFeedback() && randomFaces[0] != currentFace}">
+            <ion-card (click)="selectFace(randomFaces[0])" button="true" class="grid-card" [ngClass]="{'selected-card': isFeedback() && randomFaces[0] != currentFace && randomFaces[0] == selectedFace, 'disabled-card': isFeedback() && randomFaces[0] != currentFace}">
               <img [src]="randomFaces[0]"/>
             </ion-card>
           </ion-col>
 
           <ion-col>
-            <ion-card (click)="isFeedback() ? nextFace() : selectFace(randomFaces[1])" button="true" class="grid-card" [ngClass]="{'selected-card': isFeedback() && randomFaces[1] != currentFace && randomFaces[1] == selectedFace, 'disabled-card': isFeedback() && randomFaces[1] != currentFace}">
+            <ion-card (click)="selectFace(randomFaces[1])" button="true" class="grid-card" [ngClass]="{'selected-card': isFeedback() && randomFaces[1] != currentFace && randomFaces[1] == selectedFace, 'disabled-card': isFeedback() && randomFaces[1] != currentFace}">
               <img [src]="randomFaces[1]"/>
             </ion-card>
           </ion-col>
@@ -40,13 +40,13 @@
         <ion-row>
 
           <ion-col>
-            <ion-card (click)="isFeedback() ? nextFace() : selectFace(randomFaces[2])" button="true" class="grid-card" [ngClass]="{'selected-card': isFeedback() && randomFaces[2] != currentFace && randomFaces[2] == selectedFace, 'disabled-card': isFeedback() && randomFaces[2] != currentFace}">
+            <ion-card (click)="selectFace(randomFaces[2])" button="true" class="grid-card" [ngClass]="{'selected-card': isFeedback() && randomFaces[2] != currentFace && randomFaces[2] == selectedFace, 'disabled-card': isFeedback() && randomFaces[2] != currentFace}">
               <img [src]="randomFaces[2]"/>
             </ion-card>
           </ion-col>
 
           <ion-col>
-            <ion-card (click)="isFeedback() ? nextFace() : selectFace(randomFaces[3])" button="true" class="grid-card" [ngClass]="{'selected-card': isFeedback() && randomFaces[3] != currentFace && randomFaces[3] == selectedFace, 'disabled-card': isFeedback() && randomFaces[3] != currentFace}">
+            <ion-card (click)="selectFace(randomFaces[3])" button="true" class="grid-card" [ngClass]="{'selected-card': isFeedback() && randomFaces[3] != currentFace && randomFaces[3] == selectedFace, 'disabled-card': isFeedback() && randomFaces[3] != currentFace}">
               <img [src]="randomFaces[3]"/>
             </ion-card>
           </ion-col>

@@ -49,7 +49,7 @@
 
   </div>
 
-  <div *ngIf="progress == 8" style="text-align: center; color: white; margin-top: 150px">
+  <div *ngIf="progress > 7" style="text-align: center; color: white; margin-top: 150px">
     <h1>Your score: {{score}}/{{facePaths.length}}</h1>
     <h6 *ngIf="score <= 6" style="margin: 20px">You need a score of at least 6/8 to pass this module</h6>
     <ion-button [color]="score >= 6 ? 'success' : 'danger'" (click)="finished.emit(score)">Finish</ion-button>

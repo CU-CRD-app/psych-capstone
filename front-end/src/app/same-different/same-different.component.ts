@@ -45,7 +45,7 @@ export class SameDifferentComponent implements OnInit {
 
   nextFace() {
     this.progress++;
-    this.stage = this.progress == 8 ? Stage.DONE : Stage.MEMORIZE;
+    this.stage = this.progress > 7 ? Stage.DONE : Stage.MEMORIZE;
     this.currentFace = this.facePaths[this.progress];
     this.randomFace = this.currentFace;
     if (Math.random() > .5) {

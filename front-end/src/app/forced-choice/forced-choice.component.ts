@@ -32,21 +32,23 @@ export class ForcedChoiceComponent implements OnInit {
   randomFaces : any[];
 
   selectFace(facePath : string) {
-    if (this.stage != Stage.CORRECT && this.stage != Stage.INCORRECT) {
+    if (!this.isFeedback()) {
       if (facePath == this.currentFace) {
-        this.score++;
         this.stage = Stage.CORRECT;
       } else {
         this.stage = Stage.INCORRECT;
       }
       this.selectedFace = facePath;
+      this.progressPercent = (this.progress + 1)/this.facePaths.length;
     }
-    this.progressPercent = (this.progress + 1)/this.facePaths.length;
   }
 
   nextFace() {
     this.progress++;
-    this.stage = this.progress == 8 ? Stage.DONE : Stage.MEMORIZE;
+    if (this.stage == Stage.CORRECT) { // Security measure against clicking too quickly
+      this.score++;
+    }
+    this.stage = this.progress > 7 ? Stage.DONE : Stage.MEMORIZE;
     this.selectedFace = null;
     this.currentFace = this.facePaths[this.progress];
     this.makeRandomFaces();
@@ -72,7 +74,7 @@ export class ForcedChoiceComponent implements OnInit {
   startMaskTimer() {
     this.stage = Stage.MASK;
     timer(2000).subscribe(() => {
-        this.stage = Stage.SELECT;
+      this.stage = Stage.SELECT;
     });
   }
 }
