@@ -22,7 +22,9 @@
 .grid-card {
     display: inline-block;
     margin-bottom: 20px;
-    margin-top: 15px
+    margin-top: 15px;
+    height: 125px;
+    width: 100px;
 }
 
 ion-card {
@@ -31,12 +33,17 @@ ion-card {
 }
 
 img {
-    height: 100px;
-    width: 75px;
-    margin: 15px;
+    height: 95px;
+    width: 70px;
+    margin: 15px auto;
 }
 
 h3 {
+    text-align:center;
+    color: white;
+}
+
+h5 {
     text-align:center;
     color: white;
 }

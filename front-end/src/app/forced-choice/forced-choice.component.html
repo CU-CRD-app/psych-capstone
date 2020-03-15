@@ -6,16 +6,16 @@
       <h3 *ngIf="stage == Stage.MEMORIZE">Memorize the face</h3>
       <h3 *ngIf="stage == Stage.MASK">Hold the face in your mind...</h3>
       <ion-card button="true" (click)="startMaskTimer()">
-        <img style="height: 270px; width: 190px; margin: 20px auto;" [src]="stage == Stage.MEMORIZE ? currentFace : mask"/>
+        <img style="height: 270px; margin: 20px auto;" [src]="stage == Stage.MEMORIZE ? currentFace : mask" [ngStyle]="{'width': stage == Stage.MASK ? '225px' : '190px'}"/>
       </ion-card>
     </div>
 
     <!--Choosing the face and feedback-->
     <div *ngIf="stage != Stage.MEMORIZE && stage != Stage.MASK" style="text-align:center">
 
-      <h3 *ngIf="stage == Stage.SELECT">Who did you see?</h3>
-      <h3 *ngIf="stage == Stage.CORRECT">Correct!</h3>
-      <h3 *ngIf="stage == Stage.INCORRECT">Incorrect!</h3>
+      <h5 *ngIf="stage == Stage.SELECT">Who did you see?</h5>
+      <h5 *ngIf="stage == Stage.CORRECT">Correct!</h5>
+      <h5 *ngIf="stage == Stage.INCORRECT">Incorrect!</h5>
 
       <ion-grid>
 

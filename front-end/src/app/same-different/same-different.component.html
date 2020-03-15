@@ -7,8 +7,8 @@
     <h3 *ngIf="stage == Stage.SELECT">Is this the same person?</h3>
     <h3 *ngIf="stage == Stage.CORRECT">Correct!</h3>
     <h3 *ngIf="stage == Stage.INCORRECT">Incorrect!</h3>
-    <ion-card button="true" (click)="clickCard()" style="cursor: pointer">
-      <img [src]="getSrc()" style="height:270px; width:190px; margin: 20px auto;"/>
+    <ion-card button="true" (click)="clickCard()">
+      <img [src]="getSrc()" style="height:270px; margin: 20px auto;" [ngStyle]="{'width': stage == Stage.MASK ? '225px' : '190px'}"/>
     </ion-card>
 
     <ion-button *ngIf="stage == Stage.SELECT" style="width:130px" (click)="selectFace(false)" color="danger">No</ion-button>
