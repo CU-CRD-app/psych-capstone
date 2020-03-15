@@ -24,6 +24,7 @@ export class ShuffleComponent implements OnInit {
   numberOfOptions : number = 4; // Hard coded for now
   memorizeTime : number = 10;
   progress : number = 0;
+  progressPercent : number = 0;
   score : number = 0;
   memorizeCounter : number = 0;
   stage : Stage = Stage.START;
@@ -53,6 +54,7 @@ export class ShuffleComponent implements OnInit {
       this.stage = Stage.INCORRECT;
       this.feedbackToggle = true;
     }
+    this.progressPercent = (this.progress + 1)/this.facePaths.length;
   }
 
   nextFace() {

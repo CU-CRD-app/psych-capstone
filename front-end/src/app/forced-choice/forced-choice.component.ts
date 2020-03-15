@@ -22,6 +22,7 @@ export class ForcedChoiceComponent implements OnInit {
   Stage = Stage;
   numberOfOptions = 4; // Hard coded for now
   progress : number = 0;
+  progressPercent : number = 0;
   score : number = 0;
   stage : Stage = Stage.MEMORIZE;
   mask : string = 'assets/background_imgs/mask1.png';
@@ -40,6 +41,7 @@ export class ForcedChoiceComponent implements OnInit {
       }
       this.selectedFace = facePath;
     }
+    this.progressPercent = (this.progress + 1)/this.facePaths.length;
   }
 
   nextFace() {

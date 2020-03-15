@@ -24,6 +24,7 @@ export class SameDifferentComponent implements OnInit {
 
   Stage = Stage;
   progress : number = 0;
+  progressPercent : number = 0;
   score : number = 0;
   stage : Stage = Stage.MEMORIZE;
   mask : string = 'assets/background_imgs/mask1.png';
@@ -39,6 +40,7 @@ export class SameDifferentComponent implements OnInit {
     } else {
       this.stage = Stage.INCORRECT;
     };
+    this.progressPercent = (this.progress + 1)/this.facePaths.length;
   }
 
   nextFace() {

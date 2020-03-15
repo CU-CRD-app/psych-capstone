@@ -18,6 +18,7 @@ export class LearningTaskComponent implements OnInit {
   }
 
   progress : number = 0;
+  progressPercent : number = 0;
 
   currentFace : string;
   currentName : string;
@@ -32,6 +33,9 @@ export class LearningTaskComponent implements OnInit {
     }
     this.currentFace = this.facePaths[this.progress];
     this.currentName = this.setNames[this.progress];
+    if (!this.seenAll) {
+      this.progressPercent = this.progress/(this.facePaths.length - 1);
+    }
     if (this.progress == 7) {
       this.seenAll = true;
     }

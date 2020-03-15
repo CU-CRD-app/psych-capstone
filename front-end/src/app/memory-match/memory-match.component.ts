@@ -42,9 +42,10 @@ export class MemoryMatchComponent implements OnInit {
   correctFaces : string[] = [];
   incorrectFaces : number[] = [];
   selectedFace : number = null;
+  progressPercent : number = 0;
 
   async clickFace(face : number) {
-    if (this.stage != Stage.START && this.stage != Stage.MEMORIZE) { // Waiting for feedback
+    if (this.stage != Stage.START && this.stage != Stage.MEMORIZE && this.stage != Stage.MASK) { // Waiting for feedback
       if (this.stage == Stage.CORRECT || this.stage == Stage.INCORRECT) {
         this.promise++;
         this.selectedFace = null;
@@ -57,6 +58,7 @@ export class MemoryMatchComponent implements OnInit {
 
         } else if (this.randomFaces[face] == this.randomFaces[this.selectedFace]) { // Correct
           this.correctFaces.push(this.randomFaces[face]);
+          this.progressPercent = this.correctFaces.length/this.facePaths.length;
           this.stage = Stage.CORRECT;
           await this.waitForFeedback();
 
@@ -68,6 +70,8 @@ export class MemoryMatchComponent implements OnInit {
           await this.waitForFeedback();
         }
       }
+    } else if (this.stage == Stage.MEMORIZE) {
+      this.startMaskTimer();
     }
   }
 

@@ -1,5 +1,7 @@
 <ion-content [ngClass]="{'default': stage != Stage.CORRECT && stage != Stage.INCORRECT, 'success': stage == Stage.CORRECT, 'failure': stage == Stage.INCORRECT}">
 
+    <ion-progress-bar style="margin-top: 0px" value={{progressPercent}}></ion-progress-bar>
+
     <div *ngIf="stage != Stage.DONE">
     
       <h5 *ngIf="stage == Stage.START">Memorize the face placement: {{memorizeTime}}</h5>
@@ -53,7 +55,7 @@
       <!--Next Buttons-->
       <div style="text-align: center; margin-bottom: 15px">
         <ion-button *ngIf="stage == Stage.START" style="width:130px" (click)="startMemorizeTimer()">Reveal</ion-button>
-        <ion-button *ngIf="stage == Stage.MEMORIZE" style="width:130px" (click)="startMaskTimer()">Next</ion-button>
+        <ion-button *ngIf="stage == Stage.MEMORIZE" style="width:130px" disabled="true">Next</ion-button>
         <ion-button *ngIf="stage != Stage.MEMORIZE && stage != Stage.START" style="width:130px" (click)="clickDone()" [color]="stage != Stage.CORRECT ? 'success' : 'primary'" [disabled]="correctFaces.length == facePaths.length ? 'false' : 'true'">Done</ion-button>
       </div>
   

@@ -28,6 +28,7 @@ export class NameFaceComponent implements OnInit {
   }
 
   progress : number = 0;
+  progressPercent : number = 0;
   score : number = 0;
   numberOfOptions : number = 6;
 
@@ -49,6 +50,7 @@ export class NameFaceComponent implements OnInit {
       this.correctSelection = false;
     }
     this.showFeedback = true;
+    this.progressPercent = (this.progress + 1)/this.facePaths.length;
   }
 
   nextFace() {

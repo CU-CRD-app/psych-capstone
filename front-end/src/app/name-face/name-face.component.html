@@ -1,5 +1,7 @@
 <ion-content [ngClass]="{'default-card': !showFeedback, 'success-card': showFeedback && correctSelection, 'failure-card': showFeedback && !correctSelection}">
 
+  <ion-progress-bar style="margin-top: 0px" value={{progressPercent}}></ion-progress-bar>
+
   <div *ngIf="progress < 8" style="text-align: center">
 
     <br>
@@ -42,6 +44,7 @@
 
     <br>
 
+    <ion-button *ngIf="!showFeedback" disabled="true" style="width:130px">Next</ion-button>
     <ion-button *ngIf="showFeedback" (click)="nextFace()" style="width:130px">Next</ion-button>
 
   </div>
