@@ -146,9 +146,8 @@ export class ShuffleComponent implements OnInit {
         [this.randomFaceOrder[index], this.randomFaceOrder[index_selected]] = [this.randomFaceOrder[index_selected], this.randomFaceOrder[index]];
         this.selectedFace = null;
       }
-    } else if (this.stage == Stage.MEMORIZE) {
-      this.startMaskTimer();
-      this.memorizeCounter++;
+    } else if (this.showFeedback()) {
+      this.feedbackToggle = !this.feedbackToggle;
     }
   }
 }

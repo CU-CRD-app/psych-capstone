@@ -41,6 +41,8 @@ export class TrainingPage {
       images.push(new Image());
       images[i].src = this.assessmentFacePaths[i];
     }
+    images.push(new Image());
+    images[images.length - 1].src = 'assets/background_imgs/mask1.png';
 
     // get today's progress from the database
   }

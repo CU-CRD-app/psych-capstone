@@ -70,12 +70,10 @@ export class MemoryMatchComponent implements OnInit {
           await this.waitForFeedback();
         }
       }
-    } else if (this.stage == Stage.MEMORIZE) {
-      this.startMaskTimer();
     }
   }
 
-  isShown(index : number) {
+  imageIsDisplayed(index : number) {
     return (
       this.stage == Stage.MEMORIZE ||
       this.stage == Stage.MASK ||
