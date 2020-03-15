@@ -31,6 +31,17 @@ export class TrainingPage {
     this.assessmentFacePaths = this.generateShuffledFaces(8);
     this.setNames = this.generateRandomNames();
 
+    // Preload images
+    let images : any[] = [];
+    for (let i = 0; i < this.trainingFacePaths.length; i++) {
+      images.push(new Image());
+      images[i].src = this.trainingFacePaths[i];
+    }
+    for (let i = 0; i < this.assessmentFacePaths.length; i++) {
+      images.push(new Image());
+      images[i].src = this.assessmentFacePaths[i];
+    }
+
     // get today's progress from the database
   }
 
