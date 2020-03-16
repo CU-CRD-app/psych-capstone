@@ -7,7 +7,7 @@
     </ion-header>
     <ion-content>
       <ion-menu-toggle>
-        <ion-list (click)="closeMenu()">
+        <ion-list>
           <ion-item routerLink="/dashboard" routerDirection="forward" [ngStyle]="{'color': isCurrentPage('dashboard') ? 'dodgerblue' : 'black'}">
             <ion-label>Dashboard</ion-label>
             <ion-icon name="speedometer"></ion-icon>
