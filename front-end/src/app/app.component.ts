@@ -24,4 +24,8 @@ export class AppComponent {
       this.splashScreen.hide();
     });
   }
+
+  isCurrentPage(href : string) {
+    return window.location.href.indexOf(href) > -1 ? true : false;
+  }
 }
