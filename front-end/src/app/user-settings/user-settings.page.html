@@ -4,9 +4,37 @@
     <ion-buttons slot="start">
       <ion-menu-button autoHide="false"></ion-menu-button>
     </ion-buttons>
+    <ion-spinner *ngIf="waitingForResponse" slot="end" name="dots" style="size: 50%"></ion-spinner>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content style="--background: gray">
+
+  <br>
+
+  <ion-label>Email Address:</ion-label>
+  <ion-icon *ngIf="boundEmail != userEmail" style="float: right; font-size: 150%; margin-right: 20px; margin-top: 2px" name="close-circle-outline" (click)="boundEmail = userEmail"></ion-icon>
+
+  <ion-input type="email" [(ngModel)]="boundEmail" clearInput="true" [ngClass]="{'edited-valid': validateEmail(), 'invalid': boundEmail != userEmail && !validateEmail()}"></ion-input>
+
+  <ion-label>Password:</ion-label>
+  <ion-icon *ngIf="editingPassword" style="float: right; font-size: 150%; margin-right: 20px; margin-top: 2px" name="close-circle-outline" (click)="resetPasswordForm()"></ion-icon>
+
+  <ion-input *ngIf="!editingPassword" type="password" value={{placeholderPassword}} button (click)="editingPassword = !editingPassword"></ion-input>
+
+  <div *ngIf="editingPassword">
+
+    <ion-label class="little-label">Old Password:</ion-label>
+    <ion-input class="little-input" type="password" [(ngModel)]="oldPassword" clearInput="true"></ion-input>
+
+    <ion-label class="little-label">New Password:</ion-label>
+    <ion-input class="little-input" type="password" [(ngModel)]="newPasswordFirst" clearInput="true" [ngClass]="{'valid': newPasswordFirst != ''}"></ion-input>
+
+    <ion-label class="little-label">Retype New:</ion-label>
+    <ion-input class="little-input" type="password" [(ngModel)]="newPasswordSecond" clearInput="true" [ngClass]="{'valid': newPasswordFirst == newPasswordSecond && newPasswordFirst != '', 'invalid': newPasswordFirst != newPasswordSecond}"></ion-input>
+
+  </div>
+
+  <ion-button *ngIf="validateForm()" (click)="saveForm()" style="float: right; margin-right: 20px; width: 130px">Save</ion-button>
 
 </ion-content>
