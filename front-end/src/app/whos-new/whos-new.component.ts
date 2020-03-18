@@ -16,12 +16,9 @@ export class WhosNewComponent implements OnInit {
       
       // Initialize set first by selecting random numbers
       for (let i = 0; i < 4; i++) {
-          
           this.newNum = this.getNewNumber(this.usedNumbers);
-          
           this.shuffledFaces[i] = this.facePaths[this.newNum];
-      }
-          
+      }         
           
       // Add new face randomly
       this.chosenNum = Math.floor(Math.random() * 4);
@@ -32,15 +29,15 @@ export class WhosNewComponent implements OnInit {
   progress : number = 0; 
   chosenNum : number = 0;
   newNum : number = 0;
+  userNum : number = 0;
   
   new_name : string = "";
-  newFace : string = "";
   
   usedNumbers : number[] = [];
   shuffledFaces : any[] = [];
 
-  next_round : boolean = false;
-  res_correct : boolean = false;
+  nextRound : boolean = false;
+  resCorrect : boolean = false;
 
   addNewFace() {
       this.new_name = "./../../assets/sample-faces/CFD-BM-045-004-N.png"
@@ -64,7 +61,7 @@ export class WhosNewComponent implements OnInit {
   }
   
   resetRoundVals() {
-    this.next_round = false;
+    this.nextRound = false;
     
     // dump old images, and repeat initalization process
     for (let i = 0; i < this.shuffledFaces.length; i++) {
@@ -75,17 +72,26 @@ export class WhosNewComponent implements OnInit {
     }   
   }
   
-
   chooseCard(input : number) {
-      this.next_round = true;
+	  this.userNum = input;
+      this.nextRound = true;
       this.progress++;
       
       // determine if correct or not
       if (input == this.chosenNum) {
-        this.res_correct = true;
+        this.resCorrect = true;
         this.score++;
 	  } else {
-        this.res_correct = false;
+        this.resCorrect = false;
       }      
   }
+  
+  showDisabled(i : number) {
+    return this.nextRound && this.shuffledFaces[i] != this.shuffledFaces[this.userNum];
+  }
+
+  showSelected(i : number) {
+    return this.nextRound && this.shuffledFaces[i] != this.shuffledFaces[this.userNum] && this.shuffledFaces[i] == this.shuffledFaces[this.chosenNum];
+  }
+
 }
