@@ -1,46 +1,52 @@
-<h4 style="text-align:center">Who haven't you seen before?.</h4>
+<ion-content [ngClass]="{'default-card': !nextRound, 'success-card': nextRound && resCorrect, 'failure-card': nextRound && !resCorrect}">
 
-<div *ngIf="progress<=8">
-  <ion-grid style="text-align: center">
-  
-    <ion-col>
-      <ion-row>
-      
-        <ion-card [button]="next_round==false" (click)="next_round ? 'null' : chooseCard(0)" style="text-align:center; display: inline-block; background-color:gainsboro">
-            <img style="height:100px; width:75px; margin: 10px" [src]="shuffledFaces[0]" />
-        </ion-card>
-    
-        <ion-card [button]="next_round==false" (click)="next_round ? 'null' : chooseCard(1)" style="text-align:center; display: inline-block; background-color:gainsboro">
-            <img style="height:100px; width:75px; margin: 10px" [src]="shuffledFaces[1]" />
-        </ion-card>
-        
-      </ion-row>
-    </ion-col>
-    
-    <ion-col>
-      <ion-row>
-      
-        <ion-card [button]="next_round==false" (click)="next_round ? 'null' : chooseCard(2)" style="text-align:center; display: inline-block; background-color:gainsboro">
-            <img style="height:100px; width:75px; margin: 10px" [src]="shuffledFaces[2]" />
-        </ion-card>
-    
-        <ion-card [button]="next_round==false" (click)="next_round ? 'null' : chooseCard(3)" style="text-align:center; display: inline-block; background-color:gainsboro">
-            <img style="height:100px; width:75px; margin: 10px" [src]="shuffledFaces[3]" />
-        </ion-card>
-        
-      </ion-row>
-    </ion-col>
-    
-  </ion-grid>
-</div>
+	<h4 style="text-align:center">Who haven't you seen before?.</h4>
 
-<div *ngIf="next_round == true && progress < 8" style="text-align: center; color: white;">
-  <h3 *ngIf="res_correct == true" style="color: green;">Correct!</h3>
-  <h3 *ngIf="res_correct == false" style="color: red;">Incorrect</h3>
-  <ion-button (click)="ngOnInit()">Next</ion-button>
-</div>
+	<div style="text-align:center" *ngIf="progress<=8">
+	
+	<h3 *ngIf="nextRound && resCorrect">Correct!</h3>
+	<h3 *ngIf="nextRound && !resCorrect">Incorrect!</h3>
+    
+	  <ion-grid style="text-align: center">
+	  
+		<ion-row>
+		  <ion-col>
+		  
+			<ion-card [button]="nextRound==false" (click)="nextRound ? 'null' : chooseCard(0)" [ngClass]="{'selected-card': showSelected(0), 'disabled-card': showDisabled(0)}">
+				<img [src]="shuffledFaces[0]" />
+			</ion-card>
+		
+			<ion-card [button]="nextRound==false" (click)="nextRound ? 'null' : chooseCard(1)" [ngClass]="{'selected-card': showSelected(1), 'disabled-card': showDisabled(1)}">
+				<img [src]="shuffledFaces[1]" />
+			</ion-card>
+			
+		  </ion-col>
+		</ion-row>
+		
+		<ion-row>
+		  <ion-col>
+		  
+			<ion-card [button]="nextRound==false" (click)="nextRound ? 'null' : chooseCard(2)" [ngClass]="{'selected-card': showSelected(2), 'disabled-card': showDisabled(2)}">
+				<img [src]="shuffledFaces[2]" />
+			</ion-card>
+		
+			<ion-card [button]="nextRound==false" (click)="nextRound ? 'null' : chooseCard(3)" [ngClass]="{'selected-card': showSelected(3), 'disabled-card': showDisabled(3)}">
+				<img [src]="shuffledFaces[3]" />
+			</ion-card>
+			
+		  </ion-col>
+		</ion-row>
 
-<div *ngIf="progress==8" style="text-align: center; color: white;">
-  <h1>Your score: {{score}}/8</h1>
-  <ion-button color="success" (click)="finished.emit(score)">Finish</ion-button>
-</div>
+	  </ion-grid>
+	  
+	<br>
+	<ion-button *ngIf="nextRound && progress<8" (click)="ngOnInit()" style="width:130px">Next</ion-button>
+
+	</div>
+
+	<div *ngIf="progress==8" style="text-align: center; color: white;">
+	  <h1>Your score: {{score}}/8</h1>
+	  <ion-button color="success" (click)="finished.emit(score)">Finish</ion-button>
+	</div>
+
+</ion-content>
