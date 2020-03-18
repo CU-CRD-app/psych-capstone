@@ -9,7 +9,7 @@ enum Stage { SELECT, CORRECT, INCORRECT, DONE }
 })
 export class NameFaceComponent implements OnInit {
   @Input() setNames : string;
-  @Input() facePaths : string;
+  @Input() facePaths : string[];
   @Output() finished = new EventEmitter<number>();
 
   constructor() {}
@@ -53,8 +53,6 @@ export class NameFaceComponent implements OnInit {
         this.stage = Stage.INCORRECT;
       }
       this.progressPercent = (this.progress + 1)/this.facePaths.length;
-    } else {
-      this.nextFace();
     }
   }
 

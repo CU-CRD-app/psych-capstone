@@ -9,7 +9,7 @@ enum Stage { MEMORIZE, MASK, SELECT, CORRECT, INCORRECT, DONE }
   styleUrls: ['./same-different.component.scss'],
 })
 export class SameDifferentComponent implements OnInit {
-  @Input() facePaths : string;
+  @Input() facePaths : string[];
   @Output() finished = new EventEmitter<number>();
 
   constructor() { }
@@ -53,7 +53,7 @@ export class SameDifferentComponent implements OnInit {
     }
   }
 
-  clickCard() {
+  clickNext() {
     if (this.stage == Stage.MEMORIZE) {
       this.startMaskTimer();
     } else if (this.showFeedback()) {

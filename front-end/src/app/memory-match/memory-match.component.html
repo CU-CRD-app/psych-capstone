@@ -16,7 +16,7 @@
         <ion-row>
 
           <ion-col *ngFor="let item of [].constructor(4); let i = index">
-            <ion-card button="true" (click)="clickFace(i)" [ngClass]="{'selected-card' : selectedFace == i}">
+            <ion-card [button]="stage == Stage.SELECT || stage == Stage.CORRECT || stage == Stage.INCORRECT" (click)="clickFace(i)" [ngClass]="{'selected-card' : selectedFace == i}">
               <img *ngIf="imageIsDisplayed(i)" [src]="stage == Stage.MASK ? mask : randomFaces[i]"/>
             </ion-card>
           </ion-col>
@@ -25,7 +25,7 @@
         <ion-row>
 
           <ion-col *ngFor="let item of [].constructor(4); let i = index">
-            <ion-card button="true" (click)="clickFace(i + 4)" [ngClass]="{'selected-card' : selectedFace == i + 4}">
+            <ion-card [button]="stage == Stage.SELECT || stage == Stage.CORRECT || stage == Stage.INCORRECT" (click)="clickFace(i + 4)" [ngClass]="{'selected-card' : selectedFace == i + 4}">
               <img *ngIf="imageIsDisplayed(i + 4)" [src]="stage == Stage.MASK ? mask : randomFaces[i + 4]"/>
             </ion-card>
           </ion-col>
@@ -34,7 +34,7 @@
         <ion-row>
 
           <ion-col *ngFor="let item of [].constructor(4); let i = index">
-            <ion-card button="true" (click)="clickFace(i + 8)" [ngClass]="{'selected-card' : selectedFace == i + 8}">
+            <ion-card [button]="stage == Stage.SELECT || stage == Stage.CORRECT || stage == Stage.INCORRECT" (click)="clickFace(i + 8)" [ngClass]="{'selected-card' : selectedFace == i + 8}">
               <img *ngIf="imageIsDisplayed(i + 8)" [src]="stage == Stage.MASK ? mask : randomFaces[i + 8]"/>
             </ion-card>
           </ion-col>
@@ -43,7 +43,7 @@
         <ion-row>
 
           <ion-col *ngFor="let item of [].constructor(4); let i = index">
-            <ion-card button="true" (click)="clickFace(i + 12)" [ngClass]="{'selected-card' : selectedFace == i + 12}">
+            <ion-card [button]="stage == Stage.SELECT || stage == Stage.CORRECT || stage == Stage.INCORRECT" (click)="clickFace(i + 12)" [ngClass]="{'selected-card' : selectedFace == i + 12}">
               <img *ngIf="imageIsDisplayed(i + 12)" [src]="stage == Stage.MASK ? mask : randomFaces[i + 12]"/>
             </ion-card>
           </ion-col>
@@ -55,7 +55,7 @@
       <!--Next Buttons-->
       <div style="text-align: center; margin-bottom: 15px">
         <ion-button *ngIf="stage == Stage.START" style="width:130px" (click)="startMemorizeTimer()">Reveal</ion-button>
-        <ion-button *ngIf="stage == Stage.MEMORIZE || stage == Stage.MASK" style="width:130px" disabled="true">Reveal</ion-button>
+        <ion-button *ngIf="stage == Stage.MEMORIZE || stage == Stage.MASK" style="width:130px" disabled>Reveal</ion-button>
         <ion-button *ngIf="stage != Stage.START && stage != Stage.MEMORIZE && stage != Stage.MASK" style="width:130px" (click)="clickDone()" [color]="stage != Stage.CORRECT ? 'success' : 'primary'" [disabled]="correctFaces.length == facePaths.length ? 'false' : 'true'">Done</ion-button>
       </div>
   

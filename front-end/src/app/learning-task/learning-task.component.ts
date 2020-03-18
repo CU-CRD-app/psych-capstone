@@ -7,7 +7,7 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 })
 export class LearningTaskComponent implements OnInit {
   @Input() setNames : string;
-  @Input() facePaths : string;
+  @Input() facePaths : string[];
   @Output() finished = new EventEmitter<void>();
 
   constructor() {}

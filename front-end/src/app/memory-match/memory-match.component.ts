@@ -9,7 +9,7 @@ enum Stage { START, MEMORIZE, MASK, SELECT, CORRECT, INCORRECT, DONE }
   styleUrls: ['./memory-match.component.scss'],
 })
 export class MemoryMatchComponent implements OnInit {
-  @Input() facePaths : string;
+  @Input() facePaths : string[];
   @Output() finished = new EventEmitter<number>();
 
   constructor() { }

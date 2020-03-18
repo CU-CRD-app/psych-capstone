@@ -15,7 +15,7 @@
   <ion-label>Email Address:</ion-label>
   <ion-icon *ngIf="boundEmail != userEmail" style="float: right; font-size: 150%; margin-right: 20px; margin-top: 2px" name="close-circle-outline" (click)="boundEmail = userEmail"></ion-icon>
 
-  <ion-input type="email" [(ngModel)]="boundEmail" clearInput="true" [ngClass]="{'edited-valid': validateEmail(), 'invalid': boundEmail != userEmail && !validateEmail()}"></ion-input>
+  <ion-input type="email" [(ngModel)]="boundEmail" clearInput [ngClass]="{'edited-valid': validateEmail(), 'invalid': boundEmail != userEmail && !validateEmail()}"></ion-input>
 
   <ion-label>Password:</ion-label>
   <ion-icon *ngIf="editingPassword" style="float: right; font-size: 150%; margin-right: 20px; margin-top: 2px" name="close-circle-outline" (click)="resetPasswordForm()"></ion-icon>
@@ -25,13 +25,13 @@
   <div *ngIf="editingPassword">
 
     <ion-label class="little-label">Old Password:</ion-label>
-    <ion-input class="little-input" type="password" [(ngModel)]="oldPassword" clearInput="true"></ion-input>
+    <ion-input class="little-input" type="password" [(ngModel)]="oldPassword" clearInput></ion-input>
 
     <ion-label class="little-label">New Password:</ion-label>
-    <ion-input class="little-input" type="password" [(ngModel)]="newPasswordFirst" clearInput="true" [ngClass]="{'valid': newPasswordFirst != ''}"></ion-input>
+    <ion-input class="little-input" type="password" [(ngModel)]="newPasswordFirst" clearInput [ngClass]="{'valid': newPasswordFirst != ''}"></ion-input>
 
     <ion-label class="little-label">Retype New:</ion-label>
-    <ion-input class="little-input" type="password" [(ngModel)]="newPasswordSecond" clearInput="true" [ngClass]="{'valid': newPasswordFirst == newPasswordSecond && newPasswordFirst != '', 'invalid': newPasswordFirst != newPasswordSecond}"></ion-input>
+    <ion-input class="little-input" type="password" [(ngModel)]="newPasswordSecond" clearInput [ngClass]="{'valid': newPasswordFirst == newPasswordSecond && newPasswordFirst != '', 'invalid': newPasswordFirst != newPasswordSecond}"></ion-input>
 
   </div>
 
