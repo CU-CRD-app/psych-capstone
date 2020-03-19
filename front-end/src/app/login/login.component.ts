@@ -2,15 +2,14 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { timer } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-
 enum Popup { NULL, HOME, LOGIN, REGISTER, WHY }
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
 })
-export class HomeComponent implements OnInit {
+export class LoginComponent implements OnInit {
   @Output() finished = new EventEmitter<void>();
 
   public loginForm : FormGroup;
@@ -29,7 +28,7 @@ export class HomeComponent implements OnInit {
       username: ['', Validators.compose([Validators.required, Validators.email])],
       password: ['', Validators.compose([Validators.required])],
       password_check: ['', Validators.compose([Validators.required])]
-    }, {validator: HomeComponent.passwordsMatch});
+    }, {validator: LoginComponent.passwordsMatch});
 
   }
 
@@ -40,7 +39,7 @@ export class HomeComponent implements OnInit {
   Popup = Popup;
   popup : Popup = Popup.NULL;
 
-  login : string = "/assets/icon/log-in.svg";
+  login : string = "assets/icon/log-in.svg";
   help : string = "help-circle-outline";
 
   Login() {

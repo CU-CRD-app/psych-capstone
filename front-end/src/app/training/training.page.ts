@@ -2,28 +2,28 @@ import { Component } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 
 const helpMessages = {
-  start: ["Start", "Welcome to your daily training.\nPlease give yourself about 10 minutes to complete the tasks. You won't be able to access other parts of the app until you have finished. Click to start the learning task."],
-  trainingTasks: ["Training Tasks", "Here is a list of the training tasks you still need to complete today.\nYou can do them in any order you like.\nYou must earn a score of at least 6/8 on each to progress to the assessment tasks."],
+  start: ["Start", "Welcome to your daily training.\nPlease give yourself about 10 minutes to complete the tasks. Click to begin."],
+  trainingTasks: ["Training Tasks", "Here is a list of the training tasks you still need to complete today.\nYou can do them in any order you like and however many times you like.\nYou must earn a score of at least 6/8 on each to progress to the assessment tasks."],
   assessmentTasks: ["Assessment Tasks", "Here are your assessment tasks for the day.\nThese will test how much you learned this session, and will be how your progress is tracked."],
-  done: ["Finish", "You're done today. Come back tomorrow for your next training.\nYou can see your progress under the history tab."],
-  learning: ["Meet Today's Faces", "Memorize these faces and their names.\nYou will use them in the next tasks."],
+  done: ["Finish", "You're done today. Come back tomorrow for your next training.\nYou can see your progress under the history page."],
+  learning: ["Meet Today's Faces", "Memorize these faces and their names.\nYou will use them in the next tasks. You can revisit this module at any time."],
   nameAndFace: ["Name and Face", "Select the name that goes to the face.\nThe names are shuffled after each selection."],
-  whosNew: ["Who's New?", "Select the face that wasn't part of the original set."],
-  memory: ["Memory Match", "Memorize the placement of the face pairs, then match them after they are turned over."],
-  shuffle: ["Shuffle", "Memorize the order of the cards, then put them back in order after they are shuffled."],
-  forcedChoice: ["Forced Choice", "You will be shown one face to memorize, and then a set of faces.\nYou will be asked to choose which face in the set matches the original"],
-  sameDifferent: ["Same-Different", "You will be shown one face and then another, and you will decide whether they are the same."]
+  whosNew: ["Who's New?", "Select the face that you didn't see in the learning task."],
+  memory: ["Memory Match", "Click reveal to show the cards, then memorize the placement of the face pairs in the given time. After the timer is up and the cards are turned back over, match the pairs together"],
+  shuffle: ["Shuffle", "Click reveal to show the cards, then memorize the order in the given time, then put them back in order after they are shuffled."],
+  forcedChoice: ["Forced Choice", "Memorize the face, then select which face you just saw."],
+  sameDifferent: ["Same-Different", "Memorize the face, then decide whether the next face is the same."]
 }
 
-enum Stage { LOGIN, START, TRAINING, ASSESSMENT, DONE }
+enum Stage { START, TRAINING, ASSESSMENT, DONE }
 enum Task { LEARNING, NAME_FACE, WHOS_NEW, MEMORY, SHUFFLE, FORCED_CHOICE, SAME_DIFFERENT }
 
 @Component({
-  selector: 'app-tab1',
-  templateUrl: 'tab1.page.html',
-  styleUrls: ['tab1.page.scss']
+  selector: 'app-training',
+  templateUrl: 'training.page.html',
+  styleUrls: ['training.page.scss']
 })
-export class Tab1Page {
+export class TrainingPage {
 
   constructor(public alertController: AlertController) {
 
@@ -31,17 +31,25 @@ export class Tab1Page {
     this.assessmentFacePaths = this.generateShuffledFaces(8);
     this.setNames = this.generateRandomNames();
 
-    // Pull user record, if they have completed today's tasks then stage = done
-    let userIsDone = false; // http request to database
-    if (userIsDone) { // This may change if we allow users to break in the middle of training
-      this.stage = Stage.DONE;
+    // Preload images
+    let images : any[] = [];
+    for (let i = 0; i < this.trainingFacePaths.length; i++) {
+      images.push(new Image());
+      images[i].src = this.trainingFacePaths[i];
     }
+    for (let i = 0; i < this.assessmentFacePaths.length; i++) {
+      images.push(new Image());
+      images[i].src = this.assessmentFacePaths[i];
+    }
+    images.push(new Image());
+    images[images.length - 1].src = 'assets/background_imgs/mask1.png';
 
+    // get today's progress from the database
   }
 
   Stage = Stage;
   Task = Task;
-  stage : Stage = Stage.LOGIN;
+  stage : Stage = Stage.START;
   task : Task = null;
 
   numFaces : number = 8; // hardcoded for now, happen to be 8 practice faces.
@@ -50,7 +58,6 @@ export class Tab1Page {
   trainingFacePaths : string[] = [];
   assessmentFacePaths : string[] = [];
 
-  loggedIn : boolean = false;
   learningDone : boolean = false;
   scores : number[] = [-1, -1, -1, -1, -1, -1];
 
@@ -61,9 +68,7 @@ export class Tab1Page {
 
   iterateStage() {
     this.task = null;
-    if (!this.loggedIn) {
-      this.stage = Stage.LOGIN;
-    } else if (!this.learningDone) {
+    if (!this.learningDone) {
       this.stage = Stage.START;
     } else if (this.scores[0] < 6 || this.scores[1] < 6 || this.scores[2] < 6 || this.scores[3] < 6) {
       this.stage = Stage.TRAINING;
@@ -140,7 +145,7 @@ export class Tab1Page {
     let facePaths : string[] = [];
 
     for (let num of faceNums) { // creates array of faces in random order to be passed to components
-      facePaths.push(`./../../assets/sample-faces/${num}.png`);
+      facePaths.push("assets/sample-faces/" + num + ".png");
     }
 
     return facePaths
@@ -161,8 +166,29 @@ export class Tab1Page {
   finished(score : number, task : number) {
     this.scores[task] = Math.max(score, this.scores[task]);
     this.task = null;
-    if (score > 3) {
+    if (task > 3) {
       this.iterateStage();
     }
+    // save today's progress to database
+  }
+
+  async taskExitAlert() {
+    const alert = await this.alertController.create({
+      header: 'Quit',
+      message: 'Do you want to quit? Your progress on this task will be lost.',
+      buttons: [
+        {
+          text: 'Cancel'
+        },
+        {
+          text: 'Quit',
+          handler: () => {
+            this.task = null;
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 }

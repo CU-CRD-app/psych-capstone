@@ -1,5 +1,7 @@
-<ion-content [ngClass]="{'default': !isFeedback(), 'success': stage == Stage.CORRECT, 'failure': stage == Stage.INCORRECT}">
-  
+<ion-content [ngClass]="{'default': !showFeedback(), 'success': stage == Stage.CORRECT, 'failure': stage == Stage.INCORRECT}">
+
+  <ion-progress-bar style="margin-top: 0px" value={{progressPercent}}></ion-progress-bar>
+
   <div *ngIf="stage != Stage.DONE" style="text-align: center">
 
     <h3 *ngIf="stage == Stage.MEMORIZE">Memorize the face</h3>
@@ -7,13 +9,13 @@
     <h3 *ngIf="stage == Stage.SELECT">Is this the same person?</h3>
     <h3 *ngIf="stage == Stage.CORRECT">Correct!</h3>
     <h3 *ngIf="stage == Stage.INCORRECT">Incorrect!</h3>
-    <ion-card button="true" (click)="clickCard()" style="cursor: pointer">
-      <img [src]="getSrc()" style="height:270px; width:190px; margin: 20px auto;"/>
+    <ion-card>
+      <img [src]="getSrc()" style="height: 270px; margin: 20px auto" [ngStyle]="{'width': stage == Stage.MASK ? '85%' : '190px'}"/><!--[ngStyle]="{'width': stage == Stage.MASK ? '80%' : '190px'}"-->
     </ion-card>
 
     <ion-button *ngIf="stage == Stage.SELECT" style="width:130px" (click)="selectFace(false)" color="danger">No</ion-button>
     <ion-button *ngIf="stage == Stage.SELECT" style="width:130px" (click)="selectFace(true)" color="success">Yes</ion-button>
-    <ion-button *ngIf="stage == Stage.MEMORIZE || isFeedback()" style="width:130px" (click)="clickCard()">Next</ion-button>
+    <ion-button *ngIf="stage == Stage.MEMORIZE || showFeedback()" style="width:130px" (click)="clickNext()">Next</ion-button>
 
   </div>
 

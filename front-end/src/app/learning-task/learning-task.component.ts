@@ -7,7 +7,7 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 })
 export class LearningTaskComponent implements OnInit {
   @Input() setNames : string;
-  @Input() facePaths : string;
+  @Input() facePaths : string[];
   @Output() finished = new EventEmitter<void>();
 
   constructor() {}
@@ -18,9 +18,12 @@ export class LearningTaskComponent implements OnInit {
   }
 
   progress : number = 0;
+  progressPercent : number = 0;
 
-  currentFace : string; // = `../../assets/sample-faces/${this.progress}.png`;
+  currentFace : string;
   currentName : string;
+
+  seenAll : boolean = false;
 
   changeCard(direction : string) {
     if (direction == 'next') {
@@ -28,8 +31,14 @@ export class LearningTaskComponent implements OnInit {
     } else {
       this.progress--;
     }
-    this.currentFace = this.facePaths[this.progress];//`../../assets/sample-faces/${this.progress}.png`;
+    this.currentFace = this.facePaths[this.progress];
     this.currentName = this.setNames[this.progress];
+    if (!this.seenAll) {
+      this.progressPercent = this.progress/(this.facePaths.length - 1);
+    }
+    if (this.progress == 7) {
+      this.seenAll = true;
+    }
   }
 
 }

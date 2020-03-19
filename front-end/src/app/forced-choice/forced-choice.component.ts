@@ -9,7 +9,7 @@ enum Stage { MEMORIZE, MASK, SELECT, CORRECT, INCORRECT, DONE }
   styleUrls: ['./forced-choice.component.scss'],
 })
 export class ForcedChoiceComponent implements OnInit {
-  @Input() facePaths : string;
+  @Input() facePaths : string[];
   @Output() finished = new EventEmitter<number>();
 
   constructor() { }
@@ -22,35 +22,39 @@ export class ForcedChoiceComponent implements OnInit {
   Stage = Stage;
   numberOfOptions = 4; // Hard coded for now
   progress : number = 0;
+  progressPercent : number = 0;
   score : number = 0;
   stage : Stage = Stage.MEMORIZE;
-  mask : string = '../../assets/background_imgs/mask1.png';
+  mask : string = 'assets/background_imgs/mask1.png';
 
   currentFace : string;
   selectedFace : string;
   randomFaces : any[];
 
   selectFace(facePath : string) {
-    if (this.stage != Stage.CORRECT && this.stage != Stage.INCORRECT) {
+    if (!this.showFeedback()) {
       if (facePath == this.currentFace) {
-        this.score++;
         this.stage = Stage.CORRECT;
       } else {
         this.stage = Stage.INCORRECT;
       }
       this.selectedFace = facePath;
+      this.progressPercent = (this.progress + 1)/this.facePaths.length;
     }
   }
 
   nextFace() {
     this.progress++;
-    this.stage = this.progress == 8 ? Stage.DONE : Stage.MEMORIZE;
+    if (this.stage == Stage.CORRECT) { // Security measure against clicking too quickly
+      this.score++;
+    }
+    this.stage = this.progress > 7 ? Stage.DONE : Stage.MEMORIZE;
     this.selectedFace = null;
     this.currentFace = this.facePaths[this.progress];
     this.makeRandomFaces();
   }
 
-  isFeedback() {
+  showFeedback() {
     return this.stage == Stage.CORRECT || this.stage == Stage.INCORRECT;
   }
 
@@ -70,7 +74,7 @@ export class ForcedChoiceComponent implements OnInit {
   startMaskTimer() {
     this.stage = Stage.MASK;
     timer(2000).subscribe(() => {
-        this.stage = Stage.SELECT;
+      this.stage = Stage.SELECT;
     });
   }
 }

@@ -1,11 +1,5 @@
 <ion-content id="login-view">
-	<ion-header>
-		<ion-toolbar style="border-bottom-width: medium; border-bottom-style: solid; border-bottom-color:dodgerblue"> 
-			<ion-title style="text-align:center;">Login/Register</ion-title>
-				<!-- <p>Why do I need an account?</p> -->
-		</ion-toolbar>
-	</ion-header>
-	<ion-grid>
+	<ion-grid style="margin-top: 45px">
 		<ion-row *ngIf="popup == Popup.HOME" id="blank-row-default"></ion-row>
 		<ion-row *ngIf="popup == Popup.WHY" id="blank-row-why"></ion-row>
 		<ion-row *ngIf="popup == Popup.LOGIN" id="blank-row-login"></ion-row>

@@ -1,5 +1,5 @@
 #login-view {
-	--background: gray url("/assets/background_imgs/face-outline-skin-tones.png") no-repeat center center / contain;
+	--background: gray url("../../assets/background_imgs/face-outline-skin-tones.png") no-repeat center center / contain;
 	background-repeat: no-repeat;
 	align-items: center;
 }
@@ -19,16 +19,16 @@
 
 
 #row-with-default-card {
-	height: 25vh;
+	height: 100%;
 }
 #row-with-why-card {
-	height: 35vh;
+	height: 100%;
 }
 #row-with-login-card {
-	height: 35vh;
+	height: 100%;
 }
 #row-with-register-card {
-	height: 35vh;
+	height: 100%;
 }
 
 #default_card {

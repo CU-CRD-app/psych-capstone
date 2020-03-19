@@ -9,7 +9,7 @@ enum Stage { MEMORIZE, MASK, SELECT, CORRECT, INCORRECT, DONE }
   styleUrls: ['./same-different.component.scss'],
 })
 export class SameDifferentComponent implements OnInit {
-  @Input() facePaths : string;
+  @Input() facePaths : string[];
   @Output() finished = new EventEmitter<number>();
 
   constructor() { }
@@ -24,9 +24,10 @@ export class SameDifferentComponent implements OnInit {
 
   Stage = Stage;
   progress : number = 0;
+  progressPercent : number = 0;
   score : number = 0;
   stage : Stage = Stage.MEMORIZE;
-  mask : string = '../../assets/background_imgs/mask1.png';
+  mask : string = 'assets/background_imgs/mask1.png';
 
   correctSelection : boolean;
   currentFace : string;
@@ -39,11 +40,12 @@ export class SameDifferentComponent implements OnInit {
     } else {
       this.stage = Stage.INCORRECT;
     };
+    this.progressPercent = (this.progress + 1)/this.facePaths.length;
   }
 
   nextFace() {
     this.progress++;
-    this.stage = this.progress == 8 ? Stage.DONE : Stage.MEMORIZE;
+    this.stage = this.progress > 7 ? Stage.DONE : Stage.MEMORIZE;
     this.currentFace = this.facePaths[this.progress];
     this.randomFace = this.currentFace;
     if (Math.random() > .5) {
@@ -51,15 +53,15 @@ export class SameDifferentComponent implements OnInit {
     }
   }
 
-  clickCard() {
+  clickNext() {
     if (this.stage == Stage.MEMORIZE) {
       this.startMaskTimer();
-    } else if (this.isFeedback()) {
+    } else if (this.showFeedback()) {
       this.nextFace()
     }
   }
 
-  isFeedback() {
+  showFeedback() {
     return this.stage == Stage.CORRECT || this.stage == Stage.INCORRECT;
   }
 

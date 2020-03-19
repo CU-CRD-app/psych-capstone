@@ -1,3 +1,36 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-menu side="start" contentId="main-menu" type="overlay" swipeGesture="false">
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>Menu</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-menu-toggle>
+        <ion-list>
+          <ion-item routerLink="/dashboard" routerDirection="forward" [ngStyle]="{'color': isCurrentPage('dashboard') ? 'dodgerblue' : 'black'}">
+            <ion-label>Dashboard</ion-label>
+            <ion-icon name="speedometer"></ion-icon>
+          </ion-item>
+          <ion-item routerLink="/train" routerDirection="forward" [ngStyle]="{'color': isCurrentPage('train') ? 'dodgerblue' : 'black'}">
+            <ion-label>Train</ion-label>
+            <ion-icon name="fitness"></ion-icon>
+          </ion-item>
+          <ion-item routerLink="/history" routerDirection="forward" [ngStyle]="{'color': isCurrentPage('history') ? 'dodgerblue' : 'black'}">
+            <ion-label>History</ion-label>
+            <ion-icon name="analytics"></ion-icon>
+          </ion-item>
+          <ion-item routerLink="/about" routerDirection="forward" [ngStyle]="{'color': isCurrentPage('about') ? 'dodgerblue' : 'black'}">
+            <ion-label>About Us</ion-label>
+            <ion-icon name="contacts"></ion-icon>
+          </ion-item>
+          <ion-item routerLink="/settings" routerDirection="forward" [ngStyle]="{'color': isCurrentPage('settings') ? 'dodgerblue' : 'black'}">
+            <ion-label>Settings</ion-label>
+            <ion-icon name="cog"></ion-icon>
+          </ion-item>
+        </ion-list>
+      </ion-menu-toggle>
+    </ion-content>
+  </ion-menu>
+  <ion-router-outlet id="main-menu" main></ion-router-outlet>
 </ion-app>

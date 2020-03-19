@@ -13,6 +13,12 @@
   color: black;
 }
 
+.blue-border {
+  border-bottom-width: medium;
+  border-bottom-style: solid;
+  border-bottom-color: dodgerblue;
+}
+
 ion-card {
   --background: gainsboro;
   color: dodgerblue;
