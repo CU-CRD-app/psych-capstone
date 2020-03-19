@@ -1,6 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { timer } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Events } from '@ionic/angular';
 
 enum Popup { NULL, HOME, LOGIN, REGISTER, WHY }
 
@@ -17,7 +18,7 @@ export class LoginComponent implements OnInit {
 
   private debugMode: boolean = true;
 
-  constructor(public formBuilder : FormBuilder) {
+  constructor(public formBuilder : FormBuilder, public events : Events) {
 
     this.loginForm = formBuilder.group({
       username: ['', Validators.compose([Validators.required, Validators.email])],
@@ -54,6 +55,8 @@ export class LoginComponent implements OnInit {
     else {
       let logJSON = {Username: this.loginForm.value.username, Password: this.loginForm.value.password};
       console.log("Login JSON: ", JSON.stringify(logJSON));
+
+      this.events.publish('loggedin', this.loginForm.value.username);
       this.finished.emit();
     }
   }

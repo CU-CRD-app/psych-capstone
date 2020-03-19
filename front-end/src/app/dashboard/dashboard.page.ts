@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AlertController } from '@ionic/angular';
+import { Events } from '@ionic/angular';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,8 +9,11 @@ import { AlertController } from '@ionic/angular';
 })
 export class DashboardPage {
 
-  constructor(public alertController : AlertController) {
+  constructor(public alertController : AlertController, public events: Events) {
     // set login creds
+    events.subscribe('loggedin', (username) => {
+      this.username = username;
+    });
   }
 
   ngAfterViewInit() {
