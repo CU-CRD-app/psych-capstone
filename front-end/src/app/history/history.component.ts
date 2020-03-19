@@ -10,11 +10,13 @@ import { Events } from '@ionic/angular';
 export class HistoryComponent implements OnInit {
 
   constructor(public history: HistoryDataService, public events: Events) {
-    events.subscribe('history:read', (username, levels) => 
+    events.subscribe('history:read', (username, pseudoJSON) => 
     {
-      console.log("subbed!");
       this.username = username;
-      this.levels = levels;
+      this.levels = pseudoJSON[0];
+      this.dates = pseudoJSON[1];
+      this.prescores = pseudoJSON[2];
+      this.postscores = pseudoJSON[3];
     });
   }
 
@@ -23,10 +25,13 @@ export class HistoryComponent implements OnInit {
   }
 
   update() {
-    this.history.update_page();
+    
   }
 
   username : string = "placeholder";
-  levels : boolean[] = [false, false, false, false]
+  levels : boolean[] = [false, false, false, false, false, false];
+  dates : string[] = [];
+  prescores: number[] = [];
+  postscores: number[] = [];
 
 }
