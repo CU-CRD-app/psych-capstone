@@ -3,7 +3,7 @@ import { HistoryDataService } from '../service/history-data.service';
 import { Events } from '@ionic/angular';
 
 @Component({
-  selector: 'app-history',
+  selector: 'app-history-comp',
   templateUrl: './history.component.html',
   styleUrls: ['./history.component.scss'],
 })
