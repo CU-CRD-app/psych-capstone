@@ -2,17 +2,17 @@ import { Component } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 
 const helpMessages = {
-  start: ["Start", "Welcome to your daily training.\nPlease give yourself about 10 minutes to complete the tasks. Click to start the learning task."],
-  trainingTasks: ["Training Tasks", "Here is a list of the training tasks you still need to complete today.\nYou can do them in any order you like.\nYou must earn a score of at least 6/8 on each to progress to the assessment tasks."],
+  start: ["Start", "Welcome to your daily training.\nPlease give yourself about 10 minutes to complete the tasks. Click to begin."],
+  trainingTasks: ["Training Tasks", "Here is a list of the training tasks you still need to complete today.\nYou can do them in any order you like and however many times you like.\nYou must earn a score of at least 6/8 on each to progress to the assessment tasks."],
   assessmentTasks: ["Assessment Tasks", "Here are your assessment tasks for the day.\nThese will test how much you learned this session, and will be how your progress is tracked."],
   done: ["Finish", "You're done today. Come back tomorrow for your next training.\nYou can see your progress under the history page."],
-  learning: ["Meet Today's Faces", "Memorize these faces and their names.\nYou will use them in the next tasks."],
+  learning: ["Meet Today's Faces", "Memorize these faces and their names.\nYou will use them in the next tasks. You can revisit this module at any time."],
   nameAndFace: ["Name and Face", "Select the name that goes to the face.\nThe names are shuffled after each selection."],
-  whosNew: ["Who's New?", "Select the face that wasn't part of the original set."],
-  memory: ["Memory Match", "Memorize the placement of the face pairs in the given time, then match them after they are turned over."],
-  shuffle: ["Shuffle", "Memorize the order of the cards in the given time, then put them back in order after they are shuffled."],
-  forcedChoice: ["Forced Choice", "You will be shown one face to memorize, and then a set of faces.\nYou will be asked to choose which face in the set matches the original"],
-  sameDifferent: ["Same-Different", "You will be shown one face and then another, and you will decide whether they are the same."]
+  whosNew: ["Who's New?", "Select the face that you didn't see in the learning task."],
+  memory: ["Memory Match", "Click reveal to show the cards, then memorize the placement of the face pairs in the given time. After the timer is up and the cards are turned back over, match the pairs together"],
+  shuffle: ["Shuffle", "Click reveal to show the cards, then memorize the order in the given time, then put them back in order after they are shuffled."],
+  forcedChoice: ["Forced Choice", "Memorize the face, then select which face you just saw."],
+  sameDifferent: ["Same-Different", "Memorize the face, then decide whether the next face is the same."]
 }
 
 enum Stage { START, TRAINING, ASSESSMENT, DONE }

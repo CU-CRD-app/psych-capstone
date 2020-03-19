@@ -3,8 +3,10 @@
   <ion-header>
     <ion-toolbar [ngClass]="{'blue-border' : task == null}">
       <ion-title>{{getMessage(0)}}</ion-title>
-      <ion-icon *ngIf="task == null" slot="start" color="medium" name="arrow-back" style="margin-left: 10px; height: 30px; cursor: pointer" routerLink="/dashboard" routerDirection="backward"></ion-icon>
-      <ion-icon *ngIf="task != null && stage == Stage.TRAINING" slot="start" color="medium" name="arrow-back" style="margin-left: 10px; height: 30px; cursor: pointer" (click)="taskExitAlert()"></ion-icon>
+      <ion-buttons *ngIf="task == null" slot="start">
+        <ion-menu-button autoHide="false"></ion-menu-button>
+      </ion-buttons>
+      <ion-icon *ngIf="task != null && (stage == Stage.TRAINING || stage == Stage.START)" slot="start" color="medium" name="arrow-back" style="margin-left: 10px; height: 30px; cursor: pointer" (click)="taskExitAlert()"></ion-icon>
       <ion-icon slot="end" color="medium" name="help-circle" style="margin-right: 10px; height: 30px; cursor: pointer" (click)="getHelp()"></ion-icon>
     </ion-toolbar>
   </ion-header>
