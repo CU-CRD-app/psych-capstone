@@ -1,0 +1,32 @@
+.success-card {
+    --background: #01DF74;
+}
+
+.failure-card {
+    --background: #FE2E2E;
+}
+
+.default-card {
+    --background: gray
+}
+
+img {
+	height:100px; 
+	width:75px; 
+	margin: 10px
+}
+
+ion-card {
+	text-align:center; 
+	display: inline-block; 
+	background-color:gainsboro
+}
+
+.selected-card {
+    background-color: gainsboro !important;
+}
+
+.disabled-card {
+    background-color: transparent;
+    opacity: 0.5;
+}
