@@ -53,8 +53,8 @@ export class HomeComponent implements OnInit {
       return;
     }
     else {
-      console.log("Username: ", this.loginForm.value.username);
-      console.log("Password: ", this.loginForm.value.password);
+      let logJSON = {Username: this.loginForm.value.username, Password: this.loginForm.value.password};
+      console.log("Login JSON: ", JSON.stringify(logJSON));
       this.finished.emit();
     }
   }
@@ -69,8 +69,8 @@ export class HomeComponent implements OnInit {
       return;
     }
     else {
-      console.log("Username: ", this.registerForm.value.username);
-      console.log("Password: ", this.registerForm.value.password);
+      let regJSON = {Username: this.registerForm.value.username, Password: this.registerForm.value.password};
+      console.log("Register JSON: ", JSON.stringify(regJSON));
       this.finished.emit();
     }
   }
