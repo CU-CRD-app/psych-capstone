@@ -11,31 +11,35 @@
       <ion-grid>
       
         <ion-row>
+          
           <ion-col>
-          
-          <ion-card [button]="!nextRound" class="grid-card" (click)="chooseCard(0)" [ngClass]="{'selected-card': showSelected(0), 'disabled-card': showDisabled(0)}">
-            <img [src]="shuffledFaces[0]" />
-          </ion-card>
-        
-          <ion-card [button]="!nextRound" class="grid-card" (click)="chooseCard(1)" [ngClass]="{'selected-card': showSelected(1), 'disabled-card': showDisabled(1)}">
-            <img [src]="shuffledFaces[1]" />
-          </ion-card>
-          
+            <ion-card [button]="!nextRound" class="grid-card" (click)="chooseCard(0)" [ngClass]="{'selected-card': showSelected(0), 'disabled-card': showDisabled(0)}">
+              <img [src]="shuffledFaces[0]" />
+            </ion-card>
           </ion-col>
+        
+          <ion-col>
+            <ion-card [button]="!nextRound" class="grid-card" (click)="chooseCard(1)" [ngClass]="{'selected-card': showSelected(1), 'disabled-card': showDisabled(1)}">
+              <img [src]="shuffledFaces[1]" />
+            </ion-card>
+          </ion-col>
+
         </ion-row>
         
         <ion-row>
+
           <ion-col>
-          
-          <ion-card [button]="!nextRound" class="grid-card" (click)="chooseCard(2)" [ngClass]="{'selected-card': showSelected(2), 'disabled-card': showDisabled(2)}">
-            <img [src]="shuffledFaces[2]" />
-          </ion-card>
-        
-          <ion-card [button]="!nextRound" class="grid-card" (click)="chooseCard(3)" [ngClass]="{'selected-card': showSelected(3), 'disabled-card': showDisabled(3)}">
-            <img [src]="shuffledFaces[3]" />
-          </ion-card>
-          
+            <ion-card [button]="!nextRound" class="grid-card" (click)="chooseCard(2)" [ngClass]="{'selected-card': showSelected(2), 'disabled-card': showDisabled(2)}">
+              <img [src]="shuffledFaces[2]" />
+            </ion-card>
           </ion-col>
+
+          <ion-col>
+            <ion-card [button]="!nextRound" class="grid-card" (click)="chooseCard(3)" [ngClass]="{'selected-card': showSelected(3), 'disabled-card': showDisabled(3)}">
+              <img [src]="shuffledFaces[3]" />
+            </ion-card>
+          </ion-col>
+          
         </ion-row>
 
       </ion-grid>
