@@ -1,5 +1,6 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { timer } from 'rxjs';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 enum Popup { NULL, HOME, LOGIN, REGISTER, WHY }
 
@@ -11,7 +12,25 @@ enum Popup { NULL, HOME, LOGIN, REGISTER, WHY }
 export class LoginComponent implements OnInit {
   @Output() finished = new EventEmitter<void>();
 
-  constructor() { }
+  public loginForm : FormGroup;
+  public registerForm : FormGroup;
+
+  private debugMode: boolean = true;
+
+  constructor(public formBuilder : FormBuilder) {
+
+    this.loginForm = formBuilder.group({
+      username: ['', Validators.compose([Validators.required, Validators.email])],
+      password: ['', Validators.compose([Validators.required])]
+    });
+
+    this.registerForm = formBuilder.group({
+      username: ['', Validators.compose([Validators.required, Validators.email])],
+      password: ['', Validators.compose([Validators.required])],
+      password_check: ['', Validators.compose([Validators.required])]
+    }, {validator: LoginComponent.passwordsMatch});
+
+  }
 
   ngOnInit() {
     timer(1000).subscribe(()=>(this.popup = Popup.HOME));
@@ -28,7 +47,15 @@ export class LoginComponent implements OnInit {
   }
 
   SubmitLogin() {
-    this.finished.emit();
+    if (this.loginForm.invalid) {
+      alert("Invalid username (email) or password");
+      return;
+    }
+    else {
+      let logJSON = {Username: this.loginForm.value.username, Password: this.loginForm.value.password};
+      console.log("Login JSON: ", JSON.stringify(logJSON));
+      this.finished.emit();
+    }
   }
 
   Register() {
@@ -36,7 +63,15 @@ export class LoginComponent implements OnInit {
   }
 
   SubmitRegister() {
-    this.finished.emit();
+    if (this.registerForm.invalid || this.registerForm.hasError('password mismatch')) {
+      alert("Username must be valid email, passwords must match");
+      return;
+    }
+    else {
+      let regJSON = {Username: this.registerForm.value.username, Password: this.registerForm.value.password};
+      console.log("Register JSON: ", JSON.stringify(regJSON));
+      this.finished.emit();
+    }
   }
 
   Why() {
@@ -45,5 +80,16 @@ export class LoginComponent implements OnInit {
 
   BackHome() {
     this.popup = Popup.HOME;
+  }
+
+  static passwordsMatch(regForm: FormGroup): any {
+    let pwd1 = regForm.get('password');
+    let pwd2 = regForm.get('password_check');
+    if (pwd1.value != pwd2.value) {
+      return {
+        "password mismatch" : true
+      };
+    return null;
+    }
   }
 }

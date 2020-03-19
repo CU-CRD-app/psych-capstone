@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HistoryPage } from './history.page';
+import { HistoryComponent } from '../history/history.component';
 
 @NgModule({
   imports: [
@@ -12,6 +13,9 @@ import { HistoryPage } from './history.page';
     FormsModule,
     RouterModule.forChild([{ path: '', component: HistoryPage }])
   ],
-  declarations: [HistoryPage]
+  declarations: [
+  	HistoryPage,
+  	HistoryComponent
+  ]
 })
 export class HistoryPageModule {}
