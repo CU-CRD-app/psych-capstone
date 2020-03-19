@@ -2,7 +2,7 @@ import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Tab1Page } from './tab1.page';
 import { LearningTaskComponent } from '../learning-task/learning-task.component';
 import { NameFaceComponent } from '../name-face/name-face.component';
@@ -18,6 +18,7 @@ import { HomeComponent } from '../home/home.component';
     IonicModule,
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     RouterModule.forChild([{ path: '', component: Tab1Page }])
   ],
   declarations: [
