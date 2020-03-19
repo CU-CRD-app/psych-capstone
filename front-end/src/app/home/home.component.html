@@ -59,14 +59,16 @@
 		<ion-row *ngIf="popup == Popup.LOGIN" id="row-with-login-card">
 			<ion-col offset=1 size=10>
 				<ion-card id="login_card">
-					<ion-item>
-						<ion-label position="stacked">Username:</ion-label>
-						<ion-input placeholder="Username"></ion-input>
-					</ion-item>
-					<ion-item>
-						<ion-label position="stacked">Password:</ion-label>
-						<ion-input placeholder="sTup1dPa55w0rd!"></ion-input>
-					</ion-item>
+					<form [formGroup]="loginForm">
+						<ion-item>
+							<ion-label position="stacked">Username:</ion-label>
+							<ion-input formControlName="username" placeholder="Username" type="email"></ion-input>
+						</ion-item>
+						<ion-item>
+							<ion-label position="stacked">Password:</ion-label>
+							<ion-input formControlName="password" placeholder="sTup1dPa55w0rd!"></ion-input>
+						</ion-item>
+					</form>
 					<ion-button (click)=SubmitLogin() expand="block" id="login_but">
 						<p>Submit&nbsp;</p>
 					</ion-button>
@@ -81,18 +83,20 @@
 		<ion-row *ngIf="popup == Popup.REGISTER" id="row-with-register-card">
 			<ion-col offset=1 size=10>
 				<ion-card id="register_card">
-					<ion-item>
-						<ion-label position="stacked">Username:</ion-label>
-						<ion-input placeholder="Username"></ion-input>
-					</ion-item>
-					<ion-item>
-						<ion-label position="stacked">Password:</ion-label>
-						<ion-input placeholder="sTup1dPa55w0rd!"></ion-input>
-					</ion-item>
-					<ion-item>
-						<ion-label position="stacked">Confirm Pswd:</ion-label>
-						<ion-input placeholder="sTup1dPa55w0rd!"></ion-input>
-					</ion-item>
+					<form [formGroup]="registerForm">
+						<ion-item>
+							<ion-label position="stacked">Username:</ion-label>
+							<ion-input formControlName="username" placeholder="Username"></ion-input>
+						</ion-item>
+						<ion-item>
+							<ion-label position="stacked">Password:</ion-label>
+							<ion-input formControlName="password" placeholder="sTup1dPa55w0rd!"></ion-input>
+						</ion-item>
+						<ion-item>
+							<ion-label position="stacked">Confirm Pswd:</ion-label>
+							<ion-input formControlName="password_check" placeholder="sTup1dPa55w0rd!"></ion-input>
+						</ion-item>
+					</form>
 					<ion-button (click)=SubmitRegister() expand="block" id="register_but">
 						<p>Submit&nbsp;</p>
 					</ion-button>
