@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { AlertController } from '@ionic/angular';
 import { timer } from 'rxjs';
+import { AlertController, ModalController } from '@ionic/angular';
+import { HelpModalComponent } from '../help-modal/help-modal.component';
 
 const helpMessages = {
   start: ["Start", "Welcome to your daily training.\nPlease give yourself about 10 minutes to complete the tasks. Click to begin."],
@@ -26,7 +27,7 @@ enum Task { LEARNING, NAME_FACE, WHOS_NEW, MEMORY, SHUFFLE, FORCED_CHOICE, SAME_
 })
 export class TrainingPage {
 
-  constructor(public alertController: AlertController) {
+  constructor(public alertController: AlertController, public modalController: ModalController) {
 
     this.trainingFacePaths = this.generateShuffledFaces(0); //getTrainingFaces()
     this.assessmentFacePaths = this.generateShuffledFaces(8); //getAssessmentFaces()
@@ -119,13 +120,22 @@ export class TrainingPage {
   }
 
   async getHelp() {
-    const alert = await this.alertController.create({
-      header: this.getMessage(0),
-      message: this.getMessage(1),
-      buttons: ['OK']
-    });
-
-    await alert.present();
+    if (this.task == null) {
+      const alert = await this.alertController.create({
+        header: this.getMessage(0),
+        message: this.getMessage(1),
+        buttons: ['OK']
+      });
+      await alert.present(); 
+    } else {
+      const modal = await this.modalController.create({
+        component: HelpModalComponent,
+        componentProps: {
+          "paramTask": this.getMessage(0),
+        }
+      });
+      await modal.present();
+    }
   }
 
   //getTrainingFaces() {}

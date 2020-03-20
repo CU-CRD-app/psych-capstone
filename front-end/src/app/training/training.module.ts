@@ -12,6 +12,7 @@ import { ShuffleComponent } from '../shuffle/shuffle.component';
 import { ForcedChoiceComponent } from '../forced-choice/forced-choice.component';
 import { SameDifferentComponent } from '../same-different/same-different.component';
 import { ScorePageComponent } from '../score-page/score-page.component';
+import { HelpModalComponent } from '../help-modal/help-modal.component';
 
 @NgModule({
   imports: [
@@ -30,7 +31,13 @@ import { ScorePageComponent } from '../score-page/score-page.component';
     ShuffleComponent,
     ForcedChoiceComponent,
     SameDifferentComponent,
+<<<<<<< HEAD
     ScorePageComponent
   ]
+=======
+    HelpModalComponent
+  ],
+  entryComponents: [HelpModalComponent]
+>>>>>>> learning
 })
 export class TrainingPageModule {}
