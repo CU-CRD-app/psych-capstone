@@ -3,7 +3,7 @@ import { timer } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Events } from '@ionic/angular';
 
-enum Popup { NULL, HOME, LOGIN, REGISTER, WHY }
+enum Popup { NULL, HOME, LOGIN, REGISTER, WHY, INVALID }
 
 @Component({
   selector: 'app-login',
@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
 
   SubmitLogin() {
     if (this.loginForm.invalid) {
-      alert("Invalid username (email) or password");
+      this.popup = Popup.INVALID;
       return;
     }
     else {
@@ -67,7 +67,7 @@ export class LoginComponent implements OnInit {
 
   SubmitRegister() {
     if (this.registerForm.invalid || this.registerForm.hasError('password mismatch')) {
-      alert("Username must be valid email, passwords must match");
+      this.popup = Popup.INVALID;
       return;
     }
     else {
@@ -83,6 +83,10 @@ export class LoginComponent implements OnInit {
 
   BackHome() {
     this.popup = Popup.HOME;
+  }
+
+  TryAgain() {
+    this.popup = Popup.LOGIN;
   }
 
   static passwordsMatch(regForm: FormGroup): any {

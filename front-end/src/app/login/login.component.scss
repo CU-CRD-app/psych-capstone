@@ -16,6 +16,9 @@
 #blank-row-register {
 	height: 17vh;
 }
+#blank-row-invalid {
+	height: 20vh;
+}
 
 
 #row-with-default-card {
@@ -28,6 +31,9 @@
 	height: 100%;
 }
 #row-with-register-card {
+	height: 100%;
+}
+#row-with-invalid-card {
 	height: 100%;
 }
 
@@ -55,8 +61,21 @@
 	margin: 0;
 	background-color: gainsboro;
 }
+#invalid_card {
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	background-color: gainsboro;
+}
 
 #why_msg {
+	color: black;
+	padding: 10px;
+	margin: 0;
+	text-align: center;
+}
+
+.invalid_msg {
 	color: black;
 	padding: 10px;
 	margin: 0;
@@ -86,7 +105,7 @@ ion-button {
 	margin-top: 10px;
 }
 
-#back_but {
+.back_but {
 	margin-left: 10px;
 	margin-right: 10px;
 	margin-bottom: 10px;
