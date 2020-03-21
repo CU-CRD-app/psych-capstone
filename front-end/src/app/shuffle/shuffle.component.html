@@ -53,7 +53,7 @@
       <ion-button *ngIf="stage == Stage.MEMORIZE || stage == Stage.MASK" style="width: 130px" disabled>Reveal</ion-button>
       <ion-button *ngIf="stage == Stage.SELECT" style="width: 130px" (click)="clickDone()">Done</ion-button>
       <ion-button *ngIf="stage == Stage.CORRECT" style="width: 130px" (click)="nextFace()">Next</ion-button>
-      <ion-grid *ngIf="stage == Stage.INCORRECT" style="margin-bottom: 0px">
+      <ion-grid *ngIf="stage == Stage.INCORRECT">
         <ion-row>
           <ion-col>
             <div *ngIf="feedbackToggle" style="color: white; margin-bottom: 5px">Show Correct</div>

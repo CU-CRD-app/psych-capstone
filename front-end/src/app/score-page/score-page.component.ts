@@ -6,7 +6,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./score-page.component.scss'],
 })
 export class ScorePageComponent implements OnInit {
-  @Input() score : string;
+  @Input() score : number;
   @Output() finished = new EventEmitter<number>();
 
   constructor() { }
