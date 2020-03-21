@@ -8,17 +8,15 @@
   <ion-card style="margin-top: 5px; text-align: center; height: 400px">
     <div *ngFor="let slide of slides; let i = index">
       <div *ngIf="currentSlide == i" style="margin-top: 10px">
-        <img [src]="slide[0]" style="height: 225px; width: 150px; display: block; margin-left: auto; margin-right: auto">
-        <ion-card-content *ngIf="currentSlide == i" style="color: white">
-          {{slide[1]}}
-        </ion-card-content>
+        <img [src]="slide[0]" style="height: 225px; width: 150px; margin: 0 auto;">
+        <ion-card-content *ngIf="currentSlide == i" style="color: white;">{{slide[1]}}</ion-card-content>
       </div>
     </div>
   </ion-card>
   <div style="text-align: center">
     <span *ngFor="let slide of slides; let i = index" style="margin: 0 auto">
       <ion-icon *ngIf="currentSlide == i" color="dark" name="radio-button-on"></ion-icon>
-      <ion-icon *ngIf="currentSlide != i" color="dark" name="radio-button-off"></ion-icon>
+      <ion-icon *ngIf="currentSlide != i" (click)="currentSlide = i" color="dark" name="radio-button-off"></ion-icon>
     </span>
   </div>
 </ion-content>
