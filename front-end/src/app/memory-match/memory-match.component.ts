@@ -10,7 +10,7 @@ enum Stage { START, MEMORIZE, MASK, SELECT, CORRECT, INCORRECT, DONE }
 })
 export class MemoryMatchComponent implements OnInit {
   @Input() facePaths : string[];
-  @Output() finished = new EventEmitter<number>();
+  @Output() finished = new EventEmitter<[number, number]>();
 
   constructor() { }
 
@@ -65,7 +65,7 @@ export class MemoryMatchComponent implements OnInit {
         } else { // Incorrect
           this.incorrectFaces.push(this.selectedFace);
           this.incorrectFaces.push(face);
-          this.score--;
+          this.score -= 0.25;
           this.stage = Stage.INCORRECT;
           await this.waitForFeedback();
         }
@@ -99,8 +99,7 @@ export class MemoryMatchComponent implements OnInit {
     if (this.correctFaces.length == this.facePaths.length) {
       this.promise++;
       this.stage = Stage.DONE;
-      this.score = Math.ceil(this.score/2);
-      this.score += this.facePaths.length;
+      this.score = Math.ceil(this.score) + this.facePaths.length;
     }
   }
 
@@ -111,9 +110,7 @@ export class MemoryMatchComponent implements OnInit {
       this.timeRemaining--;
     });
     timer(this.timeRemaining * 1000).subscribe(() => {
-      if (this.stage == Stage.MEMORIZE) {
-        this.startMaskTimer();
-      }
+      this.startMaskTimer();
     });
   }
 

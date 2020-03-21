@@ -4,24 +4,26 @@
 
   <div *ngIf="stage != Stage.DONE" style="text-align: center">
 
-    <h3 *ngIf="stage == Stage.MEMORIZE">Memorize the face</h3>
+    <h3 *ngIf="stage == Stage.START">Memorize the face: {{memorizeTime}}</h3>
+    <h3 *ngIf="stage == Stage.MEMORIZE">Memorize the face: {{timeRemaining}}</h3>
     <h3 *ngIf="stage == Stage.MASK">Hold the face in your mind...</h3>
     <h3 *ngIf="stage == Stage.SELECT">Is this the same person?</h3>
     <h3 *ngIf="stage == Stage.CORRECT">Correct!</h3>
     <h3 *ngIf="stage == Stage.INCORRECT">Incorrect!</h3>
     <ion-card>
-      <img [src]="getSrc()" style="height: 270px; margin: 20px auto" [ngStyle]="{'width': stage == Stage.MASK ? '85%' : '190px'}"/><!--[ngStyle]="{'width': stage == Stage.MASK ? '80%' : '190px'}"-->
+      <img *ngIf="stage != Stage.START" [src]="getSrc()" style="height: 270px; margin: 20px auto" [ngStyle]="{'width': stage == Stage.MASK ? '85%' : '190px'}"/><!--[ngStyle]="{'width': stage == Stage.MASK ? '80%' : '190px'}"-->
     </ion-card>
 
+    <ion-button *ngIf="stage == Stage.START" style="width:130px" (click)="startMemorizeTimer()">Reveal</ion-button>
+    <ion-button *ngIf="stage == Stage.MEMORIZE" style="width:130px" disabled>Reveal</ion-button>
     <ion-button *ngIf="stage == Stage.SELECT" style="width:130px" (click)="selectFace(false)" color="danger">No</ion-button>
     <ion-button *ngIf="stage == Stage.SELECT" style="width:130px" (click)="selectFace(true)" color="success">Yes</ion-button>
-    <ion-button *ngIf="stage == Stage.MEMORIZE || showFeedback()" style="width:130px" (click)="clickNext()">Next</ion-button>
+    <ion-button *ngIf="showFeedback()" style="width:130px" (click)="clickNext()">Next</ion-button>
 
   </div>
 
-  <div *ngIf="stage == Stage.DONE" style="text-align: center; color: white; margin-top: 180px">
-    <h1>Your score: {{score}}/{{facePaths.length}}</h1>
-    <ion-button color="success" (click)="finished.emit(score)">Finish</ion-button>
+  <div *ngIf="stage == Stage.DONE">
+    <app-score-page [score]="score" (finished)="finished.emit([score, $event])"></app-score-page>
   </div>
 
 </ion-content>

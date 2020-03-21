@@ -1,0 +1,11 @@
+<div style="text-align: center; color: white; margin-top: 150px">
+  <h1>Your score: {{score}}/8</h1>
+  <h6 *ngIf="score < 6" style="margin: 20px">You need a score of at least 6/8 to pass this module</h6>
+  <ion-button *ngIf="score < 6" (click)="finished.emit(0)">Retry</ion-button>
+  <ion-button *ngIf="score < 6" (click)="finished.emit(1)">
+    <ion-icon [src]=replay_icon></ion-icon>
+    &nbsp;
+    <ion-icon [src]=face_icon></ion-icon>
+  </ion-button>
+  <ion-button [color]="score >= 6 ? 'success' : 'danger'" (click)="finished.emit(2)">Finish</ion-button>
+</div>

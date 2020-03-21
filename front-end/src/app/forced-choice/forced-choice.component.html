@@ -5,16 +5,17 @@
   <div *ngIf="stage != Stage.DONE">
 
     <!--Memorizing the face-->
-    <div *ngIf="stage == Stage.MEMORIZE || stage == Stage.MASK">
-      <h3 *ngIf="stage == Stage.MEMORIZE">Memorize the face</h3>
+    <div *ngIf="firstStage()">
+      <h3 *ngIf="stage == Stage.START">Memorize the face: {{memorizeTime}}</h3>
+      <h3 *ngIf="stage == Stage.MEMORIZE">Memorize the face: {{timeRemaining}}</h3>
       <h3 *ngIf="stage == Stage.MASK">Hold the face in your mind...</h3>
-      <ion-card>
-        <img style="height: 270px; margin: 20px auto;" [src]="stage == Stage.MEMORIZE ? currentFace : mask" [ngStyle]="{'width': stage == Stage.MASK ? '85%' : '190px'}"/>
+      <ion-card style="height: 310px">
+        <img *ngIf="stage != Stage.START" style="height: 270px; margin: 20px auto;" [src]="stage == Stage.MEMORIZE ? currentFace : mask" [ngStyle]="{'width': stage == Stage.MASK ? '85%' : '190px'}"/>
       </ion-card>
     </div>
 
     <!--Choosing the face and feedback-->
-    <div *ngIf="stage != Stage.MEMORIZE && stage != Stage.MASK" style="text-align:center">
+    <div *ngIf="!firstStage()" style="text-align:center">
 
       <h5 *ngIf="stage == Stage.SELECT">Who did you see?</h5>
       <h5 *ngIf="stage == Stage.CORRECT">Correct!</h5>
@@ -59,7 +60,8 @@
 
     <!--Next Buttons-->
     <div style="text-align: center; margin-bottom: 15px">
-      <ion-button *ngIf="stage == Stage.MEMORIZE" style="width:130px" (click)="startMaskTimer()">Next</ion-button>
+      <ion-button *ngIf="stage == Stage.START" style="width:130px" (click)="startMemorizeTimer()">Reveal</ion-button>
+      <ion-button *ngIf="stage == Stage.MEMORIZE" style="width:130px" disabled>Reveal</ion-button>
       <ion-button *ngIf="stage == Stage.SELECT" style="width:130px" disabled>Next</ion-button>
       <ion-button *ngIf="showFeedback()" style="width:130px" (click)="nextFace()">Next</ion-button>
     </div>
@@ -67,9 +69,8 @@
   </div>
 
   <!--Score page-->
-  <div *ngIf="stage == Stage.DONE" style="text-align: center; color: white; margin-top: 180px">
-    <h1>Your score: {{score}}/{{facePaths.length}}</h1>
-    <ion-button color="success" (click)="finished.emit(score)">Finish</ion-button>
+  <div *ngIf="stage == Stage.DONE">
+    <app-score-page [score]="score" (finished)="finished.emit([score, $event])"></app-score-page>
   </div>
 
 </ion-content>
