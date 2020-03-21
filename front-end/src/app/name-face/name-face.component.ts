@@ -10,7 +10,7 @@ enum Stage { SELECT, CORRECT, INCORRECT, DONE }
 export class NameFaceComponent implements OnInit {
   @Input() setNames : string;
   @Input() facePaths : string[];
-  @Output() finished = new EventEmitter<number>();
+  @Output() finished = new EventEmitter<[number, number]>();
 
   constructor() {}
 

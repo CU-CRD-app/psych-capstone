@@ -55,7 +55,9 @@
       <ion-button *ngIf="stage == Stage.CORRECT" style="width: 130px" (click)="nextFace()">Next</ion-button>
       <ion-grid *ngIf="stage == Stage.INCORRECT">
         <ion-row>
-          <ion-col style="padding-top: 15px">
+          <ion-col>
+            <div *ngIf="feedbackToggle" style="color: white; margin-bottom: 5px">Show Correct</div>
+            <div *ngIf="!feedbackToggle" style="color: white; margin-bottom: 5px">Show Selected</div>
             <ion-toggle [(ngModel)]="feedbackToggle"></ion-toggle>
           </ion-col>
           <ion-col>
@@ -68,10 +70,8 @@
   </div>
 
   <!--Score page-->
-  <div *ngIf="stage == Stage.DONE" style="text-align: center; color: white; margin-top: 150px">
-    <h1>Your score: {{score}}/{{facePaths.length}}</h1>
-    <h6 *ngIf="score <= 6" style="margin: 20px">You need a score of at least 6/8 to pass this module</h6>
-    <ion-button [color]="score >= 6 ? 'success' : 'danger'" (click)="finished.emit(score)">Finish</ion-button>
+  <div *ngIf="stage == Stage.DONE">
+    <app-score-page [score]="score" (finished)="finished.emit([score, $event])"></app-score-page>
   </div>
 
 </ion-content>

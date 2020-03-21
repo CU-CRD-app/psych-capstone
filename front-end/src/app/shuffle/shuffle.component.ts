@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { timer, interval } from 'rxjs';
-import { takeUntil} from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 enum Stage { START, MEMORIZE, MASK, SELECT, CORRECT, INCORRECT, DONE }
 
@@ -11,7 +11,7 @@ enum Stage { START, MEMORIZE, MASK, SELECT, CORRECT, INCORRECT, DONE }
 })
 export class ShuffleComponent implements OnInit {
   @Input() facePaths : string[];
-  @Output() finished = new EventEmitter<number>();
+  @Output() finished = new EventEmitter<[number, number]>();
 
   constructor() { }
 
@@ -26,7 +26,6 @@ export class ShuffleComponent implements OnInit {
   progress : number = 0;
   progressPercent : number = 0;
   score : number = 0;
-  memorizeCounter : number = 0;
   stage : Stage = Stage.START;
   mask : string = 'assets/background_imgs/mask1.png';
 
@@ -103,20 +102,15 @@ export class ShuffleComponent implements OnInit {
   startMemorizeTimer() {
     this.timeRemaining = this.memorizeTime;
     this.stage = Stage.MEMORIZE;
-    let counter : number = this.memorizeCounter;
     timer(this.timeRemaining * 1000).subscribe(() => {
-      if (this.stage == Stage.MEMORIZE && counter == this.memorizeCounter) {
-        this.startMaskTimer();
-      }
+      this.startMaskTimer();
     });
     interval(1000)
     .pipe(
       takeUntil(timer(this.timeRemaining * 1000))
     )
     .subscribe(() => {
-      if (counter == this.memorizeCounter) {
-        this.timeRemaining--;
-      }
+      this.timeRemaining--;
     });
   }
 

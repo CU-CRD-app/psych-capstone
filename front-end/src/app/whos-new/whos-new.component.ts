@@ -8,7 +8,7 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 export class WhosNewComponent implements OnInit {
   @Input() facePaths : string[];
   @Input() newFacePaths : string[];
-  @Output() finished = new EventEmitter<number>();
+  @Output() finished = new EventEmitter<[number, number]>();
 
   constructor() {}
   
