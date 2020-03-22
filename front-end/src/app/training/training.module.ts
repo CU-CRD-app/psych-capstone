@@ -31,13 +31,9 @@ import { HelpModalComponent } from '../help-modal/help-modal.component';
     ShuffleComponent,
     ForcedChoiceComponent,
     SameDifferentComponent,
-<<<<<<< HEAD
-    ScorePageComponent
-  ]
-=======
+    ScorePageComponent,
     HelpModalComponent
   ],
   entryComponents: [HelpModalComponent]
->>>>>>> learning
 })
 export class TrainingPageModule {}

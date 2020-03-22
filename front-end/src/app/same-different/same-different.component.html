@@ -11,11 +11,10 @@
     <h3 *ngIf="stage == Stage.CORRECT">Correct!</h3>
     <h3 *ngIf="stage == Stage.INCORRECT">Incorrect!</h3>
     <ion-card>
-      <img *ngIf="stage != Stage.START" [src]="getSrc()" style="height: 270px; margin: 20px auto" [ngStyle]="{'width': stage == Stage.MASK ? '85%' : '190px'}"/><!--[ngStyle]="{'width': stage == Stage.MASK ? '80%' : '190px'}"-->
+      <img *ngIf="stage != Stage.START" [src]="getSrc()" style="height: 270px; margin: 20px auto" [ngStyle]="{'width': stage == Stage.MASK ? '85%' : '190px'}"/>
     </ion-card>
 
     <ion-button *ngIf="stage == Stage.START" style="width:130px" (click)="startMemorizeTimer()">Reveal</ion-button>
-    <ion-button *ngIf="stage == Stage.MEMORIZE" style="width:130px" disabled>Reveal</ion-button>
     <ion-button *ngIf="stage == Stage.SELECT" style="width:130px" (click)="selectFace(false)" color="danger">No</ion-button>
     <ion-button *ngIf="stage == Stage.SELECT" style="width:130px" (click)="selectFace(true)" color="success">Yes</ion-button>
     <ion-button *ngIf="showFeedback()" style="width:130px" (click)="clickNext()">Next</ion-button>

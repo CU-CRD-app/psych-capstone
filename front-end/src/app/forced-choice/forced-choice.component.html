@@ -61,7 +61,6 @@
     <!--Next Buttons-->
     <div style="text-align: center; margin-bottom: 15px">
       <ion-button *ngIf="stage == Stage.START" style="width:130px" (click)="startMemorizeTimer()">Reveal</ion-button>
-      <ion-button *ngIf="stage == Stage.MEMORIZE" style="width:130px" disabled>Reveal</ion-button>
       <ion-button *ngIf="stage == Stage.SELECT" style="width:130px" disabled>Next</ion-button>
       <ion-button *ngIf="showFeedback()" style="width:130px" (click)="nextFace()">Next</ion-button>
     </div>

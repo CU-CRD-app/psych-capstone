@@ -3,13 +3,14 @@
     <ion-label>
       <b>{{navParams.data.paramTask}}</b>
     </ion-label>
+    <ion-icon slot="start" color="dark" name="close" style="visibility: hidden"></ion-icon>
     <ion-icon slot="end" color="dark" name="close" style="margin-right: 10px; cursor: pointer; font-size: 200%" (click)="closeModal()"></ion-icon>
   </ion-item>
   <ion-card style="margin-top: 5px; text-align: center; height: 400px">
     <div *ngFor="let slide of slides; let i = index">
-      <div *ngIf="currentSlide == i" style="margin-top: 10px">
-        <img [src]="slide[0]" style="height: 225px; width: 150px; margin: 0 auto;">
-        <ion-card-content *ngIf="currentSlide == i" style="color: white;">{{slide[1]}}</ion-card-content>
+      <div *ngIf="currentSlide == i" style="margin-top: 20px">
+        <img [src]="slide[0]">
+        <div style="display: flex; align-items: center; height: 125px; color: white; margin: 20px; font-size: 120%">{{slide[1]}}</div>
       </div>
     </div>
   </ion-card>

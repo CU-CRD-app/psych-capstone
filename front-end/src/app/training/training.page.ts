@@ -120,22 +120,13 @@ export class TrainingPage {
   }
 
   async getHelp() {
-    if (this.task == null) {
-      const alert = await this.alertController.create({
-        header: this.getMessage(0),
-        message: this.getMessage(1),
-        buttons: ['OK']
-      });
-      await alert.present(); 
-    } else {
-      const modal = await this.modalController.create({
-        component: HelpModalComponent,
-        componentProps: {
-          "paramTask": this.getMessage(0),
-        }
-      });
-      await modal.present();
-    }
+    const modal = await this.modalController.create({
+      component: HelpModalComponent,
+      componentProps: {
+        "paramTask": this.getMessage(0),
+      }
+    });
+    await modal.present();
   }
 
   //getTrainingFaces() {}
