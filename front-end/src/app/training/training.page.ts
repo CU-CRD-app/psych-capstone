@@ -1,8 +1,5 @@
 import { Component } from '@angular/core';
-<<<<<<< HEAD
 import { timer } from 'rxjs';
-=======
->>>>>>> c5903720f92e477b60e0de9af90886c14134c28b
 import { AlertController, ModalController } from '@ionic/angular';
 import { HelpModalComponent } from '../help-modal/help-modal.component';
 
