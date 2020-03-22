@@ -11,7 +11,10 @@ import { MemoryMatchComponent } from '../memory-match/memory-match.component';
 import { ShuffleComponent } from '../shuffle/shuffle.component';
 import { ForcedChoiceComponent } from '../forced-choice/forced-choice.component';
 import { SameDifferentComponent } from '../same-different/same-different.component';
+<<<<<<< HEAD
 import { ScorePageComponent } from '../score-page/score-page.component';
+=======
+>>>>>>> c5903720f92e477b60e0de9af90886c14134c28b
 import { HelpModalComponent } from '../help-modal/help-modal.component';
 
 @NgModule({
