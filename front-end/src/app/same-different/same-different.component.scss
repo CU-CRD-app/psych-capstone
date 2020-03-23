@@ -1,15 +1,3 @@
-.success {
-    --background: #01DF74;
-}
-
-.failure {
-    --background: #FE2E2E;
-}
-
-.default {
-    --background: gray
-}
-
 ion-card {
     background-color:gainsboro;
     margin-bottom: 20px;
@@ -20,8 +8,4 @@ ion-card {
 h3 {
     text-align: center;
     color: white;
-}
-
-.time-left {
-    display: inline-block;
 }

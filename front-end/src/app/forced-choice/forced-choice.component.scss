@@ -19,17 +19,9 @@
     opacity: 0.5;
 }
 
-.grid-card {
-    display: inline-block;
-    margin-bottom: 20px;
-    margin-top: 15px;
-    height: 125px;
-    width: 100px;
-}
-
 ion-card {
     text-align: center;
-    background-color:gainsboro;
+    background-color: gainsboro;
 }
 
 img {
@@ -46,8 +38,4 @@ h3 {
 h5 {
     text-align: center;
     color: white;
-}
-
-.time-left {
-    display: inline-block;
 }

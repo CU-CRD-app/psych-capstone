@@ -1,4 +1,4 @@
-<ion-content id="content" style="--background: gray; --overflow: hidden">
+<ion-content id="content" style="--background: gray; ">
 
   <ion-header>
     <ion-toolbar [ngClass]="{'blue-border' : task == null}">
@@ -19,7 +19,7 @@
       <h5>Are you ready to train?</h5>
       <br>
       <ion-button color="success" style="width: 130px" (click)="task = Task.LEARNING">Start</ion-button>
-      <br><br><br><br><br><br>
+      <br><br>
       <ion-button style="width: 150px" (click)="getHelp()">How's it Work?</ion-button>
     </div>
 
@@ -103,7 +103,7 @@
   <app-same-different *ngIf="task == Task.SAME_DIFFERENT" [facePaths]="assessmentFacePaths" (finished)="finished($event, 5)"></app-same-different>
 
   <!--For development only-->
-  <!--<br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br>
   <div style="text-align:center">
     <br><br><br><br><br><br><br><br><br><br><br><br>
     <h3 style=color:red>For Development Only</h3>
@@ -114,6 +114,6 @@
     <ion-button (click)="task = Task.SHUFFLE">Shuffle: {{scores[3]}}</ion-button>
     <ion-button (click)="task = Task.FORCED_CHOICE">Forced Choice: {{scores[4]}}</ion-button>
     <ion-button (click)="task = Task.SAME_DIFFERENT">Same Different: {{scores[5]}}</ion-button>
-  </div>-->
+  </div>
 
 </ion-content>
