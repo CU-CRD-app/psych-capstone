@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavParams } from '@ionic/angular';
-
-enum Task { LEARNING, NAME_FACE, WHOS_NEW, MEMORY, SHUFFLE, FORCED_CHOICE, SAME_DIFFERENT }
+//import { trigger, style, animate, transition } from '@angular/animations';
 
 const slideValues = {
   'Start': [
@@ -69,20 +68,54 @@ const slideValues = {
   selector: 'app-help-modal',
   templateUrl: './help-modal.component.html',
   styleUrls: ['./help-modal.component.scss'],
+  /*animations: [
+    trigger('cardAnimator', [
+      transition('* => slideOutLeft', [style({ transform: 'translateX(100%)' }), animate(150)]),
+      transition('* => slideOutRight', [style({ transform: 'translateX(-100%)' }), animate(150)])
+    ])
+  ]*/
 })
+
 export class HelpModalComponent implements OnInit {
 
   constructor(private modalController: ModalController, private navParams: NavParams) { }
 
   ngOnInit() {
-    this.slides = slideValues[this.navParams.data.paramTask];
+    this.task = this.navParams.data.paramTask;
+    this.slides = slideValues[this.task];
   }
 
+  task : string;
   slides : string[][];
   currentSlide : number = 0;
+  //animationState: string;
 
   async closeModal() {
     await this.modalController.dismiss();
   }
+
+  onSwipeLeft(evt : any) {
+    if (this.currentSlide < this.slides.length - 1) {
+      this.currentSlide++;
+      //this.startAnimation('slideOutLeft');
+    }
+  }
+
+  onSwipeRight(evt : any) {
+    if (this.currentSlide > 0) {
+      this.currentSlide--;
+      //this.startAnimation('slideOutRight');
+    }
+  }
+
+  /*startAnimation(state : any) {
+    if (!this.animationState) {
+      this.animationState = state;
+    }
+  }
+
+  resetAnimationState() {
+    this.animationState = '';
+  }*/
 
 }
