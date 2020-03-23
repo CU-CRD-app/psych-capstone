@@ -5,7 +5,7 @@ import { ModalController, NavParams } from '@ionic/angular';
 const slideValues = {
   'Start': [
     ['assets/help-slides/start/0.png', 'Welcome to your CRD training. Please take a minute to review these slides and familiarize yourself with the training process.'],
-    ['assets/help-slides/start/1.png', 'There are eight levels to progress through, each more difficult than the last. You should complete one level per day.'],
+    ['assets/help-slides/start/1.png', 'There are eight levels to complete, each more difficult than the last. You should complete one level per day.'],
     ['assets/help-slides/start/2.png', 'Before the first level and after the last level you will complete an assessment to judge how much you have progressed.'],
     ['assets/help-slides/start/3.png', 'For each level you will complete a learning task to familiarize yourself with the day\'s faces, then four training tasks.'],
     ['assets/help-slides/start/4.png', 'After the training tasks are passed, you will complete two assessment tasks to judge your progress. Your level will increase after the assessment.'],
@@ -83,6 +83,14 @@ export class HelpModalComponent implements OnInit {
   ngOnInit() {
     this.task = this.navParams.data.paramTask;
     this.slides = slideValues[this.task];
+
+    let images : any[] = [];
+    for (let key of Object.keys(slideValues)) {
+      for (let i = 0; i < slideValues[key].length; i++) {
+        images.push(new Image());
+        images[images.length - 1].src = slideValues[key][i];
+      }
+    }
   }
 
   task : string;
