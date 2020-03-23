@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavParams } from '@ionic/angular';
-//import { trigger, style, animate, transition } from '@angular/animations';
+import { createAnimation } from '@ionic/core';
 
 const slideValues = {
   'Start': [
@@ -68,12 +68,6 @@ const slideValues = {
   selector: 'app-help-modal',
   templateUrl: './help-modal.component.html',
   styleUrls: ['./help-modal.component.scss'],
-  /*animations: [
-    trigger('cardAnimator', [
-      transition('* => slideOutLeft', [style({ transform: 'translateX(100%)' }), animate(150)]),
-      transition('* => slideOutRight', [style({ transform: 'translateX(-100%)' }), animate(150)])
-    ])
-  ]*/
 })
 
 export class HelpModalComponent implements OnInit {
@@ -91,39 +85,49 @@ export class HelpModalComponent implements OnInit {
         images[images.length - 1].src = slideValues[key][i];
       }
     }
+
+    this.swipeLeft = createAnimation()
+    .addElement(document.querySelector('.swipe-card'))
+    .fill('none')
+    .duration(150)
+    .keyframes([
+      { offset: 0, transform: 'translateX(0%)' },
+      { offset: 0.5, transform: 'translateX(-50%)' },
+      { offset: 1, transform: 'translateX(-100%)' }
+    ]);
+    this.swipeRight = createAnimation()
+    .addElement(document.querySelector('.swipe-card'))
+    .fill('none')
+    .duration(150)
+    .keyframes([
+      { offset: 0, transform: 'translateX(0%)' },
+      { offset: 0.5, transform: 'translateX(50%)' },
+      { offset: 1, transform: 'translateX(100%)' }
+    ]);
   }
 
   task : string;
   slides : string[][];
   currentSlide : number = 0;
-  //animationState: string;
+  swipeLeft : any;
+  swipeRight : any;
 
   async closeModal() {
     await this.modalController.dismiss();
   }
 
-  onSwipeLeft(evt : any) {
+  async onSwipeLeft(evt : any) {
     if (this.currentSlide < this.slides.length - 1) {
+      await this.swipeLeft.play()
       this.currentSlide++;
-      //this.startAnimation('slideOutLeft');
     }
   }
 
-  onSwipeRight(evt : any) {
+  async onSwipeRight(evt : any) {
     if (this.currentSlide > 0) {
+      await this.swipeRight.play()
       this.currentSlide--;
-      //this.startAnimation('slideOutRight');
     }
   }
-
-  /*startAnimation(state : any) {
-    if (!this.animationState) {
-      this.animationState = state;
-    }
-  }
-
-  resetAnimationState() {
-    this.animationState = '';
-  }*/
 
 }

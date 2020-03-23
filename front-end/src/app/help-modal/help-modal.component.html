@@ -6,7 +6,7 @@
     <ion-icon slot="start" color="dark" name="close" style="visibility: hidden"></ion-icon>
     <ion-icon slot="end" color="dark" name="close" style="margin-right: 10px; cursor: pointer; font-size: 200%" (click)="closeModal()"></ion-icon>
   </ion-item>
-  <ion-card (swipeleft)="onSwipeLeft($event)" (swiperight)="onSwipeRight($event)" style="margin-top: 5px; text-align: center; height: 400px"><!--[@cardAnimator]="animationState" (@cardAnimator.done)="resetAnimationState()"-->
+  <ion-card (swipeleft)="onSwipeLeft($event)" (swiperight)="onSwipeRight($event)" class="swipe-card">
     <div *ngFor="let slide of slides; let i = index">
       <div *ngIf="currentSlide == i" style="margin-top: 20px">
         <img [src]="slide[0]">
