@@ -79,11 +79,9 @@ export class HelpModalComponent implements OnInit {
     this.slides = slideValues[this.task];
 
     let images : any[] = [];
-    for (let key of Object.keys(slideValues)) {
-      for (let i = 0; i < slideValues[key].length; i++) {
-        images.push(new Image());
-        images[images.length - 1].src = slideValues[key][i];
-      }
+    for (let i = 0; i < this.slides.length; i++) {
+      images.push(new Image());
+      images[images.length - 1].src = this.slides[i][0];
     }
 
     this.swipeLeft = createAnimation()
@@ -92,8 +90,11 @@ export class HelpModalComponent implements OnInit {
     .duration(150)
     .keyframes([
       { offset: 0, transform: 'translateX(0%)' },
-      { offset: 0.5, transform: 'translateX(-50%)' },
-      { offset: 1, transform: 'translateX(-100%)' }
+      { offset: 0.25, transform: 'translateX(-50%)' },
+      { offset: 0.49, transform: 'translateX(-100%)' },
+      { offset: 0.51, transform: 'translateX(100%)' },
+      { offset: 0.75, transform: 'translateX(50%)' },
+      { offset: 1, transform: 'translateX(0%)' }
     ]);
     this.swipeRight = createAnimation()
     .addElement(document.querySelector('.swipe-card'))
@@ -101,8 +102,12 @@ export class HelpModalComponent implements OnInit {
     .duration(150)
     .keyframes([
       { offset: 0, transform: 'translateX(0%)' },
-      { offset: 0.5, transform: 'translateX(50%)' },
-      { offset: 1, transform: 'translateX(100%)' }
+      { offset: 0.25, transform: 'translateX(50%)' },
+      { offset: 0.49, transform: 'translateX(100%)' },
+      { offset: 0.5, transform: 'translateX(100%)' },
+      { offset: 0.51, transform: 'translateX(-100%)' },
+      { offset: 0.75, transform: 'translateX(-50%)' },
+      { offset: 1, transform: 'translateX(0%)' }
     ]);
   }
 
@@ -118,14 +123,14 @@ export class HelpModalComponent implements OnInit {
 
   async onSwipeLeft(evt : any) {
     if (this.currentSlide < this.slides.length - 1) {
-      await this.swipeLeft.play()
+      this.swipeLeft.play();
       this.currentSlide++;
     }
   }
 
   async onSwipeRight(evt : any) {
     if (this.currentSlide > 0) {
-      await this.swipeRight.play()
+      this.swipeRight.play();
       this.currentSlide--;
     }
   }
