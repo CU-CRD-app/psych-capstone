@@ -107,7 +107,7 @@ export class MemoryMatchComponent implements OnInit {
   startMemorizeTimer() {
     this.timeRemaining = this.memorizeTime;
     this.stage = Stage.MEMORIZE;
-    interval(1000).subscribe(() => {
+    interval(1000).subscribe(async () => {
       let inflate = createAnimation()
       .addElement(document.querySelector('.time-left'))
       .fill('none')
@@ -118,7 +118,7 @@ export class MemoryMatchComponent implements OnInit {
         { offset: 1, transform: 'scale(2, 2)' }
       ]);
       this.timeRemaining--;
-      inflate.play();
+      await inflate.play();
     });
     timer(this.timeRemaining * 1000).subscribe(() => {
       this.startMaskTimer();

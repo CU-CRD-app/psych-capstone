@@ -110,7 +110,7 @@ export class ShuffleComponent implements OnInit {
     .pipe(
       takeUntil(timer(this.timeRemaining * 1000))
     )
-    .subscribe(() => {
+    .subscribe(async () => {
       let inflate = createAnimation()
       .addElement(document.querySelector('.time-left'))
       .fill('none')
@@ -121,7 +121,7 @@ export class ShuffleComponent implements OnInit {
         { offset: 1, transform: 'scale(2, 2)' }
       ]);
       this.timeRemaining--;
-      inflate.play();
+      await inflate.play();
     });
   }
 

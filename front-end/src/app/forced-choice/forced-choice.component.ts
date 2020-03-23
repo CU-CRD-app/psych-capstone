@@ -89,7 +89,7 @@ export class ForcedChoiceComponent implements OnInit {
     .pipe(
       takeUntil(timer(this.timeRemaining * 1000))
     )
-    .subscribe(() => {
+    .subscribe(async () => {
       let inflate = createAnimation()
       .addElement(document.querySelector('.time-left'))
       .fill('none')
@@ -100,7 +100,7 @@ export class ForcedChoiceComponent implements OnInit {
         { offset: 1, transform: 'scale(2, 2)' }
       ]);
       this.timeRemaining--;
-      inflate.play();
+      await inflate.play();
     });
   }
 
