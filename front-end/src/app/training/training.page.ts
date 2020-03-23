@@ -66,7 +66,7 @@ export class TrainingPage {
   level : number = 1;
 
   learningDone : boolean = false;
-  scores : number[] = [8, 8, 8, 8, 8, 8];
+  scores : number[] = [-1, -1, -1, -1, -1, -1];
 
   //Just icons
   assessment_icon : string = "assets/icon/assessment.svg";
