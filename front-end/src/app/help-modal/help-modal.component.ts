@@ -6,9 +6,9 @@ const slideValues = {
   'Start': [
     ['assets/help-slides/start/0.png', 'Welcome to your CRD training. Please take a minute to review these slides and familiarize yourself with the training process.'],
     ['assets/help-slides/start/1.png', 'There are eight levels to complete, each more difficult than the last. You should complete one level per day.'],
-    ['assets/help-slides/start/2.png', 'Before the first level and after the last level you will complete an assessment to judge how much you have progressed.'],
-    ['assets/help-slides/start/3.png', 'For each level you will complete a learning task to familiarize yourself with the day\'s faces, then four training tasks.'],
-    ['assets/help-slides/start/4.png', 'After the training tasks are passed, you will complete two assessment tasks to judge your progress. Your level will increase after the assessment.'],
+    ['assets/help-slides/start/2.png', 'For each level you will complete a learning task to familiarize yourself with the day\'s faces, then four training tasks.'],
+    ['assets/help-slides/start/3.png', 'After the training tasks are passed, you will complete two assessment tasks to judge your progress. Your level will increase after the assessment.'],
+    ['assets/help-slides/start/4.png', 'Before the first level and after the last level you will complete an assessment to judge how much you have progressed.'],
     ['assets/help-slides/start/5.png', 'If you have questions about how to complete a task or what to do next, you can click the help icon in the upper-right corner.'],
     ['assets/help-slides/start/6.png', 'Your data will be used to further research of CRD and facial recognition. For more information about the research visit the About Us page.']
   ],
@@ -84,29 +84,40 @@ export class HelpModalComponent implements OnInit {
       images[images.length - 1].src = this.slides[i][0];
     }
 
-    this.swipeLeft = createAnimation()
+    this.outLeft = createAnimation()
     .addElement(document.querySelector('.swipe-card'))
     .fill('none')
-    .duration(150)
+    .duration(100)
     .keyframes([
       { offset: 0, transform: 'translateX(0%)' },
-      { offset: 0.25, transform: 'translateX(-50%)' },
-      { offset: 0.49, transform: 'translateX(-100%)' },
-      { offset: 0.51, transform: 'translateX(100%)' },
-      { offset: 0.75, transform: 'translateX(50%)' },
+      { offset: 0.5, transform: 'translateX(-50%)' },
+      { offset: 1, transform: 'translateX(-100%)' }
+    ]);
+    this.inRight = createAnimation()
+    .addElement(document.querySelector('.swipe-card'))
+    .fill('none')
+    .duration(100)
+    .keyframes([
+      { offset: 0, transform: 'translateX(100%)' },
+      { offset: 0.5, transform: 'translateX(50%)' },
       { offset: 1, transform: 'translateX(0%)' }
     ]);
-    this.swipeRight = createAnimation()
+    this.outRight = createAnimation()
     .addElement(document.querySelector('.swipe-card'))
     .fill('none')
-    .duration(150)
+    .duration(100)
     .keyframes([
       { offset: 0, transform: 'translateX(0%)' },
-      { offset: 0.25, transform: 'translateX(50%)' },
-      { offset: 0.49, transform: 'translateX(100%)' },
-      { offset: 0.5, transform: 'translateX(100%)' },
-      { offset: 0.51, transform: 'translateX(-100%)' },
-      { offset: 0.75, transform: 'translateX(-50%)' },
+      { offset: 0.5, transform: 'translateX(50%)' },
+      { offset: 1, transform: 'translateX(100%)' }
+    ]);
+    this.inLeft = createAnimation()
+    .addElement(document.querySelector('.swipe-card'))
+    .fill('none')
+    .duration(100)
+    .keyframes([
+      { offset: 0, transform: 'translateX(-100%)' },
+      { offset: 0.5, transform: 'translateX(-50%)' },
       { offset: 1, transform: 'translateX(0%)' }
     ]);
   }
@@ -114,8 +125,10 @@ export class HelpModalComponent implements OnInit {
   task : string;
   slides : string[][];
   currentSlide : number = 0;
-  swipeLeft : any;
-  swipeRight : any;
+  outLeft : any;
+  inRight : any;
+  outRight : any;
+  inLeft : any;
 
   async closeModal() {
     await this.modalController.dismiss();
@@ -123,15 +136,23 @@ export class HelpModalComponent implements OnInit {
 
   async onSwipeLeft(evt : any) {
     if (this.currentSlide < this.slides.length - 1) {
-      this.swipeLeft.play();
+      await this.outLeft.play();
       this.currentSlide++;
+      await this.inRight.play();
+    } else {
+      await this.outLeft.play();
+      await this.inLeft.play();
     }
   }
 
   async onSwipeRight(evt : any) {
     if (this.currentSlide > 0) {
-      this.swipeRight.play();
+      await this.outRight.play();
       this.currentSlide--;
+      await this.inLeft.play();
+    } else {
+      await this.outRight.play();
+      await this.inRight.play();
     }
   }
 

@@ -19,7 +19,7 @@
       <h5>Are you ready to train?</h5>
       <br>
       <ion-button color="success" style="width: 130px" (click)="task = Task.LEARNING">Start</ion-button>
-      <br>
+      <br><br><br><br>
       <ion-button style="width: 150px" (click)="getHelp()">How's it Work?</ion-button>
     </div>
 
@@ -77,9 +77,13 @@
 
     <!--All tasks finished-->
     <div *ngIf="stage == Stage.DONE" style="margin-top: 160px">
-      <h1><b>Done</b></h1>
-      <h5 style="margin: 20px">You've moved on to the next level! Come back tomorrow for your next training.</h5>
-      <ion-button color="success" style="width: 130px" routerLink="/dashboard" routerDirection="forward">Home</ion-button>
+      <h1><b>Finished!</b></h1>
+      <ion-progress-bar style="width: 80%; margin-left: 30px" value={{progress}}></ion-progress-bar>
+      <h5 style="text-align: center">Level <span class="level">{{level}}</span></h5>
+      <div class="fade-in">
+        <h5 style="margin: 20px">You've moved on to the next level! Come back tomorrow for your next training.</h5>
+        <ion-button color="success" style="width: 130px" routerLink="/dashboard" routerDirection="forward">Home</ion-button>
+      </div>
     </div>
   </div>
 

@@ -5,7 +5,7 @@
   <div *ngIf="stage != Stage.DONE" style="text-align: center">
 
     <h3 *ngIf="stage == Stage.START">Memorize the face: {{memorizeTime}}</h3>
-    <h3 *ngIf="stage == Stage.MEMORIZE">Memorize the face: {{timeRemaining}}</h3>
+    <h3 *ngIf="stage == Stage.MEMORIZE">Memorize the face: <span class="time-left">{{timeRemaining}}</span></h3>
     <h3 *ngIf="stage == Stage.MASK">Hold the face in your mind...</h3>
     <h3 *ngIf="stage == Stage.SELECT">Is this the same person?</h3>
     <h3 *ngIf="stage == Stage.CORRECT">Correct!</h3>
