@@ -15,6 +15,7 @@
     </ion-card>
 
     <ion-button *ngIf="stage == Stage.START" style="width:130px" (click)="startMemorizeTimer()">Reveal</ion-button>
+    <ion-button *ngIf="stage == Stage.MEMORIZE || stage == Stage.MASK" style="width:130px" disabled>Reveal</ion-button>
     <ion-button *ngIf="stage == Stage.SELECT" style="width:130px" (click)="selectFace(false)" color="danger">No</ion-button>
     <ion-button *ngIf="stage == Stage.SELECT" style="width:130px" (click)="selectFace(true)" color="success">Yes</ion-button>
     <ion-button *ngIf="showFeedback()" style="width:130px" (click)="clickNext()">Next</ion-button>

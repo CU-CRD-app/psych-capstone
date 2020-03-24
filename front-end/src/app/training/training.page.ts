@@ -255,7 +255,9 @@ export class TrainingPage {
         {
           text: 'Quit',
           handler: () => {
-            this.task = null;
+            timer(500).subscribe(() => {
+              this.task = null;
+            })
           }
         }
       ]
