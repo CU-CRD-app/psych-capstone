@@ -7,8 +7,8 @@ const slideValues = {
     ['assets/help-slides/start/0.png', 'Welcome to your CRD training. Please take a minute to review these slides and familiarize yourself with the training process.'],
     ['assets/help-slides/start/1.png', 'There are eight levels to complete, each more difficult than the last. You should complete one level per day.'],
     ['assets/help-slides/start/2.png', 'For each level you will complete a learning task to familiarize yourself with the day\'s faces, then four training tasks.'],
-    ['assets/help-slides/start/3.png', 'After the training tasks are passed, you will complete two assessment tasks to judge your progress. Your level will increase after the assessment.'],
-    ['assets/help-slides/start/4.png', 'Before the first level and after the last level you will complete an assessment to judge how much you have progressed.'],
+    ['assets/help-slides/start/3.png', 'After the training tasks have been passed, you will complete two assessment tasks to judge your progress. Your level will increase after the assessment.'],
+    ['assets/help-slides/start/4.png', 'Before the first level and after the last level you will complete an additional assessment to judge how much you have progressed.'],
     ['assets/help-slides/start/5.png', 'If you have questions about how to complete a task or what to do next, you can click the help icon in the upper-right corner.'],
     ['assets/help-slides/start/6.png', 'Your data will be used to further research of CRD and facial recognition. For more information about the research visit the About Us page.']
   ],
@@ -52,15 +52,15 @@ const slideValues = {
     ['assets/help-slides/same-different/3.png', 'You will be given feedback based on your selection.']
   ],
   'Training Tasks': [
-    ['assets/help-slides/training/0.png', 'Welcome to your training tasks. You can revisit the learning task at any time with this button, and however many times you need.'],
-    ['assets/help-slides/training/1.png', 'When you complete a task, you can see your highest score and passing status. You must get at least 6/8 to pass each, and can do them any number of times.'],
-    ['assets/help-slides/training/2.png', 'When you have passed each task, you will be able to move on to the assessment tasks with this button. You will not be able to navigate back after moving on.']
+    ['assets/help-slides/training/0.png', 'Welcome to the training tasks. You can revisit the learning task at any time with the bottom left-hand button, however often you need.'],
+    ['assets/help-slides/training/1.png', 'When you complete a task, you can see your highest score and its passing status. You must get at least 6/8 to pass each task, and can do them any number of times.'],
+    ['assets/help-slides/training/2.png', 'When you have passed each task, you will be able to move on to the assessment tasks with the bottom right-hand button. You will not be able to navigate back after moving on.']
   ],
   'Assessment Tasks': [
     ['assets/help-slides/assessment/0.png', 'You must complete these two assessment tasks each day, as they will be the primary way your progress is tracked. You cannot redo or restart them.']
   ],
   'Finish': [
-    ['assets/help-slides/start/4.png', 'You are done for the day, and you have progressed to the next level! Come back tomorrow for your next training. You can see your training history on the history page.']
+    ['assets/help-slides/finish/0.png', 'You are done for the day, come back tomorrow for your next training. You can see your training history on the history page.']
   ]
 }
 
