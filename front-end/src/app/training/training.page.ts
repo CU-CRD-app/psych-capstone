@@ -265,4 +265,26 @@ export class TrainingPage {
 
     await alert.present();
   }
+
+  async startAssessmentAlert() {
+    const alert = await this.alertController.create({
+      header: 'Assessment',
+      message: 'Do you want to move on to the assessment? You will not be able to come back to training today.',
+      buttons: [
+        {
+          text: 'Cancel'
+        },
+        {
+          text: 'Go',
+          handler: () => {
+            timer(500).subscribe(() => {
+              this.iterateStage();
+            })
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
 }

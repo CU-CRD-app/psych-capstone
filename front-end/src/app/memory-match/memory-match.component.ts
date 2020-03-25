@@ -133,7 +133,9 @@ export class MemoryMatchComponent implements OnInit {
           { offset: 1, transform: 'scale(2, 2)' }
         ]);
         this.timeRemaining--;
-        await inflate.play();
+        if (this.timeRemaining > this.memorizeTime - 2 || this.timeRemaining < 4) {
+          await inflate.play();
+        }
       });
   }
 

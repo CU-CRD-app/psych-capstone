@@ -53,7 +53,7 @@ const slideValues = {
   ],
   'Training Tasks': [
     ['assets/help-slides/training/0.png', 'Welcome to your training tasks. You can revisit the learning task at any time with this button, and however many times you need.'],
-    ['assets/help-slides/training/1.png', 'When you complete a task, the color will indicate whether you received a passing score. You must get at least 6/8 to pass each, and can do them any number of times.'],
+    ['assets/help-slides/training/1.png', 'When you complete a task, you can see your highest score and passing status. You must get at least 6/8 to pass each, and can do them any number of times.'],
     ['assets/help-slides/training/2.png', 'When you have passed each task, you will be able to move on to the assessment tasks with this button. You will not be able to navigate back after moving on.']
   ],
   'Assessment Tasks': [
