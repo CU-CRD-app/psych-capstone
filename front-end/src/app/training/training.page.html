@@ -103,7 +103,7 @@
   <app-same-different *ngIf="task == Task.SAME_DIFFERENT" [facePaths]="assessmentFacePaths" (finished)="finished($event, 5)"></app-same-different>
 
   <!--For development only-->
-  <br><br><br><br><br><br><br><br><br><br><br><br>
+  <!--<br><br><br><br><br><br><br><br><br><br><br><br>
   <div style="text-align:center">
     <br><br><br><br><br><br><br><br><br><br><br><br>
     <h3 style=color:red>For Development Only</h3>
@@ -114,6 +114,6 @@
     <ion-button (click)="task = Task.SHUFFLE">Shuffle: {{scores[3]}}</ion-button>
     <ion-button (click)="task = Task.FORCED_CHOICE">Forced Choice: {{scores[4]}}</ion-button>
     <ion-button (click)="task = Task.SAME_DIFFERENT">Same Different: {{scores[5]}}</ion-button>
-  </div>
+  </div>-->
 
 </ion-content>

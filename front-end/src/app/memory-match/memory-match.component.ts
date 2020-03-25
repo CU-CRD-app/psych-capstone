@@ -33,8 +33,12 @@ export class MemoryMatchComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.interval.unsubscribe();
-    this.timer.unsubscribe();
+    if (this.interval) {
+      this.interval.unsubscribe();
+    }
+    if (this.timer) {
+      this.timer.unsubscribe();
+    }
   }
 
   Stage = Stage;  

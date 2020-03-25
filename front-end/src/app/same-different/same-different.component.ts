@@ -25,8 +25,12 @@ export class SameDifferentComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.interval.unsubscribe();
-    this.timer.unsubscribe();
+    if (this.interval) {
+      this.interval.unsubscribe();
+    }
+    if (this.timer) {
+      this.timer.unsubscribe();
+    }
   }
 
   Stage = Stage;
