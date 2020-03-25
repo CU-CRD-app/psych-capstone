@@ -1,0 +1,39 @@
+{"History" : {
+	"Username" : "fake.email@aol.com",
+	"1" : {
+		"Completed" : true,
+		"Date" : "03-06-2020",
+		"Pre-score" : 12,
+		"Post-score" : 15
+	},
+	"2" : {
+		"Completed" : true,
+		"Date" : "03-08-2020",
+		"Pre-score" : 9,
+		"Post-score" : 18
+	},
+	"3" : {
+		"Completed" : true,
+		"Date" : "03-09-2020",
+		"Pre-score" : 12,
+		"Post-score" : 16
+	},
+	"4" : {
+		"Completed" : false,
+		"Date" : "null",
+		"Pre-score" : "null",
+		"Post-score" : "null"
+	},
+	"5" : {
+		"Completed" : false,
+		"Date" : "null",
+		"Pre-score" : "null",
+		"Post-score" : "null"
+	},
+	"6" : {
+		"Completed" : false,
+		"Date" : "null",
+		"Pre-score" : "null",
+		"Post-score" : "null"
+	}
+}}

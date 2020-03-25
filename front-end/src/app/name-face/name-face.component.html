@@ -1,11 +1,13 @@
-<ion-content [ngClass]="{'default-card': !showFeedback, 'success-card': showFeedback && correctSelection, 'failure-card': showFeedback && !correctSelection}">
+<ion-content [ngClass]="{'default-card': !showFeedback(), 'success-card': showFeedback() && stage == Stage.CORRECT, 'failure-card': showFeedback() && stage == Stage.INCORRECT}">
+
+  <ion-progress-bar style="margin-top: 0px" value={{progressPercent}}></ion-progress-bar>
 
   <div *ngIf="progress < 8" style="text-align: center">
 
     <br>
-    <h3 *ngIf="!showFeedback">Who is <b>{{currentName}}</b>?</h3>
-    <h3 *ngIf="showFeedback && correctSelection">Correct!</h3>
-    <h3 *ngIf="showFeedback && !correctSelection">Incorrect!</h3>
+    <h3 *ngIf="!showFeedback()">Who is <b>{{currentName}}</b>?</h3>
+    <h3 *ngIf="stage == Stage.CORRECT">Correct!</h3>
+    <h3 *ngIf="stage == Stage.INCORRECT">Incorrect!</h3>
 
     <br>
 
@@ -15,7 +17,7 @@
 
         <ion-col *ngFor="let item of [].constructor(3); let i = index">
           
-          <ion-card button="true" (click)="showFeedback ? nextFace() : chooseFace(shuffledFaces[i])" [ngClass]="{'selected-card': showSelected(i), 'disabled-card': showDisabled(i)}">
+          <ion-card [button]="!showFeedback()" (click)="chooseFace(shuffledFaces[i])" [ngClass]="{'selected-card': showSelected(i), 'disabled-card': showDisabled(i)}">
             <img [src]="shuffledFaces[i]"/>
           </ion-card>
 
@@ -28,7 +30,7 @@
 
         <ion-col *ngFor="let item of [].constructor(3); let i = index">
           
-          <ion-card button="true" (click)="showFeedback ? nextFace() : chooseFace(shuffledFaces[i + 3])" [ngClass]="{'selected-card': showSelected(i + 3), 'disabled-card': showDisabled(i + 3)}">
+          <ion-card [button]="!showFeedback()" (click)="chooseFace(shuffledFaces[i + 3])" [ngClass]="{'selected-card': showSelected(i + 3), 'disabled-card': showDisabled(i + 3)}">
             <img [src]="shuffledFaces[i + 3]"/>
           </ion-card>
           
@@ -42,13 +44,13 @@
 
     <br>
 
-    <ion-button *ngIf="showFeedback" (click)="nextFace()" style="width:130px">Next</ion-button>
+    <ion-button *ngIf="!showFeedback()" disabled style="width:130px">Next</ion-button>
+    <ion-button *ngIf="showFeedback()" (click)="nextFace()" style="width:130px">Next</ion-button>
 
   </div>
 
-  <div *ngIf="progress == 8" style="text-align: center; color: white; margin-top: 180px">
-    <h1>Your score: {{score}}/{{facePaths.length}}</h1>
-    <ion-button color="success" (click)="finished.emit(score)">Finish</ion-button>
+  <div *ngIf="progress > 7">
+    <app-score-page [score]="score" (finished)="finished.emit([score, $event])"></app-score-page>
   </div>
 
 </ion-content>

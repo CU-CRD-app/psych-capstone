@@ -1,0 +1,102 @@
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { timer } from 'rxjs';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Events } from '@ionic/angular';
+
+enum Popup { NULL, HOME, LOGIN, REGISTER, WHY, INVALID }
+
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
+})
+export class LoginComponent implements OnInit {
+  @Output() finished = new EventEmitter<void>();
+
+  public loginForm : FormGroup;
+  public registerForm : FormGroup;
+
+  private debugMode: boolean = true;
+
+  constructor(public formBuilder : FormBuilder, public events : Events) {
+
+    this.loginForm = formBuilder.group({
+      username: ['', Validators.compose([Validators.required, Validators.email])],
+      password: ['', Validators.compose([Validators.required])]
+    });
+
+    this.registerForm = formBuilder.group({
+      username: ['', Validators.compose([Validators.required, Validators.email])],
+      password: ['', Validators.compose([Validators.required])],
+      password_check: ['', Validators.compose([Validators.required])]
+    }, {validator: LoginComponent.passwordsMatch});
+
+  }
+
+  ngOnInit() {
+    timer(1000).subscribe(()=>(this.popup = Popup.HOME));
+  }
+
+  Popup = Popup;
+  popup : Popup = Popup.NULL;
+
+  login : string = "assets/icon/log-in.svg";
+  help : string = "help-circle-outline";
+
+  Login() {
+    this.popup = Popup.LOGIN;
+  }
+
+  SubmitLogin() {
+    if (this.loginForm.invalid) {
+      this.popup = Popup.INVALID;
+      return;
+    }
+    else {
+      let logJSON = {Username: this.loginForm.value.username, Password: this.loginForm.value.password};
+      console.log("Login JSON: ", JSON.stringify(logJSON));
+
+      this.events.publish('loggedin', this.loginForm.value.username);
+      this.finished.emit();
+    }
+  }
+
+  Register() {
+    this.popup = Popup.REGISTER;
+  }
+
+  SubmitRegister() {
+    if (this.registerForm.invalid || this.registerForm.hasError('password mismatch')) {
+      this.popup = Popup.INVALID;
+      return;
+    }
+    else {
+      let regJSON = {Username: this.registerForm.value.username, Password: this.registerForm.value.password};
+      console.log("Register JSON: ", JSON.stringify(regJSON));
+      this.finished.emit();
+    }
+  }
+
+  Why() {
+  	this.popup = Popup.WHY;
+  }
+
+  BackHome() {
+    this.popup = Popup.HOME;
+  }
+
+  TryAgain() {
+    this.popup = Popup.LOGIN;
+  }
+
+  static passwordsMatch(regForm: FormGroup): any {
+    let pwd1 = regForm.get('password');
+    let pwd2 = regForm.get('password_check');
+    if (pwd1.value != pwd2.value) {
+      return {
+        "password mismatch" : true
+      };
+    return null;
+    }
+  }
+}

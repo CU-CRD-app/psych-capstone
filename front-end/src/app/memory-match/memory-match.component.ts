@@ -9,8 +9,8 @@ enum Stage { START, MEMORIZE, MASK, SELECT, CORRECT, INCORRECT, DONE }
   styleUrls: ['./memory-match.component.scss'],
 })
 export class MemoryMatchComponent implements OnInit {
-  @Input() facePaths : string;
-  @Output() finished = new EventEmitter<number>();
+  @Input() facePaths : string[];
+  @Output() finished = new EventEmitter<[number, number]>();
 
   constructor() { }
 
@@ -34,16 +34,18 @@ export class MemoryMatchComponent implements OnInit {
   stage : Stage = Stage.START;
   score : number = 0;
   promise : number = 0;
+  memorizeTime : number = 10;
   timeRemaining : number = null;
-  mask : string = '../../assets/background_imgs/mask1.png';
+  mask : string = 'assets/background_imgs/mask1.png';
 
   randomFaces : string[];
   correctFaces : string[] = [];
   incorrectFaces : number[] = [];
   selectedFace : number = null;
+  progressPercent : number = 0;
 
   async clickFace(face : number) {
-    if (this.stage != Stage.START && this.stage != Stage.MEMORIZE) { // Waiting for feedback
+    if (this.stage != Stage.START && this.stage != Stage.MEMORIZE && this.stage != Stage.MASK) { // Waiting for feedback
       if (this.stage == Stage.CORRECT || this.stage == Stage.INCORRECT) {
         this.promise++;
         this.selectedFace = null;
@@ -56,13 +58,14 @@ export class MemoryMatchComponent implements OnInit {
 
         } else if (this.randomFaces[face] == this.randomFaces[this.selectedFace]) { // Correct
           this.correctFaces.push(this.randomFaces[face]);
+          this.progressPercent = this.correctFaces.length/this.facePaths.length;
           this.stage = Stage.CORRECT;
           await this.waitForFeedback();
 
         } else { // Incorrect
           this.incorrectFaces.push(this.selectedFace);
           this.incorrectFaces.push(face);
-          this.score--;
+          this.score -= 0.25;
           this.stage = Stage.INCORRECT;
           await this.waitForFeedback();
         }
@@ -70,7 +73,7 @@ export class MemoryMatchComponent implements OnInit {
     }
   }
 
-  isShown(index : number) {
+  imageIsDisplayed(index : number) {
     return (
       this.stage == Stage.MEMORIZE ||
       this.stage == Stage.MASK ||
@@ -96,21 +99,18 @@ export class MemoryMatchComponent implements OnInit {
     if (this.correctFaces.length == this.facePaths.length) {
       this.promise++;
       this.stage = Stage.DONE;
-      this.score = Math.ceil(this.score/2);
-      this.score += this.facePaths.length;
+      this.score = Math.ceil(this.score) + this.facePaths.length;
     }
   }
 
   startMemorizeTimer() {
-    this.timeRemaining = 10;
+    this.timeRemaining = this.memorizeTime;
     this.stage = Stage.MEMORIZE;
     interval(1000).subscribe(() => {
       this.timeRemaining--;
     });
-    timer(10000).subscribe(() => {
-      if (this.stage == Stage.MEMORIZE) {
-        this.startMaskTimer();
-      }
+    timer(this.timeRemaining * 1000).subscribe(() => {
+      this.startMaskTimer();
     });
   }
 

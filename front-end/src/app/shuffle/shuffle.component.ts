@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { timer, interval } from 'rxjs';
-import { takeUntil} from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 enum Stage { START, MEMORIZE, MASK, SELECT, CORRECT, INCORRECT, DONE }
 
@@ -10,8 +10,8 @@ enum Stage { START, MEMORIZE, MASK, SELECT, CORRECT, INCORRECT, DONE }
   styleUrls: ['./shuffle.component.scss'],
 })
 export class ShuffleComponent implements OnInit {
-  @Input() facePaths : string;
-  @Output() finished = new EventEmitter<number>();
+  @Input() facePaths : string[];
+  @Output() finished = new EventEmitter<[number, number]>();
 
   constructor() { }
 
@@ -22,12 +22,12 @@ export class ShuffleComponent implements OnInit {
 
   Stage = Stage;
   numberOfOptions : number = 4; // Hard coded for now
-  memorizeTime : number = 8;
+  memorizeTime : number = 10;
   progress : number = 0;
+  progressPercent : number = 0;
   score : number = 0;
-  memorizeCounter : number = 0;
   stage : Stage = Stage.START;
-  mask : string = '../../assets/background_imgs/mask1.png';
+  mask : string = 'assets/background_imgs/mask1.png';
 
   currentFace : string;
   selectedFace : string;
@@ -38,33 +38,38 @@ export class ShuffleComponent implements OnInit {
 
   clickDone() {
     let correct : boolean = true;
+    let score : number = 1;
     this.selectedFace = null;
     for (let i = 0; i < this.randomFaceOrder.length; i++) {
       if (this.randomFaceOrder[i] != this.correctFaceOrder[i]) {
         correct = false;
+        score -= 1/this.numberOfOptions;
       }
     }
+    this.score += score;
     if (correct) {
       this.stage = Stage.CORRECT;
-      this.score++;
     } else {
       this.stage = Stage.INCORRECT;
       this.feedbackToggle = true;
     }
+    this.progressPercent = (this.progress + 1)/this.facePaths.length;
   }
 
   nextFace() {
     this.progress++;
-    this.stage = this.progress == 8 ? Stage.DONE : Stage.MEMORIZE;
+    this.stage = this.progress > 7 ? Stage.DONE : Stage.MEMORIZE;
     this.selectedFace = null;
-    this.currentFace = this.facePaths[this.progress];
-    this.makeRandomFaces();
     if (this.stage != Stage.DONE) {
+      this.currentFace = this.facePaths[this.progress];
+      this.makeRandomFaces();
       this.startMemorizeTimer();
+    } else {
+      this.score = Math.ceil(this.score);
     }
   }
 
-  isFeedback() {
+  showFeedback() {
     return this.stage == Stage.CORRECT || this.stage == Stage.INCORRECT;
   }
 
@@ -97,11 +102,8 @@ export class ShuffleComponent implements OnInit {
   startMemorizeTimer() {
     this.timeRemaining = this.memorizeTime;
     this.stage = Stage.MEMORIZE;
-    let counter : number = this.memorizeCounter;
     timer(this.timeRemaining * 1000).subscribe(() => {
-      if (this.stage == Stage.MEMORIZE && counter == this.memorizeCounter) {
-        this.startMaskTimer();
-      }
+      this.startMaskTimer();
     });
     interval(1000)
     .pipe(
@@ -122,7 +124,7 @@ export class ShuffleComponent implements OnInit {
   getSrc(index : number) {
     if (this.stage == Stage.MASK) {
       return this.mask;
-    } else if (this.stage == Stage.SELECT || (this.stage == Stage.INCORRECT && !this.feedbackToggle)) {
+    } else if (this.stage == Stage.SELECT || (this.stage == Stage.INCORRECT && this.feedbackToggle)) {
       return this.randomFaceOrder[index];
     } else {
       return this.correctFaceOrder[index];
@@ -138,9 +140,8 @@ export class ShuffleComponent implements OnInit {
         [this.randomFaceOrder[index], this.randomFaceOrder[index_selected]] = [this.randomFaceOrder[index_selected], this.randomFaceOrder[index]];
         this.selectedFace = null;
       }
-    } else if (this.stage == Stage.MEMORIZE) {
-      this.startMaskTimer();
-      this.memorizeCounter++;
+    } else if (this.showFeedback()) {
+      this.feedbackToggle = !this.feedbackToggle;
     }
   }
 }

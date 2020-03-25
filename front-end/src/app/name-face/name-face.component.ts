@@ -1,5 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 
+enum Stage { SELECT, CORRECT, INCORRECT, DONE }
+
 @Component({
   selector: 'app-name-face',
   templateUrl: './name-face.component.html',
@@ -7,8 +9,8 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 })
 export class NameFaceComponent implements OnInit {
   @Input() setNames : string;
-  @Input() facePaths : string;
-  @Output() finished = new EventEmitter<number>();
+  @Input() facePaths : string[];
+  @Output() finished = new EventEmitter<[number, number]>();
 
   constructor() {}
 
@@ -27,33 +29,36 @@ export class NameFaceComponent implements OnInit {
     this.setNextFaces();
   }
 
+  Stage = Stage;
+  stage : Stage = Stage.SELECT;
   progress : number = 0;
+  progressPercent : number = 0;
   score : number = 0;
   numberOfOptions : number = 6;
 
   currentFace : string;
   currentName : string;
-  showFeedback : boolean = false;
-  correctSelection : boolean;
   selectedFace : string = null;
 
   shuffledNames : any[] = [];
   shuffledFaces : any[] = [];
 
   chooseFace(face : string) {
-    this.selectedFace = face;
-    if (face == this.currentFace) {
-      this.score++;
-      this.correctSelection = true;
-    } else {
-      this.correctSelection = false;
+    if (!this.showFeedback()) {
+      this.selectedFace = face;
+      if (face == this.currentFace) {
+        this.score++;
+        this.stage = Stage.CORRECT;
+      } else {
+        this.stage = Stage.INCORRECT;
+      }
+      this.progressPercent = (this.progress + 1)/this.facePaths.length;
     }
-    this.showFeedback = true;
   }
 
   nextFace() {
     this.selectedFace = null;
-    this.showFeedback = false;
+    this.stage = Stage.SELECT;
     this.progress++;
     this.setNextFaces();
   }
@@ -75,18 +80,22 @@ export class NameFaceComponent implements OnInit {
   }
 
   showDisabled(i : number) {
-    return this.showFeedback && this.shuffledFaces[i] != this.currentFace;
+    return this.showFeedback() && this.shuffledFaces[i] != this.currentFace;
   }
 
   showSelected(i : number) {
-    return this.showFeedback && this.shuffledFaces[i] != this.currentFace && this.shuffledFaces[i] == this.selectedFace;
+    return this.showFeedback() && this.shuffledFaces[i] != this.currentFace && this.shuffledFaces[i] == this.selectedFace;
   }
 
   getName(face : number) {
-    if (this.showFeedback && (!this.showDisabled(face) || this.showSelected(face))) {
+    if (this.showFeedback() && (!this.showDisabled(face) || this.showSelected(face))) {
       return this.setNames[this.facePaths.indexOf(this.shuffledFaces[face])];
     } else {
       return '';
     }
+  }
+
+  showFeedback() {
+    return this.stage == Stage.CORRECT || this.stage == Stage.INCORRECT;
   }
 }
