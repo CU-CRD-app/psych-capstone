@@ -50,16 +50,16 @@ const createTaskinfo = (request, response) => {
 //update user task info
 const updateTaskinfo = (request, response) => {
   const id = parseInt(request.params.id)
-  const { Firstname,Lastname,Hashedpassword,Feedback } = request.body
+  const { completestatus, difficulty, errorrate, progressrate, taskname } = request.body
 
   pool.query(
-    'UPDATE Userinfo SET Firstname = $1, Lastname = $2 , Hashedpassword=$3 , Feedback=$4 WHERE id = $5',
-    [Firstname,Lastname,Hashedpassword,Feedback, id],
+    'UPDATE learningtask SET completestatus = $1, difficulty = $2 , errorrate=$3 , progressrate=$4 , taskname=$5 WHERE id = $6',
+    [completestatus, difficulty, errorrate, progressrate, taskname],
     (error, results) => {
       if (error) {
         throw error
       }
-      response.status(200).send(`User modified with ID: ${id}`)
+      response.status(200).send(`User task modified with ID: ${id}`)
     }
   )
 }
