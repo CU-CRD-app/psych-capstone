@@ -1,6 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { timer, interval } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { createAnimation } from '@ionic/core';
 
 enum Stage { START, MEMORIZE, MASK, SELECT, CORRECT, INCORRECT, DONE }
 
@@ -20,6 +21,15 @@ export class ForcedChoiceComponent implements OnInit {
     this.makeRandomFaces();
   }
 
+  ngOnDestroy() {
+    if (this.interval) {
+      this.interval.unsubscribe();
+    }
+    if (this.timer) {
+      this.timer.unsubscribe();
+    }
+  }
+
   Stage = Stage;
   numberOfOptions = 4; // Hard coded for now
   progress : number = 0;
@@ -29,6 +39,8 @@ export class ForcedChoiceComponent implements OnInit {
   mask : string = 'assets/background_imgs/mask1.png';
   memorizeTime : number = 3;
   timeRemaining : number = null;
+  interval : any;
+  timer : any;
 
   currentFace : string;
   selectedFace : string;
@@ -81,21 +93,31 @@ export class ForcedChoiceComponent implements OnInit {
   startMemorizeTimer() {
     this.timeRemaining = this.memorizeTime;
     this.stage = Stage.MEMORIZE;
-    timer(this.timeRemaining * 1000).subscribe(() => {
+    this.timer = timer(this.timeRemaining * 1000).subscribe(() => {
       this.startMaskTimer();
     });
-    interval(1000)
-    .pipe(
-      takeUntil(timer(this.timeRemaining * 1000))
-    )
-    .subscribe(() => {
-      this.timeRemaining--;
-    });
+    this.interval = interval(1000)
+      .pipe(
+        takeUntil(timer(this.timeRemaining * 1000))
+      )
+      .subscribe(async () => {
+        let inflate = createAnimation()
+        .addElement(document.querySelector('.time-left'))
+        .fill('none')
+        .duration(100)
+        .keyframes([
+          { offset: 0, transform: 'scale(1, 1)' },
+          { offset: 0.5, transform: 'scale(1.5, 1.5)' },
+          { offset: 1, transform: 'scale(2, 2)' }
+        ]);
+        this.timeRemaining--;
+        await inflate.play();
+      });
   }
 
   startMaskTimer() {
     this.stage = Stage.MASK;
-    timer(2000).subscribe(() => {
+    this.timer = timer(2000).subscribe(() => {
       this.stage = Stage.SELECT;
     });
   }

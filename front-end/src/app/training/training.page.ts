@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
-import { AlertController } from '@ionic/angular';
-import { timer } from 'rxjs';
+import { timer, interval } from 'rxjs';
+import { AlertController, ModalController } from '@ionic/angular';
+import { HelpModalComponent } from '../help-modal/help-modal.component';
+import { takeUntil } from 'rxjs/operators';
+import { createAnimation } from '@ionic/core';
 
 const helpMessages = {
   start: ["Start", "Welcome to your daily training.\nPlease give yourself about 10 minutes to complete the tasks. Click to begin."],
@@ -26,7 +29,7 @@ enum Task { LEARNING, NAME_FACE, WHOS_NEW, MEMORY, SHUFFLE, FORCED_CHOICE, SAME_
 })
 export class TrainingPage {
 
-  constructor(public alertController: AlertController) {
+  constructor(public alertController: AlertController, public modalController: ModalController) {
 
     this.trainingFacePaths = this.generateShuffledFaces(0); //getTrainingFaces()
     this.assessmentFacePaths = this.generateShuffledFaces(8); //getAssessmentFaces()
@@ -46,6 +49,7 @@ export class TrainingPage {
     images[images.length - 1].src = 'assets/background_imgs/mask1.png';
 
     // get today's progress from the database
+    // get user level here
   }
 
   Stage = Stage;
@@ -58,6 +62,8 @@ export class TrainingPage {
   setNames : string[] = [];
   trainingFacePaths : string[] = [];
   assessmentFacePaths : string[] = [];
+  progress : number = 0;
+  level : number = 1;
 
   learningDone : boolean = false;
   scores : number[] = [-1, -1, -1, -1, -1, -1];
@@ -77,6 +83,40 @@ export class TrainingPage {
       this.stage = Stage.ASSESSMENT;
     } else {
       this.stage = Stage.DONE;
+      this.progress = 0;
+      timer(1200).subscribe(async () => {
+        this.level++;
+
+        let inflate = createAnimation()
+        .addElement(document.querySelector('.level'))
+        .fill('none')
+        .duration(500)
+        .keyframes([
+          { offset: 0, transform: 'scale(1, 1)' },
+          { offset: 0.5, transform: 'scale(2, 2)' },
+          { offset: 1, transform: 'scale(1, 1)' }
+        ]);
+        await inflate.play();
+
+        timer(500).subscribe(async () => {
+          let fadeIn = createAnimation()
+          .addElement(document.querySelector('.fade-in'))
+          .fill('none')
+          .duration(500)
+          .fromTo('opacity', '0', '1');
+          await fadeIn.play();
+          Array.from(document.getElementsByClassName('fade-in') as HTMLCollectionOf<HTMLElement>)[0].style.opacity = '1';
+        });
+
+      });
+
+      interval(100)
+      .pipe(
+        takeUntil(timer(1100))
+      )
+      .subscribe(() => {
+        this.progress += .1;
+      });
     }
   }
 
@@ -119,13 +159,13 @@ export class TrainingPage {
   }
 
   async getHelp() {
-    const alert = await this.alertController.create({
-      header: this.getMessage(0),
-      message: this.getMessage(1),
-      buttons: ['OK']
+    const modal = await this.modalController.create({
+      component: HelpModalComponent,
+      componentProps: {
+        "paramTask": this.getMessage(0),
+      }
     });
-
-    await alert.present();
+    await modal.present();
   }
 
   //getTrainingFaces() {}
@@ -215,7 +255,31 @@ export class TrainingPage {
         {
           text: 'Quit',
           handler: () => {
-            this.task = null;
+            timer(500).subscribe(() => {
+              this.task = null;
+            })
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  async startAssessmentAlert() {
+    const alert = await this.alertController.create({
+      header: 'Assessment',
+      message: 'Do you want to move on to the assessment? You will not be able to come back to training today.',
+      buttons: [
+        {
+          text: 'Cancel'
+        },
+        {
+          text: 'Go',
+          handler: () => {
+            timer(500).subscribe(() => {
+              this.iterateStage();
+            })
           }
         }
       ]

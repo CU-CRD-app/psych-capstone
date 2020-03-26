@@ -24,3 +24,27 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+.time-left {
+    display: inline-block;
+}
+
+.grid-card {
+    display: inline-block;
+    margin-bottom: 10px;
+    margin-top: 15px;
+    height: 125px;
+    width: 100px;
+}
+
+.success {
+    --background: #01DF74;
+}
+
+.failure {
+    --background: #FE2E2E;
+}
+
+.default {
+    --background: gray;
+}

@@ -7,7 +7,7 @@
     <!--Memorizing the face-->
     <div *ngIf="firstStage()">
       <h3 *ngIf="stage == Stage.START">Memorize the face: {{memorizeTime}}</h3>
-      <h3 *ngIf="stage == Stage.MEMORIZE">Memorize the face: {{timeRemaining}}</h3>
+      <h3 *ngIf="stage == Stage.MEMORIZE">Memorize the face: <span class="time-left">{{timeRemaining}}</span></h3>
       <h3 *ngIf="stage == Stage.MASK">Hold the face in your mind...</h3>
       <ion-card style="height: 310px">
         <img *ngIf="stage != Stage.START" style="height: 270px; margin: 20px auto;" [src]="stage == Stage.MEMORIZE ? currentFace : mask" [ngStyle]="{'width': stage == Stage.MASK ? '85%' : '190px'}"/>
@@ -61,7 +61,7 @@
     <!--Next Buttons-->
     <div style="text-align: center; margin-bottom: 15px">
       <ion-button *ngIf="stage == Stage.START" style="width:130px" (click)="startMemorizeTimer()">Reveal</ion-button>
-      <ion-button *ngIf="stage == Stage.MEMORIZE" style="width:130px" disabled>Reveal</ion-button>
+      <ion-button *ngIf="stage == Stage.MEMORIZE || stage == Stage.MASK" style="width:130px" disabled>Reveal</ion-button>
       <ion-button *ngIf="stage == Stage.SELECT" style="width:130px" disabled>Next</ion-button>
       <ion-button *ngIf="showFeedback()" style="width:130px" (click)="nextFace()">Next</ion-button>
     </div>

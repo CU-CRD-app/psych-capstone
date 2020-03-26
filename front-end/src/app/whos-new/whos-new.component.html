@@ -1,4 +1,4 @@
-<ion-content [ngClass]="{'default-card': !nextRound, 'success-card': nextRound && resCorrect, 'failure-card': nextRound && !resCorrect}">
+<ion-content [ngClass]="{'default': !nextRound, 'success': nextRound && resCorrect, 'failure': nextRound && !resCorrect}">
 
   <ion-progress-bar style="margin-top: 0px" value={{progressPercent}}></ion-progress-bar>
 

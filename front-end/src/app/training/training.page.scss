@@ -19,6 +19,15 @@
   border-bottom-color: dodgerblue;
 }
 
+.level {
+  display: inline-block;
+}
+
+.fade-in {
+  display: inline-block;
+  opacity: 0; 
+}
+
 ion-card {
   --background: gainsboro;
   color: dodgerblue;

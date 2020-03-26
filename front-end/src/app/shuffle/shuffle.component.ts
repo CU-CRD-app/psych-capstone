@@ -1,6 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { timer, interval } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { createAnimation } from '@ionic/core';
 
 enum Stage { START, MEMORIZE, MASK, SELECT, CORRECT, INCORRECT, DONE }
 
@@ -20,6 +21,15 @@ export class ShuffleComponent implements OnInit {
     this.makeRandomFaces();
   }
 
+  ngOnDestroy() {
+    if (this.interval) {
+      this.interval.unsubscribe();
+    }
+    if (this.timer) {
+      this.timer.unsubscribe();
+    }
+  }
+
   Stage = Stage;
   numberOfOptions : number = 4; // Hard coded for now
   memorizeTime : number = 10;
@@ -28,6 +38,8 @@ export class ShuffleComponent implements OnInit {
   score : number = 0;
   stage : Stage = Stage.START;
   mask : string = 'assets/background_imgs/mask1.png';
+  timer : any;
+  interval : any;
 
   currentFace : string;
   selectedFace : string;
@@ -102,21 +114,33 @@ export class ShuffleComponent implements OnInit {
   startMemorizeTimer() {
     this.timeRemaining = this.memorizeTime;
     this.stage = Stage.MEMORIZE;
-    timer(this.timeRemaining * 1000).subscribe(() => {
+    this.timer = timer(this.timeRemaining * 1000).subscribe(() => {
       this.startMaskTimer();
     });
-    interval(1000)
-    .pipe(
-      takeUntil(timer(this.timeRemaining * 1000))
-    )
-    .subscribe(() => {
-      this.timeRemaining--;
-    });
+    this.interval = interval(1000)
+      .pipe(
+        takeUntil(timer(this.timeRemaining * 1000))
+      )
+      .subscribe(async () => {
+        let inflate = createAnimation()
+        .addElement(document.querySelector('.time-left'))
+        .fill('none')
+        .duration(100)
+        .keyframes([
+          { offset: 0, transform: 'scale(1, 1)' },
+          { offset: 0.5, transform: 'scale(1.5, 1.5)' },
+          { offset: 1, transform: 'scale(2, 2)' }
+        ]);
+        this.timeRemaining--;
+        if (this.timeRemaining > this.memorizeTime - 2 || this.timeRemaining < 4) {
+          await inflate.play();
+        }
+      });
   }
 
   startMaskTimer() {
     this.stage = Stage.MASK;
-    timer(2000).subscribe(() => {
+    this.timer = timer(2000).subscribe(() => {
       this.stage = Stage.SELECT;
     });
   }

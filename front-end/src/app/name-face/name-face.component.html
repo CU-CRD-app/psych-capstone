@@ -1,4 +1,4 @@
-<ion-content [ngClass]="{'default-card': !showFeedback(), 'success-card': showFeedback() && stage == Stage.CORRECT, 'failure-card': showFeedback() && stage == Stage.INCORRECT}">
+<ion-content [ngClass]="{'default': !showFeedback(), 'success': showFeedback() && stage == Stage.CORRECT, 'failure': showFeedback() && stage == Stage.INCORRECT}">
 
   <ion-progress-bar style="margin-top: 0px" value={{progressPercent}}></ion-progress-bar>
 
