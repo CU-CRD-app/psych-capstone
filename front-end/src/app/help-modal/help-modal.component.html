@@ -3,21 +3,20 @@
     <ion-label>
       <b>{{task}}</b>
     </ion-label>
-    <ion-icon slot="start" color="dark" name="close" style="visibility: hidden"></ion-icon>
-    <ion-icon slot="end" color="dark" name="close" style="margin-right: 10px; cursor: pointer; font-size: 200%" (click)="closeModal()"></ion-icon>
+    <ion-icon *ngIf="showOverview" (click)="toggleOverview()" slot="start" color="dark" name="arrow-back" style="font-size: 120%"></ion-icon>
+    <ion-icon (click)="toggleOverview()" slot="end" color="dark" name="help-circle" style="font-size: 120%" [ngClass]="{'hidden': task == 'Start' || task == 'Overview'}"></ion-icon>
+    <ion-icon *ngIf="!showOverview" slot="start" color="dark" name="close-circle" style="margin-right: 10px; cursor: pointer; font-size: 120%" (click)="closeModal()"></ion-icon>
   </ion-item>
-  <ion-card (swipeleft)="onSwipeLeft($event)" (swiperight)="onSwipeRight($event)" class="swipe-card">
-    <div *ngFor="let slide of slides; let i = index">
-      <div *ngIf="currentSlide == i" style="margin-top: 20px">
-        <img [src]="slide[0]">
-        <div style="display: flex; align-items: center; height: 125px; color: white; margin: 20px; font-size: 120%">{{slide[1]}}</div>
-      </div>
-    </div>
-  </ion-card>
+  <ion-slides #slideElement (ionSlideDidChange)="changeSlide()" style="height: 80%">
+    <ion-slide *ngFor="let slide of slides; let i = index" style="display: block; margin-top: 20px">
+      <img [src]="slide[0]">
+      <div style="display: flex; align-items: center; height: 125px; color: white; margin: 20px;">{{slide[1]}}</div>
+    </ion-slide>
+  </ion-slides>
   <div style="text-align: center">
     <span *ngFor="let slide of slides; let i = index" style="margin: 0 auto">
       <ion-icon *ngIf="currentSlide == i" color="dark" name="radio-button-on"></ion-icon>
-      <ion-icon *ngIf="currentSlide != i" (click)="currentSlide = i" color="dark" name="radio-button-off"></ion-icon>
+      <ion-icon *ngIf="currentSlide != i" (click)="slideElement.slideTo(i)" color="dark" name="radio-button-off"></ion-icon>
     </span>
   </div>
 </ion-content>

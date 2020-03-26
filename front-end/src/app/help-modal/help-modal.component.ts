@@ -1,10 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { ModalController, NavParams } from '@ionic/angular';
-import { createAnimation } from '@ionic/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ModalController, NavParams, IonSlides } from '@ionic/angular';
 
 const slideValues = {
   'Start': [
     ['assets/help-slides/start/0.png', 'Welcome to your CRD training. Please take a minute to review these slides and familiarize yourself with the training process.'],
+    ['assets/help-slides/start/1.png', 'There are eight levels to complete, each more difficult than the last. You should complete one level per day.'],
+    ['assets/help-slides/start/2.png', 'For each level you will complete a learning task to familiarize yourself with the day\'s faces, then four training tasks.'],
+    ['assets/help-slides/start/3.png', 'After the training tasks have been passed, you will complete two assessment tasks to judge your progress. Your level will increase after the assessment.'],
+    ['assets/help-slides/start/4.png', 'Before the first level and after the last level you will complete an additional assessment to judge how much you have progressed.'],
+    ['assets/help-slides/start/5.png', 'If you have questions about how to complete a task or what to do next, you can click the help icon in the upper-right corner.'],
+    ['assets/help-slides/start/6.png', 'Your data will be used to further research of CRD and facial recognition. For more information about the research visit the About Us page.'],
+    ['assets/help-slides/start/7.png', 'Should you need to review this information again, simply click the help icon in the upper right-hand corner of any help page.']
+  ],
+  'Overview': [
+    ['assets/help-slides/start/0.png', 'These slides will provide an overview of the training process.'],
     ['assets/help-slides/start/1.png', 'There are eight levels to complete, each more difficult than the last. You should complete one level per day.'],
     ['assets/help-slides/start/2.png', 'For each level you will complete a learning task to familiarize yourself with the day\'s faces, then four training tasks.'],
     ['assets/help-slides/start/3.png', 'After the training tasks have been passed, you will complete two assessment tasks to judge your progress. Your level will increase after the assessment.'],
@@ -19,7 +28,7 @@ const slideValues = {
   'Name and Face': [
     ['assets/help-slides/name-face/0.png', 'For each of the names you\'ve seen before, you\'ll be asked to match the appropriate face.'],
     ['assets/help-slides/name-face/1.png', 'You\'ll get a point for each face you match correctly.'],
-    ['assets/help-slides/name-face/2.png', 'Whenever you guess incorrectly, you\'ll be shown the correct answer as well as the names of the concerned faces, use this to you\'re advantage!']
+    ['assets/help-slides/name-face/2.png', 'Whenever you guess incorrectly, you\'ll be shown the correct answer as well as the two names, to help remember them both']
   ],
   'Who\'s New?': [
     ['assets/help-slides/whos-new/0.png', 'Select the face that you haven\'t yet seen today, and that wasn\'t part of the learning task.'],
@@ -71,6 +80,7 @@ const slideValues = {
 })
 
 export class HelpModalComponent implements OnInit {
+  @ViewChild('slideElement', {static: false}) slideElement: IonSlides;
 
   constructor(private modalController: ModalController, private navParams: NavParams) { }
 
@@ -83,76 +93,36 @@ export class HelpModalComponent implements OnInit {
       images.push(new Image());
       images[images.length - 1].src = this.slides[i][0];
     }
-
-    this.outLeft = createAnimation()
-    .addElement(document.querySelector('.swipe-card'))
-    .fill('none')
-    .duration(100)
-    .keyframes([
-      { offset: 0, transform: 'translateX(0%)' },
-      { offset: 0.5, transform: 'translateX(-50%)' },
-      { offset: 1, transform: 'translateX(-100%)' }
-    ]);
-    this.inRight = createAnimation()
-    .addElement(document.querySelector('.swipe-card'))
-    .fill('none')
-    .duration(100)
-    .keyframes([
-      { offset: 0, transform: 'translateX(100%)' },
-      { offset: 0.5, transform: 'translateX(50%)' },
-      { offset: 1, transform: 'translateX(0%)' }
-    ]);
-    this.outRight = createAnimation()
-    .addElement(document.querySelector('.swipe-card'))
-    .fill('none')
-    .duration(100)
-    .keyframes([
-      { offset: 0, transform: 'translateX(0%)' },
-      { offset: 0.5, transform: 'translateX(50%)' },
-      { offset: 1, transform: 'translateX(100%)' }
-    ]);
-    this.inLeft = createAnimation()
-    .addElement(document.querySelector('.swipe-card'))
-    .fill('none')
-    .duration(100)
-    .keyframes([
-      { offset: 0, transform: 'translateX(-100%)' },
-      { offset: 0.5, transform: 'translateX(-50%)' },
-      { offset: 1, transform: 'translateX(0%)' }
-    ]);
   }
 
   task : string;
   slides : string[][];
   currentSlide : number = 0;
-  outLeft : any;
-  inRight : any;
-  outRight : any;
-  inLeft : any;
+  showOverview : boolean = false;
 
   async closeModal() {
     await this.modalController.dismiss();
   }
 
-  async onSwipeLeft(evt : any) {
-    if (this.currentSlide < this.slides.length - 1) {
-      await this.outLeft.play();
-      this.currentSlide++;
-      await this.inRight.play();
-    } else {
-      await this.outLeft.play();
-      await this.inLeft.play();
-    }
+  async changeSlide() {
+    this.currentSlide = await this.slideElement.getActiveIndex();
   }
 
-  async onSwipeRight(evt : any) {
-    if (this.currentSlide > 0) {
-      await this.outRight.play();
-      this.currentSlide--;
-      await this.inLeft.play();
+  toggleOverview() {
+    this.slideElement.slideTo(0);
+    if (this.showOverview) {
+      this.showOverview = false;
+      this.ngOnInit();
     } else {
-      await this.outRight.play();
-      await this.inRight.play();
+      this.showOverview = true;
+      this.task = 'Overview';
+      this.slides = slideValues[this.task];
+
+      let images : any[] = [];
+      for (let i = 0; i < this.slides.length; i++) {
+        images.push(new Image());
+        images[images.length - 1].src = this.slides[i][0];
+      }
     }
   }
 
