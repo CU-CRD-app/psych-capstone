@@ -10,14 +10,9 @@ import {
 } from '../helpers/status';
 
 
-
 import env from '../../env';
 
-
-
 dotenv.config();
-
-
 
 /**
 
@@ -32,8 +27,6 @@ dotenv.config();
    * @returns {object|void} response object 
 
    */
-
-
 
 const verifyToken = async (req, res, next) => {
 
@@ -74,7 +67,5 @@ const verifyToken = async (req, res, next) => {
   }
 
 };
-
-
 
 export default verifyToken;

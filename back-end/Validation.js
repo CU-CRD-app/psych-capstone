@@ -19,8 +19,6 @@ const isValidEmail = (email) => {
 
 };
 
-
-
 /**
 
    * validatePassword helper method
