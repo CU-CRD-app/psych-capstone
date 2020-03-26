@@ -89,11 +89,10 @@ const empty = (input) => {
 
 };
 
-const generateUserToken =(email, id , is_admin, first_name, last_name) =>{
+const generateUserToken =(email, id , first_name, last_name) =>{
  const token =jwt.sign({
 	email,
 	user_id: id,
-	is_admin,
 	first_name,
 	last_name,
  },
