@@ -65,8 +65,6 @@ const isEmpty = (input) => {
 
 };
 
-
-
 /**
 
    * empty helper method
@@ -99,15 +97,10 @@ const generateUserToken =(email, id , first_name, last_name) =>{
 };
 
 export {
-
   isValidEmail,
-
   validatePassword,
-
   isEmpty,
-
   empty,
-
   generateUserToken,
 
 };
