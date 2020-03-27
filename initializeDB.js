@@ -17,6 +17,8 @@ module.exports = {
             ssl: true,
         });
 
+        pgClient.connect();
+
         // user
         res = await pgClient.query("SELECT COUNT(table_name) FROM INFORMATION_SCHEMA.TABLES WHERE table_name='user'");
         if(res.rows[0].count == 0){
