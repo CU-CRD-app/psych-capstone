@@ -1,4 +1,4 @@
-<ion-content id="content" style="--background: gray; --overflow: hidden">
+<ion-content id="content" style="--background: gray; ">
 
   <ion-header>
     <ion-toolbar [ngClass]="{'blue-border' : task == null}">
@@ -27,22 +27,22 @@
 
       <ion-card (click)="task = Task.NAME_FACE" button [ngClass]="{'task-done': scores[0] >= 6, 'task-failed': scores[0] > -1 && scores[0] < 6}">
         <ion-icon slot="start" name="happy" style="font-size: 300%"></ion-icon>
-        <div>Name and Face</div>
+        <div>Name and Face<span *ngIf="scores[0] > -1">: {{scores[0]}}/8</span></div>
       </ion-card>
 
       <ion-card (click)="task = Task.WHOS_NEW" button [ngClass]="{'task-done': scores[1] >= 6, 'task-failed': scores[1] > -1 && scores[1] < 6}">
         <ion-icon slot="start" name="person-add" style="font-size: 300%"></ion-icon>
-        <div>Who's New?</div>
+        <div>Who's New<span *ngIf="scores[1] > -1">: {{scores[1]}}/8</span></div>
       </ion-card>
 
       <ion-card (click)="task = Task.MEMORY" button [ngClass]="{'task-done': scores[2] >= 6, 'task-failed': scores[2] > -1 && scores[2] < 6}">
         <ion-icon slot="start" name="grid" style="font-size: 300%"></ion-icon>
-        <div>Memory Match</div>
+        <div>Memory Match<span *ngIf="scores[2] > -1">: {{scores[2]}}/8</span></div>
       </ion-card>
 
       <ion-card (click)="task = Task.SHUFFLE" button [ngClass]="{'task-done': scores[3] >= 6, 'task-failed': scores[3] > -1 && scores[3] < 6}">
         <ion-icon slot="start" name="swap" style="font-size: 300%"></ion-icon>
-        <div>Shuffle</div>
+        <div>Shuffle<span *ngIf="scores[3] > -1">: {{scores[3]}}/8</span></div>
       </ion-card>
 
       <ion-button (click)="task = Task.LEARNING" style="width: 45%; padding: 0; margin: 5px">
@@ -51,7 +51,7 @@
         <ion-icon [src]=face_icon></ion-icon>
       </ion-button>
 
-      <ion-button (click)="iterateStage()" style="width: 45%; padding: 0; margin: 5px" [disabled]="this.scores[0] < 6 || this.scores[1] < 6 || this.scores[2] < 6 || this.scores[3] < 6">
+      <ion-button (click)="startAssessmentAlert()" style="width: 45%; padding: 0; margin: 5px" [disabled]="this.scores[0] < 6 || this.scores[1] < 6 || this.scores[2] < 6 || this.scores[3] < 6">
         <ion-icon [src]=assessment_icon ></ion-icon>
       </ion-button>
 
@@ -63,21 +63,25 @@
 
       <ion-card (click)="scores[4] == -1 ? task = Task.FORCED_CHOICE : task = null" button [ngClass]="{'task-done': scores[4] != -1}">
         <ion-icon slot="start" name="checkmark-circle" style="font-size: 300%"></ion-icon>
-        <div>Forced Choice</div>
+        <div>Forced Choice<span *ngIf="scores[4] > -1">: {{scores[4]}}/8</span></div>
       </ion-card>
 
       <ion-card (click)="scores[5] == -1 ? task = Task.SAME_DIFFERENT : task = null" button [ngClass]="{'task-done': scores[5] != -1}">
         <ion-icon slot="start" name="contacts" style="font-size: 300%"></ion-icon>
-        <div>Same Different</div>
+        <div>Same Different<span *ngIf="scores[5] > -1">: {{scores[5]}}/8</span></div>
       </ion-card>
 
     </div>
 
     <!--All tasks finished-->
     <div *ngIf="stage == Stage.DONE" style="margin-top: 160px">
-      <h1><b>Done!</b></h1>
-      <h5 style="margin: 20px">Come back tomorrow for your next training.</h5>
-      <ion-button color="success" style="width: 130px" routerLink="/dashboard" routerDirection="forward">Home</ion-button>
+      <h1><b>Finished!</b></h1>
+      <ion-progress-bar style="width: 80%; margin-left: 30px" value={{progress}}></ion-progress-bar>
+      <h5 style="text-align: center">Level <span class="level">{{level}}</span></h5>
+      <div class="fade-in">
+        <h5 style="margin: 20px">You've moved on to the next level! Come back tomorrow for your next training.</h5>
+        <ion-button color="success" style="width: 130px" routerLink="/dashboard" routerDirection="forward">Home</ion-button>
+      </div>
     </div>
   </div>
 

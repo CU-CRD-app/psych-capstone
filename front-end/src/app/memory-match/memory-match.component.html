@@ -5,7 +5,7 @@
   <div *ngIf="stage != Stage.DONE">
   
     <h5 *ngIf="stage == Stage.START">Memorize the face placement: {{memorizeTime}}</h5>
-    <h5 *ngIf="stage == Stage.MEMORIZE">Memorize the face placement: {{timeRemaining}}</h5>
+    <h5 *ngIf="stage == Stage.MEMORIZE">Memorize the face placement: <span class="time-left">{{timeRemaining}}</span></h5>
     <h5 *ngIf="stage == Stage.MASK">Hold the faces in your mind...</h5>
     <h5 *ngIf="stage == Stage.SELECT">Match the faces</h5>
     <h5 *ngIf="stage == Stage.CORRECT">Correct!</h5>

@@ -12,6 +12,15 @@ import { ShuffleComponent } from '../shuffle/shuffle.component';
 import { ForcedChoiceComponent } from '../forced-choice/forced-choice.component';
 import { SameDifferentComponent } from '../same-different/same-different.component';
 import { ScorePageComponent } from '../score-page/score-page.component';
+import { HelpModalComponent } from '../help-modal/help-modal.component';
+import * as Hammer from 'hammerjs';
+import { HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
+
+export class MyHammerConfig extends HammerGestureConfig {
+  overrides = <any> {
+    swipe: { direction: Hammer.DIRECTION_ALL },
+  };
+}
 
 @NgModule({
   imports: [
@@ -30,7 +39,15 @@ import { ScorePageComponent } from '../score-page/score-page.component';
     ShuffleComponent,
     ForcedChoiceComponent,
     SameDifferentComponent,
-    ScorePageComponent
-  ]
+    ScorePageComponent,
+    HelpModalComponent
+  ],
+  providers: [
+    {
+      provide: HAMMER_GESTURE_CONFIG,
+      useClass: MyHammerConfig,
+    },
+  ],
+  entryComponents: [HelpModalComponent]
 })
 export class TrainingPageModule {}

@@ -1,5 +1,6 @@
 <ion-content id="learningView">
 	<ion-progress-bar style="margin-top: 0px" value={{progressPercent}}></ion-progress-bar>
+	<h5 style="color: white; text-align: center">Memorize the faces and names</h5>
 	<ion-card>
 		<div class="imgContainer" style="margin-top:5px">
 			<img [src]="currentFace" id=faceImg>
@@ -10,7 +11,7 @@
 			</div>
 		</div>
 	</ion-card>
-	<ion-grid style="margin-top: 13px">
+	<ion-grid>
 		<ion-row>
 			<ion-col width-50 style="text-align: right">
 				<ion-button (click)="changeCard('back')" *ngIf="progress>0">
