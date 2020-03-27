@@ -3,7 +3,9 @@ var { Client } = require('pg');
 var bodyParser = require('body-parser');
 var initialize = require('./initializeDB.js');
 
-initialize.start();
+initialize.start()
+    .then(res => console.log(res))
+    .catch(err => console.log(err))
 
 var app = express();
 
