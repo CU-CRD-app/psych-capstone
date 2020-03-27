@@ -12,16 +12,10 @@ export class LearningTaskComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit() {
-    this.currentName = this.setNames[this.progress];
-    this.currentFace = this.facePaths[this.progress];
-  }
+  ngOnInit() {}
 
   progress : number = 0;
   progressPercent : number = 0;
-
-  currentFace : string;
-  currentName : string;
 
   seenAll : boolean = false;
 
@@ -31,8 +25,6 @@ export class LearningTaskComponent implements OnInit {
     } else {
       this.progress--;
     }
-    this.currentFace = this.facePaths[this.progress];
-    this.currentName = this.setNames[this.progress];
     if (!this.seenAll) {
       this.progressPercent = this.progress/(this.facePaths.length - 1);
     }

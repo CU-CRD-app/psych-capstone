@@ -1,40 +1,27 @@
 <ion-content id="learningView">
 	<ion-progress-bar style="margin-top: 0px" value={{progressPercent}}></ion-progress-bar>
 	<h5 style="color: white; text-align: center">Memorize the faces and names</h5>
-	<ion-card>
-		<div class="imgContainer" style="margin-top:5px">
-			<img [src]="currentFace" id=faceImg>
-		</div>
-		<div class="nameContainer">
-			<div id="nameDisplay">
-				<p id="nameText">{{currentName}}</p>
-			</div>
-		</div>
-	</ion-card>
-	<ion-grid>
-		<ion-row>
-			<ion-col width-50 style="text-align: right">
-				<ion-button (click)="changeCard('back')" *ngIf="progress>0">
-				  <ion-icon name="arrow-round-back"></ion-icon>
-				</ion-button>
-				<ion-button disabled=true *ngIf="progress==0">
-				  <ion-icon name="arrow-round-back"></ion-icon>
-				</ion-button>
-			</ion-col>
-			<ion-col width-50 style="text-align: left">
-				<ion-button (click)="changeCard('next')" *ngIf="progress<7">
-				  <ion-icon name="arrow-round-forward"></ion-icon>
-				</ion-button>
-				<ion-button disabled=true *ngIf="progress==7">
-				  <ion-icon name="arrow-round-forward"></ion-icon>
-				</ion-button>
-			</ion-col>
-		</ion-row>
-		<ion-row>
-			<ion-col style="text-align: center">
-		  		<ion-button color="success" *ngIf="seenAll" (click)="finished.emit()">Finish</ion-button>
-		  		<ion-button color="success" *ngIf="!seenAll" disabled=true>Finish</ion-button>
-		  	</ion-col>
-		</ion-row>
-	</ion-grid>
+
+	<ion-slides #slideElement (ionSlideNextStart)="changeCard('next')" (ionSlidePrevStart)="changeCard('back')" style="height: 60%; width: 100%;">
+		<ion-slide *ngFor="let face of facePaths; let i = index" style="text-align: center; display: block">
+
+			<ion-card>
+				<div class="imgContainer">
+					<img [src]="face" id=faceImg>
+				</div>
+				<div class="nameContainer">
+					<div id="nameDisplay">
+						<p id="nameText">{{setNames[i]}}</p>
+					</div>
+				</div>
+			</ion-card>
+
+		</ion-slide>
+	</ion-slides>
+
+	<div style="text-align: center; height: 7%; margin-top: 10%">
+		<ion-button color="success" *ngIf="seenAll" (click)="finished.emit()">Finish</ion-button>
+		<ion-button color="success" *ngIf="!seenAll" disabled>Finish</ion-button>
+	</div>
+
 </ion-content>
