@@ -19,6 +19,15 @@ export class MemoryMatchComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+
+    this.stage = Stage.START;
+    this.score = 0;
+    this.promise = 0;
+    this.progressPercent = 0;
+    this.selectedFace = null;
+    this.correctFaces = [];
+    this.incorrectFaces = [];
+
     // Init list of faces
     this.randomFaces = [];
     for (let i = 0; i < this.facePaths.length; i++) {
@@ -57,21 +66,22 @@ export class MemoryMatchComponent implements OnInit {
     }
   }
 
-  Stage = Stage;  
-  stage : Stage = Stage.START;
-  score : number = 0;
-  promise : number = 0;
-  memorizeTime : number = 10;
-  timeRemaining : number = null;
+  Stage = Stage;
   mask : string = 'assets/background_imgs/mask1.png';
+  memorizeTime : number = 10;
+
+  stage : Stage;
+  score : number;
+  promise : number;
+  progressPercent : number;
+  timeRemaining : number;
   interval : any;
   timer : any;
 
   randomFaces : string[];
-  correctFaces : string[] = [];
-  incorrectFaces : number[] = [];
-  selectedFace : number = null;
-  progressPercent : number = 0;
+  correctFaces : string[];
+  incorrectFaces : number[];
+  selectedFace : number;
 
   async clickFace(face : number) {
     if (this.stage != Stage.START && this.stage != Stage.MEMORIZE && this.stage != Stage.MASK) { // Waiting for feedback

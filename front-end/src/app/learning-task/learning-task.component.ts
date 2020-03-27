@@ -32,8 +32,10 @@ export class LearningTaskComponent implements OnInit {
   progressPercent : number = 0;
 
   seenAll : boolean = false;
+  swiped : boolean = false;
 
   changeCard(direction : string) {
+    this.swiped = true;
     if (direction == 'next') {
       this.progress++;
     } else {
@@ -44,19 +46,6 @@ export class LearningTaskComponent implements OnInit {
     }
     if (this.progress == 7) {
       this.seenAll = true;
-    }
-    if (this.progress == 0) {
-      timer(500).subscribe(async () => {
-        let fadeIn = createAnimation()
-          .addElement(document.querySelectorAll('.footer'))
-          .fill('none')
-          .duration(500)
-          .fromTo('opacity', '0', '1');
-        if (this.progress == 0) {
-          await fadeIn.play();
-          Array.from(document.getElementsByClassName('footer') as HTMLCollectionOf<HTMLElement>)[0].style.opacity = '1';  
-        }
-      });
     }
   }
 
