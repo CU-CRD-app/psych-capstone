@@ -19,9 +19,14 @@
 		</ion-slide>
 	</ion-slides>
 
-	<div style="text-align: center; height: 7%; margin-top: 10%">
-		<ion-button color="success" *ngIf="seenAll" (click)="finished.emit()">Finish</ion-button>
-		<ion-button color="success" *ngIf="!seenAll" disabled>Finish</ion-button>
+	<ion-item *ngIf="progress == 0 && !seenAll" class="footer" lines="none">
+		<ion-label>Swipe to Continue</ion-label>
+		<ion-icon slot="end" color="dark" name="arrow-back"></ion-icon>    
+	</ion-item>
+
+	<div style="text-align: center; height: 10%; margin-top: 5%">
+		<ion-button *ngIf="!seenAll && progress > 0" color="success" style="height: 100%" disabled>Finish</ion-button>
+		<ion-button *ngIf="seenAll" color="success" style="height: 100%" (click)="finished.emit()">Finish</ion-button>
 	</div>
 
 </ion-content>

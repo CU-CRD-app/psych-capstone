@@ -5,7 +5,7 @@
     </ion-label>
     <ion-icon *ngIf="showOverview" (click)="toggleOverview()" slot="start" color="dark" name="arrow-back" style="font-size: 120%"></ion-icon>
     <ion-icon (click)="toggleOverview()" slot="end" color="dark" name="help-circle" style="font-size: 120%" [ngClass]="{'hidden': task == 'Start' || task == 'Overview'}"></ion-icon>
-    <ion-icon *ngIf="!showOverview" slot="start" color="dark" name="close-circle" style="margin-right: 10px; cursor: pointer; font-size: 120%" (click)="closeModal()"></ion-icon>
+    <ion-icon *ngIf="!showOverview" slot="start" color="dark" name="close-circle" style="margin-right: 10px; font-size: 120%" (click)="closeModal()"></ion-icon>
   </ion-item>
   <ion-slides #slideElement (ionSlideDidChange)="changeSlide()" style="height: 80%">
     <ion-slide *ngFor="let slide of slides; let i = index" style="display: block; margin-top: 20px">

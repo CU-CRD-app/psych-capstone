@@ -86,10 +86,10 @@ export class NameFaceComponent implements OnInit {
       let slide = this.currentSlide;
       timer(1000).subscribe(async () => {
         this.fadeIn = createAnimation()
-            .addElement(document.querySelectorAll('.footer'))
-            .fill('none')
-            .duration(500)
-            .fromTo('opacity', '0', '0.75');
+          .addElement(document.querySelectorAll('.footer'))
+          .fill('none')
+          .duration(500)
+          .fromTo('opacity', '0', '0.75');
         if (slide == this.currentSlide) {
           await this.fadeIn.play();
           Array.from(document.getElementsByClassName('footer') as HTMLCollectionOf<HTMLElement>)[this.currentSlide].style.opacity = '.75';  
