@@ -3,7 +3,7 @@ import { IonSlides } from '@ionic/angular';
 import { timer } from 'rxjs';
 import { createAnimation } from '@ionic/core';
 
-enum Stage { SELECT, CORRECT, INCORRECT, DONE }
+enum Stage { SELECT, CORRECT, INCORRECT }
 
 @Component({
   selector: 'app-name-face',
@@ -19,6 +19,11 @@ export class NameFaceComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
+
+    this.score = 0;
+    this.currentSlide = 0;
+    this.progressPercent = 0;
+
     // Initialize shuffled name list
     this.shuffledNames = [];
     for (let name = 0; name < this.setNames.length; name++) {
@@ -42,6 +47,13 @@ export class NameFaceComponent implements OnInit {
         stage: Stage.SELECT
       });
     }
+    this.slideInfo.push({ // Score card
+      correctName: null,
+      correctFace: null,
+      selectedFace: null,
+      faces: null,
+      stage: null
+    });
   }
 
   ngAfterViewInit() {
@@ -49,16 +61,14 @@ export class NameFaceComponent implements OnInit {
   }
 
   Stage = Stage;
-  progress : number = 0;
-  progressPercent : number = 0;
-  score : number = 0;
   numberOfOptions : number = 6;
 
-  selectedFace : string[] = [];
-
+  score : number;
+  currentSlide : number;
+  progressPercent : number;
   shuffledNames : any;
-  currentSlide : number = 0;
   slideInfo : any;
+  fadeIn : any;
 
   chooseFace(face : string) {
     if (!this.showFeedback()) {
@@ -69,19 +79,19 @@ export class NameFaceComponent implements OnInit {
       } else {
         this.slideInfo[this.currentSlide].stage = Stage.INCORRECT;
       }
-      this.progressPercent = (this.progress + 1)/this.facePaths.length;
+      this.progressPercent = (this.currentSlide + 1)/this.facePaths.length;
       this.slideElement.lockSwipes(false);
       this.slideElement.lockSwipeToPrev(true);
       
       let slide = this.currentSlide;
       timer(1000).subscribe(async () => {
-        let fadeIn = createAnimation()
-        .addElement(document.querySelectorAll('.footer'))
-        .fill('none')
-        .duration(500)
-        .fromTo('opacity', '0', '0.75');
+        this.fadeIn = createAnimation()
+            .addElement(document.querySelectorAll('.footer'))
+            .fill('none')
+            .duration(500)
+            .fromTo('opacity', '0', '0.75');
         if (slide == this.currentSlide) {
-          await fadeIn.play();
+          await this.fadeIn.play();
           Array.from(document.getElementsByClassName('footer') as HTMLCollectionOf<HTMLElement>)[this.currentSlide].style.opacity = '.75';  
         }
       });
@@ -89,9 +99,7 @@ export class NameFaceComponent implements OnInit {
   }
 
   getSlideFaces(index : number) {
-    let faces : string[];
-
-    faces = [];
+    let faces = [];
     for (let i = 0; i < this.numberOfOptions - 1; i++) { // Select five faces
       let j = Math.floor(Math.random() * this.facePaths.length);
       while (faces.indexOf(this.facePaths[j]) > -1 || this.facePaths[j] == this.facePaths[this.setNames.indexOf(this.shuffledNames[index])]) { // Account for repeats
@@ -123,18 +131,22 @@ export class NameFaceComponent implements OnInit {
   }
 
   showFeedback() {
-    if (this.currentSlide < this.setNames.length) {
-      return this.slideInfo[this.currentSlide].stage == Stage.CORRECT || this.slideInfo[this.currentSlide].stage == Stage.INCORRECT;
-    }
-    return false;
+    return this.slideInfo[this.currentSlide].stage == Stage.CORRECT || this.slideInfo[this.currentSlide].stage == Stage.INCORRECT;
+  }
+
+  endCardDisplayed() {
+    return this.currentSlide >= this.setNames.length;
   }
 
   async changeSlide() {
     if (await this.slideElement.getActiveIndex() > this.currentSlide) {
       this.currentSlide = await this.slideElement.getActiveIndex();
       await this.slideElement.lockSwipes(true);
-      this.progress++;
-      Array.from(document.getElementsByClassName('footer') as HTMLCollectionOf<HTMLElement>)[this.currentSlide].style.opacity = '0';
+      await this.fadeIn.stop();
+      let footers = Array.from(document.getElementsByClassName('footer') as HTMLCollectionOf<HTMLElement>);
+      for (let i = 0; i < footers.length; i++) {
+        footers[i].style.opacity = '0';
+      }
     }
   }
 }

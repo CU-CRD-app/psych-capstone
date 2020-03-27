@@ -1,58 +1,65 @@
-<ion-content [ngClass]="{'default': !nextRound, 'success': nextRound && resCorrect, 'failure': nextRound && !resCorrect}">
+<ion-content [ngClass]="{'default': !showFeedback(), 'success': showFeedback() && slideInfo[currentSlide].stage == Stage.CORRECT, 'failure': showFeedback() && slideInfo[currentSlide].stage == Stage.INCORRECT}">
 
   <ion-progress-bar style="margin-top: 0px" value={{progressPercent}}></ion-progress-bar>
 
-	<div style="text-align: center" *ngIf="progress < 8">
-  
-    <h5 *ngIf="!nextRound">Who haven't you seen before?</h5>
-    <h5 *ngIf="nextRound && resCorrect">Correct!</h5>
-    <h5 *ngIf="nextRound && !resCorrect">Incorrect!</h5>
-      
-      <ion-grid>
-      
-        <ion-row>
-          
-          <ion-col>
-            <ion-card [button]="!nextRound" class="grid-card" (click)="chooseCard(0)" [ngClass]="{'selected-card': showSelected(0), 'disabled-card': showDisabled(0)}">
-              <img [src]="shuffledFaces[0]" />
-            </ion-card>
-          </ion-col>
-        
-          <ion-col>
-            <ion-card [button]="!nextRound" class="grid-card" (click)="chooseCard(1)" [ngClass]="{'selected-card': showSelected(1), 'disabled-card': showDisabled(1)}">
-              <img [src]="shuffledFaces[1]" />
-            </ion-card>
-          </ion-col>
+  <ion-slides #slideElement (ionSlideWillChange)="changeSlide()">
 
-        </ion-row>
-        
-        <ion-row>
+      <ion-slide *ngFor="let slide of slideInfo" style="text-align: center; height: 100%; width: 100%; display: block">
 
-          <ion-col>
-            <ion-card [button]="!nextRound" class="grid-card" (click)="chooseCard(2)" [ngClass]="{'selected-card': showSelected(2), 'disabled-card': showDisabled(2)}">
-              <img [src]="shuffledFaces[2]" />
-            </ion-card>
-          </ion-col>
+        <div *ngIf="!endCardDisplayed()">
 
-          <ion-col>
-            <ion-card [button]="!nextRound" class="grid-card" (click)="chooseCard(3)" [ngClass]="{'selected-card': showSelected(3), 'disabled-card': showDisabled(3)}">
-              <img [src]="shuffledFaces[3]" />
-            </ion-card>
-          </ion-col>
-          
-        </ion-row>
+          <h5 *ngIf="!showFeedback()">Who haven't you seen before?</h5>
+          <h5 *ngIf="showFeedback() && slideInfo[currentSlide].stage == Stage.CORRECT">Correct!</h5>
+          <h5 *ngIf="showFeedback() && slideInfo[currentSlide].stage == Stage.INCORRECT">Incorrect!</h5>
 
-      </ion-grid>
-      
-    <div style="text-align: center; margin-bottom: 15px">
-      <ion-button *ngIf="nextRound && progress < 8" (click)="ngOnInit()" style="width: 130px">Next</ion-button>
-      <ion-button *ngIf="!nextRound && progress < 8" disabled style="width: 130px">Next</ion-button>
-    </div>
+            <ion-grid>
 
-	</div>
+              <ion-row>
 
-	<div *ngIf="progress > 7">
-    <app-score-page [score]="score" (finished)="finished.emit([score, $event])"></app-score-page>
-  </div>
+                <ion-col>
+                  <ion-card [button]="!showFeedback()" class="grid-card" (click)="chooseFace(slideInfo[currentSlide].faces[0])" [ngClass]="{'selected-card': showSelected(0), 'disabled-card': showDisabled(0)}">
+                    <img [src]="slideInfo[currentSlide].faces[0]" />
+                  </ion-card>
+                </ion-col>
+
+                <ion-col>
+                  <ion-card [button]="!showFeedback()" class="grid-card" (click)="chooseFace(slideInfo[currentSlide].faces[1])" [ngClass]="{'selected-card': showSelected(1), 'disabled-card': showDisabled(1)}">
+                    <img [src]="slideInfo[currentSlide].faces[1]" />
+                  </ion-card>
+                </ion-col>
+
+              </ion-row>
+
+              <ion-row>
+
+                <ion-col>
+                  <ion-card [button]="!showFeedback()" class="grid-card" (click)="chooseFace(slideInfo[currentSlide].faces[2])" [ngClass]="{'selected-card': showSelected(2), 'disabled-card': showDisabled(2)}">
+                    <img [src]="slideInfo[currentSlide].faces[2]" />
+                  </ion-card>
+                </ion-col>
+
+                <ion-col>
+                  <ion-card [button]="!showFeedback()" class="grid-card" (click)="chooseFace(slideInfo[currentSlide].faces[3])" [ngClass]="{'selected-card': showSelected(3), 'disabled-card': showDisabled(3)}">
+                    <img [src]="slideInfo[currentSlide].faces[3]" />
+                  </ion-card>
+                </ion-col>
+
+              </ion-row>
+
+            </ion-grid>
+
+            <ion-item class="footer" lines="none">
+              <ion-label>Swipe to Continue</ion-label>
+              <ion-icon slot="end" color="medium" name="arrow-forward" style="margin-top: 10px"></ion-icon>    
+            </ion-item>
+
+        </div>
+
+        <div *ngIf="endCardDisplayed()">
+          <app-score-page [score]="score" (finished)="finished.emit([score, $event])"></app-score-page>
+        </div>
+
+      </ion-slide>
+    </ion-slides>
 
 </ion-content>

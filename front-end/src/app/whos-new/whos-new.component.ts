@@ -1,4 +1,9 @@
-import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input, ViewChild } from '@angular/core';
+import { IonSlides } from '@ionic/angular';
+import { timer } from 'rxjs';
+import { createAnimation } from '@ionic/core';
+
+enum Stage { SELECT, CORRECT, INCORRECT }
 
 @Component({
   selector: 'app-whos-new',
@@ -9,103 +14,128 @@ export class WhosNewComponent implements OnInit {
   @Input() facePaths : string[];
   @Input() newFacePaths : string[];
   @Output() finished = new EventEmitter<[number, number]>();
+  @ViewChild('slideElement', {static: false}) slideElement: IonSlides;
 
   constructor() {}
   
   ngOnInit() {
-    this.resetRoundVals();
-    
-    // Initialize set first by selecting random numbers
-    for (let i = 0; i < 4; i++) {
-        this.newNum = this.getNewNumber(this.usedNumbers);
-        this.shuffledFaces[i] = this.facePaths[this.newNum];
+
+    this.score = 0;
+    this.currentSlide = 0;
+    this.progressPercent = 0;
+
+    // Initialize shuffled face list
+    this.shuffledFaces = [];
+    for (let face = 0; face < this.newFacePaths.length; face++) {
+      this.shuffledFaces.push(this.newFacePaths[face]);
+    }
+    // Shuffle Faces
+    for (let i = this.shuffledFaces.length - 1; i > 0; i -= 1) {
+      let j = Math.floor(Math.random() * (i + 1));
+      let temp = this.shuffledFaces[i];
+      this.shuffledFaces[i] = this.shuffledFaces[j];
+      this.shuffledFaces[j] = temp;
     }
 
-    // Add new face randomly
-    this.chosenNum = Math.floor(Math.random() * 4);
-    this.shuffledFaces[this.chosenNum] = this.addNewFace();
-  }
-
-  score : number = 0;
-  progress : number = -1;
-  progressPercent : number = 0;
-  chosenNum : number = 0;
-  newNum : number = 0;
-  userNum : number = 0;
-  
-  new_name : string = "";
-  
-  usedNumbers : number[] = [];
-  shuffledFaces : any[] = [];
-  newFacePathsCopy : string[];
-
-  nextRound : boolean = false;
-  resCorrect : boolean = false;
-
-  addNewFace() {
-    if (this.progress == 0) { // reinitialize new face pool
-      this.newFacePathsCopy = [];
-      for (let i = 0; i < this.newFacePaths.length; i++) {
-        this.newFacePathsCopy.push(this.newFacePaths[i]);
-      }
-    }
-    let newFaceIndex = Math.floor(Math.random() * this.newFacePathsCopy.length);
-    let newFace = this.newFacePathsCopy[newFaceIndex];
-    this.newFacePathsCopy.splice(newFaceIndex, 1);
-    return newFace;
-  }
-  
-  getNewNumber(numSet : number[]) {
-    // generate random number
-    this.newNum = Math.floor(Math.random() * 8);
-    
-    // if number generated already taken, get a new one
-    for (let i = 0; i < numSet.length; i++) {
-        if (this.newNum == numSet[i]) {
-            return this.getNewNumber(numSet);
-        }
-    }
-    
-    this.usedNumbers.push(this.newNum);
-    
-    return this.newNum;
-  }
-  
-  resetRoundVals() {
-    this.nextRound = false;
-    this.progress++;
-    
-    // dump old images, and repeat initalization process
+    this.slideInfo = [];
     for (let i = 0; i < this.shuffledFaces.length; i++) {
-      this.shuffledFaces[i] = "";
+      this.slideInfo.push({
+        correctFace: this.shuffledFaces[i],
+        selectedFace: null,
+        faces: this.getSlideFaces(i),
+        stage: Stage.SELECT
+      });
     }
-    for (let i = 0; i < this.usedNumbers.length; i++) {
-      this.usedNumbers[i] = null;
-    }   
+    this.slideInfo.push({ // Score card
+      correctFace: null,
+      selectedFace: null,
+      faces: null,
+      stage: null
+    });
+  }
+
+  ngAfterViewInit() {
+    this.slideElement.lockSwipes(true);
+  }
+
+  Stage = Stage;
+  numberOfOptions : number = 4;
+
+  score : number;
+  currentSlide : number;
+  progressPercent : number;
+  shuffledFaces : any;
+  slideInfo : any;
+  fadeIn : any;
+  
+  chooseFace(face : string) {
+    if (!this.showFeedback()) {
+      this.slideInfo[this.currentSlide].selectedFace = face;
+      if (face == this.slideInfo[this.currentSlide].correctFace) {
+        this.score++;
+        this.slideInfo[this.currentSlide].stage = Stage.CORRECT;
+      } else {
+        this.slideInfo[this.currentSlide].stage = Stage.INCORRECT;
+      }
+      this.progressPercent = (this.currentSlide + 1)/this.facePaths.length;
+      this.slideElement.lockSwipes(false);
+      this.slideElement.lockSwipeToPrev(true);
+      let slide = this.currentSlide;
+      timer(1000).subscribe(async () => {
+        if (slide == this.currentSlide) {
+          this.fadeIn = createAnimation()
+            .addElement(document.querySelectorAll('.footer'))
+            .fill('none')
+            .duration(500)
+            .fromTo('opacity', '0', '0.75');
+          await this.fadeIn.play();
+          Array.from(document.getElementsByClassName('footer') as HTMLCollectionOf<HTMLElement>)[this.currentSlide].style.opacity = '.75';  
+        }
+      });
+    }
+  }
+
+  getSlideFaces(index : number) {
+    let faces = [];
+    for (let i = 0; i < this.numberOfOptions - 1; i++) { // Select three faces from today's set
+      let j = Math.floor(Math.random() * this.facePaths.length);
+      while (faces.indexOf(this.facePaths[j]) > -1) { // Account for repeats
+        j = Math.floor(Math.random() * this.facePaths.length);
+      }
+      faces.push(this.facePaths[j]);
+    }
+    let j = Math.floor(Math.random() * this.numberOfOptions);
+    faces.splice(j, 0, this.shuffledFaces[index]); // Add in current face
+    return faces;
   }
   
-  chooseCard(input : number) {
-    if (!this.nextRound) {
-      this.userNum = input;
-      this.nextRound = true;
-      this.progressPercent = (this.progress + 1)/this.facePaths.length;
-      
-      // determine if correct or not
-      if (input == this.chosenNum) {
-        this.resCorrect = true;
-        this.score++;
-      } else {
-        this.resCorrect = false;
+  showDisabled(face : number) {
+    return this.showFeedback() && this.slideInfo[this.currentSlide].correctFace != this.slideInfo[this.currentSlide].faces[face];
+  }
+
+  showSelected(face : number) {
+    return this.showFeedback() &&
+      this.slideInfo[this.currentSlide].faces[face] != this.slideInfo[this.currentSlide].correctFace &&
+      this.slideInfo[this.currentSlide].faces[face] == this.slideInfo[this.currentSlide].selectedFace;
+  }
+
+  showFeedback() {
+    return this.slideInfo[this.currentSlide].stage == Stage.CORRECT || this.slideInfo[this.currentSlide].stage == Stage.INCORRECT;
+  }
+
+  endCardDisplayed() {
+    return this.currentSlide >= this.newFacePaths.length;
+  }
+
+  async changeSlide() {
+    if (await this.slideElement.getActiveIndex() > this.currentSlide) {
+      this.currentSlide = await this.slideElement.getActiveIndex();
+      await this.slideElement.lockSwipes(true);
+      await this.fadeIn.stop();
+      let footers = Array.from(document.getElementsByClassName('footer') as HTMLCollectionOf<HTMLElement>);
+      for (let i = 0; i < footers.length; i++) {
+        footers[i].style.opacity = '0';
       }
     }
   }
-  
-  showDisabled(i : number) {
-    return this.nextRound && this.shuffledFaces[i] != this.shuffledFaces[this.chosenNum];
-  }
-
-  showSelected(i : number) {
-    return this.nextRound && this.shuffledFaces[i] == this.shuffledFaces[this.userNum];
-  }
-
 }
