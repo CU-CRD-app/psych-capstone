@@ -171,6 +171,7 @@ export class MemoryMatchComponent implements OnInit {
           }
         });
     }
+
   }
 
   startMaskTimer() {

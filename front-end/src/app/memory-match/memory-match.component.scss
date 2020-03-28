@@ -23,31 +23,3 @@ h5 {
     color: white;
     text-align: center;
 }
-
-.footer {
-	margin-bottom: 0px;
-	color: white;
-	opacity: 0;
-	--background: transparent;
-}
-
-.overlay {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0px;
-    left: 0px;
-    color: white;
-    background-color: dodgerblue;
-    z-index: 100;
-    opacity: 0;
-}
-
-.overlay-content {
-    position: relative;
-    top: 35%;
-    width: 100%;
-    text-align: center;
-    font-size: 5vh;
-    z-index: 100;
-}

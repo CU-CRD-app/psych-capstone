@@ -23,6 +23,7 @@ export class WhosNewComponent implements OnInit {
     this.score = 0;
     this.currentSlide = 0;
     this.progressPercent = 0;
+    this.fadeIn = createAnimation();
 
     // Initialize shuffled face list
     this.shuffledFaces = [];
@@ -46,12 +47,6 @@ export class WhosNewComponent implements OnInit {
         stage: Stage.SELECT
       });
     }
-    this.slideInfo.push({ // Score card
-      correctFace: null,
-      selectedFace: null,
-      faces: null,
-      stage: null
-    });
   }
 
   ngAfterViewInit() {
@@ -120,7 +115,7 @@ export class WhosNewComponent implements OnInit {
   }
 
   showFeedback() {
-    return this.slideInfo[this.currentSlide].stage == Stage.CORRECT || this.slideInfo[this.currentSlide].stage == Stage.INCORRECT;
+    return !this.endCardDisplayed() && (this.slideInfo[this.currentSlide].stage == Stage.CORRECT || this.slideInfo[this.currentSlide].stage == Stage.INCORRECT);
   }
 
   endCardDisplayed() {
