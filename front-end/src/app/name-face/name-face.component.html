@@ -46,7 +46,7 @@
 
       <br>
 
-      <ion-item class="footer" lines="none">
+      <ion-item *ngIf="showFeedback()" class="footer" lines="none">
         <ion-label>Swipe to Continue</ion-label>
         <ion-icon slot="end" color="medium" name="arrow-back" style="margin-top: 10px"></ion-icon>    
       </ion-item>

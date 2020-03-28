@@ -22,12 +22,19 @@
         <img *ngIf="slideInfo[slideIndex].stage != Stage.START" [src]="getSrc(slideIndex)" style="height: 270px; margin: 20px auto" [ngStyle]="{'width': slideInfo[slideIndex].stage == Stage.MASK ? '85%' : '190px'}"/>
       </ion-card>
 
-      <ion-button *ngIf="slideInfo[slideIndex].stage == Stage.SELECT" style="width:130px" (click)="chooseFace(false)" color="danger">No</ion-button>
-      <ion-button *ngIf="slideInfo[slideIndex].stage == Stage.SELECT" style="width:130px" (click)="chooseFace(true)" color="success">Yes</ion-button>
+      <ion-item *ngIf="slideInfo[slideIndex].stage == Stage.SELECT" style="--background: transparent; color: white" lines="none">
+        <span slot="start">No</span>
+        <ion-icon slot="start" color="dark" name="arrow-back" style="margin-top: 10px"></ion-icon>
+        <ion-icon slot="end" color="dark" name="arrow-forward" style="margin-top: 10px"></ion-icon>
+        <span slot="end">Yes</span>   
+      </ion-item>
+      
+      <!--<ion-button *ngIf="slideInfo[slideIndex].stage == Stage.SELECT" style="width:130px" (click)="chooseFace(false)" color="danger">No</ion-button>
+      <ion-button *ngIf="slideInfo[slideIndex].stage == Stage.SELECT" style="width:130px" (click)="chooseFace(true)" color="success">Yes</ion-button>-->
 
-      <ion-item class="footer" lines="none">
+      <ion-item *ngIf="showFeedback()" class="footer" lines="none">
         <ion-label>Swipe to Continue</ion-label>
-        <ion-icon slot="end" color="medium" name="arrow-back" style="margin-top: 10px"></ion-icon>    
+        <ion-icon slot="end" color="dark" name="arrow-back" style="margin-top: 10px"></ion-icon>    
       </ion-item>
 
     </ion-slide>
