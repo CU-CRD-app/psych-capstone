@@ -87,26 +87,22 @@ export class SameDifferentComponent implements OnInit {
 
       if (sameFace) {
         let swipeRight = createAnimation()
-        .addElement(document.querySelectorAll('.swipe-card')[this.currentSlide])
+        .addElement(document.querySelector('.swipe-card'))
         .fill('none')
-        .duration(300)
+        .duration(200)
         .keyframes([
           { offset: 0, transform: 'translateX(0%)' },
-          { offset: 0.5, transform: 'translateX(100%)' },
-          { offset: 0.5, transform: 'translateX(-100%)' },
-          { offset: 1, transform: 'translateX(0%)' }
+          { offset: 1, transform: 'translateX(100%)' }
         ]);
         await swipeRight.play();
       } else {
         let swipeLeft = createAnimation()
-        .addElement(document.querySelectorAll('.swipe-card')[this.currentSlide])
+        .addElement(document.querySelector('.swipe-card'))
         .fill('none')
-        .duration(300)
+        .duration(200)
         .keyframes([
           { offset: 0, transform: 'translateX(0%)' },
-          { offset: 0.5, transform: 'translateX(-100%)' },
-          { offset: 0.5, transform: 'translateX(100%)' },
-          { offset: 1, transform: 'translateX(0%)' }
+          { offset: 1, transform: 'translateX(-100%)' }
         ]);
         await swipeLeft.play();
       }
@@ -186,24 +182,6 @@ export class SameDifferentComponent implements OnInit {
         if (this.slideInfo[this.currentSlide].stage == Stage.SELECT) {
           Array.from(document.getElementsByClassName('swipe-footer') as HTMLCollectionOf<HTMLElement>)[0].style.opacity = '1';  
         }
-        let arrowPulse = createAnimation()
-          .addElement(document.querySelectorAll('.pulse'))
-          .fill('none')
-          .duration(10000)
-          .keyframes([
-            { offset: 0, opacity: '1' },
-            { offset: 0.1, opacity: '0' },
-            { offset: 0.2, opacity: '1' },
-            { offset: 0.3, opacity: '0' },
-            { offset: 0.4, opacity: '1' },
-            { offset: 0.5, opacity: '0' },
-            { offset: 0.6, opacity: '1' },
-            { offset: 0.7, opacity: '0' },
-            { offset: 0.8, opacity: '1' },
-            { offset: 0.9, opacity: '0' },
-            { offset: 1, opacity: '1' },
-          ]);
-        await arrowPulse.play();
       });      
     });
   }
