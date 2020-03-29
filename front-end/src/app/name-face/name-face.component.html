@@ -19,7 +19,7 @@
 
           <ion-col *ngFor="let item of [].constructor(3); let i = index">
 
-            <ion-card [button]="!showFeedback()" (click)="chooseFace(slideInfo[slideIndex].faces[i])" [ngClass]="{'selected-card': showSelected(i), 'disabled-card': showDisabled(i)}">
+            <ion-card [button]="!showFeedback()" (click)="selectFace(slideInfo[slideIndex].faces[i])" [ngClass]="{'selected-card': showSelected(i), 'disabled-card': showDisabled(i)}">
               <img [src]="slideInfo[slideIndex].faces[i]"/>
             </ion-card>
 
@@ -32,7 +32,7 @@
 
           <ion-col *ngFor="let item of [].constructor(3); let i = index">
 
-            <ion-card [button]="!showFeedback()" (click)="chooseFace(slideInfo[slideIndex].faces[i + 3])" [ngClass]="{'selected-card': showSelected(i + 3), 'disabled-card': showDisabled(i + 3)}">
+            <ion-card [button]="!showFeedback()" (click)="selectFace(slideInfo[slideIndex].faces[i + 3])" [ngClass]="{'selected-card': showSelected(i + 3), 'disabled-card': showDisabled(i + 3)}">
               <img [src]="slideInfo[slideIndex].faces[i + 3]"/>
             </ion-card>
 

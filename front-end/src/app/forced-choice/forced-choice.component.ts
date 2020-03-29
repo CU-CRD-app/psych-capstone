@@ -42,7 +42,9 @@ export class ForcedChoiceComponent implements OnInit {
         .duration(500)
         .fromTo('opacity', '0', '.9');
       await fadeInOverlay.play();
-      Array.from(document.getElementsByClassName('overlay') as HTMLCollectionOf<HTMLElement>)[0].style.opacity = '.9';  
+      if (this.slideInfo[this.currentSlide].stage == Stage.START) {
+        Array.from(document.getElementsByClassName('overlay') as HTMLCollectionOf<HTMLElement>)[0].style.opacity = '.9';
+      }
     });
 
   }
@@ -75,8 +77,8 @@ export class ForcedChoiceComponent implements OnInit {
   slideInfo : any;
   fadeIn : any;
 
-  chooseFace(face : string) {
-    if (!this.showFeedback()) {
+  selectFace(face : string) {
+    if (this.slideInfo[this.currentSlide].stage == Stage.SELECT) {
       this.slideInfo[this.currentSlide].selectedFace = face;
       if (face == this.slideInfo[this.currentSlide].correctFace) {
         this.score++;
@@ -117,7 +119,17 @@ export class ForcedChoiceComponent implements OnInit {
     return faces;
   }
 
-  startMemorizeTimer() {
+  async startMemorizeTimer() {
+
+    if (this.currentSlide == 0) {
+      let fadeOutOverlay = createAnimation()
+        .addElement(document.querySelectorAll('.overlay'))
+        .fill('none')
+        .duration(200)
+        .fromTo('opacity', '.9', '0');
+      await fadeOutOverlay.play();
+    }
+
     this.timeRemaining = this.memorizeTime;
     this.slideInfo[this.currentSlide].stage = Stage.MEMORIZE;
     this.timer = timer(this.timeRemaining * 1000).subscribe(() => {

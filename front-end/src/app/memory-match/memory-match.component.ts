@@ -49,7 +49,9 @@ export class MemoryMatchComponent implements OnInit {
         .duration(500)
         .fromTo('opacity', '0', '.9');
       await fadeIn.play();
-      Array.from(document.getElementsByClassName('overlay') as HTMLCollectionOf<HTMLElement>)[0].style.opacity = '.9';  
+      if (this.stage == Stage.START) {
+        Array.from(document.getElementsByClassName('overlay') as HTMLCollectionOf<HTMLElement>)[0].style.opacity = '.9';
+      }
     });
   }
 
@@ -144,6 +146,13 @@ export class MemoryMatchComponent implements OnInit {
 
     if (this.stage == Stage.START) {
 
+      let fadeOutOverlay = createAnimation()
+      .addElement(document.querySelectorAll('.overlay'))
+        .fill('none')
+        .duration(200)
+        .fromTo('opacity', '.9', '0');
+      await fadeOutOverlay.play();
+
       this.timeRemaining = this.memorizeTime;
       this.stage = Stage.MEMORIZE;
 
@@ -187,9 +196,9 @@ export class MemoryMatchComponent implements OnInit {
         .addElement(document.querySelectorAll('.footer'))
         .fill('none')
         .duration(500)
-        .fromTo('opacity', '0', '1');
+        .fromTo('opacity', '0', '0.75');
       await fadeIn.play();
-      Array.from(document.getElementsByClassName('footer') as HTMLCollectionOf<HTMLElement>)[0].style.opacity = '1';  
+      Array.from(document.getElementsByClassName('footer') as HTMLCollectionOf<HTMLElement>)[0].style.opacity = '0.75';  
     });
   }
 }

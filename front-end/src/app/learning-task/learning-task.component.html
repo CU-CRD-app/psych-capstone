@@ -7,7 +7,9 @@
 
 			<ion-card>
 				<div class="imgContainer">
-					<img [src]="face" id=faceImg>
+					<ion-icon color="dark" name="arrow-back" style="display: inline-block; margin-bottom: 25%; margin-right: 10%; font-size: 150%" [ngStyle]="{'opacity': progress == 0 ? '0.2' : '1'}"></ion-icon>
+					<img [src]="face" id=faceImg style="display: inline-block">
+					<ion-icon color="dark" name="arrow-forward" style="display: inline-block; margin-bottom: 25%; margin-left: 10%; font-size: 150%" [ngStyle]="{'opacity': progress == (facePaths.length - 1) ? '0.2' : '1'}"></ion-icon>
 				</div>
 				<div class="nameContainer">
 					<div id="nameDisplay">
@@ -19,13 +21,8 @@
 		</ion-slide>
 	</ion-slides>
 
-	<ion-item *ngIf="!swiped" class="footer" lines="none">
-		<ion-label>Swipe to Continue</ion-label>
-		<ion-icon slot="end" color="dark" name="arrow-back"></ion-icon>    
-	</ion-item>
-
 	<div style="text-align: center; height: 10%; margin-top: 5%">
-		<ion-button *ngIf="!seenAll && swiped" color="success" style="height: 100%" disabled>Finish</ion-button>
+		<ion-button *ngIf="!seenAll" color="success" style="height: 100%" disabled>Finish</ion-button>
 		<ion-button *ngIf="seenAll" color="success" style="height: 100%" (click)="finished.emit()">Finish</ion-button>
 	</div>
 

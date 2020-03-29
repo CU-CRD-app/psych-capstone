@@ -15,13 +15,13 @@
           <ion-row>
 
             <ion-col>
-              <ion-card [button]="!showFeedback()" class="grid-card" (click)="chooseFace(slideInfo[slideIndex].faces[0])" [ngClass]="{'selected-card': showSelected(0), 'disabled-card': showDisabled(0)}">
+              <ion-card [button]="!showFeedback()" class="grid-card" (click)="selectFace(slideInfo[slideIndex].faces[0])" [ngClass]="{'selected-card': showSelected(0), 'disabled-card': showDisabled(0)}">
                 <img [src]="slideInfo[slideIndex].faces[0]" />
               </ion-card>
             </ion-col>
 
             <ion-col>
-              <ion-card [button]="!showFeedback()" class="grid-card" (click)="chooseFace(slideInfo[slideIndex].faces[1])" [ngClass]="{'selected-card': showSelected(1), 'disabled-card': showDisabled(1)}">
+              <ion-card [button]="!showFeedback()" class="grid-card" (click)="selectFace(slideInfo[slideIndex].faces[1])" [ngClass]="{'selected-card': showSelected(1), 'disabled-card': showDisabled(1)}">
                 <img [src]="slideInfo[slideIndex].faces[1]" />
               </ion-card>
             </ion-col>
@@ -31,13 +31,13 @@
           <ion-row>
 
             <ion-col>
-              <ion-card [button]="!showFeedback()" class="grid-card" (click)="chooseFace(slideInfo[slideIndex].faces[2])" [ngClass]="{'selected-card': showSelected(2), 'disabled-card': showDisabled(2)}">
+              <ion-card [button]="!showFeedback()" class="grid-card" (click)="selectFace(slideInfo[slideIndex].faces[2])" [ngClass]="{'selected-card': showSelected(2), 'disabled-card': showDisabled(2)}">
                 <img [src]="slideInfo[slideIndex].faces[2]" />
               </ion-card>
             </ion-col>
 
             <ion-col>
-              <ion-card [button]="!showFeedback()" class="grid-card" (click)="chooseFace(slideInfo[slideIndex].faces[3])" [ngClass]="{'selected-card': showSelected(3), 'disabled-card': showDisabled(3)}">
+              <ion-card [button]="!showFeedback()" class="grid-card" (click)="selectFace(slideInfo[slideIndex].faces[3])" [ngClass]="{'selected-card': showSelected(3), 'disabled-card': showDisabled(3)}">
                 <img [src]="slideInfo[slideIndex].faces[3]" />
               </ion-card>
             </ion-col>

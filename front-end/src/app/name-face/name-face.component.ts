@@ -64,8 +64,8 @@ export class NameFaceComponent implements OnInit {
   slideInfo : any;
   fadeIn : any;
 
-  chooseFace(face : string) {
-    if (!this.showFeedback()) {
+  selectFace(face : string) {
+    if (this.slideInfo[this.currentSlide].stage == Stage.SELECT) {
       this.slideInfo[this.currentSlide].selectedFace = face;
       if (face == this.slideInfo[this.currentSlide].correctFace) {
         this.score++;

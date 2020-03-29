@@ -4,13 +4,13 @@
 
   <div *ngIf="slideInfo[currentSlide].stage == Stage.START" (click)="startMemorizeTimer()" class="overlay" button>
     <div class="overlay-content">
-      Click anywhere to reveal the face
+      Click anywhere to reveal
     </div>
   </div>
 
   <ion-slides #slideElement (ionSlideWillChange)="changeSlide()">
 
-    <ion-slide *ngFor="let slide of slideInfo; let slideIndex = index" style="text-align: center; height: 100%; width: 100%; display: block">
+    <ion-slide *ngFor="let slide of slideInfo; let slideIndex = index" (swipeleft)="selectFace(false)" (swiperight)="selectFace(true)" style="text-align: center; height: 100%; width: 100%; display: block">
 
       <h3 *ngIf="slideInfo[slideIndex].stage == Stage.START">Memorize the face: {{memorizeTime}}</h3>
       <h3 *ngIf="slideInfo[slideIndex].stage == Stage.MEMORIZE">Memorize the face: <span class="time-left">{{timeRemaining}}</span></h3>
@@ -18,19 +18,22 @@
       <h3 *ngIf="slideInfo[slideIndex].stage == Stage.SELECT">Is this the same person?</h3>
       <h3 *ngIf="slideInfo[slideIndex].stage == Stage.CORRECT">Correct!</h3>
       <h3 *ngIf="slideInfo[slideIndex].stage == Stage.INCORRECT">Incorrect!</h3>
-      <ion-card>
-        <img *ngIf="slideInfo[slideIndex].stage != Stage.START" [src]="getSrc(slideIndex)" style="height: 270px; margin: 20px auto" [ngStyle]="{'width': slideInfo[slideIndex].stage == Stage.MASK ? '85%' : '190px'}"/>
+      <ion-card class="swipe-card" id=slideIndex>
+        <!--<div *ngIf="slideInfo[slideIndex].stage == Stage.SELECT" style="height: 100%; width: 10%; left: 0px; background-color: dodgerblue; opacity: 0.6">-->
+        <!--<ion-icon *ngIf="slideInfo[slideIndex].stage == Stage.SELECT" color="dark" name="arrow-back" style="display: inline-block; margin-bottom: 45%; margin-right: 3%; font-size: 150%"></ion-icon>-->
+        <img *ngIf="slideInfo[slideIndex].stage != Stage.START" [src]="getSrc(slideIndex)" style="height: 270px; margin: 0 auto; display: inline-block; margin-top: 20px" [ngStyle]="{'width': slideInfo[slideIndex].stage == Stage.MASK ? '85%' : 'auto'}"/>
+        <!--<ion-icon *ngIf="slideInfo[slideIndex].stage == Stage.SELECT" color="dark" name="arrow-forward" style="display: inline-block; margin-bottom: 45%; margin-left: 3%; font-size: 150%"></ion-icon>-->
       </ion-card>
 
-      <ion-item *ngIf="slideInfo[slideIndex].stage == Stage.SELECT" style="--background: transparent; color: white" lines="none">
+      <ion-item *ngIf="slideInfo[slideIndex].stage == Stage.SELECT" class="swipe-footer" style="width: 70%; margin-left: 15%" lines="none">
+        <ion-icon slot="start" color="dark" name="arrow-back" class="pulse"></ion-icon>
         <span slot="start">No</span>
-        <ion-icon slot="start" color="dark" name="arrow-back" style="margin-top: 10px"></ion-icon>
-        <ion-icon slot="end" color="dark" name="arrow-forward" style="margin-top: 10px"></ion-icon>
-        <span slot="end">Yes</span>   
+        <span slot="end">Yes</span>
+        <ion-icon slot="end" color="dark" name="arrow-forward" class="pulse"></ion-icon>
       </ion-item>
       
-      <!--<ion-button *ngIf="slideInfo[slideIndex].stage == Stage.SELECT" style="width:130px" (click)="chooseFace(false)" color="danger">No</ion-button>
-      <ion-button *ngIf="slideInfo[slideIndex].stage == Stage.SELECT" style="width:130px" (click)="chooseFace(true)" color="success">Yes</ion-button>-->
+      <!--<ion-button *ngIf="slideInfo[slideIndex].stage == Stage.SELECT" style="width:130px" (click)="selectFace(false)" color="danger">No</ion-button>
+      <ion-button *ngIf="slideInfo[slideIndex].stage == Stage.SELECT" style="width:130px" (click)="selectFace(true)" color="success">Yes</ion-button>-->
 
       <ion-item *ngIf="showFeedback()" class="footer" lines="none">
         <ion-label>Swipe to Continue</ion-label>

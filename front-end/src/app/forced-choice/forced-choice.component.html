@@ -4,7 +4,7 @@
 
   <div *ngIf="slideInfo[currentSlide].stage == Stage.START" (click)="startMemorizeTimer()" class="overlay" button>
     <div class="overlay-content">
-      Click anywhere to reveal the face
+      Click anywhere to reveal
     </div>
   </div>
 
@@ -18,7 +18,7 @@
         <h3 *ngIf="slideInfo[slideIndex].stage == Stage.MEMORIZE">Memorize the face: <span class="time-left">{{timeRemaining}}</span></h3>
         <h3 *ngIf="slideInfo[slideIndex].stage == Stage.MASK">Hold the face in your mind...</h3>
         <ion-card style="height: 310px">
-          <img *ngIf="slideInfo[slideIndex].stage != Stage.START" style="height: 270px; margin: 20px auto;" [src]="slideInfo[slideIndex].stage == Stage.MEMORIZE ? slideInfo[slideIndex].correctFace : mask" [ngStyle]="{'width': slideInfo[slideIndex].stage == Stage.MASK ? '85%' : '190px'}"/>
+          <img *ngIf="slideInfo[slideIndex].stage != Stage.START" style="height: 270px; margin: 20px auto;" [src]="slideInfo[slideIndex].stage == Stage.MEMORIZE ? slideInfo[slideIndex].correctFace : mask" [ngStyle]="{'width': slideInfo[slideIndex].stage == Stage.MASK ? '85%' : 'auto'}"/>
         </ion-card>
       </div>
 
@@ -34,13 +34,13 @@
           <ion-row>
 
             <ion-col>
-              <ion-card (click)="chooseFace(slideInfo[slideIndex].faces[0])" [button]="!showFeedback()" class="grid-card" [ngClass]="{'selected-card': showFeedback() && slideInfo[slideIndex].faces[0] != slideInfo[slideIndex].correctFace && slideInfo[slideIndex].faces[0] == slideInfo[slideIndex].selectedFace, 'disabled-card': showFeedback() && slideInfo[slideIndex].faces[0] != slideInfo[slideIndex].correctFace}">
+              <ion-card (click)="selectFace(slideInfo[slideIndex].faces[0])" [button]="!showFeedback()" class="grid-card" [ngClass]="{'selected-card': showFeedback() && slideInfo[slideIndex].faces[0] != slideInfo[slideIndex].correctFace && slideInfo[slideIndex].faces[0] == slideInfo[slideIndex].selectedFace, 'disabled-card': showFeedback() && slideInfo[slideIndex].faces[0] != slideInfo[slideIndex].correctFace}">
                 <img [src]="slideInfo[slideIndex].faces[0]"/>
               </ion-card>
             </ion-col>
 
             <ion-col>
-              <ion-card (click)="chooseFace(slideInfo[slideIndex].faces[1])" [button]="!showFeedback()" class="grid-card" [ngClass]="{'selected-card': showFeedback() && slideInfo[slideIndex].faces[1] != slideInfo[slideIndex].correctFace && slideInfo[slideIndex].faces[1] == slideInfo[slideIndex].selectedFace, 'disabled-card': showFeedback() && slideInfo[slideIndex].faces[1] != slideInfo[slideIndex].correctFace}">
+              <ion-card (click)="selectFace(slideInfo[slideIndex].faces[1])" [button]="!showFeedback()" class="grid-card" [ngClass]="{'selected-card': showFeedback() && slideInfo[slideIndex].faces[1] != slideInfo[slideIndex].correctFace && slideInfo[slideIndex].faces[1] == slideInfo[slideIndex].selectedFace, 'disabled-card': showFeedback() && slideInfo[slideIndex].faces[1] != slideInfo[slideIndex].correctFace}">
                 <img [src]="slideInfo[slideIndex].faces[1]"/>
               </ion-card>
             </ion-col>
@@ -49,13 +49,13 @@
           <ion-row>
 
             <ion-col>
-              <ion-card (click)="chooseFace(slideInfo[slideIndex].faces[2])" [button]="!showFeedback()" class="grid-card" [ngClass]="{'selected-card': showFeedback() && slideInfo[slideIndex].faces[2] != slideInfo[slideIndex].correctFace && slideInfo[slideIndex].faces[2] == slideInfo[slideIndex].selectedFace, 'disabled-card': showFeedback() && slideInfo[slideIndex].faces[2] != slideInfo[slideIndex].correctFace}">
+              <ion-card (click)="selectFace(slideInfo[slideIndex].faces[2])" [button]="!showFeedback()" class="grid-card" [ngClass]="{'selected-card': showFeedback() && slideInfo[slideIndex].faces[2] != slideInfo[slideIndex].correctFace && slideInfo[slideIndex].faces[2] == slideInfo[slideIndex].selectedFace, 'disabled-card': showFeedback() && slideInfo[slideIndex].faces[2] != slideInfo[slideIndex].correctFace}">
                 <img [src]="slideInfo[slideIndex].faces[2]"/>
               </ion-card>
             </ion-col>
 
             <ion-col>
-              <ion-card (click)="chooseFace(slideInfo[slideIndex].faces[3])" [button]="!showFeedback()" class="grid-card" [ngClass]="{'selected-card': showFeedback() && slideInfo[slideIndex].faces[3] != slideInfo[slideIndex].correctFace && slideInfo[slideIndex].faces[3] == slideInfo[slideIndex].selectedFace, 'disabled-card': showFeedback() && slideInfo[slideIndex].faces[3] != slideInfo[slideIndex].correctFace}">
+              <ion-card (click)="selectFace(slideInfo[slideIndex].faces[3])" [button]="!showFeedback()" class="grid-card" [ngClass]="{'selected-card': showFeedback() && slideInfo[slideIndex].faces[3] != slideInfo[slideIndex].correctFace && slideInfo[slideIndex].faces[3] == slideInfo[slideIndex].selectedFace, 'disabled-card': showFeedback() && slideInfo[slideIndex].faces[3] != slideInfo[slideIndex].correctFace}">
                 <img [src]="slideInfo[slideIndex].faces[3]"/>
               </ion-card>
             </ion-col>
