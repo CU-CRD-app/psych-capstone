@@ -259,56 +259,56 @@ export class ShuffleComponent implements OnInit {
         switch (direction) {
           case Directions.RIGHT:
             animation = createAnimation()
-            .addElement(document.querySelector(className))
+            .addElement(document.querySelectorAll(className)[this.currentSlide])
             .fill('none')
             .duration(300)
             .fromTo('transform', 'translateX(0%)', 'translateX(150%)');
             break;
           case Directions.LEFT:
             animation = createAnimation()
-            .addElement(document.querySelector(className))
+            .addElement(document.querySelectorAll(className)[this.currentSlide])
             .fill('none')
             .duration(300)
             .fromTo('transform', 'translateX(0%)', 'translateX(-150%)');
             break;
           case Directions.UP:
             animation = createAnimation()
-            .addElement(document.querySelector(className))
+            .addElement(document.querySelectorAll(className)[this.currentSlide])
             .fill('none')
             .duration(300)
             .fromTo('transform', 'translateY(0%)', 'translateY(-150%)');
             break;
           case Directions.DOWN:
             animation = createAnimation()
-            .addElement(document.querySelector(className))
+            .addElement(document.querySelectorAll(className)[this.currentSlide])
             .fill('none')
             .duration(300)
             .fromTo('transform', 'translateY(0%)', 'translateY(150%)');
             break;
           case Directions.RIGHT_DOWN:
             animation = createAnimation()
-            .addElement(document.querySelector(className))
+            .addElement(document.querySelectorAll(className)[this.currentSlide])
             .fill('none')
             .duration(300)
             .fromTo('transform', 'translate(0%, 0%)', 'translate(150%, 150%)');
             break;
           case Directions.LEFT_DOWN:
             animation = createAnimation()
-            .addElement(document.querySelector(className))
+            .addElement(document.querySelectorAll(className)[this.currentSlide])
             .fill('none')
             .duration(300)
             .fromTo('transform', 'translate(0%, 0%)', 'translate(-150%, 150%)');
             break;
           case Directions.RIGHT_UP:
             animation = createAnimation()
-            .addElement(document.querySelector(className))
+            .addElement(document.querySelectorAll(className)[this.currentSlide])
             .fill('none')
             .duration(300)
             .fromTo('transform', 'translate(0%, 0%)', 'translate(150%, -150%)');
             break;
           case Directions.LEFT_UP:
             animation = createAnimation()
-            .addElement(document.querySelector(className))
+            .addElement(document.querySelectorAll(className)[this.currentSlide])
             .fill('none')
             .duration(300)
             .fromTo('transform', 'translate(0%, 0%)', 'translate(-150%, -150%)');
