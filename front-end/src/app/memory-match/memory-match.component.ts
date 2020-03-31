@@ -68,6 +68,16 @@ export class MemoryMatchComponent implements OnInit {
     }
   }
 
+  finish(event : any) {
+    this.finished.emit([this.score, event])
+    if (event == 0) { // Reload and retry
+      this.ngOnInit();
+      this.slideElement.lockSwipes(false);
+      this.slideElement.slideTo(0);
+      this.slideElement.lockSwipes(true);
+    }
+  }
+
   Stage = Stage;
   mask : string = 'assets/background_imgs/mask1.png';
   memorizeTime : number = 10;

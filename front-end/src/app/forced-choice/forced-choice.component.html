@@ -66,7 +66,7 @@
 
       </div>
 
-      <ion-item *ngIf="showFeedback()" class="footer" lines="none">
+      <ion-item *ngIf="showFeedback()" class="footer" (click)="slideElement.slideNext()" lines="none">
         <ion-label>Swipe to Continue</ion-label>
         <ion-icon slot="end" color="dark" name="arrow-back" style="margin-top: 10px"></ion-icon>    
       </ion-item>
@@ -75,7 +75,7 @@
 
     <!--Score page-->
     <ion-slide>
-      <app-score-page [score]="score" (finished)="finished.emit([score, $event])"></app-score-page>
+      <app-score-page [score]="score" [assessment]="true" (finished)="finished.emit([score, 2])"></app-score-page>
     </ion-slide>
 
   </ion-slides>

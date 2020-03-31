@@ -64,6 +64,16 @@ export class ShuffleComponent implements OnInit {
     }
   }
 
+  finish(event : any) {
+    this.finished.emit([this.score, event])
+    if (event == 0) { // Reload and retry
+      this.ngOnInit();
+      this.slideElement.lockSwipes(false);
+      this.slideElement.slideTo(0);
+      this.slideElement.lockSwipes(true);
+    }
+  }
+
   Stage = Stage;
   numberOfOptions = 4;
   mask : string = 'assets/background_imgs/mask1.png';

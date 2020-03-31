@@ -53,6 +53,16 @@ export class WhosNewComponent implements OnInit {
     this.slideElement.lockSwipes(true);
   }
 
+  finish(event : any) {
+    this.finished.emit([this.score, event])
+    if (event == 0) { // Reload and retry
+      this.ngOnInit();
+      this.slideElement.lockSwipes(false);
+      this.slideElement.slideTo(0);
+      this.slideElement.lockSwipes(true);
+    }
+  }
+
   Stage = Stage;
   numberOfOptions : number = 4;
 

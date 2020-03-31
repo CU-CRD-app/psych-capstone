@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { timer, interval } from 'rxjs';
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController, ModalController, IonRouterOutlet } from '@ionic/angular';
 import { HelpModalComponent } from '../help-modal/help-modal.component';
 import { takeUntil } from 'rxjs/operators';
 import { createAnimation } from '@ionic/core';
@@ -29,11 +29,13 @@ enum Task { LEARNING, NAME_FACE, WHOS_NEW, MEMORY, SHUFFLE, FORCED_CHOICE, SAME_
 })
 export class TrainingPage {
 
-  constructor(public alertController: AlertController, public modalController: ModalController) {
+  constructor(public alertController: AlertController, public modalController: ModalController, private routerOutlet: IonRouterOutlet) {
 
     this.trainingFacePaths = this.generateShuffledFaces(0); //getTrainingFaces()
     this.assessmentFacePaths = this.generateShuffledFaces(8); //getAssessmentFaces()
     this.setNames = this.generateRandomNames();
+
+    this.routerOutlet.swipeGesture = false;
 
     // Preload images
     let images : any[] = [];
@@ -209,37 +211,15 @@ export class TrainingPage {
 
   finished(score : number[], task : number) {
     this.scores[task] = Math.max(score[0], this.scores[task]);
-    if (score[1] == 0) { // Retry
-      this.task = null;
-      timer(10).subscribe(() => { // Reload task in 10 ms
-        switch (task) {
-          case 0:
-            this.task = Task.NAME_FACE;
-            break;
-          case 1:
-            this.task = Task.WHOS_NEW;
-            break;
-          case 2:
-            this.task = Task.MEMORY;
-            break;
-          case 3:
-            this.task = Task.SHUFFLE;
-            break;
-          case 4:
-            this.task = Task.FORCED_CHOICE;
-            break;
-          case 5:
-            this.task = Task.SAME_DIFFERENT;
-            break;
-        }
-      });
-    } else if (score[1] == 1) { // Learning
-      this.task = Task.LEARNING;
-    } else { // Done
-      this.task = null;
-    }
-    if (task > 3) {
-      this.iterateStage();
+    if (score[1] != 0) { // Not retrying
+      if (score[1] == 1) { // Learning
+        this.task = Task.LEARNING;
+      } else { // Done
+        this.task = null;
+      }
+      if (task == 4 || task == 5) { // Assessments automatically move on
+        this.iterateStage();
+      }
     }
     // save today's progress to database
   }
