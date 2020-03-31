@@ -67,7 +67,6 @@ export class ForcedChoiceComponent implements OnInit {
   mask : string = 'assets/background_imgs/mask1.png';
   memorizeTime : number = 3;
 
-  stage : Stage;
   currentSlide : number;
   progressPercent : number;
   score : number;

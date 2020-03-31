@@ -1,9 +1,10 @@
-import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input, ViewChild } from '@angular/core';
 import { timer, interval } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { createAnimation } from '@ionic/core';
+import { IonSlides } from '@ionic/angular';
 
-enum Stage { START, MEMORIZE, MASK, SELECT, CORRECT, INCORRECT, DONE }
+enum Stage { START, MEMORIZE, MASK, SELECT, CORRECT, INCORRECT }
 
 @Component({
   selector: 'app-shuffle',
@@ -13,12 +14,45 @@ enum Stage { START, MEMORIZE, MASK, SELECT, CORRECT, INCORRECT, DONE }
 export class ShuffleComponent implements OnInit {
   @Input() facePaths : string[];
   @Output() finished = new EventEmitter<[number, number]>();
+  @ViewChild('slideElement', {static: false}) slideElement: IonSlides;
 
   constructor() { }
 
   ngOnInit() {
-    this.currentFace = this.facePaths[this.progress];
-    this.makeRandomFaces();
+
+    this.currentSlide = 0;
+    this.progressPercent = 0;
+    this.score = 0;
+    this.fadeIn = createAnimation();
+
+    this.slideInfo = [];
+    for (let i = 0; i < this.facePaths.length; i++) {
+      let correctFaces = this.getSlideFaces(i);
+      this.slideInfo.push({
+        correctOrder: correctFaces,
+        shuffledOrder: this.shuffleFaces(correctFaces),
+        stage: Stage.START,
+        feedback: true,
+        selectedFace: null
+      });
+    }
+
+    this.timer = timer(500).subscribe(async () => {
+      let fadeInOverlay = createAnimation()
+        .addElement(document.querySelectorAll('.overlay'))
+        .fill('none')
+        .duration(500)
+        .fromTo('opacity', '0', '.9');
+      await fadeInOverlay.play();
+      if (this.slideInfo[this.currentSlide].stage == Stage.START) {
+        Array.from(document.getElementsByClassName('overlay') as HTMLCollectionOf<HTMLElement>)[0].style.opacity = '.9';
+      }
+    });
+
+  }
+
+  ngAfterViewInit() {
+    this.slideElement.lockSwipes(true);
   }
 
   ngOnDestroy() {
@@ -31,89 +65,95 @@ export class ShuffleComponent implements OnInit {
   }
 
   Stage = Stage;
-  numberOfOptions : number = 4; // Hard coded for now
-  memorizeTime : number = 10;
-  progress : number = 0;
-  progressPercent : number = 0;
-  score : number = 0;
-  stage : Stage = Stage.START;
+  numberOfOptions = 4;
   mask : string = 'assets/background_imgs/mask1.png';
-  timer : any;
-  interval : any;
+  memorizeTime : number = 10;
 
-  currentFace : string;
-  selectedFace : string;
-  correctFaceOrder : any[];
-  randomFaceOrder : any[];
-  timeRemaining : number = null;
-  feedbackToggle : boolean = true;
+  currentSlide : number;
+  progressPercent : number;
+  score : number;
+  timeRemaining : number;
+  interval : any;
+  timer : any;
+  slideInfo : any;
+  fadeIn : any;
 
   clickDone() {
     let correct : boolean = true;
     let score : number = 1;
-    this.selectedFace = null;
-    for (let i = 0; i < this.randomFaceOrder.length; i++) {
-      if (this.randomFaceOrder[i] != this.correctFaceOrder[i]) {
+    this.slideInfo[this.currentSlide].selectedFace = null;
+    for (let i = 0; i < this.slideInfo[this.currentSlide].shuffledOrder.length; i++) {
+      if (this.slideInfo[this.currentSlide].shuffledOrder[i] != this.slideInfo[this.currentSlide].correctOrder[i]) {
         correct = false;
         score -= 1/this.numberOfOptions;
       }
     }
     this.score += score;
     if (correct) {
-      this.stage = Stage.CORRECT;
+      this.slideInfo[this.currentSlide].stage = Stage.CORRECT;
     } else {
-      this.stage = Stage.INCORRECT;
-      this.feedbackToggle = true;
+      this.slideInfo[this.currentSlide].stage = Stage.INCORRECT;
     }
-    this.progressPercent = (this.progress + 1)/this.facePaths.length;
+    this.progressPercent = (this.currentSlide + 1)/this.facePaths.length;
+
+    this.slideElement.lockSwipes(false);
+    this.slideElement.lockSwipeToPrev(true);
+    
+    let slide = this.currentSlide;
+    timer(1000).subscribe(async () => {
+      this.fadeIn = createAnimation()
+        .addElement(document.querySelectorAll('.footer'))
+        .fill('none')
+        .duration(500)
+        .fromTo('opacity', '0', '0.75');
+      if (slide == this.currentSlide) {
+        await this.fadeIn.play();
+        Array.from(document.getElementsByClassName('footer') as HTMLCollectionOf<HTMLElement>)[this.currentSlide].style.opacity = '.75';  
+      }
+    });
   }
 
-  nextFace() {
-    this.progress++;
-    this.stage = this.progress > 7 ? Stage.DONE : Stage.MEMORIZE;
-    this.selectedFace = null;
-    if (this.stage != Stage.DONE) {
-      this.currentFace = this.facePaths[this.progress];
-      this.makeRandomFaces();
-      this.startMemorizeTimer();
-    } else {
-      this.score = Math.ceil(this.score);
-    }
-  }
-
-  showFeedback() {
-    return this.stage == Stage.CORRECT || this.stage == Stage.INCORRECT;
-  }
-
-  makeRandomFaces() {
-    // Correct order
-    this.correctFaceOrder = [];
-    for (let i = 0; i < this.numberOfOptions - 1; i++) {
+  getSlideFaces(index : number) {
+    let faces = [];
+    for (let i = 0; i < this.numberOfOptions - 1; i++) { // Select five faces
       let j = Math.floor(Math.random() * this.facePaths.length);
-      while (this.correctFaceOrder.indexOf(this.facePaths[j]) > -1 || j == this.progress) {
+      while (faces.indexOf(this.facePaths[j]) > -1 || this.facePaths[j] == this.facePaths[index]) { // Account for repeats
         j = Math.floor(Math.random() * this.facePaths.length);
       }
-      this.correctFaceOrder.push(this.facePaths[j]);
+      faces.push(this.facePaths[j]);
     }
     let j = Math.floor(Math.random() * this.numberOfOptions);
-    this.correctFaceOrder.splice(j, 0, this.currentFace);
-
-    // Shuffled order
-    this.randomFaceOrder = [];
-    for (let i = 0; i < this.correctFaceOrder.length; i++) {
-      this.randomFaceOrder.push(this.correctFaceOrder[i]);
-    }
-    for (let i = this.randomFaceOrder.length - 1; i > 0; i -= 1) {
-      let j = Math.floor(Math.random() * (i + 1));
-      let temp = this.randomFaceOrder[i];
-      this.randomFaceOrder[i] = this.randomFaceOrder[j];
-      this.randomFaceOrder[j] = temp;
-    }
+    faces.splice(j, 0, this.facePaths[index]); // Add in current face
+    return faces;
   }
 
-  startMemorizeTimer() {
+  shuffleFaces(faces : any[]) {
+    let randomFaceOrder = [];
+    for (let i = 0; i < faces.length; i++) {
+      randomFaceOrder.push(faces[i]);
+    }
+    for (let i = randomFaceOrder.length - 1; i > 0; i -= 1) {
+      let j = Math.floor(Math.random() * (i + 1));
+      let temp = randomFaceOrder[i];
+      randomFaceOrder[i] = randomFaceOrder[j];
+      randomFaceOrder[j] = temp;
+    }
+    return randomFaceOrder;
+  }
+
+  async startMemorizeTimer() {
+
+    if (this.currentSlide == 0) {
+      let fadeOutOverlay = createAnimation()
+        .addElement(document.querySelectorAll('.overlay'))
+        .fill('none')
+        .duration(300)
+        .fromTo('opacity', '.9', '0');
+      await fadeOutOverlay.play();
+    }
+
     this.timeRemaining = this.memorizeTime;
-    this.stage = Stage.MEMORIZE;
+    this.slideInfo[this.currentSlide].stage = Stage.MEMORIZE;
     this.timer = timer(this.timeRemaining * 1000).subscribe(() => {
       this.startMaskTimer();
     });
@@ -139,33 +179,174 @@ export class ShuffleComponent implements OnInit {
   }
 
   startMaskTimer() {
-    this.stage = Stage.MASK;
+    this.slideInfo[this.currentSlide].stage = Stage.MASK;
     this.timer = timer(2000).subscribe(() => {
-      this.stage = Stage.SELECT;
+      this.slideInfo[this.currentSlide].stage = Stage.SELECT;
     });
   }
 
   getSrc(index : number) {
-    if (this.stage == Stage.MASK) {
+    if (this.slideInfo[this.currentSlide].stage == Stage.MASK) {
       return this.mask;
-    } else if (this.stage == Stage.SELECT || (this.stage == Stage.INCORRECT && this.feedbackToggle)) {
-      return this.randomFaceOrder[index];
+    } else if (this.slideInfo[this.currentSlide].stage == Stage.SELECT || (this.slideInfo[this.currentSlide].stage == Stage.INCORRECT && this.slideInfo[this.currentSlide].feedback)) {
+      return this.slideInfo[this.currentSlide].shuffledOrder[index];
     } else {
-      return this.correctFaceOrder[index];
+      return this.slideInfo[this.currentSlide].correctOrder[index];
     }
   }
 
-  clickCard(index : number) {
-    if (this.stage == Stage.SELECT) {
-      if (this.selectedFace == null) {
-        this.selectedFace = this.randomFaceOrder[index];
+  async clickCard(index : number) {
+    if (this.slideInfo[this.currentSlide].stage == Stage.SELECT) {
+      if (this.slideInfo[this.currentSlide].selectedFace == null) {
+        this.slideInfo[this.currentSlide].selectedFace = this.slideInfo[this.currentSlide].shuffledOrder[index];
       } else {
-        let index_selected : number = this.randomFaceOrder.indexOf(this.selectedFace);
-        [this.randomFaceOrder[index], this.randomFaceOrder[index_selected]] = [this.randomFaceOrder[index_selected], this.randomFaceOrder[index]];
-        this.selectedFace = null;
+        let index_selected : number = this.slideInfo[this.currentSlide].shuffledOrder.indexOf(this.slideInfo[this.currentSlide].selectedFace);
+        [this.slideInfo[this.currentSlide].shuffledOrder[index], this.slideInfo[this.currentSlide].shuffledOrder[index_selected]] = [this.slideInfo[this.currentSlide].shuffledOrder[index_selected], this.slideInfo[this.currentSlide].shuffledOrder[index]];
+        this.slideInfo[this.currentSlide].selectedFace = null;
       }
     } else if (this.showFeedback()) {
-      this.feedbackToggle = !this.feedbackToggle;
+      await this.animateCardChange();
+      this.slideInfo[this.currentSlide].feedback = !this.slideInfo[this.currentSlide].feedback;
+    }
+  }
+
+  async animateCardChange() {
+    let animations = [];
+    enum Directions { RIGHT, LEFT, UP, DOWN, RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP };
+    for (let i = 0; i < this.slideInfo[this.currentSlide].correctOrder.length; i++) {
+      let shuffledIndex = this.slideInfo[this.currentSlide].shuffledOrder.indexOf(this.slideInfo[this.currentSlide].correctOrder[i]);
+      let direction = null;
+      if (i != shuffledIndex) {
+        if (i == 1 && shuffledIndex == 2) {
+          direction = this.slideInfo[this.currentSlide].feedback ? Directions.RIGHT_UP : Directions.LEFT_DOWN;
+        } else if (i == 2 && shuffledIndex == 1) {
+          direction = this.slideInfo[this.currentSlide].feedback ? Directions.LEFT_DOWN : Directions.RIGHT_UP;
+        } else if (i == shuffledIndex - 1) {
+          direction = this.slideInfo[this.currentSlide].feedback ? Directions.LEFT : Directions.RIGHT;
+        } else if (i == shuffledIndex + 1) {
+          direction = this.slideInfo[this.currentSlide].feedback ? Directions.RIGHT : Directions.LEFT;
+        } else if (i == shuffledIndex - 2) {
+          direction = this.slideInfo[this.currentSlide].feedback ? Directions.UP : Directions.DOWN;
+        } else if (i == shuffledIndex + 2) {
+          direction = this.slideInfo[this.currentSlide].feedback ? Directions.DOWN : Directions.UP;
+        } else if (i == shuffledIndex - 3) {
+          direction = this.slideInfo[this.currentSlide].feedback ? Directions.LEFT_UP : Directions.RIGHT_DOWN;
+        } else if (i == shuffledIndex + 3) {
+          direction = this.slideInfo[this.currentSlide].feedback ? Directions.RIGHT_DOWN : Directions.LEFT_UP;
+        }
+      }
+      if (direction != null) {
+
+        let card = this.slideInfo[this.currentSlide].feedback ? shuffledIndex : i;
+        let className = '';
+
+        switch (card) {
+          case 0:
+            className = '#card-one'
+            break;
+          case 1:
+            className = '#card-two'
+            break;
+          case 2:
+            className = '#card-three'
+            break;
+          case 3:
+            className = '#card-four'
+            break;
+        }
+
+        let animation;
+        switch (direction) {
+          case Directions.RIGHT:
+            animation = createAnimation()
+            .addElement(document.querySelector(className))
+            .fill('none')
+            .duration(300)
+            .fromTo('transform', 'translateX(0%)', 'translateX(150%)');
+            break;
+          case Directions.LEFT:
+            animation = createAnimation()
+            .addElement(document.querySelector(className))
+            .fill('none')
+            .duration(300)
+            .fromTo('transform', 'translateX(0%)', 'translateX(-150%)');
+            break;
+          case Directions.UP:
+            animation = createAnimation()
+            .addElement(document.querySelector(className))
+            .fill('none')
+            .duration(300)
+            .fromTo('transform', 'translateY(0%)', 'translateY(-150%)');
+            break;
+          case Directions.DOWN:
+            animation = createAnimation()
+            .addElement(document.querySelector(className))
+            .fill('none')
+            .duration(300)
+            .fromTo('transform', 'translateY(0%)', 'translateY(150%)');
+            break;
+          case Directions.RIGHT_DOWN:
+            animation = createAnimation()
+            .addElement(document.querySelector(className))
+            .fill('none')
+            .duration(300)
+            .fromTo('transform', 'translate(0%, 0%)', 'translate(150%, 150%)');
+            break;
+          case Directions.LEFT_DOWN:
+            animation = createAnimation()
+            .addElement(document.querySelector(className))
+            .fill('none')
+            .duration(300)
+            .fromTo('transform', 'translate(0%, 0%)', 'translate(-150%, 150%)');
+            break;
+          case Directions.RIGHT_UP:
+            animation = createAnimation()
+            .addElement(document.querySelector(className))
+            .fill('none')
+            .duration(300)
+            .fromTo('transform', 'translate(0%, 0%)', 'translate(150%, -150%)');
+            break;
+          case Directions.LEFT_UP:
+            animation = createAnimation()
+            .addElement(document.querySelector(className))
+            .fill('none')
+            .duration(300)
+            .fromTo('transform', 'translate(0%, 0%)', 'translate(-150%, -150%)');
+        }
+        animations.push(animation);
+      }
+    }
+
+    for (let i = 0; i < animations.length; i++) {
+      if (i == animations.length - 1) {
+        await animations[i].play();
+      } else {
+        animations[i].play();
+      }
+    }
+  }
+
+  showFeedback() {
+    return !this.endCardDisplayed() && (this.slideInfo[this.currentSlide].stage == Stage.CORRECT || this.slideInfo[this.currentSlide].stage == Stage.INCORRECT);
+  }
+
+  endCardDisplayed() {
+    return this.currentSlide >= this.facePaths.length;
+  }
+
+  async changeSlide() {
+    if (await this.slideElement.getActiveIndex() > this.currentSlide) {
+      this.currentSlide = await this.slideElement.getActiveIndex();
+      await this.slideElement.lockSwipes(true);
+      await this.fadeIn.stop();
+      let footers = Array.from(document.getElementsByClassName('footer') as HTMLCollectionOf<HTMLElement>);
+      for (let i = 0; i < footers.length; i++) {
+        footers[i].style.opacity = '0';
+      }
+
+      if (!this.endCardDisplayed()) {
+        this.startMemorizeTimer();
+      }
     }
   }
 }
