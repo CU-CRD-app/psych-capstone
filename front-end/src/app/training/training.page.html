@@ -77,7 +77,7 @@
     <div *ngIf="stage == Stage.DONE" style="margin-top: 160px">
       <h1><b>Finished!</b></h1>
       <ion-progress-bar style="width: 80%; margin-left: 30px" value={{progress}}></ion-progress-bar>
-      <h5 style="text-align: center">Level <span class="level">{{level}}</span></h5>
+      <h5 style="text-align: center">Level <span class="level">{{userLevel}}</span></h5>
       <div class="fade-in">
         <h5 style="margin: 20px">You've moved on to the next level! Come back tomorrow for your next training.</h5>
         <ion-button color="success" style="width: 130px" routerLink="/dashboard" routerDirection="forward">Home</ion-button>
@@ -90,7 +90,7 @@
   <!--Name and Face-->
   <app-name-face *ngIf="task == Task.NAME_FACE" [setNames]="setNames" [facePaths]="trainingFacePaths" (finished)="finished($event, 0)"></app-name-face>
   <!--Who's New?-->
-  <app-whos-new *ngIf="task == Task.WHOS_NEW" [facePaths]="trainingFacePaths" [newFacePaths]="assessmentFacePaths" (finished)="finished($event, 1)"></app-whos-new>
+  <app-whos-new *ngIf="task == Task.WHOS_NEW" [facePaths]="trainingFacePaths" [newFacePaths]="whosNewFacePaths" (finished)="finished($event, 1)"></app-whos-new>
   <!--Memory Match-->
   <app-memory-match *ngIf="task == Task.MEMORY" [facePaths]="trainingFacePaths" (finished)="finished($event, 2)"></app-memory-match>
   <!--Shuffle-->

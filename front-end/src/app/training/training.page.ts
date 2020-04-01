@@ -19,6 +19,17 @@ const helpMessages = {
   sameDifferent: ["Same-Different", "Memorize the face, then decide whether the next face is the same."]
 }
 
+const namePool = {
+  1: ['James', 'John', 'Robert', 'Michael', 'Will', 'David', 'Richard', 'Joseph'],
+  2: ['Thomas', 'Charlie', 'Chris', 'Daniel', 'Matthew', 'Anthony', 'Don', 'Mark'],
+  3: ['Paul', 'Steven', 'Andrew', 'Ken', 'Joshua', 'George', 'Kevin', 'Brian'],
+  4: ['Edward', 'Ron', 'Tim', 'Jason', 'Jeff', 'Ryan', 'Jacob', 'Gary'],
+  5: ['Nick', 'Eric', 'Stephen', 'Jonathan', 'Larry', 'Justin', 'Scott', 'Brandon'],
+  6: ['Frank', 'Ben', 'Greg', 'Sam', 'Ray', 'Patrick', 'Alex', 'Jack'],
+  7: ['Dennis', 'Jerry', 'Tyler', 'Aaron', 'Jose', 'Henry', 'Doug', 'Adam'],
+  8: ['Peter', 'Nathan', 'Zach', 'Walter', 'Kyle', 'Harry', 'Carl', 'Jeremy']
+}
+
 enum Stage { START, TRAINING, ASSESSMENT, DONE }
 enum Task { LEARNING, NAME_FACE, WHOS_NEW, MEMORY, SHUFFLE, FORCED_CHOICE, SAME_DIFFERENT }
 
@@ -31,9 +42,19 @@ export class TrainingPage {
 
   constructor(public alertController: AlertController, public modalController: ModalController, private routerOutlet: IonRouterOutlet) {
 
-    this.trainingFacePaths = this.generateShuffledFaces(0); //getTrainingFaces()
-    this.assessmentFacePaths = this.generateShuffledFaces(8); //getAssessmentFaces()
-    this.setNames = this.generateRandomNames();
+    // get today's progress and user level
+    this.userLevel = 1;
+    this.stage = Stage.START;
+    this.learningDone = false;
+    this.scores = [-1, -1, -1, -1, -1, -1];
+    this.task = null;
+
+    this.setNames = namePool[this.userLevel];
+    this.trainingFacePaths = this.getTrainingFaces();
+    this.whosNewFacePaths = this.getWhosNewFaces();
+    this.assessmentFacePaths = this.getAssessmentFaces(true);
+    this.preAssessmentFacePaths = this.getAssessmentFaces(false);
+    this.postAssessmentFacePaths = this.getAssessmentFaces(false);
 
     this.routerOutlet.swipeGesture = false;
 
@@ -49,33 +70,40 @@ export class TrainingPage {
     }
     images.push(new Image());
     images[images.length - 1].src = 'assets/background_imgs/mask1.png';
+  }
 
-    // get today's progress from the database
-    // get user level here
+  ngAfterViewInit() {
+    if (this.userLevel == 1) {
+      timer(500).subscribe(() => {
+        this.getHelp();
+      });
+    }
   }
 
   Stage = Stage;
   Task = Task;
-  stage : Stage = Stage.START;
-  task : Task = null;
+  stage : Stage;
+  task : Task;
 
-  numFaces : number = 8; // hardcoded for now, happen to be 8 practice faces.
-  namePool : string[] = ["Sam", "Kenny", "Jones", "Dave", "John", "Gale", "Kent", "Tom", "Bill", "Greg", "Anthony", "Tony", "George", "Kevin", "Dick", "Richard"];
-  setNames : string[] = [];
-  trainingFacePaths : string[] = [];
-  assessmentFacePaths : string[] = [];
-  progress : number = 0;
-  level : number = 1;
-
-  learningDone : boolean = false;
-  scores : number[] = [-1, -1, -1, -1, -1, -1];
-
-  //Just icons
+  numFaces : number = 8;
+  assessmentPoolSize : number = 29; // should be thirty, we got one messed up face in the pre/post assessment pool
   assessment_icon : string = "assets/icon/assessment.svg";
   replay_icon : string = "assets/icon/replay.svg";
   face_icon : string = "assets/icon/face.svg";
 
+  setNames : string[];
+  trainingFacePaths : string[];
+  whosNewFacePaths : string[];
+  assessmentFacePaths : string[];
+  preAssessmentFacePaths : string[];
+  postAssessmentFacePaths : string[];
+  progress : number;
+  userLevel : number;
+  learningDone : boolean;
+  scores : number[];
+
   iterateStage() {
+    let currentStage = this.stage;
     this.task = null;
     if (!this.learningDone) {
       this.stage = Stage.START;
@@ -87,7 +115,7 @@ export class TrainingPage {
       this.stage = Stage.DONE;
       this.progress = 0;
       timer(1200).subscribe(async () => {
-        this.level++;
+        this.userLevel++;
 
         let inflate = createAnimation()
         .addElement(document.querySelector('.level'))
@@ -118,6 +146,12 @@ export class TrainingPage {
       )
       .subscribe(() => {
         this.progress += .1;
+      });
+    }
+
+    if (this.stage != currentStage && this.stage != Stage.DONE && this.userLevel == 1) {
+      timer(500).subscribe(() => {
+        this.getHelp();
       });
     }
   }
@@ -170,43 +204,46 @@ export class TrainingPage {
     await modal.present();
   }
 
-  //getTrainingFaces() {}
-  //getAssessmentFaces() {}
-
-  generateShuffledFaces(firstFace : number) {
-
+  getTrainingFaces() {
+    let facePaths : string[] = [];
+    for (let i = 0; i < this.numFaces; i++) {
+      facePaths.push("assets/sample-faces/training/level-" + this.userLevel + "/" + i + ".png");
+    }
+    return facePaths;
+  }
+  
+  getAssessmentFaces(daily : boolean) {
+    let facePaths : string[] = [];
     let faceNums : number[] = [];
 
-    for (let i = firstFace; i < firstFace + this.numFaces; i++) {
-      faceNums.push(i);
+    for (let i = 0; i < this.numFaces; i++) {
+      let face = Math.floor(Math.random() * this.assessmentPoolSize);
+      while (faceNums.indexOf(face) > -1) { // Account for repeats
+        face = Math.floor(Math.random() * this.assessmentPoolSize);
+      }
+      faceNums.push(face);
     }
-
-    for (let i = faceNums.length-1; i > 0; i--) { // shuffle the numbers up
-      let j = Math.floor(Math.random() * (i + 1));
-      let tmp = faceNums[i];
-      faceNums[i] = faceNums[j];
-      faceNums[j] = tmp;
+    for (let face of faceNums) {
+      if (daily) {
+        facePaths.push("assets/sample-faces/daily-assessment/level-" + this.userLevel + "/" + face + ".png");
+      } else {
+        facePaths.push("assets/sample-faces/pre-post-assessment/level-" + this.userLevel + "/" + face + ".png");
+      }
     }
-
-    let facePaths : string[] = [];
-
-    for (let num of faceNums) { // creates array of faces in random order to be passed to components
-      facePaths.push("assets/sample-faces/" + num + ".png");
-    }
-
-    return facePaths
+    return facePaths;
   }
 
-  generateRandomNames() {
-    let names : string[] = [];
-    for (let i = 0; i < this.numFaces; i++) { // randomly shuffles names from namePool into an array passed to activities
-      let name = Math.floor(Math.random() * this.namePool.length);
-      while (names.indexOf(this.namePool[name]) > -1) { // Account for repeats
-        name = Math.floor(Math.random() * this.namePool.length);
-      }
-      names.push(this.namePool[name]);
+  getWhosNewFaces() {
+    let facePaths : string[] = [];
+    let afterFaces = this.numFaces - this.userLevel + (1 - Math.round(this.userLevel/this.numFaces));
+    let beforeFaces = this.numFaces - afterFaces;
+    for (let i = 0; i < afterFaces; i++) {
+      facePaths.push("assets/sample-faces/training/level-" + (this.userLevel + 1) + "/" + i + ".png");
     }
-    return names;
+    for (let i = 0; i < beforeFaces; i++) {
+      facePaths.push("assets/sample-faces/training/level-" + (this.userLevel - 1) + "/" + i + ".png");
+    }
+    return facePaths;
   }
 
   finished(score : number[], task : number) {
@@ -237,7 +274,7 @@ export class TrainingPage {
           handler: () => {
             timer(500).subscribe(() => {
               this.task = null;
-            })
+            });
           }
         }
       ]
