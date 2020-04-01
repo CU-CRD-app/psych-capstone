@@ -1,4 +1,4 @@
-<ion-content [ngClass]="{'default': !showFeedback(), 'success': slideInfo[currentSlide].stage == Stage.CORRECT, 'failure': slideInfo[currentSlide].stage == Stage.INCORRECT}">
+<ion-content [ngClass]="{'default': !showFeedback(), 'success': showFeedback() && slideInfo[currentSlide].stage == Stage.CORRECT, 'failure': showFeedback() && slideInfo[currentSlide].stage == Stage.INCORRECT}">
 
   <ion-progress-bar style="margin-top: 0px" value={{progressPercent}}></ion-progress-bar>
 
@@ -50,13 +50,13 @@
         <ion-row>
 
           <ion-col>
-            <ion-card id="card-one" (click)="clickCard(0)" [button]="slideInfo[slideIndex].stage == Stage.SELECT" class="grid-card" [ngClass]="{'selected-card': slideInfo[slideIndex].stage != Stage.START && getSrc(0) == slideInfo[slideIndex].selectedFace, 'wrong-card': slideInfo[slideIndex].stage == Stage.INCORRECT && slideInfo[slideIndex].feedback && slideInfo[slideIndex].shuffledOrder[0] != slideInfo[slideIndex].correctOrder[0]}">
+            <ion-card id="card-0" (click)="clickCard(0)" [button]="slideInfo[slideIndex].stage == Stage.SELECT" class="grid-card" [ngClass]="{'selected-card': slideInfo[slideIndex].stage != Stage.START && getSrc(0) == slideInfo[slideIndex].selectedFace, 'wrong-card': slideInfo[slideIndex].stage == Stage.INCORRECT && slideInfo[slideIndex].feedback && slideInfo[slideIndex].shuffledOrder[0] != slideInfo[slideIndex].correctOrder[0]}">
               <img *ngIf="slideInfo[slideIndex].stage != Stage.START" [src]="getSrc(0)"/>
             </ion-card>
           </ion-col>
 
           <ion-col>
-            <ion-card id="card-two" (click)="clickCard(1)" [button]="slideInfo[slideIndex].stage == Stage.SELECT" class="grid-card" [ngClass]="{'selected-card': slideInfo[slideIndex].stage != Stage.START && getSrc(1) == slideInfo[slideIndex].selectedFace, 'wrong-card': slideInfo[slideIndex].stage == Stage.INCORRECT && slideInfo[slideIndex].feedback && slideInfo[slideIndex].shuffledOrder[1] != slideInfo[slideIndex].correctOrder[1]}">
+            <ion-card id="card-1" (click)="clickCard(1)" [button]="slideInfo[slideIndex].stage == Stage.SELECT" class="grid-card" [ngClass]="{'selected-card': slideInfo[slideIndex].stage != Stage.START && getSrc(1) == slideInfo[slideIndex].selectedFace, 'wrong-card': slideInfo[slideIndex].stage == Stage.INCORRECT && slideInfo[slideIndex].feedback && slideInfo[slideIndex].shuffledOrder[1] != slideInfo[slideIndex].correctOrder[1]}">
               <img *ngIf="slideInfo[slideIndex].stage != Stage.START" [src]="getSrc(1)"/>
             </ion-card>
           </ion-col>
@@ -65,13 +65,13 @@
         <ion-row>
 
           <ion-col>
-            <ion-card id="card-three" (click)="clickCard(2)" [button]="slideInfo[slideIndex].stage == Stage.SELECT" class="grid-card" [ngClass]="{'selected-card': slideInfo[slideIndex].stage != Stage.START && getSrc(2) == slideInfo[slideIndex].selectedFace, 'wrong-card': slideInfo[slideIndex].stage == Stage.INCORRECT && slideInfo[slideIndex].feedback && slideInfo[slideIndex].shuffledOrder[2] != slideInfo[slideIndex].correctOrder[2]}">
+            <ion-card id="card-2" (click)="clickCard(2)" [button]="slideInfo[slideIndex].stage == Stage.SELECT" class="grid-card" [ngClass]="{'selected-card': slideInfo[slideIndex].stage != Stage.START && getSrc(2) == slideInfo[slideIndex].selectedFace, 'wrong-card': slideInfo[slideIndex].stage == Stage.INCORRECT && slideInfo[slideIndex].feedback && slideInfo[slideIndex].shuffledOrder[2] != slideInfo[slideIndex].correctOrder[2]}">
               <img *ngIf="slideInfo[slideIndex].stage != Stage.START" [src]="getSrc(2)"/>
             </ion-card>
           </ion-col>
 
           <ion-col>
-            <ion-card id="card-four" (click)="clickCard(3)" [button]="slideInfo[slideIndex].stage == Stage.SELECT" class="grid-card" [ngClass]="{'selected-card': slideInfo[slideIndex].stage != Stage.START && getSrc(3) == slideInfo[slideIndex].selectedFace, 'wrong-card': slideInfo[slideIndex].stage == Stage.INCORRECT && slideInfo[slideIndex].feedback && slideInfo[slideIndex].shuffledOrder[3] != slideInfo[slideIndex].correctOrder[3]}">
+            <ion-card id="card-3" (click)="clickCard(3)" [button]="slideInfo[slideIndex].stage == Stage.SELECT" class="grid-card" [ngClass]="{'selected-card': slideInfo[slideIndex].stage != Stage.START && getSrc(3) == slideInfo[slideIndex].selectedFace, 'wrong-card': slideInfo[slideIndex].stage == Stage.INCORRECT && slideInfo[slideIndex].feedback && slideInfo[slideIndex].shuffledOrder[3] != slideInfo[slideIndex].correctOrder[3]}">
               <img *ngIf="slideInfo[slideIndex].stage != Stage.START" [src]="getSrc(3)"/>
             </ion-card>
           </ion-col>

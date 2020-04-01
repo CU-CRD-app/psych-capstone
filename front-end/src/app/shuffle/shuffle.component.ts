@@ -222,109 +222,39 @@ export class ShuffleComponent implements OnInit {
 
   async animateCardChange() {
     let animations = [];
-    enum Directions { RIGHT, LEFT, UP, DOWN, RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP };
     for (let i = 0; i < this.slideInfo[this.currentSlide].correctOrder.length; i++) {
       let shuffledIndex = this.slideInfo[this.currentSlide].shuffledOrder.indexOf(this.slideInfo[this.currentSlide].correctOrder[i]);
-      let direction = null;
+      let ampX = '0vw';
+      let ampY = '0vh';
       if (i != shuffledIndex) {
-        if (i == 1 && shuffledIndex == 2) {
-          direction = this.slideInfo[this.currentSlide].feedback ? Directions.RIGHT_UP : Directions.LEFT_DOWN;
-        } else if (i == 2 && shuffledIndex == 1) {
-          direction = this.slideInfo[this.currentSlide].feedback ? Directions.LEFT_DOWN : Directions.RIGHT_UP;
-        } else if (i == shuffledIndex - 1) {
-          direction = this.slideInfo[this.currentSlide].feedback ? Directions.LEFT : Directions.RIGHT;
-        } else if (i == shuffledIndex + 1) {
-          direction = this.slideInfo[this.currentSlide].feedback ? Directions.RIGHT : Directions.LEFT;
-        } else if (i == shuffledIndex - 2) {
-          direction = this.slideInfo[this.currentSlide].feedback ? Directions.UP : Directions.DOWN;
-        } else if (i == shuffledIndex + 2) {
-          direction = this.slideInfo[this.currentSlide].feedback ? Directions.DOWN : Directions.UP;
-        } else if (i == shuffledIndex - 3) {
-          direction = this.slideInfo[this.currentSlide].feedback ? Directions.LEFT_UP : Directions.RIGHT_DOWN;
-        } else if (i == shuffledIndex + 3) {
-          direction = this.slideInfo[this.currentSlide].feedback ? Directions.RIGHT_DOWN : Directions.LEFT_UP;
+
+        if (Math.abs(i - shuffledIndex) == 1 || Math.abs(i - shuffledIndex) == 3) { // Left-Right
+          ampX = '-50vw';
+          if ((i < shuffledIndex && !this.slideInfo[this.currentSlide].feedback) || (i > shuffledIndex && this.slideInfo[this.currentSlide].feedback)) { // Right
+            ampX = '50vw';
+          }
+          if (((i == 1 && shuffledIndex == 2) || (i == 2 && shuffledIndex == 1))) { // Reversed for 1-2 and 2-1
+            ampX = ampX == '50vw' ? '-50vw' : '50vw';
+          }
+        } 
+        
+        if (Math.abs(i - shuffledIndex) == 3 || Math.abs(i - shuffledIndex) == 2 || (Math.abs(i - shuffledIndex) == 1 && ((i == 1 && shuffledIndex == 2) || (i == 2 && shuffledIndex == 1)))) { // Up-Down
+          ampY = '-32vh';
+          if ((i < shuffledIndex && !this.slideInfo[this.currentSlide].feedback) || (i > shuffledIndex && this.slideInfo[this.currentSlide].feedback)) { // Up
+            ampY = '32vh';
+          }
         }
       }
-      if (direction != null) {
 
-        let card = this.slideInfo[this.currentSlide].feedback ? shuffledIndex : i;
-        let className = '';
+      let card = this.slideInfo[this.currentSlide].feedback ? shuffledIndex : i;
+      let cardID = '#card-' + card;
 
-        switch (card) {
-          case 0:
-            className = '#card-one'
-            break;
-          case 1:
-            className = '#card-two'
-            break;
-          case 2:
-            className = '#card-three'
-            break;
-          case 3:
-            className = '#card-four'
-            break;
-        }
-
-        let animation;
-        switch (direction) {
-          case Directions.RIGHT:
-            animation = createAnimation()
-            .addElement(document.querySelectorAll(className)[this.currentSlide])
-            .fill('none')
-            .duration(300)
-            .fromTo('transform', 'translateX(0%)', 'translateX(150%)');
-            break;
-          case Directions.LEFT:
-            animation = createAnimation()
-            .addElement(document.querySelectorAll(className)[this.currentSlide])
-            .fill('none')
-            .duration(300)
-            .fromTo('transform', 'translateX(0%)', 'translateX(-150%)');
-            break;
-          case Directions.UP:
-            animation = createAnimation()
-            .addElement(document.querySelectorAll(className)[this.currentSlide])
-            .fill('none')
-            .duration(300)
-            .fromTo('transform', 'translateY(0%)', 'translateY(-150%)');
-            break;
-          case Directions.DOWN:
-            animation = createAnimation()
-            .addElement(document.querySelectorAll(className)[this.currentSlide])
-            .fill('none')
-            .duration(300)
-            .fromTo('transform', 'translateY(0%)', 'translateY(150%)');
-            break;
-          case Directions.RIGHT_DOWN:
-            animation = createAnimation()
-            .addElement(document.querySelectorAll(className)[this.currentSlide])
-            .fill('none')
-            .duration(300)
-            .fromTo('transform', 'translate(0%, 0%)', 'translate(150%, 150%)');
-            break;
-          case Directions.LEFT_DOWN:
-            animation = createAnimation()
-            .addElement(document.querySelectorAll(className)[this.currentSlide])
-            .fill('none')
-            .duration(300)
-            .fromTo('transform', 'translate(0%, 0%)', 'translate(-150%, 150%)');
-            break;
-          case Directions.RIGHT_UP:
-            animation = createAnimation()
-            .addElement(document.querySelectorAll(className)[this.currentSlide])
-            .fill('none')
-            .duration(300)
-            .fromTo('transform', 'translate(0%, 0%)', 'translate(150%, -150%)');
-            break;
-          case Directions.LEFT_UP:
-            animation = createAnimation()
-            .addElement(document.querySelectorAll(className)[this.currentSlide])
-            .fill('none')
-            .duration(300)
-            .fromTo('transform', 'translate(0%, 0%)', 'translate(-150%, -150%)');
-        }
-        animations.push(animation);
-      }
+      let animation = createAnimation()
+        .addElement(document.querySelectorAll(cardID)[this.currentSlide])
+        .fill('none')
+        .duration(300)
+        .fromTo('transform', 'translate(0vw, 0vh)', 'translate(' + ampX + ', ' + ampY + ')');
+      animations.push(animation);
     }
 
     for (let i = 0; i < animations.length; i++) {
