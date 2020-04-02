@@ -73,11 +73,7 @@ export class TrainingPage {
   }
 
   ngAfterViewInit() {
-    if (this.userLevel == 1) {
-      timer(500).subscribe(() => {
-        this.getHelp();
-      });
-    }
+    this.renderHelp();
   }
 
   Stage = Stage;
@@ -149,10 +145,8 @@ export class TrainingPage {
       });
     }
 
-    if (this.stage != currentStage && this.stage != Stage.DONE && this.userLevel == 1) {
-      timer(500).subscribe(() => {
-        this.getHelp();
-      });
+    if (this.stage != currentStage && this.stage != Stage.DONE) {
+      this.renderHelp();
     }
   }
 
@@ -194,14 +188,23 @@ export class TrainingPage {
     }
   }
 
-  async getHelp() {
+  async getHelp(displayFirst : boolean) {
     const modal = await this.modalController.create({
       component: HelpModalComponent,
       componentProps: {
         "paramTask": this.getMessage(0),
+        "displayFirst": displayFirst
       }
     });
     await modal.present();
+  }
+
+  renderHelp() {
+    if (this.userLevel == 1) {
+      timer(500).subscribe(() => {
+        this.getHelp(true);
+      });
+    }
   }
 
   getTrainingFaces() {
@@ -225,9 +228,9 @@ export class TrainingPage {
     }
     for (let face of faceNums) {
       if (daily) {
-        facePaths.push("assets/sample-faces/daily-assessment/level-" + this.userLevel + "/" + face + ".png");
+        facePaths.push("assets/sample-faces/daily-assessment/" + face + ".jpg");
       } else {
-        facePaths.push("assets/sample-faces/pre-post-assessment/level-" + this.userLevel + "/" + face + ".png");
+        facePaths.push("assets/sample-faces/pre-post-assessment/" + face + ".jpg");
       }
     }
     return facePaths;
