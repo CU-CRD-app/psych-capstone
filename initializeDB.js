@@ -29,7 +29,7 @@ module.exports = {
         // users
         res = await pgClient.query("SELECT COUNT(table_name) FROM INFORMATION_SCHEMA.TABLES WHERE table_name='users'");
         if(res.rows[0].count == 0){
-            pgClient.query("CREATE TABLE users (userid INT, email TEXT, hashedpassword TEXT, race TEXT, nationality TEXT, gender TEXT, age INT);", (err, res) => {
+            pgClient.query("CREATE TABLE users (userid SERIAL, email TEXT, hashedpassword TEXT, race TEXT, nationality TEXT, gender TEXT, age INT);", (err, res) => {
                 if(err){
                     console.log(err);
                     console.log("CRITICAL: Database not intialized");
