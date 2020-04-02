@@ -17,13 +17,17 @@
     <div *ngIf="stage == Stage.START" style="margin-top: 150px">
       <h1><b>Welcome</b></h1>
       <h5>Are you ready to train?</h5>
+      <!--<h5>What would you like to train today?</h5>-->
       <br>
       <ion-button color="success" style="width: 130px" (click)="task = Task.LEARNING; renderHelp()">Start</ion-button>
+      <!--<ion-button color="success" style="width: 130px" (click)="BlackFaces()">Black Faces</ion-button>
+      <ion-button color="success" style="width: 130px" (click)="AsianFaces()">Asian Faces</ion-button>-->
     </div>
 
     <!--Learning tasks-->
     <div *ngIf="stage == Stage.TRAINING" style="margin-top: 20px">
       <h5>What would you like to do next?</h5>
+      <!--<p style="font-size: small">{{titleMSG}}</p>-->
 
       <ion-card (click)="scores[0] == -1 ? renderHelp() : null; task = Task.NAME_FACE" button [ngClass]="{'task-done': scores[0] >= 6, 'task-failed': scores[0] > -1 && scores[0] < 6}">
         <ion-icon slot="start" name="happy" style="font-size: 300%"></ion-icon>

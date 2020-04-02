@@ -1,9 +1,14 @@
 import { Component } from '@angular/core';
 import { timer, interval } from 'rxjs';
-import { AlertController, ModalController, IonRouterOutlet } from '@ionic/angular';
+import { AlertController, ModalController, IonRouterOutlet, Events } from '@ionic/angular';
 import { HelpModalComponent } from '../help-modal/help-modal.component';
 import { takeUntil } from 'rxjs/operators';
 import { createAnimation } from '@ionic/core';
+import { GetProgressService } from '../service/get-progress.service';
+
+enum Race { BLACK, ASIAN }
+enum Stage { START, TRAINING, ASSESSMENT, DONE }
+enum Task { LEARNING, NAME_FACE, WHOS_NEW, MEMORY, SHUFFLE, FORCED_CHOICE, SAME_DIFFERENT }
 
 const helpMessages = {
   start: ["Start", "Welcome to your daily training.\nPlease give yourself about 10 minutes to complete the tasks. Click to begin."],
@@ -19,19 +24,36 @@ const helpMessages = {
   sameDifferent: ["Same-Different", "Memorize the face, then decide whether the next face is the same."]
 }
 
-const namePool = {
-  1: ['James', 'John', 'Robert', 'Michael', 'Will', 'David', 'Richard', 'Joseph'],
-  2: ['Thomas', 'Charlie', 'Chris', 'Daniel', 'Matthew', 'Anthony', 'Don', 'Mark'],
-  3: ['Paul', 'Steven', 'Andrew', 'Ken', 'Joshua', 'George', 'Kevin', 'Brian'],
-  4: ['Edward', 'Ron', 'Tim', 'Jason', 'Jeff', 'Ryan', 'Jacob', 'Gary'],
-  5: ['Nick', 'Eric', 'Stephen', 'Jonathan', 'Larry', 'Justin', 'Scott', 'Brandon'],
-  6: ['Frank', 'Ben', 'Greg', 'Sam', 'Ray', 'Patrick', 'Alex', 'Jack'],
-  7: ['Dennis', 'Jerry', 'Tyler', 'Aaron', 'Jose', 'Henry', 'Doug', 'Adam'],
-  8: ['Peter', 'Nathan', 'Zach', 'Walter', 'Kyle', 'Harry', 'Carl', 'Jeremy']
+let raceProperties = {
+  black: {
+    userLevel: 1,
+    namePool: {
+      1: ['James', 'John', 'Robert', 'Michael', 'Will', 'David', 'Richard', 'Joseph'],
+      2: ['Thomas', 'Charlie', 'Chris', 'Daniel', 'Matthew', 'Anthony', 'Don', 'Mark'],
+      3: ['Paul', 'Steven', 'Andrew', 'Ken', 'Joshua', 'George', 'Kevin', 'Brian'],
+      4: ['Edward', 'Ron', 'Tim', 'Jason', 'Jeff', 'Ryan', 'Jacob', 'Gary'],
+      5: ['Nick', 'Eric', 'Stephen', 'Jonathan', 'Larry', 'Justin', 'Scott', 'Brandon'],
+      6: ['Frank', 'Ben', 'Greg', 'Sam', 'Ray', 'Patrick', 'Alex', 'Jack'],
+      7: ['Dennis', 'Jerry', 'Tyler', 'Aaron', 'Jose', 'Henry', 'Doug', 'Adam'],
+      8: ['Peter', 'Nathan', 'Zach', 'Walter', 'Kyle', 'Harry', 'Carl', 'Jeremy']
+    },
+    facePath: 'assets/sample-faces/black/'
+  },
+  asian: {
+    userLevel: 1,
+    namePool: {
+      1: [],
+      2: [],
+      3: [],
+      4: [],
+      5: [],
+      6: [],
+      7: [],
+      8: []
+    },
+    facePath: 'assets/sample-faces/asian/'
+  }
 }
-
-enum Stage { START, TRAINING, ASSESSMENT, DONE }
-enum Task { LEARNING, NAME_FACE, WHOS_NEW, MEMORY, SHUFFLE, FORCED_CHOICE, SAME_DIFFERENT }
 
 @Component({
   selector: 'app-training',
@@ -40,23 +62,65 @@ enum Task { LEARNING, NAME_FACE, WHOS_NEW, MEMORY, SHUFFLE, FORCED_CHOICE, SAME_
 })
 export class TrainingPage {
 
-  constructor(public alertController: AlertController, public modalController: ModalController, private routerOutlet: IonRouterOutlet) {
+  constructor(public alertController: AlertController, public modalController: ModalController, private routerOutlet: IonRouterOutlet, public getProgress: GetProgressService, public events: Events) {
 
-    // get today's progress and user level
-    this.userLevel = 1;
+    events.subscribe('getProgress', (blackLevel, asianLevel) => { // THIS IS ASYNC AND NEEDS TO WAIT, LEVELS ARE NOT BEING PULLED IN TIME, USING VALUES ABOVE
+      raceProperties.black.userLevel = blackLevel;
+      raceProperties.black.userLevel = asianLevel;
+    });
+
     this.stage = Stage.START;
     this.learningDone = false;
     this.scores = [-1, -1, -1, -1, -1, -1];
     this.task = null;
 
-    this.setNames = namePool[this.userLevel];
+    this.routerOutlet.swipeGesture = false;
+
+    this.initRaceTraining(Race.BLACK);
+
+  }
+
+  ngAfterViewInit() {
+    this.renderHelp();
+  }
+
+  Race = Race;
+  Stage = Stage;
+  Task = Task;
+  stage : Stage;
+  task : Task;
+  learningDone : boolean;
+  scores : number[];
+
+  numFaces : number = 8;
+  assessmentPoolSize : number = 29; // should be thirty, we got one messed up face in the pre/post assessment pool
+  assessment_icon : string = "assets/icon/assessment.svg";
+  replay_icon : string = "assets/icon/replay.svg";
+  face_icon : string = "assets/icon/face.svg";
+
+  setNames : string[];
+  trainingFacePaths : string[];
+  whosNewFacePaths : string[];
+  assessmentFacePaths : string[];
+  preAssessmentFacePaths : string[];
+  postAssessmentFacePaths : string[];
+  progress : number;
+  race : any;
+
+  initRaceTraining(race : Race) {
+
+    if (race == Race.BLACK) {
+      this.race = raceProperties.black;
+    } else {
+      this.race = raceProperties.asian;
+    }
+
+    this.setNames = this.race.namePool[this.race.userLevel];
     this.trainingFacePaths = this.getTrainingFaces();
     this.whosNewFacePaths = this.getWhosNewFaces();
     this.assessmentFacePaths = this.getAssessmentFaces(true);
     this.preAssessmentFacePaths = this.getAssessmentFaces(false);
     this.postAssessmentFacePaths = this.getAssessmentFaces(false);
-
-    this.routerOutlet.swipeGesture = false;
 
     // Preload images
     let images : any[] = [];
@@ -72,32 +136,6 @@ export class TrainingPage {
     images[images.length - 1].src = 'assets/background_imgs/mask1.png';
   }
 
-  ngAfterViewInit() {
-    this.renderHelp();
-  }
-
-  Stage = Stage;
-  Task = Task;
-  stage : Stage;
-  task : Task;
-
-  numFaces : number = 8;
-  assessmentPoolSize : number = 29; // should be thirty, we got one messed up face in the pre/post assessment pool
-  assessment_icon : string = "assets/icon/assessment.svg";
-  replay_icon : string = "assets/icon/replay.svg";
-  face_icon : string = "assets/icon/face.svg";
-
-  setNames : string[];
-  trainingFacePaths : string[];
-  whosNewFacePaths : string[];
-  assessmentFacePaths : string[];
-  preAssessmentFacePaths : string[];
-  postAssessmentFacePaths : string[];
-  progress : number;
-  userLevel : number;
-  learningDone : boolean;
-  scores : number[];
-
   iterateStage() {
     let currentStage = this.stage;
     this.task = null;
@@ -111,7 +149,7 @@ export class TrainingPage {
       this.stage = Stage.DONE;
       this.progress = 0;
       timer(1200).subscribe(async () => {
-        this.userLevel++;
+        this.race.userLevel++;
 
         let inflate = createAnimation()
         .addElement(document.querySelector('.level'))
@@ -200,7 +238,7 @@ export class TrainingPage {
   }
 
   renderHelp() {
-    if (this.userLevel == 1) {
+    if (this.race.userLevel == 1) {
       timer(500).subscribe(() => {
         this.getHelp(true);
       });
@@ -210,7 +248,20 @@ export class TrainingPage {
   getTrainingFaces() {
     let facePaths : string[] = [];
     for (let i = 0; i < this.numFaces; i++) {
-      facePaths.push("assets/sample-faces/training/level-" + this.userLevel + "/" + i + ".png");
+      facePaths.push(this.race.facePath + "training/level-" + this.race.userLevel + "/" + i + ".png");
+    }
+    return facePaths;
+  }
+
+  getWhosNewFaces() {
+    let facePaths : string[] = [];
+    let afterFaces = this.numFaces - this.race.userLevel + (1 - Math.round(this.race.userLevel/this.numFaces));
+    let beforeFaces = this.numFaces - afterFaces;
+    for (let i = 0; i < afterFaces; i++) {
+      facePaths.push(this.race.facePath + "training/level-" + (this.race.userLevel + 1) + "/" + i + ".png");
+    }
+    for (let i = 0; i < beforeFaces; i++) {
+      facePaths.push(this.race.facePath + "training/level-" + (this.race.userLevel - 1) + "/" + i + ".png");
     }
     return facePaths;
   }
@@ -228,23 +279,10 @@ export class TrainingPage {
     }
     for (let face of faceNums) {
       if (daily) {
-        facePaths.push("assets/sample-faces/daily-assessment/" + face + ".jpg");
+        facePaths.push(this.race.facePath + "daily-assessment/" + face + ".jpg");
       } else {
-        facePaths.push("assets/sample-faces/pre-post-assessment/" + face + ".jpg");
+        facePaths.push(this.race.facePath + "pre-post-assessment/" + face + ".jpg");
       }
-    }
-    return facePaths;
-  }
-
-  getWhosNewFaces() {
-    let facePaths : string[] = [];
-    let afterFaces = this.numFaces - this.userLevel + (1 - Math.round(this.userLevel/this.numFaces));
-    let beforeFaces = this.numFaces - afterFaces;
-    for (let i = 0; i < afterFaces; i++) {
-      facePaths.push("assets/sample-faces/training/level-" + (this.userLevel + 1) + "/" + i + ".png");
-    }
-    for (let i = 0; i < beforeFaces; i++) {
-      facePaths.push("assets/sample-faces/training/level-" + (this.userLevel - 1) + "/" + i + ".png");
     }
     return facePaths;
   }
