@@ -7,9 +7,16 @@ module.exports = {
 
         // guard condition
         if(typeof(process.env.DATABASE_URL) === 'undefined'){
-            return new Promise(function(resolve, reject){
+            try{
+                var auth = require("./auth.json");
+                process.env.DATABASE_URL = auth.DATABASE_URL;
+            }
+            catch{
+                return new Promise(function(resolve, reject){
                 reject("No database URL found");
             })
+            }
+            
         }
 
         const pgClient = new Client({
