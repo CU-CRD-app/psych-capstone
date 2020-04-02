@@ -24,37 +24,6 @@ const helpMessages = {
   sameDifferent: ["Same-Different", "Memorize the face, then decide whether the next face is the same."]
 }
 
-let raceProperties = {
-  black: {
-    userLevel: 1,
-    namePool: {
-      1: ['James', 'John', 'Robert', 'Michael', 'Will', 'David', 'Richard', 'Joseph'],
-      2: ['Thomas', 'Charlie', 'Chris', 'Daniel', 'Matthew', 'Anthony', 'Don', 'Mark'],
-      3: ['Paul', 'Steven', 'Andrew', 'Ken', 'Joshua', 'George', 'Kevin', 'Brian'],
-      4: ['Edward', 'Ron', 'Tim', 'Jason', 'Jeff', 'Ryan', 'Jacob', 'Gary'],
-      5: ['Nick', 'Eric', 'Stephen', 'Jonathan', 'Larry', 'Justin', 'Scott', 'Brandon'],
-      6: ['Frank', 'Ben', 'Greg', 'Sam', 'Ray', 'Patrick', 'Alex', 'Jack'],
-      7: ['Dennis', 'Jerry', 'Tyler', 'Aaron', 'Jose', 'Henry', 'Doug', 'Adam'],
-      8: ['Peter', 'Nathan', 'Zach', 'Walter', 'Kyle', 'Harry', 'Carl', 'Jeremy']
-    },
-    facePath: 'assets/sample-faces/black/'
-  },
-  asian: {
-    userLevel: 1,
-    namePool: {
-      1: [],
-      2: [],
-      3: [],
-      4: [],
-      5: [],
-      6: [],
-      7: [],
-      8: []
-    },
-    facePath: 'assets/sample-faces/asian/'
-  }
-}
-
 @Component({
   selector: 'app-training',
   templateUrl: 'training.page.html',
@@ -64,17 +33,50 @@ export class TrainingPage {
 
   constructor(public alertController: AlertController, public modalController: ModalController, private routerOutlet: IonRouterOutlet, public getProgress: GetProgressService, public events: Events) {
 
-    events.subscribe('getProgress', (blackLevel, asianLevel) => { // THIS IS ASYNC AND NEEDS TO WAIT, LEVELS ARE NOT BEING PULLED IN TIME, USING VALUES ABOVE
-      raceProperties.black.userLevel = blackLevel;
-      raceProperties.black.userLevel = asianLevel;
+    this.routerOutlet.swipeGesture = false;
+    
+    events.subscribe('getProgress', (blackLevel, asianLevel) => {
+
+      this.raceProperties = {
+        black: {
+          userLevel: blackLevel,
+          namePool: {
+            1: ['James', 'John', 'Robert', 'Michael', 'Will', 'David', 'Richard', 'Joseph'],
+            2: ['Thomas', 'Charlie', 'Chris', 'Daniel', 'Matthew', 'Anthony', 'Don', 'Mark'],
+            3: ['Paul', 'Steven', 'Andrew', 'Ken', 'Joshua', 'George', 'Kevin', 'Brian'],
+            4: ['Edward', 'Ron', 'Tim', 'Jason', 'Jeff', 'Ryan', 'Jacob', 'Gary'],
+            5: ['Nick', 'Eric', 'Stephen', 'Jonathan', 'Larry', 'Justin', 'Scott', 'Brandon'],
+            6: ['Frank', 'Ben', 'Greg', 'Sam', 'Ray', 'Patrick', 'Alex', 'Jack'],
+            7: ['Dennis', 'Jerry', 'Tyler', 'Aaron', 'Jose', 'Henry', 'Doug', 'Adam'],
+            8: ['Peter', 'Nathan', 'Zach', 'Walter', 'Kyle', 'Harry', 'Carl', 'Jeremy']
+          },
+          facePath: 'assets/sample-faces/black/'
+        },
+        asian: {
+          userLevel: asianLevel,
+          namePool: {
+            1: [],
+            2: [],
+            3: [],
+            4: [],
+            5: [],
+            6: [],
+            7: [],
+            8: []
+          },
+          facePath: 'assets/sample-faces/asian/'
+        }
+      }
+
+      // These will be set based on the user's progress that day
+      this.stage = Stage.START;
+      this.learningDone = false;
+      this.scores = [-1, -1, -1, -1, -1, -1];
+      this.task = null;
+
     });
 
-    this.stage = Stage.START;
-    this.learningDone = false;
-    this.scores = [-1, -1, -1, -1, -1, -1];
-    this.task = null;
-
-    this.routerOutlet.swipeGesture = false;
+    this.getProgress.giveProgress();
 
     this.initRaceTraining(Race.BLACK);
 
@@ -106,13 +108,14 @@ export class TrainingPage {
   postAssessmentFacePaths : string[];
   progress : number;
   race : any;
+  raceProperties : any;
 
   initRaceTraining(race : Race) {
 
     if (race == Race.BLACK) {
-      this.race = raceProperties.black;
+      this.race = this.raceProperties.black;
     } else {
-      this.race = raceProperties.asian;
+      this.race = this.raceProperties.asian;
     }
 
     this.setNames = this.race.namePool[this.race.userLevel];
@@ -238,6 +241,7 @@ export class TrainingPage {
   }
 
   renderHelp() {
+    console.log(this.race.userLevel)
     if (this.race.userLevel == 1) {
       timer(500).subscribe(() => {
         this.getHelp(true);
