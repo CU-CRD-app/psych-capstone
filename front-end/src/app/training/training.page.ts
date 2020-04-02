@@ -241,7 +241,6 @@ export class TrainingPage {
   }
 
   renderHelp() {
-    console.log(this.race.userLevel)
     if (this.race.userLevel == 1) {
       timer(500).subscribe(() => {
         this.getHelp(true);
