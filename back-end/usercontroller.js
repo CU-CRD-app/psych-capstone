@@ -1,29 +1,21 @@
 // JavaScript source code
-import moment from 'moment';
-
-
-
-import dbQuery from '../db/dev/dbQuery';
-
-
+import{
+  getUsers,
+  getUserById,
+  createUser,
+  updateUser,
+  deleteUser,
+}from '../db/dev/dbQuery';
 
 import {
-
   //hashPassword,
-
   //comparePassword,
-
   isValidEmail,
-
   validatePassword,
-
   isEmpty,
-
   generateUserToken,
 
 } from '../helpers/Validations';
-
-
 
 import {
 
@@ -31,18 +23,8 @@ import {
 
 } from '../helpers/status';
 
-
-
 /**
-
    * Create A User
-
-   * @param {object} req
-
-   * @param {object} res
-
-   * @returns {object} object
-
    */
 
 const createUser = async (req, res) => {
@@ -53,9 +35,6 @@ const createUser = async (req, res) => {
 
   } = req.body;
 
-
-
-  const created_on = moment(new Date());
 
   if (isEmpty(email) || isEmpty(first_name) || isEmpty(last_name) || isEmpty(password)) {
 
@@ -83,39 +62,15 @@ const createUser = async (req, res) => {
 
   const hashedPassword = hashPassword(password);
 
-  const createUserQuery = `INSERT INTO
-
-      users(email, first_name, last_name, password, created_on)
-
-      VALUES($1, $2, $3, $4, $5)
-
-      returning *`;
-
-  const values = [
-
-    email,
-
-    first_name,
-
-    last_name,
-
-    hashedPassword,
-
-    created_on,
-
-  ];
-
-
-
   try {
 
-    const { rows } = await dbQuery.query(createUser, values);
+    const { rows } = await createUser;
 
     const dbResponse = rows[0];
 
     delete dbResponse.password;
 
-    const token = generateUserToken(dbResponse.email, dbResponse.id, dbResponse.is_admin, dbResponse.first_name, dbResponse.last_name);
+    const token = generateUserToken(dbResponse.email, dbResponse.id, dbResponse.first_name, dbResponse.last_name);
 
     successMessage.data = dbResponse;
 
@@ -143,17 +98,7 @@ const createUser = async (req, res) => {
 
 
 
-/**
-
-   * Signin
-
-   * @param {object} req
-
-   * @param {object} res
-
-   * @returns {object} user object
-
-   */
+//Signin
 
 const siginUser = async (req, res) => {
 
@@ -199,7 +144,7 @@ const siginUser = async (req, res) => {
 
     }
 
-    const token = generateUserToken(dbResponse.email, dbResponse.id, dbResponse.is_admin, dbResponse.first_name, dbResponse.last_name);
+    const token = generateUserToken(dbResponse.email, dbResponse.id, dbResponse.first_name, dbResponse.last_name);
 
     delete dbResponse.password;
 
@@ -219,10 +164,63 @@ const siginUser = async (req, res) => {
 
 };
 
+const getUserinfo = async (req, res) => {
+try {
+    const { rows } = await getUsers;
+    const dbResponse = rows[0];
+    successMessage.data = dbResponse;
+    return res.status(status.created).send(successMessage);
 
+  } catch (error) {
+    errorMessage.error = 'Unable to get User information';
+    return res.status(status.error).send(errorMessage);
+	}
+};
+
+const getUserinfoById = async (req, res) => {
+try {
+    const { rows } = await getUserById;
+    const dbResponse = rows[0];
+    successMessage.data = dbResponse;
+    return res.status(status.created).send(successMessage);
+
+  } catch (error) {
+    errorMessage.error = 'Unable to get User information By id';
+    return res.status(status.error).send(errorMessage);
+	}
+};
+
+const deleteUserinfo = async (req, res) => {
+try {
+    const { rows } = await deleteUser;
+    const dbResponse = rows[0];
+    successMessage.data = dbResponse;
+    return res.status(status.created).send(successMessage);
+
+  } catch (error) {
+    errorMessage.error = 'Unable to delete User information';
+    return res.status(status.error).send(errorMessage);
+	}
+};
+
+const updateUserinfo = async (req, res) => {
+try {
+    const { rows } = await updateUser;
+    const dbResponse = rows[0];
+    successMessage.data = dbResponse;
+    return res.status(status.created).send(successMessage);
+
+  } catch (error) {
+    errorMessage.error = 'Unable to update User information';
+    return res.status(status.error).send(errorMessage);
+	}
+};
 
 export {
-
   createUser,
-
   siginUser,
+  getUserinfo,
+  getUserinfoById,
+  deleteUserinfo.
+  updateUserinfo,
+};
