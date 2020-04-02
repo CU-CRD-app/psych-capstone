@@ -83,7 +83,11 @@ export class TrainingPage {
   }
 
   ngAfterViewInit() {
-    this.renderHelp();
+    if (this.race.userLevel == 0) {
+      timer(500).subscribe(() => {
+        this.getHelp(true);
+      });
+    }
   }
 
   Race = Race;
