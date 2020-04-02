@@ -1,7 +1,7 @@
 var express = require('express');
-var { Client } = require('pg');
 var bodyParser = require('body-parser');
 var initialize = require('./initializeDB.js');
+var register = require('./registerUser.js');
 
 initialize.start()
     .then(res => console.log(res))
@@ -24,4 +24,17 @@ app.get("/", function(req, res, next) {
         return;
     }
     res.status(403).send("No login provided");
+})
+
+app.put("/register/", function(req, res, next) {
+    register.user(req.body)
+        .then(result => res.send(result))
+        .catch(err => {
+            if(typeof(err) === 'string'){
+                res.status(400).send(err);
+            }
+            else{
+                res.status(500).send("Internal server error");
+            }
+        })
 })
