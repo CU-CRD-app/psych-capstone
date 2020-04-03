@@ -1,6 +1,12 @@
 var express = require('express');
-var { Client } = require('pg');
 var bodyParser = require('body-parser');
+var initialize = require('./initializeDB.js');
+var register = require('./registerUser.js');
+var login = require('./login.js');
+
+initialize.start()
+    .then(res => console.log(res))
+    .catch(err => console.log(err))
 
 var app = express();
 
@@ -19,4 +25,35 @@ app.get("/", function(req, res, next) {
         return;
     }
     res.status(403).send("No login provided");
+})
+
+app.put("/register/", function(req, res, next) {
+    register.user(req.body)
+        .then(result => res.send(result))
+        .catch(err => {
+            if(typeof(err) === 'string'){
+                res.status(400).send(err);
+            }
+            else{
+                res.status(500).send("Internal server error");
+            }
+        })
+})
+
+app.post("/login/", function(req, res, next) {
+    login.login(req.body)
+    .then(result => res.send(result))
+        .catch(err => {
+            if(typeof(err) === 'string'){
+                if(err == "Account not found"){
+                    res.status(403).send(err);
+                }
+                else{
+                    res.status(400).send(err);
+                }
+            }
+            else{
+                res.status(500).send("Internal server error");
+            }
+        })
 })
