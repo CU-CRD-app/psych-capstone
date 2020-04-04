@@ -49,7 +49,7 @@
 
     <!--Score page-->
     <ion-slide>
-      <app-score-page [score]="score" [assessment]="true" (finished)="finished.emit([score, 2])"></app-score-page>
+      <app-score-page [score]="score" [length]="facePaths.length" [assessment]="true" (finished)="finished.emit([score, 2])"></app-score-page>
     </ion-slide>
 
   </ion-slides>

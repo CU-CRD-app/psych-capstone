@@ -107,7 +107,7 @@
 
     <!--Score page-->
     <ion-slide>
-      <app-score-page [score]="score" [assessment]="false" (finished)="finish($event)"></app-score-page>
+      <app-score-page [score]="score" [length]="facePaths.length" [assessment]="false" (finished)="finish($event)"></app-score-page>
     </ion-slide>
 
   </ion-slides>

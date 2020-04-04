@@ -7,6 +7,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class ScorePageComponent implements OnInit {
   @Input() score : number;
+  @Input() length : number;
   @Input() assessment : boolean;
   @Output() finished = new EventEmitter<number>();
 

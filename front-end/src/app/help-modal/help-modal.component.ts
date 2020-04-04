@@ -70,6 +70,12 @@ const slideValues = {
   ],
   'Finish': [
     ['assets/help-slides/finish/0.png', 'You are done for the day, come back tomorrow for your next training. You can see your training history on the history page.']
+  ],
+  'Pre-Assessment': [
+    ['assets/help-slides/finish/0.png', 'This is a placeholder for pre-assessment help']
+  ],
+  'Post-Assessment': [
+    ['assets/help-slides/finish/0.png', 'This is a placeholder for post-assessment help']
   ]
 }
 
