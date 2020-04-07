@@ -1,6 +1,9 @@
-import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input, ViewChild } from '@angular/core';
+import { IonSlides } from '@ionic/angular';
+import { timer } from 'rxjs';
+import { createAnimation } from '@ionic/core';
 
-enum Stage { SELECT, CORRECT, INCORRECT, DONE }
+enum Stage { SELECT, CORRECT, INCORRECT }
 
 @Component({
   selector: 'app-name-face',
@@ -8,14 +11,22 @@ enum Stage { SELECT, CORRECT, INCORRECT, DONE }
   styleUrls: ['./name-face.component.scss'],
 })
 export class NameFaceComponent implements OnInit {
-  @Input() setNames : string;
+  @Input() setNames : string[];
   @Input() facePaths : string[];
   @Output() finished = new EventEmitter<[number, number]>();
+  @ViewChild('slideElement', {static: false}) slideElement: IonSlides;
 
   constructor() {}
 
   ngOnInit() {
-    // Initialize shuffled name and face lists
+
+    this.score = 0;
+    this.currentSlide = 0;
+    this.progressPercent = 0;
+    this.fadeIn = createAnimation();
+
+    // Initialize shuffled name list
+    this.shuffledNames = [];
     for (let name = 0; name < this.setNames.length; name++) {
       this.shuffledNames.push(this.setNames[name]);
     }
@@ -26,76 +37,120 @@ export class NameFaceComponent implements OnInit {
       this.shuffledNames[i] = this.shuffledNames[j];
       this.shuffledNames[j] = temp;
     }
-    this.setNextFaces();
+
+    this.slideInfo = [];
+    for (let i = 0; i < this.shuffledNames.length; i++) {
+      this.slideInfo.push({
+        correctName: this.shuffledNames[i],
+        correctFace: this.facePaths[this.setNames.indexOf(this.shuffledNames[i])],
+        selectedFace: null,
+        faces: this.getSlideFaces(i),
+        stage: Stage.SELECT
+      });
+    }
+  }
+
+  ngAfterViewInit() {
+    this.slideElement.lockSwipes(true);
+  }
+
+  finish(event : any) {
+    this.finished.emit([this.score, event])
+    if (event == 0) { // Reload and retry
+      this.ngOnInit();
+      this.slideElement.lockSwipes(false);
+      this.slideElement.slideTo(0);
+      this.slideElement.lockSwipes(true);
+    }
   }
 
   Stage = Stage;
-  stage : Stage = Stage.SELECT;
-  progress : number = 0;
-  progressPercent : number = 0;
-  score : number = 0;
   numberOfOptions : number = 6;
 
-  currentFace : string;
-  currentName : string;
-  selectedFace : string = null;
+  score : number;
+  currentSlide : number;
+  progressPercent : number;
+  shuffledNames : any;
+  slideInfo : any;
+  fadeIn : any;
 
-  shuffledNames : any[] = [];
-  shuffledFaces : any[] = [];
-
-  chooseFace(face : string) {
-    if (!this.showFeedback()) {
-      this.selectedFace = face;
-      if (face == this.currentFace) {
+  selectFace(face : string) {
+    if (this.slideInfo[this.currentSlide].stage == Stage.SELECT) {
+      this.slideInfo[this.currentSlide].selectedFace = face;
+      if (face == this.slideInfo[this.currentSlide].correctFace) {
         this.score++;
-        this.stage = Stage.CORRECT;
+        this.slideInfo[this.currentSlide].stage = Stage.CORRECT;
       } else {
-        this.stage = Stage.INCORRECT;
+        this.slideInfo[this.currentSlide].stage = Stage.INCORRECT;
       }
-      this.progressPercent = (this.progress + 1)/this.facePaths.length;
+      this.progressPercent = (this.currentSlide + 1)/this.facePaths.length;
+      this.slideElement.lockSwipes(false);
+      this.slideElement.lockSwipeToPrev(true);
+      
+      let slide = this.currentSlide;
+      timer(1000).subscribe(async () => {
+        this.fadeIn = createAnimation()
+          .addElement(document.querySelectorAll('.footer'))
+          .fill('none')
+          .duration(500)
+          .fromTo('opacity', '0', '0.75');
+        if (slide == this.currentSlide) {
+          await this.fadeIn.play();
+          Array.from(document.getElementsByClassName('footer') as HTMLCollectionOf<HTMLElement>)[this.currentSlide].style.opacity = '.75';  
+        }
+      });
     }
   }
 
-  nextFace() {
-    this.selectedFace = null;
-    this.stage = Stage.SELECT;
-    this.progress++;
-    this.setNextFaces();
-  }
-
-  setNextFaces() {
-    this.currentName = this.shuffledNames[this.progress];
-    this.currentFace = this.facePaths[this.setNames.indexOf(this.currentName)];
-
-    this.shuffledFaces = [];
+  getSlideFaces(index : number) {
+    let faces = [];
     for (let i = 0; i < this.numberOfOptions - 1; i++) { // Select five faces
       let j = Math.floor(Math.random() * this.facePaths.length);
-      while (this.shuffledFaces.indexOf(this.facePaths[j]) > -1 || this.facePaths[j] == this.currentFace) { // Account for repeats
+      while (faces.indexOf(this.facePaths[j]) > -1 || this.facePaths[j] == this.facePaths[this.setNames.indexOf(this.shuffledNames[index])]) { // Account for repeats
         j = Math.floor(Math.random() * this.facePaths.length);
       }
-      this.shuffledFaces.push(this.facePaths[j]);
+      faces.push(this.facePaths[j]);
     }
     let j = Math.floor(Math.random() * this.numberOfOptions);
-    this.shuffledFaces.splice(j, 0, this.currentFace); // Add in current face
+    faces.splice(j, 0, this.facePaths[this.setNames.indexOf(this.shuffledNames[index])]); // Add in current face
+    return faces;
   }
 
-  showDisabled(i : number) {
-    return this.showFeedback() && this.shuffledFaces[i] != this.currentFace;
+  showDisabled(face : number) {
+    return this.showFeedback() && this.slideInfo[this.currentSlide].correctFace != this.slideInfo[this.currentSlide].faces[face];
   }
 
-  showSelected(i : number) {
-    return this.showFeedback() && this.shuffledFaces[i] != this.currentFace && this.shuffledFaces[i] == this.selectedFace;
+  showSelected(face : number) {
+    return this.showFeedback() &&
+      this.slideInfo[this.currentSlide].faces[face] != this.slideInfo[this.currentSlide].correctFace &&
+      this.slideInfo[this.currentSlide].faces[face] == this.slideInfo[this.currentSlide].selectedFace;
   }
 
   getName(face : number) {
     if (this.showFeedback() && (!this.showDisabled(face) || this.showSelected(face))) {
-      return this.setNames[this.facePaths.indexOf(this.shuffledFaces[face])];
+      return this.setNames[this.facePaths.indexOf(this.slideInfo[this.currentSlide].faces[face])];
     } else {
       return '';
     }
   }
 
   showFeedback() {
-    return this.stage == Stage.CORRECT || this.stage == Stage.INCORRECT;
+    return !this.endCardDisplayed() && (this.slideInfo[this.currentSlide].stage == Stage.CORRECT || this.slideInfo[this.currentSlide].stage == Stage.INCORRECT);
+  }
+
+  endCardDisplayed() {
+    return this.currentSlide >= this.setNames.length;
+  }
+
+  async changeSlide() {
+    if (await this.slideElement.getActiveIndex() > this.currentSlide) {
+      this.currentSlide = await this.slideElement.getActiveIndex();
+      await this.slideElement.lockSwipes(true);
+      await this.fadeIn.stop();
+      let footers = Array.from(document.getElementsByClassName('footer') as HTMLCollectionOf<HTMLElement>);
+      for (let i = 0; i < footers.length; i++) {
+        footers[i].style.opacity = '0';
+      }
+    }
   }
 }

@@ -7,49 +7,30 @@
     <ion-header>
       <ion-toolbar style="border-bottom-width: medium; border-bottom-style: solid; border-bottom-color: dodgerblue">
         <ion-title>Dashboard</ion-title>
-        <ion-icon slot="end" color="medium" name="exit" style="margin-right: 10px; height: 30px; cursor: pointer" (click)="logoutAlert()"></ion-icon>
+        <ion-icon slot="end" color="medium" name="exit" style="margin-right: 10px; height: 30px" (click)="logoutAlert()"></ion-icon>
         <ion-buttons slot="start">
           <ion-menu-button autoHide="false"></ion-menu-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
 
-    <h1><b>Welcome, {{username}}</b></h1>
+    <div style="margin-left: 3vw">
+      <h1><b>Level: {{level}}</b></h1>
+      <div>
+        <h6 style="color: white">Current Progress: {{progressToday * 100}}%</h6>
+        <ion-progress-bar style="width: 80%" value={{progressToday}}></ion-progress-bar>
+      </div>
 
-    <ion-grid>
+      <ion-button color="success" routerLink="/train" routerDirection="forward">
+        <ion-label slot="start">Train</ion-label>
+        <ion-icon slot="end" name="fitness"></ion-icon>
+      </ion-button>
 
-      <ion-row>
-
-        <div style="text-align: center">
-          <h6 style="color: white">Today's Progress</h6>
-          <ion-progress-bar value={{progressToday}}></ion-progress-bar>
-          <div style="text-align: center; color: white; margin-top: 10px">{{progressToday * 100}}%</div>
-        </div>
-
-        <ion-col>
-          <ion-button color="success" routerLink="/train" routerDirection="forward" style="width: 100%; height: 150px; font-size: 150%">
-            <div>Train</div>
-            <ion-icon name="fitness"></ion-icon>
-          </ion-button>
-        </ion-col>
-
-      </ion-row>
-      <ion-row>
-
-        <ion-col>
-          <h1>Level {{level}}</h1>
-        </ion-col>
-
-        <ion-col>
-          <ion-button routerLink="/history" routerDirection="forward" style="width: 100%; height: 150px; font-size: 150%">
-            <div>History</div>
-            <ion-icon name="analytics"></ion-icon>
-          </ion-button>
-        </ion-col>
-
-      </ion-row>
-
-    </ion-grid>
+      <ion-button color="primary" routerLink="/history" routerDirection="forward">
+        <ion-label slot="start">History</ion-label>
+        <ion-icon slot="end" name="analytics"></ion-icon>
+      </ion-button>
+    </div>
 
   </div>
 

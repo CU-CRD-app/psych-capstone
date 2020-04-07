@@ -1,13 +1,13 @@
-<ion-content id="content" style="--background: gray; ">
+<ion-content id="content" style="--background: gray">
 
   <ion-header>
     <ion-toolbar [ngClass]="{'blue-border' : task == null}">
-      <ion-title>{{getMessage(0)}}</ion-title>
+      <ion-title>{{getTitle()}}</ion-title>
       <ion-buttons *ngIf="task == null" slot="start">
         <ion-menu-button autoHide="false"></ion-menu-button>
       </ion-buttons>
-      <ion-icon *ngIf="task != null && (stage == Stage.TRAINING || stage == Stage.START)" slot="start" color="medium" name="arrow-back" style="margin-left: 10px; height: 30px; cursor: pointer" (click)="taskExitAlert()"></ion-icon>
-      <ion-icon slot="end" color="medium" name="help-circle" style="margin-right: 10px; height: 30px; cursor: pointer" (click)="getHelp()"></ion-icon>
+      <ion-icon *ngIf="task != null && task != Task.PRETEST && task != Task.POSTTEST" slot="start" color="medium" name="arrow-back" style="margin-left: 10px; height: 30px" (click)="taskExitAlert()"></ion-icon>
+      <ion-icon slot="end" color="medium" name="help-circle" style="margin-right: 10px; height: 30px" (click)="getHelp(false)"></ion-icon>
     </ion-toolbar>
   </ion-header>
 
@@ -15,32 +15,46 @@
 
     <!--Start screen-->
     <div *ngIf="stage == Stage.START" style="margin-top: 150px">
-      <h1><b>Welcome</b></h1>
-      <h5>Are you ready to train?</h5>
+      <div *ngIf="userLevel > 0 && userLevel < 9">
+        <h1><b>Level {{userLevel}}</b></h1>
+        <h5 style="margin: 20px">Are you ready to train?</h5>
+      </div>
+      <div *ngIf="userLevel == 0">
+        <h1><b>Pre-Assessment</b></h1>
+        <h5 style="margin: 20px">It looks like you're new, are you ready to begin your pretest?</h5>
+      </div>
+      <div *ngIf="userLevel == 9">
+        <h1><b>Post-Assessment</b></h1>
+        <h5 style="margin: 20px">It looks like you've completed all eight levels, are you ready to begin your post-test?</h5>
+      </div>
+      <!--<h5>What would you like to train today?</h5>-->
       <br>
-      <ion-button color="success" style="width: 130px" (click)="task = Task.LEARNING">Start</ion-button>
+      <ion-button color="success" style="width: 130px" (click)="clickStart()">Start</ion-button>
+      <!--<ion-button color="success" style="width: 130px" (click)="BlackFaces()">Black Faces</ion-button>
+      <ion-button color="success" style="width: 130px" (click)="AsianFaces()">Asian Faces</ion-button>-->
     </div>
 
     <!--Learning tasks-->
     <div *ngIf="stage == Stage.TRAINING" style="margin-top: 20px">
       <h5>What would you like to do next?</h5>
+      <!--<p style="font-size: small">{{titleMSG}}</p>-->
 
-      <ion-card (click)="task = Task.NAME_FACE" button [ngClass]="{'task-done': scores[0] >= 6, 'task-failed': scores[0] > -1 && scores[0] < 6}">
+      <ion-card (click)="scores[0] == -1 ? renderLevelOneHelp() : null; task = Task.NAME_FACE" button [ngClass]="{'task-done': scores[0] >= 6, 'task-failed': scores[0] > -1 && scores[0] < 6}">
         <ion-icon slot="start" name="happy" style="font-size: 300%"></ion-icon>
         <div>Name and Face<span *ngIf="scores[0] > -1">: {{scores[0]}}/8</span></div>
       </ion-card>
 
-      <ion-card (click)="task = Task.WHOS_NEW" button [ngClass]="{'task-done': scores[1] >= 6, 'task-failed': scores[1] > -1 && scores[1] < 6}">
+      <ion-card (click)="scores[1] == -1 ? renderLevelOneHelp() : null; task = Task.WHOS_NEW" button [ngClass]="{'task-done': scores[1] >= 6, 'task-failed': scores[1] > -1 && scores[1] < 6}">
         <ion-icon slot="start" name="person-add" style="font-size: 300%"></ion-icon>
         <div>Who's New<span *ngIf="scores[1] > -1">: {{scores[1]}}/8</span></div>
       </ion-card>
 
-      <ion-card (click)="task = Task.MEMORY" button [ngClass]="{'task-done': scores[2] >= 6, 'task-failed': scores[2] > -1 && scores[2] < 6}">
+      <ion-card (click)="scores[2] == -1 ? renderLevelOneHelp() : null; task = Task.MEMORY" button [ngClass]="{'task-done': scores[2] >= 6, 'task-failed': scores[2] > -1 && scores[2] < 6}">
         <ion-icon slot="start" name="grid" style="font-size: 300%"></ion-icon>
         <div>Memory Match<span *ngIf="scores[2] > -1">: {{scores[2]}}/8</span></div>
       </ion-card>
 
-      <ion-card (click)="task = Task.SHUFFLE" button [ngClass]="{'task-done': scores[3] >= 6, 'task-failed': scores[3] > -1 && scores[3] < 6}">
+      <ion-card (click)="scores[3] == -1 ? renderLevelOneHelp() : null; task = Task.SHUFFLE" button [ngClass]="{'task-done': scores[3] >= 6, 'task-failed': scores[3] > -1 && scores[3] < 6}">
         <ion-icon slot="start" name="swap" style="font-size: 300%"></ion-icon>
         <div>Shuffle<span *ngIf="scores[3] > -1">: {{scores[3]}}/8</span></div>
       </ion-card>
@@ -61,12 +75,12 @@
     <div *ngIf="stage == Stage.ASSESSMENT" style="margin-top: 20px">
       <h5>What would you like to do next?</h5>
 
-      <ion-card (click)="scores[4] == -1 ? task = Task.FORCED_CHOICE : task = null" button [ngClass]="{'task-done': scores[4] != -1}">
+      <ion-card (click)="scores[4] == -1 ? task = Task.FORCED_CHOICE : null" button [ngClass]="{'task-done': scores[4] != -1}">
         <ion-icon slot="start" name="checkmark-circle" style="font-size: 300%"></ion-icon>
         <div>Forced Choice<span *ngIf="scores[4] > -1">: {{scores[4]}}/8</span></div>
       </ion-card>
 
-      <ion-card (click)="scores[5] == -1 ? task = Task.SAME_DIFFERENT : task = null" button [ngClass]="{'task-done': scores[5] != -1}">
+      <ion-card (click)="scores[5] == -1 ? task = Task.SAME_DIFFERENT : null" button [ngClass]="{'task-done': scores[5] != -1}">
         <ion-icon slot="start" name="contacts" style="font-size: 300%"></ion-icon>
         <div>Same Different<span *ngIf="scores[5] > -1">: {{scores[5]}}/8</span></div>
       </ion-card>
@@ -75,12 +89,26 @@
 
     <!--All tasks finished-->
     <div *ngIf="stage == Stage.DONE" style="margin-top: 160px">
-      <h1><b>Finished!</b></h1>
-      <ion-progress-bar style="width: 80%; margin-left: 30px" value={{progress}}></ion-progress-bar>
-      <h5 style="text-align: center">Level <span class="level">{{level}}</span></h5>
-      <div class="fade-in">
-        <h5 style="margin: 20px">You've moved on to the next level! Come back tomorrow for your next training.</h5>
-        <ion-button color="success" style="width: 130px" routerLink="/dashboard" routerDirection="forward">Home</ion-button>
+      <div *ngIf="userLevel <= 9">
+        <h1><b>Finished!</b></h1>
+        <ion-progress-bar style="width: 80%; margin-left: 30px" value={{progress}}></ion-progress-bar>
+        <h5 style="text-align: center">Level <span class="level">{{userLevel}}</span></h5>
+        <div *ngIf="userLevel == 1" class="fade-in">
+          <h5 style="margin: 20px">You've entered level 1! Click to begin your training.</h5>
+          <ion-button color="success" style="width: 130px" (click)="initCurrentLevel(currentRace)">Train</ion-button>
+        </div>
+        <div *ngIf="userLevel > 0 && userLevel < 9" class="fade-in">
+          <h5 style="margin: 20px">You've moved on to the next level! Come back tomorrow for your next training.</h5>
+          <ion-button color="success" style="width: 130px" routerLink="/dashboard" routerDirection="forward">Home</ion-button>
+        </div>
+        <div *ngIf="userLevel == 9" class="fade-in">
+          <h5 style="margin: 20px">You've completed all eight levels! Now it's time for your post-assessment.</h5>
+          <ion-button color="success" style="width: 130px" (click)="initCurrentLevel(currentRace)">Post-Assessment</ion-button>
+        </div>
+      </div>
+      <div *ngIf="userLevel > 9">
+        <h1><b>You're all done.</b></h1>
+        <h5 style="margin: 20px">Since you've completed all eight levels and the post assessment, you don't have anything else! Thank you for your participation in this research.</h5>
       </div>
     </div>
   </div>
@@ -90,7 +118,7 @@
   <!--Name and Face-->
   <app-name-face *ngIf="task == Task.NAME_FACE" [setNames]="setNames" [facePaths]="trainingFacePaths" (finished)="finished($event, 0)"></app-name-face>
   <!--Who's New?-->
-  <app-whos-new *ngIf="task == Task.WHOS_NEW" [facePaths]="trainingFacePaths" [newFacePaths]="assessmentFacePaths" (finished)="finished($event, 1)"></app-whos-new>
+  <app-whos-new *ngIf="task == Task.WHOS_NEW" [facePaths]="trainingFacePaths" [newFacePaths]="whosNewFacePaths" (finished)="finished($event, 1)"></app-whos-new>
   <!--Memory Match-->
   <app-memory-match *ngIf="task == Task.MEMORY" [facePaths]="trainingFacePaths" (finished)="finished($event, 2)"></app-memory-match>
   <!--Shuffle-->
@@ -99,9 +127,11 @@
   <app-forced-choice *ngIf="task == Task.FORCED_CHOICE" [facePaths]="assessmentFacePaths" (finished)="finished($event, 4)"></app-forced-choice>
   <!--Same-Different-->
   <app-same-different *ngIf="task == Task.SAME_DIFFERENT" [facePaths]="assessmentFacePaths" (finished)="finished($event, 5)"></app-same-different>
+  <!--Pre-Assessment-->
+  <app-pre-post-assessment *ngIf="task == Task.PRETEST || task == Task.POSTTEST" [facePaths]="assessmentFacePaths" [preTest]="task == Task.PRETEST" (finished)="loadFinishPage()"></app-pre-post-assessment>
 
   <!--For development only-->
-  <!--<br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br>
   <div style="text-align:center">
     <br><br><br><br><br><br><br><br><br><br><br><br>
     <h3 style=color:red>For Development Only</h3>
@@ -112,6 +142,9 @@
     <ion-button (click)="task = Task.SHUFFLE">Shuffle: {{scores[3]}}</ion-button>
     <ion-button (click)="task = Task.FORCED_CHOICE">Forced Choice: {{scores[4]}}</ion-button>
     <ion-button (click)="task = Task.SAME_DIFFERENT">Same Different: {{scores[5]}}</ion-button>
-  </div>-->
+    <ion-button (click)="getProgress.updateProgress(0); initCurrentLevel(currentRace)">Pre Assessment</ion-button>
+    <ion-button (click)="getProgress.updateProgress(1); initCurrentLevel(currentRace)">Training</ion-button>
+    <ion-button (click)="getProgress.updateProgress(9); initCurrentLevel(currentRace)">Post Assessment</ion-button>
+  </div>
 
 </ion-content>

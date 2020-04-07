@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ModalController, NavParams, IonSlides } from '@ionic/angular';
 
 const slideValues = {
@@ -70,6 +70,12 @@ const slideValues = {
   ],
   'Finish': [
     ['assets/help-slides/finish/0.png', 'You are done for the day, come back tomorrow for your next training. You can see your training history on the history page.']
+  ],
+  'Pre-Assessment': [
+    ['assets/help-slides/finish/0.png', 'This is a placeholder for pre-assessment help']
+  ],
+  'Post-Assessment': [
+    ['assets/help-slides/finish/0.png', 'This is a placeholder for post-assessment help']
   ]
 }
 
@@ -80,25 +86,37 @@ const slideValues = {
 })
 
 export class HelpModalComponent implements OnInit {
+  @Input() firstDisplayed : boolean;
   @ViewChild('slideElement', {static: false}) slideElement: IonSlides;
 
   constructor(private modalController: ModalController, private navParams: NavParams) { }
 
   ngOnInit() {
+
     this.task = this.navParams.data.paramTask;
+    this.displayFirst = this.navParams.data.displayFirst;
     this.slides = slideValues[this.task];
+    this.currentSlide = 0;
+    this.showOverview = false;
 
     let images : any[] = [];
     for (let i = 0; i < this.slides.length; i++) {
       images.push(new Image());
       images[images.length - 1].src = this.slides[i][0];
     }
+
+    this.hideQuit = false;
+    if (this.displayFirst) {
+      this.hideQuit = true;
+    }
   }
 
   task : string;
   slides : string[][];
-  currentSlide : number = 0;
-  showOverview : boolean = false;
+  currentSlide : number;
+  showOverview : boolean;
+  displayFirst : boolean;
+  hideQuit : boolean;
 
   async closeModal() {
     await this.modalController.dismiss();
@@ -106,6 +124,9 @@ export class HelpModalComponent implements OnInit {
 
   async changeSlide() {
     this.currentSlide = await this.slideElement.getActiveIndex();
+    if (this.currentSlide == this.slides.length - 1) {
+      this.hideQuit = false;
+    }
   }
 
   toggleOverview() {

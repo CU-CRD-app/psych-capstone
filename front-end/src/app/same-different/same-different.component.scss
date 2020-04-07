@@ -1,11 +1,18 @@
-ion-card {
+h3 {
+    text-align: center;
+    color: white;
+}
+
+.swipe-card {
     background-color:gainsboro;
     margin-bottom: 20px;
     margin-top: 15px;
     height: 310px;
+    z-index: 0;
 }
 
-h3 {
-    text-align: center;
-    color: white;
+.swipe-footer {
+	margin-bottom: 0px;
+	opacity: 0;
+    background: transparent;
 }
