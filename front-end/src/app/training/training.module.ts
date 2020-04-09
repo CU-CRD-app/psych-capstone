@@ -14,6 +14,7 @@ import { SameDifferentComponent } from '../same-different/same-different.compone
 import { ScorePageComponent } from '../score-page/score-page.component';
 import { HelpModalComponent } from '../help-modal/help-modal.component';
 import { PrePostAssessmentComponent } from '../pre-post-assessment/pre-post-assessment.component';
+import { ScorePageComponent } from '../score-page/score-page.component';
 import * as Hammer from 'hammerjs';
 import { HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 
@@ -42,7 +43,8 @@ export class MyHammerConfig extends HammerGestureConfig {
     SameDifferentComponent,
     ScorePageComponent,
     HelpModalComponent,
-    PrePostAssessmentComponent
+    PrePostAssessmentComponent,
+    ScorePageComponent
   ],
   providers: [
     {
