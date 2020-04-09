@@ -5,7 +5,6 @@
 		<ion-row *ngIf="popup == Popup.LOGIN" id="blank-row-login"></ion-row>
 		<ion-row *ngIf="popup == Popup.REGISTER" id="blank-row-register"></ion-row>
 		<ion-row *ngIf="popup == Popup.INVALID" id="blank-row-invalid"></ion-row>
-
 		<ion-row *ngIf="popup == Popup.HOME" id="row-with-default-card">
 			<ion-col offset=3 size=6>
 				<ion-card id="default_card">
@@ -38,7 +37,7 @@
 				</ion-card>
 			</ion-col>
 		</ion-row>
-
+		<ion-button (click)=Bypass()>Bypass login</ion-button>	
 		<ion-row *ngIf="popup == Popup.WHY" id="row-with-why-card">
 			<ion-col offset=2 size=8>
 				<ion-card id="why_card">

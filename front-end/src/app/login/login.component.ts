@@ -60,6 +60,10 @@ export class LoginComponent implements OnInit {
     this.popup = Popup.LOGIN;
   }
 
+  Bypass() {
+    this.finished.emit();
+  }
+
   SubmitLogin() {
     if (this.loginForm.invalid) {
       this.popup = Popup.INVALID;
