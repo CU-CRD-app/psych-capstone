@@ -54,8 +54,14 @@
 		<ion-row *ngIf="popup == Popup.INVALID" id="row-with-invalid-card">
 			<ion-col offset=2 size=8>
 				<ion-card id="invalid_card">
-					<p class="invalid_msg">Heyo, as of right now, you simply must put an "email" in for the username slot (foo@foo, for example). Password must not be empty. Thanks, sorry for the extra step.</p>
-					<p class="invalid_msg">Also, use Login instead of Register for now please.</p> 
+					<p *ngIf="badmsg == BadMsg.DEFAULT" class="invalid_msg">You're seeing this message because something went wrong. Please go back and try again. Username must be a valid email.</p>
+					<p *ngIf="badmsg == BadMsg.NO_ACCOUNT" class="invalid_msg">No such matching email and password combination exists in the database. Please make sure there were no typos and that you have already registered an account with us. Thank you!</p>
+					<p *ngIf="badmsg == BadMsg.LOGINFORM" class="invalid_msg">Please ensure the username is a valid email, and that you have provided something for both fields. Thank you.</p>
+					<p *ngIf="badmsg == BadMsg.EMPTYSELECTIONS" class="invalid_msg">Please ensure you have provided a value for each field in the register form. Thank you!</p>
+					<p *ngIf="badmsg == BadMsg.PASSMISMATCH" class="invalid_msg">Please ensure you typed your password the same both times. Thank you!</p>
+					<p *ngIf="badmsg == BadMsg.BADREGISTER" class="invalid_msg">The register form was invalid in some way. Please ensure username is a valid email, password(s) match and are at least 5 characters long, and that all fields have a value. Thank you!</p>
+					<p *ngIf="badmsg == BadMsg.REG_HTTP_ERROR" class="invalid_msg">Something went wrong registering your account. Please try again later. Thank you!</p>
+					<p *ngIf="badmsg == BadMsg.REGISTERED" class="invalid_msg">You have successfully registered an account with us! Please go ahead and try logging in now. Thank you!</p>
 					<ion-button (click)=TryAgain() expand="block" class="back_but">
 						<ion-icon name="arrow-back"></ion-icon>
 						<p>Back&nbsp;</p>
@@ -92,17 +98,51 @@
 			<ion-col offset=1 size=10>
 				<ion-card id="register_card">
 					<form [formGroup]="registerForm">
+						<!--USERNAME-->
 						<ion-item>
 							<ion-label position="stacked">Username:</ion-label>
 							<ion-input formControlName="username" placeholder="Username"></ion-input>
 						</ion-item>
+						<!--PASSWORD-->
 						<ion-item>
 							<ion-label position="stacked">Password:</ion-label>
 							<ion-input formControlName="password" placeholder="sTup1dPa55w0rd!"></ion-input>
 						</ion-item>
+						<!--CONFIRM PASSWORD-->
 						<ion-item>
 							<ion-label position="stacked">Confirm Pswd:</ion-label>
 							<ion-input formControlName="password_check" placeholder="sTup1dPa55w0rd!"></ion-input>
+						</ion-item>
+						<!--RACE-->
+						<ion-item>
+							<ion-label position="stacked">Race:</ion-label>
+							<ion-select formControlName="race">
+								<ion-select-option value="A1 Sauce">A1 Sauce</ion-select-option>
+								<ion-select-option value="Mustard">Mustard</ion-select-option>
+								<ion-select-option value="Ketchup">Ketchup</ion-select-option>
+								<ion-select-option value="Catsup">Catsup</ion-select-option>
+							</ion-select>
+						</ion-item>
+						<!--NATIONALITY-->
+						<ion-item>
+							<ion-label position="stacked">Nationality:</ion-label>
+							<ion-select formControlName="nationality">
+								<ion-select-option value="American">American</ion-select-option>
+							</ion-select>
+						</ion-item>
+						<!--GENDER-->
+						<ion-item>
+							<ion-label position="stacked">Gender:</ion-label>
+							<ion-select formControlName="gender">
+								<ion-select-option value="Male">Male</ion-select-option>
+								<ion-select-option value="Female">Female</ion-select-option>
+								<ion-select-option value="Other">Other</ion-select-option>
+							</ion-select>
+						</ion-item>
+						<!--AGE-->
+						<ion-item>
+							<ion-label position="stacked">Age:</ion-label>
+							<ion-input formControlName="age" type="number" placeholder="37"></ion-input>
 						</ion-item>
 					</form>
 					<ion-button (click)=SubmitRegister() expand="block" id="register_but">

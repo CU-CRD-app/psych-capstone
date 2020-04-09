@@ -13,6 +13,11 @@ import { ForcedChoiceComponent } from '../forced-choice/forced-choice.component'
 import { SameDifferentComponent } from '../same-different/same-different.component';
 import { ScorePageComponent } from '../score-page/score-page.component';
 import { HelpModalComponent } from '../help-modal/help-modal.component';
+<<<<<<< HEAD
+=======
+import { PrePostAssessmentComponent } from '../pre-post-assessment/pre-post-assessment.component';
+import { ScorePageComponent } from '../score-page/score-page.component';
+>>>>>>> Login and register are working, much improved error messages associated with login
 import * as Hammer from 'hammerjs';
 import { HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 
