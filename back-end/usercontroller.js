@@ -15,7 +15,7 @@ import {
   isEmpty,
   generateUserToken,
 
-} from '../helpers/Validations';
+} from '../helpers/Validation';
 
 import {
 
@@ -27,7 +27,7 @@ import {
    * Create A User
    */
 
-const createUser = async (req, res) => {
+const createUserinfo = async (req, res) => {
 
   const {
 
@@ -217,10 +217,10 @@ try {
 };
 
 export {
-  createUser,
+  createUserinfo,
   siginUser,
   getUserinfo,
   getUserinfoById,
-  deleteUserinfo.
+  deleteUserinfo,
   updateUserinfo,
-};
+};	
