@@ -1,41 +1,4 @@
-.success {
-    --background: #01DF74;
-}
-
-.failure {
-    --background: #FE2E2E;
-}
-
-.default {
-    --background: gray;
-}
-
-.selected-card {
-    background-color: gainsboro !important;
-}
-
-.disabled-card {
-    background-color: transparent;
-    opacity: 0.5;
-}
-
 ion-card {
     text-align: center;
     background-color: gainsboro;
-}
-
-img {
-    height: 95px;
-    width: 70px;
-    margin: 15px auto;
-}
-
-h3 {
-    text-align: center;
-    color: white;
-}
-
-h5 {
-    text-align: center;
-    color: white;
 }

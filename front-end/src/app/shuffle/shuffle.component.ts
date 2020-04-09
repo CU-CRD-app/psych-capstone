@@ -26,7 +26,7 @@ export class ShuffleComponent implements OnInit {
     this.fadeIn = createAnimation();
 
     this.slideInfo = [];
-    for (let i = 0; i < this.facePaths.length; i++) {
+    for (let i = 0; i < this.numberOfSlides; i++) {
       let correctFaces = this.getSlideFaces(i);
       this.slideInfo.push({
         correctOrder: correctFaces,
@@ -76,6 +76,7 @@ export class ShuffleComponent implements OnInit {
 
   Stage = Stage;
   numberOfOptions = 4;
+  numberOfSlides = 4;
   mask : string = 'assets/background_imgs/mask1.png';
   memorizeTime : number = 10;
 
@@ -90,12 +91,12 @@ export class ShuffleComponent implements OnInit {
 
   clickDone() {
     let correct : boolean = true;
-    let score : number = 1;
+    let score : number = this.numberOfOptions;
     this.slideInfo[this.currentSlide].selectedFace = null;
     for (let i = 0; i < this.slideInfo[this.currentSlide].shuffledOrder.length; i++) {
       if (this.slideInfo[this.currentSlide].shuffledOrder[i] != this.slideInfo[this.currentSlide].correctOrder[i]) {
         correct = false;
-        score -= 1/this.numberOfOptions;
+        score -= 1;
       }
     }
     this.score += score;
@@ -104,7 +105,7 @@ export class ShuffleComponent implements OnInit {
     } else {
       this.slideInfo[this.currentSlide].stage = Stage.INCORRECT;
     }
-    this.progressPercent = (this.currentSlide + 1)/this.facePaths.length;
+    this.progressPercent = (this.currentSlide + 1)/this.numberOfSlides;
 
     this.slideElement.lockSwipes(false);
     this.slideElement.lockSwipeToPrev(true);
@@ -224,24 +225,24 @@ export class ShuffleComponent implements OnInit {
     let animations = [];
     for (let i = 0; i < this.slideInfo[this.currentSlide].correctOrder.length; i++) {
       let shuffledIndex = this.slideInfo[this.currentSlide].shuffledOrder.indexOf(this.slideInfo[this.currentSlide].correctOrder[i]);
-      let ampX = '0vw';
-      let ampY = '0vh';
+      let ampX = '0px';
+      let ampY = '0px';
       if (i != shuffledIndex) {
 
         if (Math.abs(i - shuffledIndex) == 1 || Math.abs(i - shuffledIndex) == 3) { // Left-Right
-          ampX = '-50vw';
+          ampX = '-125px';
           if ((i < shuffledIndex && !this.slideInfo[this.currentSlide].feedback) || (i > shuffledIndex && this.slideInfo[this.currentSlide].feedback)) { // Right
-            ampX = '50vw';
+            ampX = '125px';
           }
           if (((i == 1 && shuffledIndex == 2) || (i == 2 && shuffledIndex == 1))) { // Reversed for 1-2 and 2-1
-            ampX = ampX == '50vw' ? '-50vw' : '50vw';
+            ampX = ampX == '125px' ? '-125px' : '125px';
           }
         } 
         
         if (Math.abs(i - shuffledIndex) == 3 || Math.abs(i - shuffledIndex) == 2 || (Math.abs(i - shuffledIndex) == 1 && ((i == 1 && shuffledIndex == 2) || (i == 2 && shuffledIndex == 1)))) { // Up-Down
-          ampY = '-32vh';
+          ampY = '-150px';
           if ((i < shuffledIndex && !this.slideInfo[this.currentSlide].feedback) || (i > shuffledIndex && this.slideInfo[this.currentSlide].feedback)) { // Up
-            ampY = '32vh';
+            ampY = '150px';
           }
         }
       }
@@ -271,7 +272,7 @@ export class ShuffleComponent implements OnInit {
   }
 
   endCardDisplayed() {
-    return this.currentSlide >= this.facePaths.length;
+    return this.currentSlide >= this.numberOfSlides;
   }
 
   async changeSlide() {

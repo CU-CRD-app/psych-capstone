@@ -15,9 +15,9 @@
     </ion-header>
 
     <div style="margin-left: 3vw">
-      <h1><b>Level: {{level}}</b></h1>
+      <div class="header" style="margin-top: 10px"><b>Level: {{level}}</b></div>
       <div>
-        <h6 style="color: white">Current Progress: {{progressToday * 100}}%</h6>
+        <div class="subheader" style="margin-top: 2%; margin-bottom: 2%">Current Progress: {{progressToday * 100}}%</div>
         <ion-progress-bar style="width: 80%" value={{progressToday}}></ion-progress-bar>
       </div>
 

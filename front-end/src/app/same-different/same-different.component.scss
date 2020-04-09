@@ -1,18 +1,11 @@
-h3 {
-    text-align: center;
-    color: white;
-}
-
 .swipe-card {
-    background-color:gainsboro;
-    margin-bottom: 20px;
-    margin-top: 15px;
+    background-color: gainsboro;
     height: 310px;
-    z-index: 0;
+    width: 270px;
 }
 
 .swipe-footer {
-	margin-bottom: 0px;
 	opacity: 0;
     background: transparent;
+    width: 100%;
 }

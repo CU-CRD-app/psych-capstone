@@ -5,7 +5,7 @@
 
 ion-card {
 	width: 90%;
-	height: 90%;
+	height: auto;
 	text-align: center;
 	border-radius: 2%;
 	box-shadow: 6px 4px 5px rgba(0, 0, 0, 0.7);
@@ -28,24 +28,24 @@ ion-icon {
 }
 
 .imgContainer {
-	margin-top: 10px;
-	height: 72%;
-	width: 100%;
+	height: 230px;
+	width: auto;
 	text-align: center !important;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 }
 
 #faceImg {
-	height: 100%;
-	width: auto;
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
+	margin: 0 auto;
+	height: 210px;
+	width: 160px;
+	display: inline-block;
 }
 
 .nameContainer {
-	height: 20%;
+	height: 70px;
 	width: 100%;
-	margin-top: 10px;
 	margin-bottom: 10px;
 	background-image: url("../../assets/background_imgs/nametag.png");
 	background-position: center;
@@ -65,14 +65,4 @@ ion-icon {
 			bottom: 15%;
 		}
 	}
-}
-
-@media only screen and (min-width: 768px) {
-	/* for large screens like iPad and laptop */
-
-	#faceImg {
-		height: auto;
-		width: 50%;
-	}
-
 }

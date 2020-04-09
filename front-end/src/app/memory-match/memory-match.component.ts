@@ -21,7 +21,7 @@ export class MemoryMatchComponent implements OnInit {
   ngOnInit() {
 
     this.stage = Stage.START;
-    this.score = 0;
+    this.score = this.facePaths.length * this.pointsPerFace;
     this.promise = 0;
     this.progressPercent = 0;
     this.selectedFace = null;
@@ -81,6 +81,7 @@ export class MemoryMatchComponent implements OnInit {
   Stage = Stage;
   mask : string = 'assets/background_imgs/mask1.png';
   memorizeTime : number = 10;
+  pointsPerFace : number = 4;
 
   stage : Stage;
   score : number;
@@ -113,7 +114,7 @@ export class MemoryMatchComponent implements OnInit {
           this.stage = Stage.CORRECT;
 
           if (this.correctFaces.length == this.facePaths.length) { // Done
-            this.score = Math.ceil(this.score) + this.facePaths.length;
+            this.score = Math.ceil(this.score);
             this.slideElement.lockSwipes(false);
             this.revealFooter();
           }
@@ -122,7 +123,7 @@ export class MemoryMatchComponent implements OnInit {
         } else { // Incorrect
           this.incorrectFaces.push(this.selectedFace);
           this.incorrectFaces.push(face);
-          this.score -= 0.25;
+          this.score = this.score >= 1 ? this.score - 1 : 0;
           this.stage = Stage.INCORRECT;
           await this.waitForFeedback();
         }

@@ -130,7 +130,7 @@ export class NameFaceComponent implements OnInit {
     if (this.showFeedback() && (!this.showDisabled(face) || this.showSelected(face))) {
       return this.setNames[this.facePaths.indexOf(this.slideInfo[this.currentSlide].faces[face])];
     } else {
-      return '';
+      return '  ';
     }
   }
 
