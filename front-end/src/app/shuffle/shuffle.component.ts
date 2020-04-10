@@ -24,6 +24,7 @@ export class ShuffleComponent implements OnInit {
     this.progressPercent = 0;
     this.score = 0;
     this.fadeIn = createAnimation();
+    this.changeScore = createAnimation();
 
     this.slideInfo = [];
     for (let i = 0; i < this.numberOfSlides; i++) {
@@ -79,28 +80,29 @@ export class ShuffleComponent implements OnInit {
   numberOfSlides = 4;
   mask : string = 'assets/background_imgs/mask1.png';
   memorizeTime : number = 10;
+  taskLength : number = this.numberOfOptions * this.numberOfSlides; // 16
 
   currentSlide : number;
   progressPercent : number;
   score : number;
+  changeScoreValue : number;
   timeRemaining : number;
   interval : any;
   timer : any;
   slideInfo : any;
   fadeIn : any;
+  changeScore : any;
 
   clickDone() {
-    let correct : boolean = true;
-    let score : number = this.numberOfOptions;
+    this.changeScoreValue = this.numberOfOptions;
     this.slideInfo[this.currentSlide].selectedFace = null;
     for (let i = 0; i < this.slideInfo[this.currentSlide].shuffledOrder.length; i++) {
       if (this.slideInfo[this.currentSlide].shuffledOrder[i] != this.slideInfo[this.currentSlide].correctOrder[i]) {
-        correct = false;
-        score -= 1;
+        this.changeScoreValue -= 1;
       }
     }
-    this.score += score;
-    if (correct) {
+    this.score += this.changeScoreValue;
+    if (this.changeScoreValue == this.numberOfOptions) {
       this.slideInfo[this.currentSlide].stage = Stage.CORRECT;
     } else {
       this.slideInfo[this.currentSlide].stage = Stage.INCORRECT;
@@ -122,6 +124,23 @@ export class ShuffleComponent implements OnInit {
         Array.from(document.getElementsByClassName('footer') as HTMLCollectionOf<HTMLElement>)[this.currentSlide].style.opacity = '.75';  
       }
     });
+
+    this.changeScore = createAnimation()
+      .addElement(document.querySelectorAll('.score-change'))
+      .fill('none')
+      .duration(2000)
+      .keyframes([
+        { offset: 0, transform: 'translateY(0%)' },
+        { offset: 0.05, transform: 'translateY(100%)' },
+        { offset: 0.1, transform: 'translateY(200%)' },
+        { offset: 0.3, transform: 'translateY(200%)' },
+        { offset: 0.5, transform: 'translateY(200%)' },
+        { offset: 0.7, transform: 'translateY(200%)' },
+        { offset: 0.9, transform: 'translateY(200%)' },
+        { offset: 0.95, transform: 'translateY(100%)' },
+        { offset: 1, transform: 'translateY(0%)' }
+      ]);
+    this.changeScore.play();
   }
 
   getSlideFaces(index : number) {
@@ -268,10 +287,10 @@ export class ShuffleComponent implements OnInit {
   }
 
   showFeedback() {
-    return !this.endCardDisplayed() && (this.slideInfo[this.currentSlide].stage == Stage.CORRECT || this.slideInfo[this.currentSlide].stage == Stage.INCORRECT);
+    return !this.scoreCardDisplayed() && (this.slideInfo[this.currentSlide].stage == Stage.CORRECT || this.slideInfo[this.currentSlide].stage == Stage.INCORRECT);
   }
 
-  endCardDisplayed() {
+  scoreCardDisplayed() {
     return this.currentSlide >= this.numberOfSlides;
   }
 
@@ -279,13 +298,14 @@ export class ShuffleComponent implements OnInit {
     if (await this.slideElement.getActiveIndex() > this.currentSlide) {
       this.currentSlide = await this.slideElement.getActiveIndex();
       await this.slideElement.lockSwipes(true);
+      await this.changeScore.stop();
       await this.fadeIn.stop();
       let footers = Array.from(document.getElementsByClassName('footer') as HTMLCollectionOf<HTMLElement>);
       for (let i = 0; i < footers.length; i++) {
         footers[i].style.opacity = '0';
       }
 
-      if (!this.endCardDisplayed()) {
+      if (!this.scoreCardDisplayed()) {
         this.startMemorizeTimer();
       }
     }

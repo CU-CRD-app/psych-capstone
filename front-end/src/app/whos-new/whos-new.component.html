@@ -2,6 +2,11 @@
 
   <ion-progress-bar style="margin-top: 0px" value={{progressPercent}}></ion-progress-bar>
 
+  <span *ngIf="!scoreCardDisplayed()">
+    <div class="score-banner">Score: {{score}}/{{taskLength}}</div>
+    <div class="score-change">+1</div>
+  </span>
+
   <ion-slides #slideElement (ionSlideWillChange)="changeSlide()">
 
     <ion-slide *ngFor="let slide of slideInfo; let slideIndex = index">
@@ -47,7 +52,7 @@
 
    <!--Score page-->
     <ion-slide>
-      <app-score-page [score]="score" [length]="facePaths.length" [assessment]="false" (finished)="finish($event)"></app-score-page>
+      <app-score-page [score]="score" [length]="taskLength" [assessment]="false" (finished)="finish($event)"></app-score-page>
     </ion-slide>
 
   </ion-slides>

@@ -92,14 +92,14 @@
     font-size: 7vw;
     color: white;
     text-align: center;
-    margin-top: 5%;
+    margin-top: 10%;
 }
 
 .prompt-small {
     font-size: 6vw;
     color: white;
     text-align: center;
-    margin-top: 5%;
+    margin-top: 10%;
 }
 
 .footer {
@@ -110,7 +110,7 @@
 }
 
 .flex-slide {
-    height: 90vh;
+    height: 85vh;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -131,4 +131,25 @@ ion-button {
     width: 45%;
     font-size: 5vw;
     color: white;
+}
+
+.score-banner {
+    margin-top: 0px;
+    right: 1vw;
+    position: absolute;
+    z-index: 3;
+    padding: 2%;
+    background-color: white;
+    color: #374048;
+    border-radius: 0px 0px 10px 10px;
+    font-size: 4vw;
+}
+
+.score-change {
+    margin-top: 0px;
+    right: 9vw;
+    position: absolute;
+    z-index: 2;
+    color: white;
+    font-size: 5vw;
 }

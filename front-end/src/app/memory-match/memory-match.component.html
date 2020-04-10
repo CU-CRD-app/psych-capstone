@@ -2,13 +2,18 @@
 
   <ion-progress-bar style="margin-top: 0px" value={{progressPercent}}></ion-progress-bar>
 
+  <span *ngIf="!scoreCardDisplayed()">
+    <div class="score-banner">Score: {{score}}/{{taskLength}}</div>
+    <div class="score-change" style="right: 12vw">{{stage == Stage.CORRECT ? '+4' : '-1'}}</div>
+  </span>
+
   <div *ngIf="stage == Stage.START" (click)="startMemorizeTimer()" class="overlay" button>
     <div class="overlay-content">
       Click anywhere to reveal
     </div>
   </div>
 
-  <ion-slides #slideElement (ionSlideWillChange)="ngAfterViewInit(); resetSelected()">
+  <ion-slides #slideElement (ionSlideWillChange)="ngAfterViewInit(); resetSelected()" (ionSlideReachStart)="firstSlide = true" (ionSlideReachEnd)="firstSlide = false">
 
     <ion-slide class="flex-slide">
 
@@ -64,7 +69,7 @@
 
    <!--Score page-->
     <ion-slide>
-      <app-score-page [score]="score" [length]="facePaths.length * pointsPerFace" [assessment]="false" (finished)="finish($event)"></app-score-page>
+      <app-score-page [score]="score" [length]="taskLength" [assessment]="false" (finished)="finish($event)"></app-score-page>
     </ion-slide>
 
   </ion-slides>

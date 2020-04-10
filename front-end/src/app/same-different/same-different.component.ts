@@ -24,13 +24,15 @@ export class SameDifferentComponent implements OnInit {
     this.progressPercent = 0;
     this.score = 0;
     this.fadeIn = createAnimation();
+    this.changeScore = createAnimation();
+    this.taskLength = this.facePaths.length;
 
     this.slideInfo = [];
-    for (let i = 0; i < this.facePaths.length; i++) {
+    for (let i = 0; i < this.taskLength; i++) {
 
       let displayedFace = this.facePaths[i];
       if (Math.random() > .5) {
-        displayedFace = this.facePaths[Math.floor(Math.random() * this.facePaths.length)];
+        displayedFace = this.facePaths[Math.floor(Math.random() * this.taskLength)];
       }
 
       this.slideInfo.push({
@@ -77,10 +79,12 @@ export class SameDifferentComponent implements OnInit {
   progressPercent : number;
   score : number;
   timeRemaining : number;
+  taskLength : number;
   interval : any;
   timer : any;
-  fadeIn : any;
   slideInfo : any;
+  fadeIn : any;
+  changeScore : any;
 
   async selectFace(sameFace : boolean) {
     if (this.slideInfo[this.currentSlide].stage == Stage.SELECT) {
@@ -111,10 +115,27 @@ export class SameDifferentComponent implements OnInit {
       if (sameFace == (this.slideInfo[this.currentSlide].displayedFace == this.slideInfo[this.currentSlide].correctFace)) {
         this.score++;
         this.slideInfo[this.currentSlide].stage = Stage.CORRECT;
+        this.changeScore = createAnimation()
+          .addElement(document.querySelectorAll('.score-change'))
+          .fill('none')
+          .duration(2000)
+          .keyframes([
+            { offset: 0, transform: 'translateY(0%)' },
+            { offset: 0.05, transform: 'translateY(100%)' },
+            { offset: 0.1, transform: 'translateY(200%)' },
+            { offset: 0.3, transform: 'translateY(200%)' },
+            { offset: 0.5, transform: 'translateY(200%)' },
+            { offset: 0.7, transform: 'translateY(200%)' },
+            { offset: 0.9, transform: 'translateY(200%)' },
+            { offset: 0.95, transform: 'translateY(100%)' },
+            { offset: 1, transform: 'translateY(0%)' }
+          ]);
+        this.changeScore.play();
       } else {
         this.slideInfo[this.currentSlide].stage = Stage.INCORRECT;
       }
-      this.progressPercent = (this.currentSlide + 1)/this.facePaths.length;
+      this.progressPercent = (this.currentSlide + 1)/this.taskLength;
+
       this.slideElement.lockSwipes(false);
       this.slideElement.lockSwipeToPrev(true);
       
@@ -197,24 +218,25 @@ export class SameDifferentComponent implements OnInit {
   }
 
   showFeedback() {
-    return !this.endCardDisplayed() && (this.slideInfo[this.currentSlide].stage == Stage.CORRECT || this.slideInfo[this.currentSlide].stage == Stage.INCORRECT);
+    return !this.scoreCardDisplayed() && (this.slideInfo[this.currentSlide].stage == Stage.CORRECT || this.slideInfo[this.currentSlide].stage == Stage.INCORRECT);
   }
 
-  endCardDisplayed() {
-    return this.currentSlide >= this.facePaths.length;
+  scoreCardDisplayed() {
+    return this.currentSlide >= this.taskLength;
   }
 
   async changeSlide() {
     if (await this.slideElement.getActiveIndex() > this.currentSlide) {
       this.currentSlide = await this.slideElement.getActiveIndex();
       await this.slideElement.lockSwipes(true);
+      await this.changeScore.stop();
       await this.fadeIn.stop();
       let footers = Array.from(document.getElementsByClassName('footer') as HTMLCollectionOf<HTMLElement>);
       for (let i = 0; i < footers.length; i++) {
         footers[i].style.opacity = '0';
       }
 
-      if (!this.endCardDisplayed()) {
+      if (!this.scoreCardDisplayed()) {
         this.startMemorizeTimer();
       }
     }

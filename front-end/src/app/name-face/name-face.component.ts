@@ -24,14 +24,16 @@ export class NameFaceComponent implements OnInit {
     this.currentSlide = 0;
     this.progressPercent = 0;
     this.fadeIn = createAnimation();
+    this.changeScore = createAnimation();
+    this.taskLength = this.facePaths.length;
 
     // Initialize shuffled name list
     this.shuffledNames = [];
-    for (let name = 0; name < this.setNames.length; name++) {
+    for (let name = 0; name < this.taskLength; name++) {
       this.shuffledNames.push(this.setNames[name]);
     }
     // Shuffle Names
-    for (let i = this.shuffledNames.length - 1; i > 0; i -= 1) {
+    for (let i = this.taskLength - 1; i > 0; i -= 1) {
       let j = Math.floor(Math.random() * (i + 1));
       let temp = this.shuffledNames[i];
       this.shuffledNames[i] = this.shuffledNames[j];
@@ -39,7 +41,7 @@ export class NameFaceComponent implements OnInit {
     }
 
     this.slideInfo = [];
-    for (let i = 0; i < this.shuffledNames.length; i++) {
+    for (let i = 0; i < this.taskLength; i++) {
       this.slideInfo.push({
         correctName: this.shuffledNames[i],
         correctFace: this.facePaths[this.setNames.indexOf(this.shuffledNames[i])],
@@ -70,9 +72,11 @@ export class NameFaceComponent implements OnInit {
   score : number;
   currentSlide : number;
   progressPercent : number;
+  taskLength : number;
   shuffledNames : any;
   slideInfo : any;
   fadeIn : any;
+  changeScore : any;
 
   selectFace(face : string) {
     if (this.slideInfo[this.currentSlide].stage == Stage.SELECT) {
@@ -80,10 +84,27 @@ export class NameFaceComponent implements OnInit {
       if (face == this.slideInfo[this.currentSlide].correctFace) {
         this.score++;
         this.slideInfo[this.currentSlide].stage = Stage.CORRECT;
+        this.changeScore = createAnimation()
+          .addElement(document.querySelectorAll('.score-change'))
+          .fill('none')
+          .duration(2000)
+          .keyframes([
+            { offset: 0, transform: 'translateY(0%)' },
+            { offset: 0.05, transform: 'translateY(100%)' },
+            { offset: 0.1, transform: 'translateY(200%)' },
+            { offset: 0.3, transform: 'translateY(200%)' },
+            { offset: 0.5, transform: 'translateY(200%)' },
+            { offset: 0.7, transform: 'translateY(200%)' },
+            { offset: 0.9, transform: 'translateY(200%)' },
+            { offset: 0.95, transform: 'translateY(100%)' },
+            { offset: 1, transform: 'translateY(0%)' }
+          ]);
+        this.changeScore.play();
       } else {
         this.slideInfo[this.currentSlide].stage = Stage.INCORRECT;
       }
-      this.progressPercent = (this.currentSlide + 1)/this.facePaths.length;
+      this.progressPercent = (this.currentSlide + 1)/this.taskLength;
+
       this.slideElement.lockSwipes(false);
       this.slideElement.lockSwipeToPrev(true);
       
@@ -105,9 +126,9 @@ export class NameFaceComponent implements OnInit {
   getSlideFaces(index : number) {
     let faces = [];
     for (let i = 0; i < this.numberOfOptions - 1; i++) { // Select five faces
-      let j = Math.floor(Math.random() * this.facePaths.length);
+      let j = Math.floor(Math.random() * this.taskLength);
       while (faces.indexOf(this.facePaths[j]) > -1 || this.facePaths[j] == this.facePaths[this.setNames.indexOf(this.shuffledNames[index])]) { // Account for repeats
-        j = Math.floor(Math.random() * this.facePaths.length);
+        j = Math.floor(Math.random() * this.taskLength);
       }
       faces.push(this.facePaths[j]);
     }
@@ -135,17 +156,18 @@ export class NameFaceComponent implements OnInit {
   }
 
   showFeedback() {
-    return !this.endCardDisplayed() && (this.slideInfo[this.currentSlide].stage == Stage.CORRECT || this.slideInfo[this.currentSlide].stage == Stage.INCORRECT);
+    return !this.scoreCardDisplayed() && (this.slideInfo[this.currentSlide].stage == Stage.CORRECT || this.slideInfo[this.currentSlide].stage == Stage.INCORRECT);
   }
 
-  endCardDisplayed() {
-    return this.currentSlide >= this.setNames.length;
+  scoreCardDisplayed() {
+    return this.currentSlide >= this.taskLength;
   }
 
   async changeSlide() {
     if (await this.slideElement.getActiveIndex() > this.currentSlide) {
       this.currentSlide = await this.slideElement.getActiveIndex();
       await this.slideElement.lockSwipes(true);
+      await this.changeScore.stop();
       await this.fadeIn.stop();
       let footers = Array.from(document.getElementsByClassName('footer') as HTMLCollectionOf<HTMLElement>);
       for (let i = 0; i < footers.length; i++) {
