@@ -13,7 +13,7 @@
       
       <div class="flex-slide">
 
-        <div class="prompt" *ngIf="slideIndex != currentSlide || !showFeedback()">Who haven't you seen?</div>
+        <div class="prompt" *ngIf="slideIndex != currentSlide || !showFeedback()">Who didn't you see today?</div>
         <div class="prompt" *ngIf="showFeedback() && slideInfo[slideIndex].stage == Stage.CORRECT">Correct!</div>
         <div class="prompt" *ngIf="showFeedback() && slideInfo[slideIndex].stage == Stage.INCORRECT">Incorrect!</div>
 
