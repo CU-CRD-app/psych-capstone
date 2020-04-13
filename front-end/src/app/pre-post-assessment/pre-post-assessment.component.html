@@ -1,6 +1,0 @@
-<ion-content style="--background: gray">
-
-  <app-forced-choice *ngIf="task == Task.FORCED_CHOICE" [facePaths]="facePaths" (finished)="taskDone($event, 0)"></app-forced-choice>
-  <app-same-different *ngIf="task == Task.SAME_DIFFERENT" [facePaths]="facePaths" (finished)="taskDone($event, 1)"></app-same-different>
-
-</ion-content>

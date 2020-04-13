@@ -31,10 +31,15 @@
 
 .grid-card {
     display: inline-block;
-    margin-bottom: 10px;
-    margin-top: 15px;
     height: 125px;
     width: 100px;
+    text-align: center;
+    background-color: gainsboro;
+    img {
+        height: 95px;
+        width: 70px;
+        margin: 15px auto;
+    }
 }
 
 .success {
@@ -47,6 +52,19 @@
 
 .default {
     --background: gray;
+}
+
+.selected-wrong-card {
+    background-color: gainsboro !important;
+}
+
+.selected-card {
+    background-color: dodgerblue !important;
+}
+
+.disabled-card {
+    background-color: transparent;
+    opacity: 0.5;
 }
 
 .overlay {
@@ -70,9 +88,68 @@
     z-index: 100;
 }
 
+.prompt {
+    font-size: 7vw;
+    color: white;
+    text-align: center;
+    margin-top: 10%;
+}
+
+.prompt-small {
+    font-size: 6vw;
+    color: white;
+    text-align: center;
+    margin-top: 10%;
+}
+
 .footer {
-	margin-bottom: 0px;
 	color: white;
 	opacity: 0;
-	--background: transparent;
+    --background: transparent;
+    width: 100%;
+}
+
+.flex-slide {
+    height: 85vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.header {
+    font-size: 10vw;
+    color: white;
+}
+
+.subheader {
+    font-size: 6vw;
+    color: white;
+}
+
+ion-button {
+    width: 45%;
+    font-size: 5vw;
+    color: white;
+}
+
+.score-banner {
+    margin-top: 0px;
+    right: 1vw;
+    position: absolute;
+    z-index: 3;
+    padding: 2%;
+    background-color: white;
+    color: #374048;
+    border-radius: 0px 0px 10px 10px;
+    font-size: 4vw;
+}
+
+.score-change {
+    margin-top: 0px;
+    right: 9vw;
+    position: absolute;
+    z-index: 2;
+    color: white;
+    font-size: 5vw;
 }
