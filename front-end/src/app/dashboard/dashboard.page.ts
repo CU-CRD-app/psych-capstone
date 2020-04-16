@@ -31,7 +31,7 @@ export class DashboardPage {
   }
 
   viewReady : boolean = false;
-  loggedIn : boolean = false;
+  loggedIn : boolean = true;
 
   username : string = 'USERNAME'
   level : number = 1;

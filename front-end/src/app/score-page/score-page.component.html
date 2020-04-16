@@ -1,12 +1,14 @@
-<div style="text-align: center; color: white; margin-top: 150px">
-  <h1>Your score: {{score}}/{{length}}</h1>
-  <h6 *ngIf="score < 6 && !assessment" style="margin: 20px">You need a score of at least {{length * 0.75}}/{{length}} to pass this module</h6>
-  <ion-button *ngIf="score < 6 && !assessment" (click)="finished.emit(0)">Retry</ion-button>
-  <ion-button *ngIf="score < 6 && !assessment" (click)="finished.emit(1)">
-    <ion-icon [src]=replay_icon></ion-icon>
-    &nbsp;
-    <ion-icon [src]=face_icon></ion-icon>
-  </ion-button>
-  <br>
-  <ion-button [color]="score >= 6 || assessment ? 'success' : 'danger'" (click)="finished.emit(2)">Finish</ion-button>
+<div class="flex-slide">
+  <div>
+    <div class="header">Your score: {{score}}/{{length}}</div>
+    <div *ngIf="failed()" class="subheader" style="margin: 5%">You need a score of at least {{length * minTrainScore}}/{{length}} ({{minTrainScore * 100}}%) to pass this module</div>
+    <ion-button *ngIf="failed()" (click)="finished.emit(0)">Retry</ion-button>
+    <ion-button *ngIf="failed()" (click)="finished.emit(1)">
+      <ion-icon [src]=replay_icon></ion-icon>
+      &nbsp;
+      <ion-icon [src]=face_icon></ion-icon>
+    </ion-button>
+    <br>
+    <ion-button [color]="!failed() ? 'success' : 'danger'" (click)="finished.emit(2)">Finish</ion-button>
+  </div>
 </div>

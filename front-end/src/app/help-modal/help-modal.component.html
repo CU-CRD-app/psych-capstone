@@ -1,22 +1,26 @@
 <ion-content style="--background: dodgerblue; --color: white">
-  <ion-item lines="none" style="margin-top: 15px; text-align: center; --background: dodgerblue; --color: white">
+
+  <ion-item lines="none" style="font-size: 3vh; margin-top: 5%; text-align: center; --background: dodgerblue; --color: white">
     <ion-label>
       <b>{{task}}</b>
     </ion-label>
-    <ion-icon *ngIf="showOverview" (click)="toggleOverview()" slot="start" color="dark" name="arrow-back" style="font-size: 120%"></ion-icon>
-    <ion-icon (click)="toggleOverview()" slot="end" color="dark" name="help-circle" style="font-size: 120%" [ngClass]="{'hidden': task == 'Start' || task == 'Overview' || hideQuit}"></ion-icon>
-    <ion-icon *ngIf="!showOverview" slot="start" color="dark" name="close-circle" style="margin-right: 10px; font-size: 120%" (click)="closeModal()"></ion-icon> <!--[ngClass]="{'hidden': hideQuit}" PUT THIS BACK IN FOR PRODUCTION-->
+    <ion-icon *ngIf="showOverview" (click)="toggleOverview()" slot="start" color="dark" name="arrow-back" style="height: 3vh"></ion-icon>
+    <ion-icon (click)="toggleOverview()" slot="end" color="dark" name="help-circle" style="height: 3vh" [ngClass]="{'hidden': task == 'Start' || task == 'Overview' || hideQuit}"></ion-icon>
+    <ion-icon *ngIf="!showOverview" slot="start" color="dark" name="close-circle" style="margin-right: 10px; height: 3vh" (click)="closeModal()"></ion-icon> <!--[ngClass]="{'hidden': hideQuit}" PUT THIS BACK IN FOR PRODUCTION-->
   </ion-item>
+
   <ion-slides #slideElement (ionSlideDidChange)="changeSlide()" style="height: 80%">
-    <ion-slide *ngFor="let slide of slides; let i = index" style="display: block; margin-top: 20px">
+    <ion-slide *ngFor="let slide of slides; let i = index" style="height: 100%; width: 100%; display: flex; flex-direction: column; justify-content: space-evenly">
       <img [src]="slide[0]">
-      <div style="display: flex; align-items: center; height: 125px; color: white; margin: 20px;">{{slide[1]}}</div>
+      <div style="display: flex; align-items: center; flex-shrink: 2; margin-left: 5%; margin-right: 5%; font-size: 5vw">{{slide[1]}}</div>
     </ion-slide>
   </ion-slides>
-  <div style="text-align: center">
+
+  <div style="text-align: center; font-size: 3vh">
     <span *ngFor="let slide of slides; let i = index" style="margin: 0 auto">
       <ion-icon *ngIf="currentSlide == i" color="dark" name="radio-button-on"></ion-icon>
       <ion-icon *ngIf="currentSlide != i" (click)="slideElement.slideTo(i)" color="dark" name="radio-button-off"></ion-icon>
     </span>
   </div>
+
 </ion-content>

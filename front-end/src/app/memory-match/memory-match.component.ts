@@ -27,6 +27,8 @@ export class MemoryMatchComponent implements OnInit {
     this.selectedFace = null;
     this.correctFaces = [];
     this.incorrectFaces = [];
+    this.firstSlide = true;
+    this.changeScore = createAnimation();
 
     // Init list of faces
     this.randomFaces = [];
@@ -81,6 +83,7 @@ export class MemoryMatchComponent implements OnInit {
   Stage = Stage;
   mask : string = 'assets/background_imgs/mask1.png';
   memorizeTime : number = 10;
+  taskLength : number = 32;
 
   stage : Stage;
   score : number;
@@ -89,6 +92,8 @@ export class MemoryMatchComponent implements OnInit {
   timeRemaining : number;
   interval : any;
   timer : any;
+  changeScore : any;
+  firstSlide : boolean;
 
   randomFaces : string[];
   correctFaces : string[];
@@ -110,10 +115,11 @@ export class MemoryMatchComponent implements OnInit {
         } else if (this.randomFaces[face] == this.randomFaces[this.selectedFace]) { // Correct
           this.correctFaces.push(this.randomFaces[face]);
           this.progressPercent = this.correctFaces.length/this.facePaths.length;
+          this.score += this.taskLength / this.facePaths.length;
           this.stage = Stage.CORRECT;
 
           if (this.correctFaces.length == this.facePaths.length) { // Done
-            this.score = Math.ceil(this.score) + this.facePaths.length;
+            this.score = Math.ceil(this.score);
             this.slideElement.lockSwipes(false);
             this.revealFooter();
           }
@@ -122,7 +128,7 @@ export class MemoryMatchComponent implements OnInit {
         } else { // Incorrect
           this.incorrectFaces.push(this.selectedFace);
           this.incorrectFaces.push(face);
-          this.score -= 0.25;
+          this.score = this.score >= 1 ? this.score - 1 : 0;
           this.stage = Stage.INCORRECT;
           await this.waitForFeedback();
         }
@@ -143,13 +149,34 @@ export class MemoryMatchComponent implements OnInit {
   resetSelected() {
     this.incorrectFaces = [];
     this.stage = Stage.SELECT;
+    this.changeScore.stop();
   }
 
   async waitForFeedback() {
     this.selectedFace = null;
-    let promise = this.promise
+
+    if (this.stage == Stage.INCORRECT || this.stage == Stage.CORRECT) {
+      this.changeScore = createAnimation()
+        .addElement(document.querySelectorAll('.score-change'))
+        .fill('none')
+        .duration(2000)
+        .keyframes([
+          { offset: 0, transform: 'translateY(0%)' },
+          { offset: 0.05, transform: 'translateY(100%)' },
+          { offset: 0.1, transform: 'translateY(200%)' },
+          { offset: 0.3, transform: 'translateY(200%)' },
+          { offset: 0.5, transform: 'translateY(200%)' },
+          { offset: 0.7, transform: 'translateY(200%)' },
+          { offset: 0.9, transform: 'translateY(200%)' },
+          { offset: 0.95, transform: 'translateY(100%)' },
+          { offset: 1, transform: 'translateY(0%)' }
+        ]);
+      this.changeScore.play();
+    }
+
+    let promise = this.promise;
     await new Promise( resolve => setTimeout(resolve, 2000) );
-    promise == this.promise ? this.resetSelected() : 0;
+    promise == this.promise ? this.resetSelected() : null;
   }
 
   async startMemorizeTimer() {
@@ -198,6 +225,10 @@ export class MemoryMatchComponent implements OnInit {
     this.timer = timer(2000).subscribe(() => {
       this.stage = Stage.SELECT;
     });
+  }
+
+  scoreCardDisplayed() {
+    return !this.firstSlide;
   }
 
   revealFooter() {

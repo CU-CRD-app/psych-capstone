@@ -8,7 +8,7 @@ import { GetProgressService } from '../service/get-progress.service';
 
 enum Race { BLACK, ASIAN }
 enum Stage { START, TRAINING, ASSESSMENT, DONE }
-enum Task { LEARNING, NAME_FACE, WHOS_NEW, MEMORY, SHUFFLE, FORCED_CHOICE, SAME_DIFFERENT, PRETEST, POSTTEST }
+enum Task { NAME_FACE, WHOS_NEW, MEMORY, SHUFFLE, FORCED_CHOICE, SAME_DIFFERENT, PRETEST, POSTTEST, LEARNING }
 
 let raceProperties = {
   0: {
@@ -89,8 +89,10 @@ export class TrainingPage {
   learningDone : boolean;
   scores : number[];
 
+  minTrainScore : number = 0.75;
+  taskLengths : number[] = [8, 8, 32, 16, 8, 8];
   numFaces : number = 8;
-  assessmentPoolSize : number = 29; // should be thirty, we got one messed up face in the pre/post assessment pool
+  assessmentPoolSize : number = 30;
   assessment_icon : string = "assets/icon/assessment.svg";
   replay_icon : string = "assets/icon/replay.svg";
   face_icon : string = "assets/icon/face.svg";
@@ -149,13 +151,12 @@ export class TrainingPage {
     this.task = null;
     if (!this.learningDone) {
       this.stage = Stage.START;
-    } else if (this.scores[0] < 6 || this.scores[1] < 6 || this.scores[2] < 6 || this.scores[3] < 6) {
+    } else if (this.trainingDone()) {
       this.stage = Stage.TRAINING;
     } else if (this.scores.includes(-1)) {
       this.stage = Stage.ASSESSMENT;
     } else {
-      this.getProgress.updateProgress(this.userLevel + 1);
-      this.loadFinishPage();
+      this.finishLevel();
     }
 
     if (this.stage != currentStage && this.stage != Stage.DONE) {
@@ -245,9 +246,9 @@ export class TrainingPage {
     let facePaths : string[] = [];
     let faceNums : number[] = [];
 
-    let multiplier : number = daily ? 1 : 1;
+    let faceNumber : number = daily ? this.numFaces : this.numFaces;
 
-    for (let i = 0; i < this.numFaces * multiplier; i++) {
+    for (let i = 0; i < faceNumber; i++) {
       let face = Math.floor(Math.random() * this.assessmentPoolSize);
       while (faceNums.indexOf(face) > -1) { // Account for repeats
         face = Math.floor(Math.random() * this.assessmentPoolSize);
@@ -337,7 +338,9 @@ export class TrainingPage {
     }
   }
 
-  loadFinishPage() {
+  finishLevel() {
+
+    this.getProgress.updateProgress(this.userLevel + 1);
 
     this.stage = Stage.DONE;
 
@@ -384,5 +387,12 @@ export class TrainingPage {
       this.userLevel++;
     }
 
+  }
+
+  trainingDone() {
+    return this.scores[Task.NAME_FACE] < this.taskLengths[Task.NAME_FACE] * this.minTrainScore ||
+      this.scores[Task.WHOS_NEW] < this.taskLengths[Task.WHOS_NEW] * this.minTrainScore  ||
+      this.scores[Task.MEMORY] < this.taskLengths[Task.MEMORY] * this.minTrainScore  ||
+      this.scores[Task.SHUFFLE] < this.taskLengths[Task.SHUFFLE] * this.minTrainScore
   }
 }

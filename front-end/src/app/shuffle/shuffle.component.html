@@ -2,6 +2,11 @@
 
   <ion-progress-bar style="margin-top: 0px" value={{progressPercent}}></ion-progress-bar>
 
+  <span *ngIf="!scoreCardDisplayed()">
+    <div class="score-banner">Score: {{score}}/{{taskLength}}</div>
+    <div class="score-change" style="right: 12vw">+{{changeScoreValue}}</div>
+  </span>
+
   <div *ngIf="slideInfo[currentSlide].stage == Stage.START" (click)="startMemorizeTimer()" class="overlay" button>
     <div class="overlay-content">
       Click anywhere to reveal
@@ -10,14 +15,14 @@
 
   <ion-slides #slideElement (ionSlideWillChange)="changeSlide()">
 
-    <ion-slide *ngFor="let slide of slideInfo; let slideIndex = index" style="text-align: center; height: 100%; width: 100%; display: block">
+    <ion-slide *ngFor="let slide of slideInfo; let slideIndex = index" class="flex-slide">
 
-      <h5 *ngIf="slideInfo[slideIndex].stage == Stage.START">Memorize the face placement: {{memorizeTime}}</h5>
-      <h5 *ngIf="slideInfo[slideIndex].stage == Stage.MEMORIZE">Memorize the face placement: <span class="time-left">{{timeRemaining}}</span></h5>
-      <h5 *ngIf="slideInfo[slideIndex].stage == Stage.MASK">Hold the faces in your mind...</h5>
-      <h5 *ngIf="slideInfo[slideIndex].stage == Stage.SELECT">Rearrange the faces</h5>
-      <h5 *ngIf="slideInfo[slideIndex].stage == Stage.CORRECT">Correct!</h5>
-      <h5 *ngIf="slideInfo[slideIndex].stage == Stage.INCORRECT">Incorrect!</h5>
+      <div class="prompt-small" *ngIf="slideInfo[slideIndex].stage == Stage.START">Memorize the face placement: {{memorizeTime}}</div>
+      <div class="prompt-small" *ngIf="slideInfo[slideIndex].stage == Stage.MEMORIZE">Memorize the face placement: <span class="time-left">{{timeRemaining}}</span></div>
+      <div class="prompt-small" *ngIf="slideInfo[slideIndex].stage == Stage.MASK">Hold the faces in your mind...</div>
+      <div class="prompt-small" *ngIf="slideInfo[slideIndex].stage == Stage.SELECT">Rearrange the faces</div>
+      <div class="prompt-small" *ngIf="slideInfo[slideIndex].stage == Stage.CORRECT">Correct!</div>
+      <div class="prompt-small" *ngIf="slideInfo[slideIndex].stage == Stage.INCORRECT">Incorrect!</div>
 
       <!--<ion-reorder-group (ionItemReorder)="$event.detail.complete();" disabled="false">
         <ion-reorder style="width: 45%; display: inline-block">
@@ -45,44 +50,32 @@
         </ion-reorder>
       </ion-reorder-group>-->
 
-      <ion-grid>
+      <div>
 
-        <ion-row>
+        <div>
+          <ion-card id="card-0" [button]="slideInfo[slideIndex].stage == Stage.SELECT" class="grid-card" (click)="clickCard(0)" [ngClass]="{'selected-card': slideInfo[slideIndex].stage != Stage.START && getSrc(0) == slideInfo[slideIndex].selectedFace, 'wrong-card': slideInfo[slideIndex].stage == Stage.INCORRECT && slideInfo[slideIndex].feedback && slideInfo[slideIndex].shuffledOrder[0] != slideInfo[slideIndex].correctOrder[0]}">
+            <img *ngIf="slideInfo[slideIndex].stage != Stage.START" [src]="getSrc(0)"/>
+          </ion-card>
 
-          <ion-col>
-            <ion-card id="card-0" (click)="clickCard(0)" [button]="slideInfo[slideIndex].stage == Stage.SELECT" class="grid-card" [ngClass]="{'selected-card': slideInfo[slideIndex].stage != Stage.START && getSrc(0) == slideInfo[slideIndex].selectedFace, 'wrong-card': slideInfo[slideIndex].stage == Stage.INCORRECT && slideInfo[slideIndex].feedback && slideInfo[slideIndex].shuffledOrder[0] != slideInfo[slideIndex].correctOrder[0]}">
-              <img *ngIf="slideInfo[slideIndex].stage != Stage.START" [src]="getSrc(0)"/>
-            </ion-card>
-          </ion-col>
+          <ion-card id="card-1" [button]="slideInfo[slideIndex].stage == Stage.SELECT" class="grid-card" (click)="clickCard(1)" [ngClass]="{'selected-card': slideInfo[slideIndex].stage != Stage.START && getSrc(1) == slideInfo[slideIndex].selectedFace, 'wrong-card': slideInfo[slideIndex].stage == Stage.INCORRECT && slideInfo[slideIndex].feedback && slideInfo[slideIndex].shuffledOrder[1] != slideInfo[slideIndex].correctOrder[1]}">
+            <img *ngIf="slideInfo[slideIndex].stage != Stage.START" [src]="getSrc(1)"/>
+          </ion-card>
+        </div>
 
-          <ion-col>
-            <ion-card id="card-1" (click)="clickCard(1)" [button]="slideInfo[slideIndex].stage == Stage.SELECT" class="grid-card" [ngClass]="{'selected-card': slideInfo[slideIndex].stage != Stage.START && getSrc(1) == slideInfo[slideIndex].selectedFace, 'wrong-card': slideInfo[slideIndex].stage == Stage.INCORRECT && slideInfo[slideIndex].feedback && slideInfo[slideIndex].shuffledOrder[1] != slideInfo[slideIndex].correctOrder[1]}">
-              <img *ngIf="slideInfo[slideIndex].stage != Stage.START" [src]="getSrc(1)"/>
-            </ion-card>
-          </ion-col>
+        <div>
+          <ion-card id="card-2" [button]="slideInfo[slideIndex].stage == Stage.SELECT" class="grid-card" (click)="clickCard(2)" [ngClass]="{'selected-card': slideInfo[slideIndex].stage != Stage.START && getSrc(2) == slideInfo[slideIndex].selectedFace, 'wrong-card': slideInfo[slideIndex].stage == Stage.INCORRECT && slideInfo[slideIndex].feedback && slideInfo[slideIndex].shuffledOrder[2] != slideInfo[slideIndex].correctOrder[2]}">
+            <img *ngIf="slideInfo[slideIndex].stage != Stage.START" [src]="getSrc(2)"/>
+          </ion-card>
 
-        </ion-row>
-        <ion-row>
+          <ion-card id="card-3" [button]="slideInfo[slideIndex].stage == Stage.SELECT" class="grid-card" (click)="clickCard(3)" [ngClass]="{'selected-card': slideInfo[slideIndex].stage != Stage.START && getSrc(3) == slideInfo[slideIndex].selectedFace, 'wrong-card': slideInfo[slideIndex].stage == Stage.INCORRECT && slideInfo[slideIndex].feedback && slideInfo[slideIndex].shuffledOrder[3] != slideInfo[slideIndex].correctOrder[3]}">
+            <img *ngIf="slideInfo[slideIndex].stage != Stage.START" [src]="getSrc(3)"/>
+          </ion-card>
+        </div>
 
-          <ion-col>
-            <ion-card id="card-2" (click)="clickCard(2)" [button]="slideInfo[slideIndex].stage == Stage.SELECT" class="grid-card" [ngClass]="{'selected-card': slideInfo[slideIndex].stage != Stage.START && getSrc(2) == slideInfo[slideIndex].selectedFace, 'wrong-card': slideInfo[slideIndex].stage == Stage.INCORRECT && slideInfo[slideIndex].feedback && slideInfo[slideIndex].shuffledOrder[2] != slideInfo[slideIndex].correctOrder[2]}">
-              <img *ngIf="slideInfo[slideIndex].stage != Stage.START" [src]="getSrc(2)"/>
-            </ion-card>
-          </ion-col>
+      </div>
 
-          <ion-col>
-            <ion-card id="card-3" (click)="clickCard(3)" [button]="slideInfo[slideIndex].stage == Stage.SELECT" class="grid-card" [ngClass]="{'selected-card': slideInfo[slideIndex].stage != Stage.START && getSrc(3) == slideInfo[slideIndex].selectedFace, 'wrong-card': slideInfo[slideIndex].stage == Stage.INCORRECT && slideInfo[slideIndex].feedback && slideInfo[slideIndex].shuffledOrder[3] != slideInfo[slideIndex].correctOrder[3]}">
-              <img *ngIf="slideInfo[slideIndex].stage != Stage.START" [src]="getSrc(3)"/>
-            </ion-card>
-          </ion-col>
-
-        </ion-row>
-
-      </ion-grid>
-
-      <!--Next Buttons-->
-      <div style="text-align: center">
-        <ion-button *ngIf="slideInfo[slideIndex].stage == Stage.SELECT" style="width: 130px" (click)="clickDone()">Done</ion-button>
+      <div style="text-align: center; height: 10%; width: 100%">
+        <ion-button *ngIf="slideInfo[slideIndex].stage == Stage.SELECT" (click)="clickDone()">Done</ion-button>
         <ion-grid *ngIf="slideInfo[slideIndex].stage == Stage.INCORRECT" style="--background: transparent; height: 60%" lines="none">
           <ion-row>
             <ion-col>
@@ -97,17 +90,16 @@
           </ion-row>
         </ion-grid>
       </div>
-
-      <ion-item *ngIf="showFeedback()" class="footer" (click)="slideElement.slideNext()" lines="none">
+      <ion-item class="footer" lines="none">
         <ion-label>Swipe to Continue</ion-label>
-        <ion-icon slot="end" color="dark" name="arrow-back" style="margin-top: 10px"></ion-icon>    
+        <ion-icon slot="end" color="dark" name="arrow-back"></ion-icon>    
       </ion-item>
 
     </ion-slide>
 
     <!--Score page-->
     <ion-slide>
-      <app-score-page [score]="score" [length]="facePaths.length" [assessment]="false" (finished)="finish($event)"></app-score-page>
+      <app-score-page [score]="score" [length]="taskLength" [assessment]="false" (finished)="finish($event)"></app-score-page>
     </ion-slide>
 
   </ion-slides>

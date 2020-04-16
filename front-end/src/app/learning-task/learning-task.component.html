@@ -1,29 +1,34 @@
 <ion-content id="learningView">
 	<ion-progress-bar style="margin-top: 0px" value={{progressPercent}}></ion-progress-bar>
-	<h5 style="color: white; text-align: center">Memorize the faces and names</h5>
 
-	<ion-slides #slideElement (ionSlideNextStart)="changeCard('next')" (ionSlidePrevStart)="changeCard('back')" style="height: 60%; width: 100%;">
-		<ion-slide *ngFor="let face of facePaths; let i = index" style="text-align: center; display: block">
+	<div class="flex-slide">
+		<div style="font-size: 7vw; color: white; text-align: center; margin-top: 5%">Memorize the faces and names</div>
 
-			<ion-card>
-				<div class="imgContainer">
-					<ion-icon (click)="slideElement.slidePrev()" color="dark" name="arrow-back" style="display: inline-block; margin-bottom: 25%; margin-right: 10%; font-size: 150%" [ngStyle]="{'opacity': progress == 0 ? '0.2' : '1'}"></ion-icon>
-					<img [src]="face" id=faceImg style="display: inline-block">
-					<ion-icon (click)="slideElement.slideNext()" color="dark" name="arrow-forward" style="display: inline-block; margin-bottom: 25%; margin-left: 10%; font-size: 150%" [ngStyle]="{'opacity': progress == (facePaths.length - 1) ? '0.2' : '1'}"></ion-icon>
-				</div>
-				<div class="nameContainer">
-					<div id="nameDisplay">
-						<p id="nameText">{{setNames[i]}}</p>
+		<ion-slides #slideElement (ionSlideNextStart)="changeCard('next')" (ionSlidePrevStart)="changeCard('back')" style="width: 100%;">
+			<ion-slide *ngFor="let face of facePaths; let i = index" style="text-align: center">
+	
+				<ion-card style="display: flex; justify-content: center; align-items: center;">
+					<ion-icon (click)="slideElement.slidePrev()" color="dark" name="arrow-back" style="margin-right: calc((100% - 220px) / 2); font-size: 150%" [ngStyle]="{'opacity': progress == 0 ? '0.2' : '1'}"></ion-icon>
+					<div>
+						<div class="imgContainer">
+							<img [src]="face" id=faceImg>
+						</div>
+						<div class="nameContainer">
+							<div id="nameDisplay">
+								<p id="nameText">{{setNames[i]}}</p>
+							</div>
+						</div>
 					</div>
-				</div>
-			</ion-card>
-
-		</ion-slide>
-	</ion-slides>
-
-	<div style="text-align: center; height: 10%; margin-top: 5%">
-		<ion-button *ngIf="!seenAll" color="success" style="height: 100%" disabled>Finish</ion-button>
-		<ion-button *ngIf="seenAll" color="success" style="height: 100%" (click)="finished.emit()">Finish</ion-button>
+					<ion-icon (click)="slideElement.slideNext()" color="dark" name="arrow-forward" style="margin-left: calc((100% - 220px) / 2); font-size: 150%" [ngStyle]="{'opacity': progress == (facePaths.length - 1) ? '0.2' : '1'}"></ion-icon>
+				</ion-card>
+	
+			</ion-slide>
+		</ion-slides>
+	
+		<div style="text-align: center; height: 7%; margin-bottom: 5%">
+			<ion-button *ngIf="!seenAll" color="success" style="height: 100%" disabled>Finish</ion-button>
+			<ion-button *ngIf="seenAll" color="success" style="height: 100%" (click)="finished.emit()">Finish</ion-button>
+		</div>
 	</div>
 
 </ion-content>

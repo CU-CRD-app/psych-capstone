@@ -12,7 +12,7 @@ export class GetProgressService {
   // The idea is this service will eventually be called
   // to get info from the backend in terms of what level
   // the user is on for each set of faces. 
-  black_level : number = 0;
+  black_level : number = 1;
   asian_level : number = 1;
 
   giveProgress() {

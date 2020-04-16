@@ -26,12 +26,17 @@
 ion-card {
   --background: gainsboro;
   color: dodgerblue;
-  border-radius: 30px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  font-size: 75%;
+  border-radius: 6vh;
+  margin-top: 5vh;
+  margin-bottom: 5vh;
+  padding-top: 1vh;
+  padding-bottom: 1vh;
+  font-size: 2.2vh;
+  height: 11vh;
 }
 
 ion-button {
   text-transform: none !important;
+  height: 8vh;
+  font-size: 3vh;
 }
