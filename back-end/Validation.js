@@ -1,6 +1,5 @@
 // JavaScript source code
 //import env from '../../env';
-import env from 'C:/Users/Yin Han/Desktop/computer science/CSCI4308/Project Code/nodejsapi/node_module/.env';
 
 /**
 
@@ -93,15 +92,14 @@ const generateUserToken =(email, id , first_name, last_name) =>{
 	first_name,
 	last_name,
  },
- env.secret, {expiresIn: '3d'});
+ process.env.secret, {expiresIn: '3d'});
  return token;
 };
 
-export {
+module.exports= {
   isValidEmail,
   validatePassword,
   isEmpty,
   empty,
   generateUserToken,
-
 };
