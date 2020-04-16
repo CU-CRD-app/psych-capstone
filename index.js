@@ -1,5 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var cors = require('cors');
 var initialize = require('./initializeDB.js');
 var register = require('./registerUser.js');
 var login = require('./login.js');
@@ -10,6 +11,7 @@ initialize.start()
 
 var app = express();
 
+app.use(cors());
 app.use(bodyParser.json());
 
 var server = app.listen(process.env.PORT || 8080, function () {
