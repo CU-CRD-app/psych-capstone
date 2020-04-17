@@ -23,7 +23,7 @@
 
             <div *ngFor="let item of [].constructor(3); let i = index" style="margin-left: 10px; margin-right: 10px">
 
-              <ion-card [button]="!showFeedback()" (click)="selectFace(slideInfo[slideIndex].faces[i])" [ngClass]="{'selected-wrong-card': showSelected(i) && slideIndex == currentSlide, 'disabled-card': showDisabled(i) && slideIndex == currentSlide}">
+              <ion-card [button]="!showFeedback()" class="grid-card" (click)="selectFace(slideInfo[slideIndex].faces[i])" [ngClass]="{'selected-wrong-card': showSelected(i) && slideIndex == currentSlide, 'disabled-card': showDisabled(i) && slideIndex == currentSlide}">
                 <img *ngIf="slideIndex <= currentSlide" [src]="slideInfo[slideIndex].faces[i]"/>
               </ion-card>
 
@@ -36,7 +36,7 @@
 
             <div *ngFor="let item of [].constructor(3); let i = index" style="margin-left: 10px; margin-right: 10px">
 
-              <ion-card [button]="!showFeedback()" (click)="selectFace(slideInfo[slideIndex].faces[i + 3])" [ngClass]="{'selected-wrong-card': showSelected(i + 3) && slideIndex == currentSlide, 'disabled-card': showDisabled(i + 3) && slideIndex == currentSlide}">
+              <ion-card [button]="!showFeedback()" class="grid-card" (click)="selectFace(slideInfo[slideIndex].faces[i + 3])" [ngClass]="{'selected-wrong-card': showSelected(i + 3) && slideIndex == currentSlide, 'disabled-card': showDisabled(i + 3) && slideIndex == currentSlide}">
                 <img *ngIf="slideIndex <= currentSlide" [src]="slideInfo[slideIndex].faces[i + 3]"/>
               </ion-card>
 

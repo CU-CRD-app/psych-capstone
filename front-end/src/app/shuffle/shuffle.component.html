@@ -74,7 +74,7 @@
 
       </div>
 
-      <div style="text-align: center; height: 10%; width: 100%">
+      <div *ngIf="slideInfo[slideIndex].stage == Stage.SELECT || slideInfo[slideIndex].stage == Stage.INCORRECT" style="text-align: center; height: 10%; width: 100%">
         <ion-button *ngIf="slideInfo[slideIndex].stage == Stage.SELECT" (click)="clickDone()">Done</ion-button>
         <ion-grid *ngIf="slideInfo[slideIndex].stage == Stage.INCORRECT" style="--background: transparent; height: 60%" lines="none">
           <ion-row>
