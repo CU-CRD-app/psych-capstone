@@ -3,11 +3,11 @@ import { ModalController, NavParams, IonSlides } from '@ionic/angular';
 
 const slideValues = {
   'Start': [
-    ['assets/help-slides/start/0.png', 'Welcome to your CRD training. Please take a minute to review these slides and familiarize yourself with the training process.'],//
+    ['assets/help-slides/start/0.png', 'Welcome to your CRD training. Please take a minute to review these slides and familiarize yourself with the training process.'],
     ['assets/help-slides/start/1.png', 'There are 8 levels to complete. You should complete one level per day, in about 10-15 minutes.'],
-    ['assets/help-slides/start/2.png', 'In the learning task you will learn the day\'s names and faces, then you will use those faces to complete the challenges in the four training tasks.'],//?
-    ['assets/help-slides/start/3.png', 'After passing the training tasks, you will complete two assessment tasks. Your level will increase after you finish.'],//?
-    ['assets/help-slides/start/4.png', 'Before the first level and after the last level you will complete an additional assessment to estimate your overall progress.'],
+    ['assets/help-slides/start/2.png', 'In the learning task you will learn the day\'s names and faces, then you will use those faces to complete the challenges in the four training tasks.'],
+    ['assets/help-slides/start/3.png', 'After passing the training tasks, you will complete two assessment tasks. Your level will increase after you finish.'],
+    ['assets/help-slides/start/4.png', 'Before Level 1 and after Level 8 you will complete an additional assessment to estimate your overall progress.'],
     ['assets/help-slides/start/5.png', 'If you have questions about how to complete a task or what to do next, you can click the help icon in the upper-right corner.'],
     ['assets/help-slides/start/6.png', 'Your data will be used to further research of CRD and facial recognition. For more information about the research visit the About Us page.'],
     ['assets/help-slides/start/7.png', 'Should you need to review this information again, simply click the help icon in the upper right-hand corner of any help page.']
@@ -17,18 +17,18 @@ const slideValues = {
     ['assets/help-slides/start/1.png', 'There are 8 levels to complete. You should complete one level per day, in about 10-15 minutes.'],
     ['assets/help-slides/start/2.png', 'In the learning task you will learn the day\'s names and faces, then you will use those faces to complete the challenges in the four training tasks.'],
     ['assets/help-slides/start/3.png', 'After passing the training tasks, you will complete two assessment tasks. Your level will increase after you finish.'],
-    ['assets/help-slides/start/4.png', 'Before the first level and after the last level you will complete an additional assessment to estimate your overall progress.'],
+    ['assets/help-slides/start/4.png', 'Before Level 1 and after Level 8 you will complete an additional assessment to estimate your overall progress.'],
     ['assets/help-slides/start/5.png', 'If you have questions about how to complete a task or what to do next, you can click the help icon in the upper-right corner.'],
     ['assets/help-slides/start/6.png', 'Your data will be used to further research of CRD and facial recognition. For more information about the research visit the About Us page.']
   ],
   'Meet Today\'s Faces': [
-    ['assets/help-slides/learning/0.png', 'Memorize the eight name-face pairs you are shown, as they will be the basis of your daily training.'],
+    ['assets/help-slides/learning/0.png', 'Memorize the eight name-face pairs you are shown; they will be the basis of your daily training.'],
     ['assets/help-slides/learning/1.png', 'You can come back to this module at any time after finishing.']
   ],
   'Name and Face': [
     ['assets/help-slides/name-face/0.png', 'For each of the names you\'ve seen before, you\'ll be asked to match the appropriate face.'],
     ['assets/help-slides/name-face/1.png', 'You\'ll get a point for each face you match correctly.'],
-    ['assets/help-slides/name-face/2.png', 'Whenever you guess incorrectly, you\'ll be shown the correct answer as well as the two names, to help remember them both.']
+    ['assets/help-slides/name-face/2.png', 'Whenever you guess incorrectly, you\'ll be shown the correct answer as well as the two names.']
   ],
   'Who\'s New?': [
     ['assets/help-slides/whos-new/0.png', 'Select the face that you haven\'t yet seen today, and that wasn\'t part of the learning task.'],
@@ -57,7 +57,7 @@ const slideValues = {
   'Same-Different': [
     ['assets/help-slides/same-different/0.png', 'Click anywhere to show the face and begin the timer.'],
     ['assets/help-slides/same-different/1.png', 'You will have 3 seconds to memorize the face.'],
-    ['assets/help-slides/same-different/2.png', 'After the timer is up, decide whether the face is the same. You can swipe left for different and right for the same.'],
+    ['assets/help-slides/same-different/2.png', 'After the timer is up, decide whether the face is the same.'],
     ['assets/help-slides/same-different/3.png', 'You will receive a point for each correct answer.']
   ],
   'Training Tasks': [
@@ -66,18 +66,18 @@ const slideValues = {
     ['assets/help-slides/training/2.png', 'After passing every task, you can progress to the daily assessment tasks with the bottom right-hand button. You will not be able to come back today after moving on.']
   ],
   'Assessment Tasks': [
-    ['assets/help-slides/assessment/0.png', 'You must complete these two assessment tasks each day, as they will be the primary way your progress is tracked. You cannot redo or restart them.']
+    ['assets/help-slides/assessment/0.png', 'The daily assessment tasks track your learning progress. You cannot redo or restart them.']
   ],
   'Finish': [
     ['assets/help-slides/finish/0.png', 'You are done for the day, come back tomorrow for your next training. You can see your training history on the history page.']
   ],
   'Pre-Assessment': [
-    ['assets/help-slides/pre-post/0.png', 'Welcome to your pre-assessment. This is a one-time test; it will provide a baseline for your current CRD level.'],
+    ['assets/help-slides/pre-post/0.png', 'Welcome to your pre-assessment. This is a one-time test; it will provide a baseline for your current CRD.'],
     ['assets/help-slides/same-different/0.png', 'Click \'Reveal\' to show the face and begin the timer.'],
     ['assets/help-slides/same-different/1.png', 'You will have 3 seconds to memorize the face.'],
     ['assets/help-slides/same-different/2.png', 'After the timer is up, decide whether the face is the same.'],
     ['assets/help-slides/pre-post/1.png', 'This test consists of 30 questions, so set aside a few minutes to complete it.'],
-    ['assets/help-slides/finish/0.png', 'When you have finished, you will move on to level 1, and can officially begin your training.']
+    ['assets/help-slides/finish/0.png', 'When you have finished you can officially begin your training in Level 1.']
   ],
   'Post-Assessment': [
     ['assets/help-slides/pre-post/0.png', 'Welcome to your post-assessment. This is your final test; after this, your participation in this research will be complete.'],
