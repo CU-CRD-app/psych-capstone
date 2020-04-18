@@ -14,7 +14,7 @@
 	height: 20vh;
 }
 #blank-row-register {
-	height: 17vh;
+	height: 2vh;
 }
 #blank-row-invalid {
 	height: 20vh;
@@ -62,6 +62,12 @@
 	background-color: gainsboro;
 }
 #invalid_card {
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	background-color: gainsboro;
+}
+#invalid_login_card {
 	height: 100%;
 	width: 100%;
 	margin: 0;
