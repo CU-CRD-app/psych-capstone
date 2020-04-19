@@ -39,7 +39,7 @@ module.exports = {
         //TODO: implement token
         let sendObject = {
             days: resDays.rows,
-            token: null
+            token: res.rows[0].userid
         }
 
         return new Promise(function(resolve, reject){
