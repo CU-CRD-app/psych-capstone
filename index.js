@@ -4,6 +4,7 @@ var cors = require('cors');
 var initialize = require('./initializeDB.js');
 var register = require('./registerUser.js');
 var login = require('./login.js');
+var tasks = require('./tasks.js');
 
 initialize.start()
     .then(res => console.log(res))
@@ -44,7 +45,7 @@ app.put("/register/", function(req, res, next) {
 
 app.post("/login/", function(req, res, next) {
     login.login(req.body)
-    .then(result => res.send(result))
+        .then(result => res.send(result))
         .catch(err => {
             if(typeof(err) === 'string'){
                 if(err == "Account not found"){
@@ -53,6 +54,19 @@ app.post("/login/", function(req, res, next) {
                 else{
                     res.status(400).send(err);
                 }
+            }
+            else{
+                res.status(500).send("Internal server error");
+            }
+        })
+})
+
+app.put("/tasks/", function(req, res, next) {
+    tasks.upload(req)
+        .then(result => res.send(result))
+        .catch(err => {
+            if(typeof(err) === 'string'){
+                res.status(400).send(err);
             }
             else{
                 res.status(500).send("Internal server error");
