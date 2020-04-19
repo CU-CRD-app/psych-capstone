@@ -15,6 +15,11 @@ export class ScorePageComponent implements OnInit {
 
   ngOnInit() { }
 
+  minTrainScore : number = 0.75; // Should be equal to minTrainScore in training
   replay_icon : string = "assets/icon/replay.svg";
   face_icon : string = "assets/icon/face.svg";
+
+  failed() {
+    return this.score < this.length * this.minTrainScore && !this.assessment
+  }
 }
