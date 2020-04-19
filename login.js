@@ -35,11 +35,18 @@ module.exports = {
 
         //TODO: sort?
         let resDays = await pgClient.query("SELECT * FROM day WHERE userid = $1", [res.rows[0].userid]);
+    
+        let preCount = await pgClient.query("SELECT count(score) FROM preassessment WHERE userid = $1", [res.rows[0].userid]);
+
+        let postCount = await pgClient.query("SELECT count(score) FROM postassessment WHERE userid = $1", [res.rows[0].userid]);
+
+        let level = resDays.rows.length + preCount.rows[0].count + postCount.rows[0].count;
 
         //TODO: implement token
         let sendObject = {
             days: resDays.rows,
-            token: res.rows[0].userid
+            token: res.rows[0].userid,
+            level: level
         }
 
         return new Promise(function(resolve, reject){
