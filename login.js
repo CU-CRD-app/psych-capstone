@@ -28,6 +28,7 @@ module.exports = {
         //TODO: password hashing
         let res = await pgClient.query("SELECT * FROM users WHERE email = $1 AND hashedpassword = $2", [req.email, req.password]);
         if(res.rows.length == 0){
+            pgClient.end();
             return new Promise(function(resolve, reject){
                 reject("Account not found");
             })
@@ -42,6 +43,7 @@ module.exports = {
 
         let level = resDays.rows.length + preCount.rows[0].count + postCount.rows[0].count;
 
+        pgClient.end();
         //TODO: implement token
         let sendObject = {
             days: resDays.rows,

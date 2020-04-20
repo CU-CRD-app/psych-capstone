@@ -103,6 +103,8 @@ module.exports = {
             })
         }
 
+        pgClient.end();
+
         return new Promise(function(resolve, reject){
             resolve("Database initialized");
         })
