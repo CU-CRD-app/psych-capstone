@@ -1,8 +1,8 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { timer } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Events } from '@ionic/angular';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { NativeStorage } from '@ionic-native/native-storage/ngx';
 
 enum Popup { NULL, HOME, LOGIN, REGISTER, WHY, INVALID }
 enum BadMsg { DEFAULT, NO_ACCOUNT, LOGINFORM, EMPTYSELECTIONS, 
@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
 
   private debugMode: boolean = true;
 
-  constructor(public formBuilder : FormBuilder, public events : Events, public http : HttpClient) {
+  constructor(public formBuilder : FormBuilder, public http : HttpClient, public nativeStorage : NativeStorage) {
 
     this.loginForm = formBuilder.group({
       username: ['', Validators.compose([Validators.required, Validators.email])],
@@ -80,18 +80,54 @@ export class LoginComponent implements OnInit {
         "email": username,
         "password": password
       };
-      let httpOptions = {
+
+      // let myHeader = new HttpHeaders(
+      //   {'Content-Type': 'application/json; charset=utf-8'});
+      const options = {
         headers: new HttpHeaders({
-          'Content-Type': 'application/json; charset=utf-8'
+          'Content-Type': 'application/json'
         })
       };
 
-      this.http.post(this.login_url, body, {headers: httpOptions}).subscribe((response) => {
-        console.log(response);
-        this.events.publish('loggedin', username);
+      this.http.post(this.login_url, body, options).subscribe((response: Response) => {
+        // console.log(response);
+        // console.log(response['token']);
+        // console.log(response['days']);
+        // console.log(response['level']);
+        this.nativeStorage.setItem("log_JSON", response)
+          .then(
+            () => console.log("log_JSON stored"),
+            error => console.log("Error storing entire log_JSON: ", error)
+          );
+        this.nativeStorage.setItem("token", response["token"])
+          .then(
+            () => console.log("token stored"),
+            error => console.log("Error storing token: ", error)
+          );
+        this.nativeStorage.setItem("days", response["days"])
+          .then(
+            () => console.log("days stored"),
+            error => console.log("Error storing days array: ", error)
+          );
+        //not implemented yet on backend:
+        this.nativeStorage.setItem("level", response["level"])
+          .then(
+            () => console.log("stored level"),
+            error => console.log("Error storing level: ", error)
+          );
+        // this.nativeStorage.setItem("pre", response["pre"])
+        //   .then(error => console.log("Error storing pre: ", error));
+        // this.nativeStorage.setItem("post", response["post"])
+        //   .then(error => console.log("Error storing post: ", error));
+        this.nativeStorage.setItem("username", username)
+          .then(
+            () => console.log('Stored username as: ', username),
+            error => console.log('Error storing username:', error)
+          );
         this.finished.emit();
 
       }, (err) => {
+        console.log(err);
         this.popup = Popup.INVALID;
         this.badmsg = BadMsg.NO_ACCOUNT;
       });
@@ -126,11 +162,6 @@ export class LoginComponent implements OnInit {
       let gender = this.registerForm.value.gender;
       let age = this.registerForm.value.age;
 
-      let regJSON = {Username: this.registerForm.value.username, Password: this.registerForm.value.password, 
-                     Race: this.registerForm.value.race, Nationality: this.registerForm.value.nationality,
-                     Gender: this.registerForm.value.gender, Age: this.registerForm.value.age};
-      console.log("Register JSON: ", JSON.stringify(regJSON));
-
       let body = {
         "email": email,
         "password": password,
@@ -145,11 +176,22 @@ export class LoginComponent implements OnInit {
         })
       };
 
-      this.http.put(this.register_url, body, {headers: httpOptionsReg}).subscribe((response) => {
+      console.log("Register JSON: ", JSON.stringify(body));
+
+      this.http.put(this.register_url, body, httpOptionsReg).subscribe((response: Response) => {
         console.log(response);
+        console.log(response.body);
+        //upon naming the popups and "BadMsg" earlier, I didn't plan on
+        // this functionality, hence the poor names, sorry.
+        // the two lines below tell the user they were successfully
+        // registered and to go log in now.
         this.popup = Popup.INVALID;
         this.badmsg = BadMsg.REGISTERED;
       }, (err) => {
+        console.log(err);
+        if (err.error == "Email already used") {
+          console.log("Email already used");
+        }
         this.popup = Popup.INVALID;
         this.badmsg = BadMsg.REG_HTTP_ERROR;
       });
