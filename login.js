@@ -1,6 +1,6 @@
 var { Client } = require('pg');
 
-allDefined = function(req){
+function allDefined(req){
     if(typeof(req.email) === 'undefined'){
         return false;
     }
