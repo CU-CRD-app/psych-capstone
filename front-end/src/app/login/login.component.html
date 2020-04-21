@@ -1,123 +1,80 @@
 <ion-content id="login-view">
-	<ion-grid style="margin-top: 45px">
-		<ion-row *ngIf="popup == Popup.HOME" id="blank-row-default"></ion-row>
-		<ion-row *ngIf="popup == Popup.WHY" id="blank-row-why"></ion-row>
-		<ion-row *ngIf="popup == Popup.LOGIN" id="blank-row-login"></ion-row>
-		<ion-row *ngIf="popup == Popup.REGISTER" id="blank-row-register"></ion-row>
-		<ion-row *ngIf="popup == Popup.INVALID" id="blank-row-invalid"></ion-row>
 
-		<ion-row *ngIf="popup == Popup.HOME" id="row-with-default-card">
-			<ion-col offset=3 size=6>
-				<ion-card id="default_card">
-					<ion-grid>
-						<ion-row>
-							<ion-col class='button-col'>
-								<ion-button (click)=Login() expand="block">
-									<p>Log-in&nbsp;</p>
-									<ion-icon [src]=login></ion-icon>
-								</ion-button>
-							</ion-col>
-						</ion-row>
-						<ion-row>
-							<ion-col class='button-col'>
-								<ion-button (click)=Register() expand="block">
-									<p>Register&nbsp;</p>
-									<ion-icon name="create"></ion-icon>
-								</ion-button>
-							</ion-col>
-						</ion-row>
-						<ion-row>
-							<ion-col class='button-col'>
-								<ion-button (click)=Why() expand="block">
-									<p>Why&nbsp;</p>
-									<ion-icon [name]=help></ion-icon>
-								</ion-button>
-							</ion-col>
-						</ion-row>
-					</ion-grid>
-				</ion-card>
-			</ion-col>
-		</ion-row>
+	<div *ngIf="popup == Popup.HOME" id="row-with-default-card">
+		<ion-button (click)=Login() style="height: 6%; width: 90%">Login</ion-button>
+		<ion-button (click)=Register() fill="clear" style="height: 6%; width: 90%; color: dodgerblue">Register</ion-button>
+	</div>
 
-		<ion-row *ngIf="popup == Popup.WHY" id="row-with-why-card">
-			<ion-col offset=2 size=8>
-				<ion-card id="why_card">
-					<p id="why_msg">We understand it can be annoying to have to make an account for everything, nowadays. We hope you'll still consider doing so for our app. The Psychology Department at the University of Colorado, Boulder is collecting anonymous data to better understand Cross Race Recognition Deficit, and that data is associated with your login, which is why we need everyone to make an account. Thanks for understanding.</p>
-					<ion-button (click)=BackHome() expand="block" class="back_but">
-						<ion-icon name="arrow-back"></ion-icon>
-						<p>Back&nbsp;</p>
-					</ion-button>
-				</ion-card>
-			</ion-col>
-		</ion-row>
+	<div *ngIf="popup == Popup.LOGIN" style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: white">
+		<form [formGroup]="loginForm" style="width: 100%">
+			<ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(loginForm.value.username) && !loginForm.controls.username.errors, 'invalid': fieldNotEmpty(loginForm.value.username) && loginForm.controls.username.errors}">
+				<ion-input formControlName="username" placeholder="Email" type="email"></ion-input>
+			</ion-item>
+			<br>
+			<ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(loginForm.value.password) && !loginForm.controls.password.errors, 'invalid': fieldNotEmpty(loginForm.value.password) && loginForm.controls.password.errors}">
+				<ion-input formControlName="password" placeholder="Password" type="password"></ion-input>
+			</ion-item>
+		</form>
+		<br><br><br>
+		<div style="display: flex; justify-content: space-evenly; width: 100%">
+			<ion-button (click)="BackHome(); resetForms()" fill="clear" style="width: 45%; height: 2rem; color: dodgerblue" [disabled]="awaitLoginHTTP">Back</ion-button>
+			<ion-button (click)="SubmitLogin(); resetForms()" style="width: 45%; height: 2rem" [disabled]="awaitLoginHTTP">
+				<span *ngIf="!awaitLoginHTTP">Login</span>
+				<ion-spinner *ngIf="awaitLoginHTTP" slot="end" name="dots" style="size: 50%"></ion-spinner>
+			</ion-button>
+		</div>
+	</div>	
 
-		<ion-row *ngIf="popup == Popup.INVALID" id="row-with-invalid-card">
-			<ion-col offset=2 size=8>
-				<ion-card id="invalid_card">
-					<p class="invalid_msg">Heyo, as of right now, you simply must put an "email" in for the username slot (foo@foo, for example). Password must not be empty. Thanks, sorry for the extra step.</p>
-					<p class="invalid_msg">Also, use Login instead of Register for now please.</p> 
-					<ion-button (click)=TryAgain() expand="block" class="back_but">
-						<ion-icon name="arrow-back"></ion-icon>
-						<p>Back&nbsp;</p>
-					</ion-button>
-				</ion-card>
-			</ion-col>
-		</ion-row>
-
-		<ion-row *ngIf="popup == Popup.LOGIN" id="row-with-login-card">
-			<ion-col offset=1 size=10>
-				<ion-card id="login_card">
-					<form [formGroup]="loginForm">
-						<ion-item>
-							<ion-label position="stacked">Username:</ion-label>
-							<ion-input formControlName="username" placeholder="Username" type="email"></ion-input>
-						</ion-item>
-						<ion-item>
-							<ion-label position="stacked">Password:</ion-label>
-							<ion-input formControlName="password" placeholder="sTup1dPa55w0rd!"></ion-input>
-						</ion-item>
-					</form>
-					<ion-button (click)=SubmitLogin() expand="block" id="login_but">
-						<p>Submit&nbsp;</p>
-					</ion-button>
-					<ion-button (click)=BackHome() expand="block" class="back_but">
-						<ion-icon name="arrow-back"></ion-icon>
-						<p>Back&nbsp;</p>
-					</ion-button>
-				</ion-card>
-			</ion-col>
-		</ion-row>
-
-		<ion-row *ngIf="popup == Popup.REGISTER" id="row-with-register-card">
-			<ion-col offset=1 size=10>
-				<ion-card id="register_card">
-					<form [formGroup]="registerForm">
-						<ion-item>
-							<ion-label position="stacked">Username:</ion-label>
-							<ion-input formControlName="username" placeholder="Username"></ion-input>
-						</ion-item>
-						<ion-item>
-							<ion-label position="stacked">Password:</ion-label>
-							<ion-input formControlName="password" placeholder="sTup1dPa55w0rd!"></ion-input>
-						</ion-item>
-						<ion-item>
-							<ion-label position="stacked">Confirm Pswd:</ion-label>
-							<ion-input formControlName="password_check" placeholder="sTup1dPa55w0rd!"></ion-input>
-						</ion-item>
-					</form>
-					<ion-button (click)=SubmitRegister() expand="block" id="register_but">
-						<p>Submit&nbsp;</p>
-					</ion-button>
-					<ion-button (click)=BackHome() expand="block" class="back_but">
-						<ion-icon name="arrow-back"></ion-icon>
-						<p>Back&nbsp;</p>
-					</ion-button>
-				</ion-card>
-			</ion-col>
-		</ion-row>
-
-	</ion-grid>
-	
+	<div *ngIf="popup == Popup.REGISTER" style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: white">
+		<form [formGroup]="registerForm" style="width: 100%">
+			<!--USERNAME-->
+			<ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.username) && !registerForm.controls.username.errors, 'invalid': fieldNotEmpty(registerForm.value.username) && registerForm.controls.username.errors}">
+				<ion-input formControlName="username" placeholder="Email"></ion-input>
+			</ion-item>
+			<!--PASSWORD-->
+			<ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.password) && !registerForm.controls.password.errors, 'invalid': fieldNotEmpty(registerForm.value.password) && registerForm.controls.password.errors}">
+				<ion-input formControlName="password" placeholder="Password" type="password"></ion-input>
+			</ion-item>
+			<!--CONFIRM PASSWORD-->
+			<ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.password_check) && !registerForm.controls.password_check.errors && registerForm.value.password_check == registerForm.value.password, 'invalid': (fieldNotEmpty(registerForm.value.password) || fieldNotEmpty(registerForm.value.password_check)) && (registerForm.controls.password_check.errors || registerForm.value.password_check != registerForm.value.password)}">
+				<ion-input formControlName="password_check" placeholder="Confirm Password" type="password"></ion-input>
+			</ion-item>
+			<br><br>
+			<!--AGE-->
+			<ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.age) && !registerForm.controls.age.errors, 'invalid': fieldNotEmpty(registerForm.value.age) && registerForm.controls.age.errors}">
+				<ion-input formControlName="age" type="number" placeholder="Age"></ion-input>
+			</ion-item>
+			<!--RACE-->
+			<ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.race) && !registerForm.controls.race.errors, 'invalid': fieldNotEmpty(registerForm.value.race) && registerForm.controls.race.errors}">
+				<ion-label>Ethnicity</ion-label>
+				<ion-select placeholder="Ethnicity" formControlName="race">
+					<ion-select-option *ngFor="let race of raceList" value={{race}}>{{race}}</ion-select-option>
+				</ion-select>
+			</ion-item>
+			<!--NATIONALITY-->
+			<ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.nationality) && !registerForm.controls.nationality.errors, 'invalid': fieldNotEmpty(registerForm.value.nationality) && registerForm.controls.nationality.errors}">
+				<ion-label>Nationality</ion-label>
+				<ion-select placeholder="Nationality" formControlName="nationality">
+					<ion-select-option *ngFor="let nation of nationList" value={{nation}}>{{nation}}</ion-select-option>
+				</ion-select>
+			</ion-item>
+			<!--GENDER-->
+			<ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.gender) && !registerForm.controls.gender.errors, 'invalid': fieldNotEmpty(registerForm.value.gender) && registerForm.controls.gender.errors}">
+				<ion-label>Gender</ion-label>
+				<ion-select placeholder="Gender" formControlName="gender">
+					<ion-select-option *ngFor="let gender of genderList" value={{gender}}>{{gender}}</ion-select-option>
+				</ion-select>
+			</ion-item>
+		</form>
+		<br><br><br>
+		<div style="display: flex; justify-content: space-evenly; width: 100%">
+			<ion-button (click)="BackHome(); resetForms()" fill="clear" style="width: 45%; height: 2rem; color: dodgerblue" [disabled]="awaitLoginHTTP">Back</ion-button>
+			<ion-button (click)="SubmitRegister(); resetForms()" style="width: 45%; height: 2rem" [disabled]="awaitLoginHTTP">
+				<span *ngIf="!awaitRegisterHTTP">Register</span>
+				<ion-spinner *ngIf="awaitRegisterHTTP" slot="end" name="dots" style="size: 50%"></ion-spinner>
+			</ion-button>
+		</div>
+	</div>
 	
 </ion-content>
 
