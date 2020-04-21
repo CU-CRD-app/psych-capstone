@@ -1,5 +1,12 @@
 <ion-content id="history-view">
 	<ion-grid>
+		<div>
+			<p style="color: white" id="level_text">Pre-Assessment</p>
+			<ion-card id="date_card">
+				<p style="text-align: center">Completed On: </p>
+				<p style="text-align: center"></p>
+			</ion-card>
+		</div>
 		<div *ngFor="let level of levels; let idx = index" id="repeating_div">
 			<p style="color: white" id="level_text">Level {{idx+1}}</p>
 			<ion-row id="history_row">
@@ -11,22 +18,29 @@
 				</ion-col>
 				<ion-col size=4 *ngIf="level">
 					<ion-card id="prescore_card">
-						<p style="text-align: center">Pre-test Score:</p>
+						<p style="text-align: center">Forced Choice:</p>
 						<p style="text-align: center" class="score">{{prescores[idx]}}</p>
 					</ion-card>
 				</ion-col>
 				<ion-col size=4 *ngIf="level">
 					<ion-card id="postscore_card">
-						<p style="text-align: center">Post-test Score:</p>
+						<p style="text-align: center">Same-Different:</p>
 						<p style="text-align: center" class="score">{{postscores[idx]}}</p>
 					</ion-card>
 				</ion-col>
 				<ion-col *ngIf="!level">
-					<ion-card id="not_completed_card">
+					<ion-card id="date_card">
 						<p>This level has not yet been completed.</p>
 					</ion-card>
 				</ion-col>
 			</ion-row>
+		</div>
+		<div>
+			<p style="color: white" id="level_text">Post-Assessment</p>
+			<ion-card id="date_card">
+				<p style="text-align: center">Completed On: </p>
+				<p style="text-align: center"></p>
+			</ion-card>
 		</div>
 	</ion-grid>
 </ion-content>
