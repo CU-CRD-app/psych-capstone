@@ -18,7 +18,7 @@
 		<br><br><br>
 		<div style="display: flex; justify-content: space-evenly; width: 100%">
 			<ion-button (click)="BackHome(); resetForms()" fill="clear" style="width: 45%; height: 2rem; color: dodgerblue" [disabled]="awaitLoginHTTP">Back</ion-button>
-			<ion-button (click)=SubmitLogin() style="width: 45%; height: 2rem" [disabled]="awaitLoginHTTP">
+			<ion-button (click)="SubmitLogin(); resetForms()" style="width: 45%; height: 2rem" [disabled]="awaitLoginHTTP">
 				<span *ngIf="!awaitLoginHTTP">Login</span>
 				<ion-spinner *ngIf="awaitLoginHTTP" slot="end" name="dots" style="size: 50%"></ion-spinner>
 			</ion-button>
@@ -69,7 +69,7 @@
 		<br><br><br>
 		<div style="display: flex; justify-content: space-evenly; width: 100%">
 			<ion-button (click)="BackHome(); resetForms()" fill="clear" style="width: 45%; height: 2rem; color: dodgerblue" [disabled]="awaitLoginHTTP">Back</ion-button>
-			<ion-button (click)=SubmitRegister() style="width: 45%; height: 2rem" [disabled]="awaitLoginHTTP">
+			<ion-button (click)="SubmitRegister(); resetForms()" style="width: 45%; height: 2rem" [disabled]="awaitLoginHTTP">
 				<span *ngIf="!awaitRegisterHTTP">Register</span>
 				<ion-spinner *ngIf="awaitRegisterHTTP" slot="end" name="dots" style="size: 50%"></ion-spinner>
 			</ion-button>

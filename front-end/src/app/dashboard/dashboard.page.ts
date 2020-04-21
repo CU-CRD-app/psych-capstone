@@ -68,10 +68,10 @@ export class DashboardPage {
   }
 
   viewReady : boolean = false;
-  loggedIn : boolean = true;
+  loggedIn : boolean = false;
 
-  username : string = 'USERNAME'
-  level : number = 1;
+  username : string;
+  level : number;
   progressToday : number = 0.5;
 
   //testing
