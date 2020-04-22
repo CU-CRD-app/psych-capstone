@@ -46,7 +46,7 @@ module.exports = {
         pgClient.connect();
 
         //TODO: Token is used directly as userid throughout this file, needs to change when token is properly implemented
-        let dayCount = pgClient.query("SELECT count(date) FROM day WHERE userid = $1 AND level = $2", [req.token, req.level]);
+        let dayCount = await pgClient.query("SELECT count(date) FROM day WHERE userid = $1 AND level = $2", [req.token, req.level]);
 
         if(dayCount.rows[0].count > 0){
             //Guard condition, prevents the same level from being uploaded twice for a given user
