@@ -73,3 +73,13 @@ app.put("/tasks/", function(req, res, next) {
             }
         })
 })
+
+app.put("/checktoken/", function(req, res, next){
+    //TODO: actually implement token logic
+    if(typeof(req.body.token) !== "undefined"){
+        res.send("valid");
+    }
+    else{
+        res.status(400).send("invalid");
+    }
+})
