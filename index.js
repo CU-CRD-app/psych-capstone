@@ -12,7 +12,6 @@ initialize.start()
 
 var app = express();
 
-app.use(cors());
 app.use(bodyParser.json());
 
 var server = app.listen(process.env.PORT || 8080, function () {
@@ -20,7 +19,9 @@ var server = app.listen(process.env.PORT || 8080, function () {
     console.log("App now running on port", port);
 });
 
-app.get("/", function(req, res, next) {
+app.options('*', cors());
+
+app.get("/", cors(), function(req, res, next) {
     if(req.headers.authorization != undefined){
         let auth = req.headers.authorization.split(' ')[1];
         let [user, pass] = Buffer.from(auth, 'base64').toString().split(':');
@@ -30,7 +31,7 @@ app.get("/", function(req, res, next) {
     res.status(403).send("No login provided");
 })
 
-app.put("/register/", function(req, res, next) {
+app.put("/register/", cors(), function(req, res, next) {
     register.user(req.body)
         .then(result => res.send(result))
         .catch(err => {
@@ -43,7 +44,7 @@ app.put("/register/", function(req, res, next) {
         })
 })
 
-app.post("/login/", function(req, res, next) {
+app.post("/login/", cors(), function(req, res, next) {
     login.login(req.body)
         .then(result => res.send(result))
         .catch(err => {
@@ -61,9 +62,7 @@ app.post("/login/", function(req, res, next) {
         })
 })
 
-app.options("/tasks/", cors()); //Enable pre-flight: https://expressjs.com/en/resources/middleware/cors.html
-
-app.put("/tasks/", function(req, res, next) {
+app.put("/tasks/", cors(), function(req, res, next) {
     tasks.upload(req.body)
         .then(result => res.send(result))
         .catch(err => {
@@ -76,7 +75,7 @@ app.put("/tasks/", function(req, res, next) {
         })
 })
 
-app.put("/checktoken/", function(req, res, next){
+app.put("/checktoken/", cors(), function(req, res, next){
     //TODO: actually implement token logic
     if(typeof(req.body.token) !== "undefined"){
         res.send("valid");
