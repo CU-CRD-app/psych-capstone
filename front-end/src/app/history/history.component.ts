@@ -14,9 +14,6 @@ export class HistoryComponent implements OnInit {
   constructor(public nativeStorage : NativeStorage) {}
 
   ngOnInit() {
-    this.days = [{}, {}, {}, {}, {}, {}, {}, {}];
-    this.pre_post = [{}, {}];
-    this.currentCard = 0;
 
     this.nativeStorage.getItem("days").then((data) => {
       let days = JSON.stringify(data);
@@ -24,11 +21,22 @@ export class HistoryComponent implements OnInit {
         this.days[i] = days[i];
       }
     });
+    this.nativeStorage.getItem("level").then(data => {
+      this.level = data;
+      if (this.level > 0) {
+        this.level--;
+      }
+    });
   }
 
-  days : any;
-  pre_post : any;
-  currentCard : number;
+  ngAfterViewInit() {
+    this.slide(this.level);
+  }
+
+  days : any = [{}, {}, {}, {}, {}, {}, {}, {}];
+  pre_post : any = [{}, {}];;
+  currentCard : number = 0;
+  level : number = 0;
 
   async slide(index: number) {
     await this.slideElement.slideTo(index);

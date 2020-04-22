@@ -25,25 +25,38 @@ export class DashboardPage {
         }
       );
 
-   // this.nativeStorage.getItem("log_JSON")
-   //   .then(
-   //     data=>{
-   //       this.json = JSON.stringify(data);
-   //     },
-   //     err => {
-   //       console.log(err);
-   //     }
-   //   );
-   // this.nativeStorage.getItem("token")
-   //   .then(
-   //     data=>{
-   //       this.token = JSON.stringify(data);
-   //     },
-   //     err => {
-   //       console.log(err);
-   //     }
-   //   );
-   // this.nativeStorage.getItem("days").then(data=>{this.days = JSON.stringify(data);});
+    this.nativeStorage.getItem("days")
+      .then(
+        data => {
+          this.days = data;
+        },
+        error => {
+          console.log(error);
+        }
+      );
+
+    this.progressToday = 0;
+    if (this.days[this.level]) {
+      if (this.days[this.level].nameface >= 6) {
+        this.progressToday++;
+      }
+      if (this.days[this.level].whosnew >= 6) {
+        this.progressToday++;
+      }
+      if (this.days[this.level].memory >= 24) {
+        this.progressToday++;
+      }
+      if (this.days[this.level].shuffle >= 12) {
+        this.progressToday++;
+      }
+      if (this.days[this.level].forcedchoice >= 6) {
+        this.progressToday++;
+      }
+      if (this.days[this.level].samedifferent >= 6) {
+        this.progressToday++;
+      }
+      this.progressToday /= 6;
+    }
   }
 
   ngAfterViewInit() {
@@ -51,16 +64,11 @@ export class DashboardPage {
   }
 
   viewReady : boolean = false;
-  loggedIn : boolean = false;
+  loggedIn : boolean = true;
 
   level : number = 0;
+  days : any = [];
   progressToday : number = 0;
-
-  //testing
-  // json : any;
-  // token : any;
-  // days : any;
-
 
   async logoutAlert() {
     const alert = await this.alertController.create({

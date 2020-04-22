@@ -15,7 +15,7 @@
     </ion-header>
 
     <div style="margin-left: 3vw">
-      <div class="header" style="margin-top: 10px">
+      <div class="header" style="margin-top: 5%; margin-bottom: 5%">
         <b>
           <div *ngIf="level == 0">Pre-Assessment</div>
           <div *ngIf="level > 0 && level < 9">Level: {{level}}</div>
@@ -23,8 +23,8 @@
           <div *ngIf="level > 9">Complete</div>
         </b>
       </div>
-      <div style="margin-top: 5%; margin-bottom: 5%">
-        <div class="subheader" style="margin-bottom: 2%">Current Progress: {{progressToday * 100}}%</div>
+      <div *ngIf="level > 0 && level < 9" style="margin-bottom: 5%">
+        <div class="subheader" style="margin-bottom: 2%">Level Progress: {{progressToday * 100}}%</div>
         <ion-progress-bar style="width: 80%" value={{progressToday}}></ion-progress-bar>
       </div>
 
