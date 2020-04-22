@@ -11,31 +11,14 @@ import { NativeStorage } from '@ionic-native/native-storage/ngx';
 })
 export class DashboardPage {
 
-  constructor(public alertController : AlertController, public getProgress: GetProgressService, public events: Events, public nativeStorage: NativeStorage) {
-    // set login creds
-
-    // events.subscribe('dashLevel', (black_lvl, asian_lvl) => {
-    //   this.level = black_lvl;
-    // });
-  }
+  constructor(public alertController : AlertController, public getProgress: GetProgressService, public events: Events, public nativeStorage: NativeStorage) {}
 
   ngOnInit() {
-    //this.getProgress.dashLevel();
 
     this.nativeStorage.getItem("level")
       .then(
         data => {
           this.level = data;
-        },
-        error => {
-          console.log(error);
-        }
-      );
-
-    this.nativeStorage.getItem("username")
-      .then(
-        data => {
-          this.username = data;
         },
         error => {
           console.log(error);
@@ -70,9 +53,8 @@ export class DashboardPage {
   viewReady : boolean = false;
   loggedIn : boolean = false;
 
-  username : string;
-  level : number;
-  progressToday : number = 0.5;
+  level : number = 0;
+  progressToday : number = 0;
 
   //testing
   // json : any;

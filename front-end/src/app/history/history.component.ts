@@ -1,6 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { HistoryDataService } from '../service/history-data.service';
-import { Events } from '@ionic/angular';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NativeStorage } from '@ionic-native/native-storage/ngx';
+import { IonSlides } from '@ionic/angular';
 
 @Component({
   selector: 'app-history-comp',
@@ -8,30 +8,34 @@ import { Events } from '@ionic/angular';
   styleUrls: ['./history.component.scss'],
 })
 export class HistoryComponent implements OnInit {
+  @ViewChild('slideElement', {static: false}) slideElement: IonSlides;
+  @ViewChild('rangeElement', {static: false}) rangeElement: IonSlides;
 
-  constructor(public history: HistoryDataService, public events: Events) {
-    events.subscribe('history:read', (username, pseudoJSON) => 
-    {
-      this.username = username;
-      this.levels = pseudoJSON[0];
-      this.dates = pseudoJSON[1];
-      this.prescores = pseudoJSON[2];
-      this.postscores = pseudoJSON[3];
+  constructor(public nativeStorage : NativeStorage) {}
+
+  ngOnInit() {
+    this.days = [{}, {}, {}, {}, {}, {}, {}, {}];
+    this.pre_post = [{}, {}];
+    this.currentCard = 0;
+
+    this.nativeStorage.getItem("days").then((data) => {
+      let days = JSON.stringify(data);
+      for (let i : number = 0; i < this.days.length; i++) {
+        this.days[i] = days[i];
+      }
     });
   }
 
-  ngOnInit() {
-  	this.history.getJSON();
+  days : any;
+  pre_post : any;
+  currentCard : number;
+
+  async slide(index: number) {
+    await this.slideElement.slideTo(index);
   }
 
-  update() {
-    
+  async setCurrent() {
+    this.currentCard = await this.slideElement.getActiveIndex();
   }
-
-  username : string = "placeholder";
-  levels : boolean[] = [false, false, false, false, false, false];
-  dates : string[] = [];
-  prescores: number[] = [];
-  postscores: number[] = [];
 
 }
