@@ -62,7 +62,7 @@ app.post("/login/", cors(), function(req, res, next) {
         })
 })
 
-app.put("/tasks/", cors(), function(req, res, next) {
+app.post("/tasks/", cors(), function(req, res, next) {
     tasks.upload(req.body)
         .then(result => res.send(result))
         .catch(err => {
