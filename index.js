@@ -61,6 +61,8 @@ app.post("/login/", function(req, res, next) {
         })
 })
 
+app.options("/tasks/", cors()); //Enable pre-flight: https://expressjs.com/en/resources/middleware/cors.html
+
 app.put("/tasks/", function(req, res, next) {
     tasks.upload(req.body)
         .then(result => res.send(result))
