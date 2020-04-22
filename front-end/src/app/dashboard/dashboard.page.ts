@@ -11,16 +11,9 @@ import { NativeStorage } from '@ionic-native/native-storage/ngx';
 })
 export class DashboardPage {
 
-  constructor(public alertController : AlertController, public getProgress: GetProgressService, public events: Events, public nativeStorage: NativeStorage) {
-    // set login creds
-
-    // events.subscribe('dashLevel', (black_lvl, asian_lvl) => {
-    //   this.level = black_lvl;
-    // });
-  }
+  constructor(public alertController : AlertController, public getProgress: GetProgressService, public events: Events, public nativeStorage: NativeStorage) {}
 
   ngOnInit() {
-    //this.getProgress.dashLevel();
 
     this.nativeStorage.getItem("level")
       .then(
@@ -32,35 +25,38 @@ export class DashboardPage {
         }
       );
 
-    this.nativeStorage.getItem("username")
+    this.nativeStorage.getItem("days")
       .then(
         data => {
-          this.username = data;
+          this.days = data;
         },
         error => {
           console.log(error);
         }
       );
 
-   // this.nativeStorage.getItem("log_JSON")
-   //   .then(
-   //     data=>{
-   //       this.json = JSON.stringify(data);
-   //     },
-   //     err => {
-   //       console.log(err);
-   //     }
-   //   );
-   // this.nativeStorage.getItem("token")
-   //   .then(
-   //     data=>{
-   //       this.token = JSON.stringify(data);
-   //     },
-   //     err => {
-   //       console.log(err);
-   //     }
-   //   );
-   // this.nativeStorage.getItem("days").then(data=>{this.days = JSON.stringify(data);});
+    this.progressToday = 0;
+    if (this.days[this.level]) {
+      if (this.days[this.level].nameface >= 6) {
+        this.progressToday++;
+      }
+      if (this.days[this.level].whosnew >= 6) {
+        this.progressToday++;
+      }
+      if (this.days[this.level].memory >= 24) {
+        this.progressToday++;
+      }
+      if (this.days[this.level].shuffle >= 12) {
+        this.progressToday++;
+      }
+      if (this.days[this.level].forcedchoice >= 6) {
+        this.progressToday++;
+      }
+      if (this.days[this.level].samedifferent >= 6) {
+        this.progressToday++;
+      }
+      this.progressToday /= 6;
+    }
   }
 
   ngAfterViewInit() {
@@ -68,17 +64,11 @@ export class DashboardPage {
   }
 
   viewReady : boolean = false;
-  loggedIn : boolean = false;
+  loggedIn : boolean = true;
 
-  username : string;
-  level : number;
-  progressToday : number = 0.5;
-
-  //testing
-  // json : any;
-  // token : any;
-  // days : any;
-
+  level : number = 0;
+  days : any = [];
+  progressToday : number = 0;
 
   async logoutAlert() {
     const alert = await this.alertController.create({
