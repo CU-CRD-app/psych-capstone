@@ -59,65 +59,15 @@ module.exports = {
 
         let now = new Date();
 
-        //TODO: Do we need completed if we are uploading all tasks at once when the day is completed?
-        pgClient.query("INSERT INTO day (userid, level, race, completed, date) VALUES ($1, $2, $3, $4, $5)", [req.token, req.level, req.race, true, now])
+        let values = [req.token, req.level, req.race, req.completed, now, req.nameface, req.whosnew, req.memory, req.shuffle, req.forcedchoice, req.samedifferent];
+
+        pgClient.query("INSERT INTO day (userid, level, race, date, nameface, whosnew, memory, shuffle, forcedchoice, samedifferent) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)", values)
             .catch(err => {
                 pgClient.end();
                 return new Promise(function(resolve, reject){
                     reject(err);
                 })
             })
-
-
-        //Training Tasks: (matches order displayed in app)
-        //1: nameface
-        //2: who's new
-        //3: memory
-        //4: shuffle
-
-        pgClient.query("INSERT INTO trainingtask (userid, level, race, taskid, score) VALUES ($1, $2, $3, $4, $5)", [req.token, req.level, req.race, 1, req.nameface])
-        .catch(err => {
-            pgClient.end();
-            return new Promise(function(resolve, reject){
-                reject(err);
-            })
-        })
-
-        pgClient.query("INSERT INTO trainingtask (userid, level, race, taskid, score) VALUES ($1, $2, $3, $4, $5)", [req.token, req.level, req.race, 2, req.whosnew])
-        .catch(err => {
-            pgClient.end();
-            return new Promise(function(resolve, reject){
-                reject(err);
-            })
-        })
-
-        pgClient.query("INSERT INTO trainingtask (userid, level, race, taskid, score) VALUES ($1, $2, $3, $4, $5)", [req.token, req.level, req.race, 3, req.memory])
-        .catch(err => {
-            pgClient.end();
-            return new Promise(function(resolve, reject){
-                reject(err);
-            })
-        })
-
-        pgClient.query("INSERT INTO trainingtask (userid, level, race, taskid, score) VALUES ($1, $2, $3, $4, $5)", [req.token, req.level, req.race, 4, req.shuffle])
-        .catch(err => {
-            pgClient.end();
-            return new Promise(function(resolve, reject){
-                reject(err);
-            })
-        })
-
-        //Assessment tasks:
-        //1: Forced choice
-        //2: Same different
-        
-        pgClient.query("INSERT INTO assessmenttask (userid, level, race, score) VALUES ($1, $2, $3, $4)", [req.token, req.level, req.race, req.forcedchoice])
-        .catch(err => {
-            pgClient.end();
-            return new Promise(function(resolve, reject){
-                reject(err);
-            })
-        })
 
         pgClient.end();
         return new Promise(function(resolve, reject){
