@@ -62,7 +62,7 @@ app.post("/login/", function(req, res, next) {
 })
 
 app.put("/tasks/", function(req, res, next) {
-    tasks.upload(req)
+    tasks.upload(req.body)
         .then(result => res.send(result))
         .catch(err => {
             if(typeof(err) === 'string'){
