@@ -40,29 +40,7 @@ module.exports = {
         // day
         res = await pgClient.query("SELECT COUNT(table_name) FROM INFORMATION_SCHEMA.TABLES WHERE table_name='day'");
         if(res.rows[0].count == 0){
-            pgClient.query("CREATE TABLE day (userid INT, level INT, race TEXT, completed BOOLEAN, date DATE);", (err, res) => {
-                if(err){
-                    console.log(err);
-                    console.log("CRITICAL: Database not intialized");
-                }
-            })
-        }
-
-        // training-task
-        res = await pgClient.query("SELECT COUNT(table_name) FROM INFORMATION_SCHEMA.TABLES WHERE table_name='trainingtask'");
-        if(res.rows[0].count == 0){
-            pgClient.query("CREATE TABLE trainingtask (userid INT, level INT, taskid INT, race TEXT, score INT);", (err, res) => {
-                if(err){
-                    console.log(err);
-                    console.log("CRITICAL: Database not intialized");
-                }
-            })
-        }
-
-        // assessment-task
-        res = await pgClient.query("SELECT COUNT(table_name) FROM INFORMATION_SCHEMA.TABLES WHERE table_name='assessmenttask'");
-        if(res.rows[0].count == 0){
-            pgClient.query("CREATE TABLE assessmenttask (userid INT, level INT, race TEXT, score INT);", (err, res) => {
+            pgClient.query("CREATE TABLE day (userid INT, level INT, race TEXT, date DATE, nameface INT, whosnew INT, memory INT, shuffle INT, forcedchoice INT, samedifferent INT);", (err, res) => {
                 if(err){
                     console.log(err);
                     console.log("CRITICAL: Database not intialized");
@@ -85,17 +63,6 @@ module.exports = {
         res = await pgClient.query("SELECT COUNT(table_name) FROM INFORMATION_SCHEMA.TABLES WHERE table_name='postassessment'");
         if(res.rows[0].count == 0){
             pgClient.query("CREATE TABLE postassessment (userid INT, score INT, race TEXT, completed BOOLEAN);", (err, res) => {
-                if(err){
-                    console.log(err);
-                    console.log("CRITICAL: Database not intialized");
-                }
-            })
-        }
-
-        // task-info
-        res = await pgClient.query("SELECT COUNT(table_name) FROM INFORMATION_SCHEMA.TABLES WHERE table_name='taskinfo'");
-        if(res.rows[0].count == 0){
-            pgClient.query("CREATE TABLE taskinfo (taskid INT, taskname TEXT, maxscore INT);", (err, res) => {
                 if(err){
                     console.log(err);
                     console.log("CRITICAL: Database not intialized");
