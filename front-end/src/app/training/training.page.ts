@@ -5,6 +5,7 @@ import { HelpModalComponent } from '../help-modal/help-modal.component';
 import { takeUntil } from 'rxjs/operators';
 import { createAnimation } from '@ionic/core';
 import { GetProgressService } from '../service/get-progress.service';
+import { SubmitScoresService } from '../service/submit-scores.service';
 
 enum Race { BLACK, ASIAN }
 enum Stage { START, TRAINING, ASSESSMENT, DONE }
@@ -48,7 +49,7 @@ let raceProperties = {
 })
 export class TrainingPage {
 
-  constructor(public alertController: AlertController, public modalController: ModalController, private routerOutlet: IonRouterOutlet, public getProgress: GetProgressService, public events: Events) {
+  constructor(public alertController: AlertController, public modalController: ModalController, private routerOutlet: IonRouterOutlet, public getProgress: GetProgressService, public submitScores: SubmitScoresService, public events: Events) {
 
     this.routerOutlet.swipeGesture = false;
 

@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { IonSlides } from '@ionic/angular';
+import { SubmitScoresService } from '../service/submit-scores.service';
 
 @Component({
   selector: 'app-history-comp',
@@ -11,7 +12,7 @@ export class HistoryComponent implements OnInit {
   @ViewChild('slideElement', {static: false}) slideElement: IonSlides;
   @ViewChild('rangeElement', {static: false}) rangeElement: IonSlides;
 
-  constructor(public nativeStorage : NativeStorage) {}
+  constructor(public nativeStorage : NativeStorage, public submitScores : SubmitScoresService) {}
 
   ngOnInit() {
 
@@ -27,16 +28,25 @@ export class HistoryComponent implements OnInit {
         this.level--;
       }
     });
+    this.nativeStorage.getItem("token").then(data => {
+      this.token = data;
+    });
   }
 
   ngAfterViewInit() {
     this.slide(this.level);
   }
 
+  subTest() {
+    this.submitScores.submitTaskScores(this.token, 2, [2,3,4,5,6,1]);
+  }
+
   days : any = [{}, {}, {}, {}, {}, {}, {}, {}];
   pre_post : any = [{}, {}];;
   currentCard : number = 0;
   level : number = 0;
+  //testing
+  token : any;
 
   async slide(index: number) {
     await this.slideElement.slideTo(index);
