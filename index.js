@@ -78,9 +78,9 @@ app.post("/tasks/", cors(), function(req, res, next) {
 app.put("/checktoken/", cors(), function(req, res, next){
     //TODO: actually implement token logic
     if(typeof(req.body.token) !== "undefined"){
-        res.send("valid");
+        res.json({status:"valid"});
     }
     else{
-        res.status(400).send("invalid");
+        res.status(400).json({status:"invalid"});
     }
 })
