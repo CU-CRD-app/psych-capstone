@@ -1,5 +1,5 @@
 // JavaScript source code
-//import env from '../../env';
+//import env from '../../env'
 
 /**
 
@@ -31,12 +31,17 @@ const isValidEmail = (email) => {
 
 const validatePassword = (password) => {
 
-  if (password.length <= 7 || password === '') {
-
-    return false;
-
-  } return true;
-
+  var passwordValidator = require('password-validator');
+  var validator = new passwordValidator();
+  validator
+  .is().min(7)                                    // Minimum length 7
+  .is().max(10)                                  // Maximum length 10
+  .has().uppercase()                              // Must have uppercase letters
+  .has().lowercase()                              // Must have lowercase letters
+  .has().digits()                                 // Must have digits
+  .has().not().spaces()                           // Should not have spaces
+  .is().not().oneOf(['Passw0rd', 'Password123']); // Blacklist these values
+  return validator.validate(password)
 };
 
 /**

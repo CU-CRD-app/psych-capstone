@@ -7,14 +7,13 @@ import{
   deleteUser,
 }from '../db/dev/dbQuery';
 
-import {
+import{
   //hashPassword,
   //comparePassword,
   isValidEmail,
   validatePassword,
   isEmpty,
   generateUserToken,
-
 } from '../helpers/Validation';
 
 import {
@@ -54,7 +53,7 @@ const createUserinfo = async (req, res) => {
 
   if (!validatePassword(password)) {
 
-    errorMessage.error = 'Password must be more than 7 characters';
+    errorMessage.error = 'Password should have length between 7 and 10 including at least 1 digits, 1 uppercase and 1 lowercase without any space in it.';
 
     return res.status(status.bad).send(errorMessage);
 
