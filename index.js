@@ -76,13 +76,13 @@ app.post("/login/", cors(corsOptions), function(req, res, next) {
 
 app.post("/tasks/", cors(corsOptions), function(req, res, next) {
     tasks.upload(req.body)
-        .then(result => res.send(result))
+        .then(result => res.json({"result":result}))
         .catch(err => {
             if(typeof(err) === 'string'){
                 res.status(400).send(err);
             }
             else{
-                res.status(500).send("Internal server error");
+                res.status(500).json({"result":"Internal server error"});
             }
         })
 })
