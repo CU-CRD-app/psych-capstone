@@ -5,6 +5,8 @@ var initialize = require('./initializeDB.js');
 var register = require('./registerUser.js');
 var login = require('./login.js');
 var tasks = require('./tasks.js');
+var preassessment = require('./preassessment.js');
+var postassessment = require('./postassessment.js');
 
 initialize.start()
     .then(res => console.log(res))
@@ -91,4 +93,30 @@ app.put("/checktoken/", cors(), function(req, res, next){
     else{
         res.status(400).json({status:"invalid"});
     }
+})
+
+app.put("/preassessment/", cors(), function(req, res, next){
+    preassessment.upload(req.body)
+        .then(result => res.send(result))
+        .catch(err => {
+            if(typeof(err) === 'string'){
+                res.status(400).send(err);
+            }
+            else{
+                res.status(500).send("Internal server error");
+            }
+        })
+})
+
+app.put("/postassessment/", cors(), function(req, res, next){
+    postassessment.upload(req.body)
+        .then(result => res.send(result))
+        .catch(err => {
+            if(typeof(err) === 'string'){
+                res.status(400).send(err);
+            }
+            else{
+                res.status(500).send("Internal server error");
+            }
+        })
 })
