@@ -70,9 +70,9 @@ const corsOptions = {
     maxAge: 3600
 }
 
-app.options("/tasks/", cors());
+app.options("/tasks/", cors(corsOptions));
 
-app.post("/tasks/", cors(), function(req, res, next) {
+app.post("/tasks/", cors(corsOptions), function(req, res, next) {
     tasks.upload(req.body)
         .then(result => res.send(result))
         .catch(err => {
