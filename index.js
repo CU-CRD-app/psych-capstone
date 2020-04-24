@@ -19,8 +19,6 @@ var server = app.listen(process.env.PORT || 8080, function () {
     console.log("App now running on port", port);
 });
 
-app.options('*', cors());
-
 app.get("/", cors(), function(req, res, next) {
     if(req.headers.authorization != undefined){
         let auth = req.headers.authorization.split(' ')[1];
@@ -61,6 +59,16 @@ app.post("/login/", cors(), function(req, res, next) {
             }
         })
 })
+
+//Ref: https://github.com/troygoode/node-cors-server/blob/master/server.js
+const corsOptions = {
+    origin: true,
+    methods: ["POST"],
+    credentials: true,
+    maxAge: 3600
+}
+
+app.options("/tasks/", cors());
 
 app.post("/tasks/", cors(), function(req, res, next) {
     tasks.upload(req.body)
