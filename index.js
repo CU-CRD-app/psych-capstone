@@ -76,7 +76,7 @@ app.post("/login/", cors(corsOptions), function(req, res, next) {
 
 app.post("/tasks/", cors(corsOptions), function(req, res, next) {
     tasks.upload(req.body)
-        .then(result => res.json({"result":result}))
+        .then(result => res.json({result:result}))
         .catch(err => {
             if(typeof(err) === 'string'){
                 res.status(400).send(err);
