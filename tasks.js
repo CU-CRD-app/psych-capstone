@@ -59,7 +59,7 @@ module.exports = {
 
         let now = new Date();
 
-        let values = [req.token, req.level, req.race, req.completed, now, req.nameface, req.whosnew, req.memory, req.shuffle, req.forcedchoice, req.samedifferent];
+        let values = [req.token, req.level, req.race, now, req.nameface, req.whosnew, req.memory, req.shuffle, req.forcedchoice, req.samedifferent];
 
         pgClient.query("INSERT INTO day (userid, level, race, date, nameface, whosnew, memory, shuffle, forcedchoice, samedifferent) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)", values)
             .then(res => {
