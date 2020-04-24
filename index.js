@@ -16,12 +16,22 @@ var app = express();
 
 app.use(bodyParser.json());
 
+//Ref: https://github.com/troygoode/node-cors-server/blob/master/server.js
+const corsOptions = {
+    origin: true,
+    methods: ["GET","POST", "OPTIONS", "PUT"],
+    credentials: true,
+    maxAge: 3600
+}
+
+app.options("*", cors(corsOptions));
+
 var server = app.listen(process.env.PORT || 8080, function () {
     var port = server.address().port;
     console.log("App now running on port", port);
 });
 
-app.get("/", cors(), function(req, res, next) {
+app.get("/", cors(corsOptions), function(req, res, next) {
     if(req.headers.authorization != undefined){
         let auth = req.headers.authorization.split(' ')[1];
         let [user, pass] = Buffer.from(auth, 'base64').toString().split(':');
@@ -31,7 +41,7 @@ app.get("/", cors(), function(req, res, next) {
     res.status(403).send("No login provided");
 })
 
-app.put("/register/", cors(), function(req, res, next) {
+app.put("/register/", cors(corsOptions), function(req, res, next) {
     register.user(req.body)
         .then(result => res.send(result))
         .catch(err => {
@@ -44,7 +54,7 @@ app.put("/register/", cors(), function(req, res, next) {
         })
 })
 
-app.post("/login/", cors(), function(req, res, next) {
+app.post("/login/", cors(corsOptions), function(req, res, next) {
     login.login(req.body)
         .then(result => res.send(result))
         .catch(err => {
@@ -62,16 +72,6 @@ app.post("/login/", cors(), function(req, res, next) {
         })
 })
 
-//Ref: https://github.com/troygoode/node-cors-server/blob/master/server.js
-const corsOptions = {
-    origin: true,
-    methods: ["POST"],
-    credentials: true,
-    maxAge: 3600
-}
-
-app.options("/tasks/", cors(corsOptions));
-
 app.post("/tasks/", cors(corsOptions), function(req, res, next) {
     tasks.upload(req.body)
         .then(result => res.send(result))
@@ -85,7 +85,7 @@ app.post("/tasks/", cors(corsOptions), function(req, res, next) {
         })
 })
 
-app.put("/checktoken/", cors(), function(req, res, next){
+app.put("/checktoken/", cors(corsOptions), function(req, res, next){
     //TODO: actually implement token logic
     if(typeof(req.body.token) !== "undefined"){
         res.json({status:"valid"});
@@ -95,7 +95,7 @@ app.put("/checktoken/", cors(), function(req, res, next){
     }
 })
 
-app.put("/preassessment/", cors(), function(req, res, next){
+app.put("/preassessment/", cors(corsOptions), function(req, res, next){
     preassessment.upload(req.body)
         .then(result => res.send(result))
         .catch(err => {
@@ -108,7 +108,7 @@ app.put("/preassessment/", cors(), function(req, res, next){
         })
 })
 
-app.put("/postassessment/", cors(), function(req, res, next){
+app.put("/postassessment/", cors(corsOptions), function(req, res, next){
     postassessment.upload(req.body)
         .then(result => res.send(result))
         .catch(err => {
