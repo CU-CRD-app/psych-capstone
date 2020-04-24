@@ -34,21 +34,34 @@ module.exports = {
             })
         }
 
-        //TODO: sort?
+        //TODO: Only supports one race, changes will need to be support other races
         let resDays = await pgClient.query("SELECT * FROM day WHERE userid = $1", [res.rows[0].userid]);
     
-        let preCount = await pgClient.query("SELECT count(score) FROM preassessment WHERE userid = $1", [res.rows[0].userid]);
+        let preCount = await pgClient.query("SELECT * FROM preassessment WHERE userid = $1", [res.rows[0].userid]);
 
-        let postCount = await pgClient.query("SELECT count(score) FROM postassessment WHERE userid = $1", [res.rows[0].userid]);
+        let postCount = await pgClient.query("SELECT * FROM postassessment WHERE userid = $1", [res.rows[0].userid]);
 
-        let level = resDays.rows.length + preCount.rows[0].count + postCount.rows[0].count;
+        let level = resDays.rows.length + preCount.rows.length+ postCount.rows.length;
+
+        let preScore = 0;
+        let postScore = 0;
+
+        if(preCount.rows.length > 0){
+            preScore = preCount.rows[0].score;
+        }
+
+        if(postCount.rows.length > 0){
+            postScore = postCount.rows[0].score;
+        }
 
         pgClient.end();
         //TODO: implement token
         let sendObject = {
             days: resDays.rows,
             token: res.rows[0].userid,
-            level: level
+            level: level,
+            pre: preScore,
+            post: postScore
         }
 
         return new Promise(function(resolve, reject){
