@@ -8,7 +8,7 @@ export class SubmitScoresService {
 
   constructor(public http : HttpClient) { }
 
-  scores_url : string = "https://crossfacerecognition.herokoapp.com/tasks/"
+  scores_url : string = "https://crossfacerecognition.herokuapp.com/tasks/"
 
   token : any;
   level : number;
@@ -20,9 +20,18 @@ export class SubmitScoresService {
   forcedchoice : number = 0;
   samedifferent : number = 0;
   body : any;
-  httpOptions : any;
   //scores array is like:
   //[nameface, whosnew, memory, shuffle, forcedchoice, samedifferent]
+
+
+  /**********************************************
+
+  To submit scores, inject this service into the component that needs to submit,
+    then call this.submitScores.submitTaskScores(token, level, scores, race)
+    where token and level are numbers, scores is an array of scores in the order
+    of the normal scores array, and race is a string defaulted to "Black".
+
+  **********************************************/
 
   setScores(token: any, level: number, scores: number[], race: string = "Black"): Promise<any> {
     let promise = new Promise((resolve, reject) => {
@@ -48,20 +57,23 @@ export class SubmitScoresService {
         "samedifferent": this.samedifferent
       };
 
-      this.httpOptions = {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json; charset=utf-8'
-        })
-      };
       resolve();
     });
     return promise;
   }
 
   async putScores(token: any, level: number, scores: number[], race: string = "Black") {
+    const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json; charset=utf-8'
+        })
+      };
+
     await this.setScores(token, level, scores, race);
-    this.http.post(this.scores_url, this.body, this.httpOptions).subscribe((response) => {
-      console.log(response);
+
+    console.log("Sent: ", JSON.stringify(this.body));
+    this.http.post(this.scores_url, this.body, httpOptions).subscribe((response: Response) => {
+      console.log("Response: ", response);
     }, (err) => {
       console.log("Error: ", err);
     });

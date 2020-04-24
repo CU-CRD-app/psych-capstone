@@ -12,7 +12,7 @@ export class HistoryComponent implements OnInit {
   @ViewChild('slideElement', {static: false}) slideElement: IonSlides;
   @ViewChild('rangeElement', {static: false}) rangeElement: IonSlides;
 
-  constructor(public nativeStorage : NativeStorage, public submitScores : SubmitScoresService) {}
+  constructor(public nativeStorage : NativeStorage) {}
 
   ngOnInit() {
 
@@ -28,25 +28,16 @@ export class HistoryComponent implements OnInit {
         this.level--;
       }
     });
-    this.nativeStorage.getItem("token").then(data => {
-      this.token = data;
-    });
   }
 
   ngAfterViewInit() {
     this.slide(this.level);
   }
 
-  subTest() {
-    this.submitScores.submitTaskScores(this.token, 2, [2,3,4,5,6,1]);
-  }
-
   days : any = [{}, {}, {}, {}, {}, {}, {}, {}];
   pre_post : any = [{}, {}];;
   currentCard : number = 0;
   level : number = 0;
-  //testing
-  token : any;
 
   async slide(index: number) {
     await this.slideElement.slideTo(index);
