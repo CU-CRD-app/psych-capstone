@@ -22,7 +22,8 @@ const corsOptions = {
     methods: ["GET","POST", "OPTIONS", "PUT"],
     credentials: true,
     maxAge: 3600,
-    enablePreflight: true
+    enablePreflight: true,
+    preflightContinue: true
 }
 
 app.options("*", cors(corsOptions));
