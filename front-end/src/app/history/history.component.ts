@@ -12,6 +12,7 @@ export class HistoryComponent implements OnInit {
   @ViewChild('slideElement', {static: false}) slideElement: IonSlides;
   @ViewChild('rangeElement', {static: false}) rangeElement: IonSlides;
 
+  //constructor(public nativeStorage : NativeStorage, public submitScores : SubmitScoresService) {}
   constructor(public nativeStorage : NativeStorage) {}
 
   ngOnInit() {
@@ -46,5 +47,14 @@ export class HistoryComponent implements OnInit {
   async setCurrent() {
     this.currentCard = await this.slideElement.getActiveIndex();
   }
+
+  //for testing submit_scores service
+  // Pretest() {
+  //   this.submitScores.submitPreAssessment(3, 10);
+  // }
+
+  // Posttest() {
+  //   this.submitScores.submitPostAssessment(3, 15);
+  // }
 
 }

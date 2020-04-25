@@ -8,31 +8,45 @@ export class SubmitScoresService {
 
   constructor(public http : HttpClient) { }
 
-  scores_url : string = "https://crossfacerecognition.herokuapp.com/tasks/"
+  scores_url : string = "https://crossfacerecognition.herokuapp.com/tasks/";
+  pre_url : string = "https://crossfacerecognition.herokuapp.com/preassessment/";
+  post_url : string = "https://crossfacerecognition.herokuapp.com/postassessment/";
 
+  //general
   token : any;
-  level : number;
   race : string;
+  body : any;
+  //tasks
+  level : number;
   shuffle : number = 0;
   memory : number = 0;
   whosnew : number = 0;
   nameface : number = 0;
   forcedchoice : number = 0;
   samedifferent : number = 0;
-  body : any;
+  //pre_assessment
+  pre_score : number = 0;
+  //post_assessment
+  post_score : number = 0;
+
   //scores array is like:
   //[nameface, whosnew, memory, shuffle, forcedchoice, samedifferent]
 
 
   /**********************************************
-
-  To submit scores, inject this service into the component that needs to submit,
-    then call this.submitScores.submitTaskScores(token, level, scores, race)
-    where token and level are numbers, scores is an array of scores in the order
-    of the normal scores array, and race is a string defaulted to "Black".
-
+  TASKS
+    To submit scores, inject this service into the component that needs to submit,
+      then call this.submitScores.submitTaskScores(token, level, scores, race)
+      where token and level are numbers, scores is an array of scores in the order
+      of the normal scores array, and race is a string defaulted to "Black".
+  **********************************************/
+  /**********************************************
+  PRE and POST
+    To submit scores, inject, then call either submitPreAssessment or submitPostAssessment
+    Both functions take (token: any, score: number, race: string (optional, default "Black"))
   **********************************************/
 
+  //TASKS
   setScores(token: any, level: number, scores: number[], race: string = "Black"): Promise<any> {
     let promise = new Promise((resolve, reject) => {
       this.token = token;
@@ -82,6 +96,81 @@ export class SubmitScoresService {
   submitTaskScores(token: any, level: number, scores : number[], race: string = "Black")
   {
     this.putScores(token, level, scores, race);
+  }
+
+
+  //PRE-ASSESSMENT
+  setPre(token: any, score: number, race: string = "Black"): Promise<any>{
+    let promise = new Promise((resolve, reject) => {
+      this.token = token;
+      this.pre_score = score;
+      this.race = race;
+
+      this.body = {
+        "token": this.token,
+        "score": this.pre_score,
+        "race": this.race
+      }
+
+      resolve();
+    });
+
+    return promise;
+  }
+
+  async submitPreAssessment(token: any, score: number, race: string = "Black") {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json; charset=utf-8'
+      })
+    };
+
+    await this.setPre(token, score, race);
+
+    console.log("Sent to pre: ", JSON.stringify(this.body));
+    this.http.put(this.pre_url, this.body, httpOptions).subscribe((response: Response) => {
+      console.log("Response: ", response);
+      console.log("status: ", response.status);
+    }, (err) => {
+      console.log("Error: ", err);
+    });
+  }
+
+  //POST-ASSESSMENT
+  setPost(token: any, score: number, race: string = "Black"): Promise<any>{
+    let promise = new Promise((resolve, reject) => {
+      this.token = token;
+      this.post_score = score;
+      this.race = race;
+
+      this.body = {
+        "token": this.token,
+        "score": this.post_score,
+        "race": this.race
+      }
+
+      resolve();
+    });
+
+    return promise;
+  }
+
+  async submitPostAssessment(token: any, score: number, race: string = "Black") {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json; charset=utf-8'
+      })
+    };
+
+    await this.setPost(token, score, race);
+
+    console.log("Sent to post: ", JSON.stringify(this.body));
+    this.http.put(this.post_url, this.body, httpOptions).subscribe((response: Response) => {
+      console.log("Response: ", response);
+      console.log("status: ", response.status);
+    }, (err) => {
+      console.log("Error: ", err);
+    });
   }
 
 }
