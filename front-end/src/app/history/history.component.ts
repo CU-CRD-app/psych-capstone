@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { IonSlides } from '@ionic/angular';
+import { SubmitScoresService } from '../service/submit-scores.service';
 
 @Component({
   selector: 'app-history-comp',
