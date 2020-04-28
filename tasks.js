@@ -48,6 +48,7 @@ module.exports = {
         //TODO: Token is used directly as userid throughout this file, needs to change when token is properly implemented
         let dayCount = await pgClient.query("SELECT count(date) FROM day WHERE userid = $1 AND level = $2", [req.token, req.level]);
 
+        //TODO: Instead of checking if there is an entry, check if the entry contains any -1 for the tasks so that we can upload tasks until the day is done
         if(dayCount.rows[0].count > 0){
             //Guard condition, prevents the same level from being uploaded twice for a given user
             //NOTE: Could cause issue if there is an error further down.  Need to consider
@@ -57,7 +58,7 @@ module.exports = {
             })
         }
 
-        let now = new Date();
+        let now = new Date().toUTCString();
 
         let values = [req.token, req.level, req.race, now, req.nameface, req.whosnew, req.memory, req.shuffle, req.forcedchoice, req.samedifferent];
 

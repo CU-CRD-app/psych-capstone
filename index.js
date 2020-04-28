@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 var initialize = require('./initializeDB.js');
+var userData = require('./userData.js');
 var register = require('./registerUser.js');
 var login = require('./login.js');
 var tasks = require('./tasks.js');
@@ -41,6 +42,19 @@ app.get("/", cors(corsOptions), function(req, res, next) {
         return;
     }
     res.status(403).send("No login provided");
+})
+
+app.get("/userData/", cors(corsOptions), function(req, res, next) {
+    userData.userData(req.body)
+        .then(result => res.send(result))
+        .catch(err => {
+            if(typeof(err) === 'string'){
+                res.status(400).send(err);
+            }
+            else{
+                res.status(500).send("Internal server error");
+            }
+        })
 })
 
 app.put("/register/", cors(corsOptions), function(req, res, next) {

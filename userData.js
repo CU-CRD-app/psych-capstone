@@ -1,17 +1,14 @@
 var { Client } = require('pg');
 
 function allDefined(req){
-    if(typeof(req.email) === 'undefined'){
-        return false;
-    }
-    if(typeof(req.password) === 'undefined'){
+    if(typeof(req.token) === 'undefined'){
         return false;
     }
     return true;
 }
 
 module.exports = {
-    login: async function(req){
+    userData: async function(req){
         if(!allDefined(req)){
             return new Promise(function(resolve, reject){
                 reject("Missing parameter");
@@ -25,8 +22,8 @@ module.exports = {
 
         pgClient.connect();
 
-        //TODO: password hashing
-        let res = await pgClient.query("SELECT * FROM users WHERE email = $1 AND hashedpassword = $2", [req.email, req.password]);
+        //TODO: Query will need to be updated to use the email associated with the token, not just the token as the email
+        let res = await pgClient.query("SELECT * FROM users WHERE email = $1", [req.token]);
         if(res.rows.length == 0){
             pgClient.end();
             return new Promise(function(resolve, reject){
@@ -41,9 +38,9 @@ module.exports = {
 
         let postCount = await pgClient.query("SELECT * FROM postassessment WHERE userid = $1", [res.rows[0].userid]);
 
-        let level = resDays.rows.length + preCount.rows.length+ postCount.rows.length;
+        let level = resDays.rows.length + preCount.rows.length + postCount.rows.length;
 
-        // make these a dict or array to also pass the date
+        //TODO: Update this to match login return when pre and post assessment dates are returned
         let preScore = 0;
         let postScore = 0;
 
@@ -56,10 +53,9 @@ module.exports = {
         }
 
         pgClient.end();
-        //TODO: implement token
+
         let sendObject = {
             days: resDays.rows,
-            token: res.rows[0].userid,
             level: level,
             pre: preScore,
             post: postScore
