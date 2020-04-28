@@ -35,7 +35,7 @@ const validatePassword = (password) => {
   var validator = new passwordValidator();
   validator
   .is().min(7)                                    // Minimum length 7
-  .is().max(10)                                  // Maximum length 10
+  .is().max(16)                                  // Maximum length 10
   .has().uppercase()                              // Must have uppercase letters
   .has().lowercase()                              // Must have lowercase letters
   .has().digits()                                 // Must have digits
