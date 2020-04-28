@@ -40,6 +40,10 @@ module.exports = {
 
         let level = resDays.rows.length + preCount.rows.length + postCount.rows.length;
 
+        if (resDays.rows[resDays.rows.length - 1].indexOf(-1) > -1) {
+            level--;
+        }
+
         //TODO: Update this to match login return when pre and post assessment dates are returned
         let preScore = 0;
         let postScore = 0;

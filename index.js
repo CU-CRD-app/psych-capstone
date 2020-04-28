@@ -44,19 +44,6 @@ app.get("/", cors(corsOptions), function(req, res, next) {
     res.status(403).send("No login provided");
 })
 
-app.get("/userData/", cors(corsOptions), function(req, res, next) {
-    userData.userData(req.body)
-        .then(result => res.send(result))
-        .catch(err => {
-            if(typeof(err) === 'string'){
-                res.status(400).send(err);
-            }
-            else{
-                res.status(500).send("Internal server error");
-            }
-        })
-})
-
 app.put("/register/", cors(corsOptions), function(req, res, next) {
     register.user(req.body)
         .then(result => res.send(result))
@@ -97,6 +84,19 @@ app.post("/tasks/", cors(corsOptions), function(req, res, next) {
             }
             else{
                 res.status(500).json({"result":"Internal server error"});
+            }
+        })
+})
+
+app.post("/userData/", cors(corsOptions), function(req, res, next) {
+    userData.userData(req.body)
+        .then(result => res.send(result))
+        .catch(err => {
+            if(typeof(err) === 'string'){
+                res.status(400).send(err);
+            }
+            else{
+                res.status(500).send("Internal server error");
             }
         })
 })
