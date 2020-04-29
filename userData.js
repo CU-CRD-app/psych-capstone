@@ -39,6 +39,8 @@ module.exports = {
 
         let level = resDays.rows.length + preCount.rows.length + postCount.rows.length;
 
+        console.log(resDays.rows[resDays.rows.length - 1])
+        console.log(resDays.rows[resDays.rows.length - 1][nameface])
         /*if (resDays.rows[resDays.rows.length - 1][nameface] > -1 || resDays.rows[resDays.rows.length - 1][whosnew] > -1 || resDays.rows[resDays.rows.length - 1][memory] > -1 || resDays.rows[resDays.rows.length - 1][shuffle] > -1 || resDays.rows[resDays.rows.length - 1][forcedchoice] > -1 || resDays.rows[resDays.rows.length - 1][samedifferent] > -1) {
             level--;
         }*/
