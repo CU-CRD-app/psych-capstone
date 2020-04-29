@@ -39,8 +39,11 @@ module.exports = {
 
         let level = resDays.rows.length + preCount.rows.length + postCount.rows.length;
 
-        if (resDays.rows[resDays.rows.length - 1]['nameface'] > -1 || resDays.rows[resDays.rows.length - 1]['whosnew'] > -1 || resDays.rows[resDays.rows.length - 1]['memory'] > -1 || resDays.rows[resDays.rows.length - 1]['shuffle'] > -1 || resDays.rows[resDays.rows.length - 1]['forcedchoice'] > -1 || resDays.rows[resDays.rows.length - 1]['samedifferent'] > -1) {
-            level--;
+        for (var i = 0; i < resDays.rows.length; i++) {
+            if (resDays.rows[i]['nameface'] > -1 || resDays.rows[i]['whosnew'] > -1 || resDays.rows[i]['memory'] > -1 || resDays.rows[i]['shuffle'] > -1 || resDays.rows[i]['forcedchoice'] > -1 || resDays.rows[i]['samedifferent'] > -1) {
+                level = i + 1;
+                break;
+            }
         }
 
         //TODO: Update this to return pre and post assessment dates
