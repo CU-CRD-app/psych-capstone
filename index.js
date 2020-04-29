@@ -83,7 +83,7 @@ app.post("/tasks/", cors(corsOptions), function(req, res, next) {
                 res.status(400).send(err);
             }
             else{
-                res.status(500).json({"result":"Internal server error"});
+                res.status(500).send("Internal server error");
             }
         })
 })
@@ -93,7 +93,12 @@ app.post("/userData/", cors(corsOptions), function(req, res, next) {
         .then(result => res.send(result))
         .catch(err => {
             if(typeof(err) === 'string'){
-                res.status(400).send(err);
+                if(err == "Account not found"){
+                    res.status(403).send(err);
+                }
+                else{
+                    res.status(400).send(err);
+                }
             }
             else{
                 res.status(500).send("Internal server error");
@@ -103,11 +108,11 @@ app.post("/userData/", cors(corsOptions), function(req, res, next) {
 
 app.put("/checktoken/", cors(corsOptions), function(req, res, next){
     //TODO: actually implement token logic
-    if(typeof(req.body.token) !== "undefined"){
-        res.json({status:"valid"});
+    if(typeof(req.body.token) !== undefined){
+        res.status(200).send("valid");
     }
     else{
-        res.status(400).json({status:"invalid"});
+        res.status(400).json("invalid");
     }
 })
 

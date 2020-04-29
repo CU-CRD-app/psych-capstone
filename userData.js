@@ -44,7 +44,7 @@ module.exports = {
             level--;
         }
 
-        //TODO: Update this to match login return when pre and post assessment dates are returned
+        //TODO: Update this to return pre and post assessment dates
         let preScore = 0;
         let postScore = 0;
 
