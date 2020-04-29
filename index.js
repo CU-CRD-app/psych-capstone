@@ -109,10 +109,10 @@ app.post("/userData/", cors(corsOptions), function(req, res, next) {
 app.put("/checktoken/", cors(corsOptions), function(req, res, next){
     //TODO: actually implement token logic
     if(typeof(req.body.token) !== undefined){
-        res.status(200).send("valid");
+        res.status(200).send("Valid token");
     }
     else{
-        res.status(400).json("invalid");
+        res.status(400).send("Invalid token");
     }
 })
 
