@@ -45,7 +45,7 @@ function allValid(req){
     if(genderList.indexOf(req.gender) < 0){
         return false;
     }
-    if(req.age < 1 || req.age > 100){
+    if(req.age < 18 || req.age > 100){
         return false;
     }
     if(req.agree != true){

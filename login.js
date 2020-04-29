@@ -41,7 +41,9 @@ module.exports = {
 
         let postCount = await pgClient.query("SELECT * FROM postassessment WHERE userid = $1", [res.rows[0].userid]);
 
-        let level = resDays.rows.length + preCount.rows.length+ postCount.rows.length;
+        if (resDays.rows[resDays.rows.length - 1][nameface] > -1 || resDays.rows[resDays.rows.length - 1][whosnew] > -1 || resDays.rows[resDays.rows.length - 1][memory] > -1 || resDays.rows[resDays.rows.length - 1][shuffle] > -1 || resDays.rows[resDays.rows.length - 1][forcedchoice] > -1 || resDays.rows[resDays.rows.length - 1][samedifferent] > -1) {
+            level--;
+        }
 
         // make these a dict or array to also pass the date
         let preScore = 0;
