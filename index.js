@@ -41,7 +41,7 @@ app.get("/", cors(corsOptions), function(req, res, next) {
         res.send(user+' '+pass);
         return;
     }
-    res.status(403).send("No login provided");
+    res.status(401).send("No login provided");
 })
 
 app.put("/register/", cors(corsOptions), function(req, res, next) {
@@ -63,7 +63,7 @@ app.post("/login/", cors(corsOptions), function(req, res, next) {
         .catch(err => {
             if(typeof(err) === 'string'){
                 if(err == "Account not found"){
-                    res.status(403).send(err);
+                    res.status(401).send(err);
                 }
                 else{
                     res.status(400).send(err);
@@ -94,7 +94,7 @@ app.post("/userData/", cors(corsOptions), function(req, res, next) {
         .catch(err => {
             if(typeof(err) === 'string'){
                 if(err == "Account not found"){
-                    res.status(403).send(err);
+                    res.status(401).send(err);
                 }
                 else{
                     res.status(400).send(err);
@@ -109,10 +109,10 @@ app.post("/userData/", cors(corsOptions), function(req, res, next) {
 app.put("/checktoken/", cors(corsOptions), function(req, res, next){
     //TODO: actually implement token logic
     if(typeof(req.body.token) !== undefined){
-        res.status(200).send("Valid token");
+        res.status(200).json({message: "Valid token"});
     }
     else{
-        res.status(400).send("Invalid token");
+        res.status(401).json({message: "Invalid token"});
     }
 })
 
