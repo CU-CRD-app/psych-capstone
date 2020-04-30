@@ -8,6 +8,7 @@ var login = require('./login.js');
 var tasks = require('./tasks.js');
 var preassessment = require('./preassessment.js');
 var postassessment = require('./postassessment.js');
+var tokenHandler = require('./token.js');
 
 initialize.start()
     .then(res => console.log(res))
@@ -65,6 +66,15 @@ app.post("/login/", cors(corsOptions), function(req, res, next) {
         })
 })
 
+app.use(function(req, res, next) {
+    if (!req.headers.authorization) {
+        return res.status(403).json({ error: 'No credentials sent!' });
+    }
+    next();
+});
+
+// All endpoints past this point require a token to access
+
 app.post("/tasks/", cors(corsOptions), function(req, res, next) {
     tasks.upload(req.body)
         .then(result => res.json({result:result}))
@@ -98,12 +108,9 @@ app.post("/userData/", cors(corsOptions), function(req, res, next) {
 
 app.put("/checktoken/", cors(corsOptions), function(req, res, next){
     //TODO: actually implement token logic
-    if(typeof(req.body.token) !== 'undefined'){
-        res.status(200).json({message: "Valid token"});
-    }
-    else{
-        res.status(401).json({message: "Invalid token"});
-    }
+    tokenHandler.verify(req.header('Authorization').split(' ')[1])
+        .then(res.status(200).json({message: "Valid token"}))
+        .catch(res.status(401).json({message: "Invalid token"}))
 })
 
 app.put("/preassessment/", cors(corsOptions), function(req, res, next){

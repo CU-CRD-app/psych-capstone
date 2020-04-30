@@ -1,5 +1,6 @@
 var { Client } = require('pg');
 var bcrypt = require('bcryptjs');
+var tokenHandler = require('./token.js');
 
 function allDefined(req){
     if(typeof(req.email) === 'undefined'){
@@ -40,13 +41,12 @@ module.exports = {
         let match = await bcrypt.compare(req.password, res.rows[0].hashedpassword);
 
         if(match){
-            let sendObject = {
-            token: res.rows[0].userid //TODO: implement token
-            }
-
-            return new Promise(function(resolve, reject){
-                resolve(sendObject);
-            })
+            tokenHandler.generate(req.email.toLowerCase())
+                .then(res => {
+                    return new Promise(function(resolve, reject){
+                        resolve(res);
+                    })
+                }) 
         }
         else{
             return new Promise(function(resolve, reject){
