@@ -40,7 +40,7 @@ module.exports = {
         // day
         res = await pgClient.query("SELECT COUNT(table_name) FROM INFORMATION_SCHEMA.TABLES WHERE table_name='day'");
         if(res.rows[0].count == 0){
-            pgClient.query("CREATE TABLE day (userid INT, level INT, race TEXT, date DATE, nameface INT, whosnew INT, memory INT, shuffle INT, forcedchoice INT, samedifferent INT);", (err, res) => {
+            pgClient.query("CREATE TABLE day (userid INT, level INT, race TEXT, date TEXT, nameface INT, whosnew INT, memory INT, shuffle INT, forcedchoice INT, samedifferent INT);", (err, res) => {
                 if(err){
                     console.log(err);
                     console.log("CRITICAL: Database not intialized");
@@ -51,7 +51,7 @@ module.exports = {
         // preassessment
         res = await pgClient.query("SELECT COUNT(table_name) FROM INFORMATION_SCHEMA.TABLES WHERE table_name='preassessment'");
         if(res.rows[0].count == 0){
-            pgClient.query("CREATE TABLE preassessment (userid INT, score INT, race TEXT, completed BOOLEAN);", (err, res) => {
+            pgClient.query("CREATE TABLE preassessment (userid INT, score INT, race TEXT, completed BOOLEAN, date TEXT);", (err, res) => {
                 if(err){
                     console.log(err);
                     console.log("CRITICAL: Database not intialized");
@@ -62,7 +62,7 @@ module.exports = {
         // postassessment
         res = await pgClient.query("SELECT COUNT(table_name) FROM INFORMATION_SCHEMA.TABLES WHERE table_name='postassessment'");
         if(res.rows[0].count == 0){
-            pgClient.query("CREATE TABLE postassessment (userid INT, score INT, race TEXT, completed BOOLEAN);", (err, res) => {
+            pgClient.query("CREATE TABLE postassessment (userid INT, score INT, race TEXT, completed BOOLEAN, date TEXT);", (err, res) => {
                 if(err){
                     console.log(err);
                     console.log("CRITICAL: Database not intialized");
