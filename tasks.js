@@ -7,9 +7,6 @@ function allDefined(req){
     if(typeof(req.race) === 'undefined'){
         return false;
     }
-    if(typeof(req.date) === 'undefined'){
-        return false;
-    }
     if(typeof(req.token) === 'undefined'){
         return false;
     }
@@ -51,7 +48,11 @@ module.exports = {
         //TODO: Token is used directly as userid throughout this file, needs to change when token is properly implemented
         let day = await pgClient.query("SELECT * FROM day WHERE userid = $1 AND level = $2", [req.token, req.level]);
 
-        let values = [req.token, req.level, req.race, req.date, req.nameface, req.whosnew, req.memory, req.shuffle, req.forcedchoice, req.samedifferent];
+        let now = new Date().toUTCString();
+        
+        console.log(now)
+
+        let values = [req.token, req.level, req.race, now, req.nameface, req.whosnew, req.memory, req.shuffle, req.forcedchoice, req.samedifferent];
 
         if(day.rows.length > 0){
             if (day.rows[0]['nameface'] == -1 || day.rows[0]['whosnew'] == -1 || day.rows[0]['memory'] == -1 || day.rows[0]['shuffle'] == -1 || day.rows[0]['forcedchoice'] == -1 || day.rows[0]['samedifferent'] == -1){
