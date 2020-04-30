@@ -70,6 +70,17 @@ module.exports = {
             })
         }
 
+        // email confirmation
+        res = await pgClient.query("SELECT COUNT(table_name) FROM INFORMATION_SCHEMA.TABLES WHERE table_name='confirmation'");
+        if(res.rows[0].count == 0){
+            pgClient.query("CREATE TABLE confirmation (userid INT, key TEXT, date TEXT);", (err, res) => {
+                if(err){
+                    console.log(err);
+                    console.log("CRITICAL: Database not intialized");
+                }
+            })
+        }
+
         pgClient.end();
 
         return new Promise(function(resolve, reject){
