@@ -30,7 +30,7 @@ function allValid(req){
     var genderList = ["Male", "Female", "Other"];
     var raceList = ["Caucasian", "Black", "Hispanic", "East Asian", "South Asian", "Middle Eastern", "Pacific Islander", "American Indian/Alaska Native", "Other"]
 
-    if(!/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/.test(req.email)){
+    if(!/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/.test(req.email.toLowerCase())){
         return false;
     }
     if(!/[a-z]/.test(req.password) || !/[A-Z]/.test(req.password) || !/[0-9]/.test(req.password) || !req.password.indexOf(' ') < 0 || req.password.length < 7 || req.password.length > 16 || req.password == 'Passw0rd' || req.password == 'Password123'){
@@ -73,7 +73,7 @@ module.exports = {
 
         pgClient.connect();
 
-        let res = await pgClient.query("SELECT COUNT(email) FROM users WHERE email = $1", [req.email]);
+        let res = await pgClient.query("SELECT COUNT(email) FROM users WHERE email = $1", [req.email.toLowerCase()]);
         if(res.rows[0].count > 0){
             pgClient.end();
             return new Promise(function(resolve, reject){
@@ -81,8 +81,8 @@ module.exports = {
             })
         }
 
-        //TODO: input validation, password hashing, convert email to all lower case?
-        pgClient.query("INSERT INTO users(userid, email, hashedpassword, race, nationality, gender, age) VALUES (DEFAULT, $1, $2, $3, $4, $5, $6)", [req.email, req.password, req.race, req.nationality, req.gender, req.age])
+        //TODO: password hashing
+        pgClient.query("INSERT INTO users(userid, email, hashedpassword, race, nationality, gender, age) VALUES (DEFAULT, $1, $2, $3, $4, $5, $6)", [req.email.toLowerCase(), req.password, req.race, req.nationality, req.gender, req.age])
             .then(res => {
                 pgClient.end();
                 return new Promise(function(resolve, reject){

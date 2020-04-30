@@ -26,7 +26,7 @@ module.exports = {
         pgClient.connect();
 
         //TODO: password hashing
-        let res = await pgClient.query("SELECT * FROM users WHERE email = $1 AND hashedpassword = $2", [req.email, req.password]);
+        let res = await pgClient.query("SELECT * FROM users WHERE email = $1 AND hashedpassword = $2", [req.email.toLowerCase(), req.password]);
         if(res.rows.length == 0){
             pgClient.end();
             return new Promise(function(resolve, reject){

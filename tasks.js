@@ -49,8 +49,6 @@ module.exports = {
         let day = await pgClient.query("SELECT * FROM day WHERE userid = $1 AND level = $2", [req.token, req.level]);
 
         let now = new Date().toUTCString();
-        
-        console.log(now)
 
         let values = [req.token, req.level, req.race, now, req.nameface, req.whosnew, req.memory, req.shuffle, req.forcedchoice, req.samedifferent];
 
