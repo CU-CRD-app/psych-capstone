@@ -1,0 +1,40 @@
+var jwt = require('jsonwebtoken');
+var { Client } = require('pg');
+
+module.exports = {
+    verify: async function(token){
+        jwt.verify(token, process.env.secret, function(err, decoded) {
+            if(err){
+                return new Promise(function(resolve, reject){
+                    reject(err);
+                })
+            }
+            else{
+                const pgClient = new Client({
+                    connectionString: process.env.DATABASE_URL,
+                    ssl: true,
+                });
+        
+                pgClient.connect();
+                let queryRes = await pgClient.query("SELECT userid FROM users WHERE email = $1", [decoded.email]);
+                pgClient.end();
+                return new Promise(function(resolve, reject){
+                    resolve(queryRes.rows[0].userid);
+                })
+            }
+        })
+    },
+
+    generate: async function(email){
+        jwt.sign({email: email}, process.env.secret, {expiresIn:'3h', algorithm:'RS256'}, function(err, token){
+            if(err){
+                return new Promise(function(resolve, reject){
+                    reject(err);
+                })
+            }
+            return new Promise(function(resolve, reject){
+                resolve(token);
+            })
+        })
+    }
+}
