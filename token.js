@@ -3,6 +3,7 @@ var { Client } = require('pg');
 
 module.exports = {
     verify: async function(token){
+        let email = "";
         jwt.verify(token, process.env.secret, function(err, decoded) {
             if(err){
                 return new Promise(function(resolve, reject){
@@ -10,18 +11,20 @@ module.exports = {
                 })
             }
             else{
-                const pgClient = new Client({
-                    connectionString: process.env.DATABASE_URL,
-                    ssl: true,
-                });
-        
-                pgClient.connect();
-                let queryRes = await pgClient.query("SELECT userid FROM users WHERE email = $1", [decoded.email]);
-                pgClient.end();
-                return new Promise(function(resolve, reject){
-                    resolve(queryRes.rows[0].userid);
-                })
+                email = decoded.email;
             }
+        })
+
+        const pgClient = new Client({
+            connectionString: process.env.DATABASE_URL,
+            ssl: true,
+        });
+
+        pgClient.connect();
+        let queryRes = await pgClient.query("SELECT userid FROM users WHERE email = $1", [email]);
+        pgClient.end();
+        return new Promise(function(resolve, reject){
+            resolve(queryRes.rows[0].userid);
         })
     },
 
