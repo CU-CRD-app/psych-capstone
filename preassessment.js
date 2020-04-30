@@ -37,10 +37,9 @@ module.exports = {
             })
         }
 
-        // insert this too
-        // let now = new Date().toUTCString();
+        let now = new Date().toUTCString();
 
-        pgClient.query("INSERT INTO preassessment(userid, score, race, completed) VALUES ($1, $2, $3, $4)", [req.token, req.score, req.race, true])
+        pgClient.query("INSERT INTO preassessment(userid, score, race, date) VALUES ($1, $2, $3, $4)", [req.token, req.score, req.race, now])
             .then(res => {
                 pgClient.end();
                 return new Promise(function(resolve, reject){
