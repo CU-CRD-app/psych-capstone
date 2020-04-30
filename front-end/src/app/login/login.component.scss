@@ -1,7 +1,8 @@
 #login-view {
-	--background: gray url("../../assets/background_imgs/face-outline-skin-tones.png") no-repeat center center / contain;
+	--height: 100vh;
+	--width: auto;
+	--background: white url("../../assets/background_imgs/splash.png") no-repeat center center / contain;
 	background-repeat: no-repeat;
-	align-items: center;
 }
 
 #blank-row-default {
@@ -14,15 +15,18 @@
 	height: 20vh;
 }
 #blank-row-register {
-	height: 17vh;
+	height: 2vh;
 }
 #blank-row-invalid {
 	height: 20vh;
 }
 
-
 #row-with-default-card {
-	height: 100%;
+	height: 96%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	align-items: center;
 }
 #row-with-why-card {
 	height: 100%;
@@ -49,12 +53,7 @@
 	margin: 0;
 	background-color: gainsboro;
 }
-#login_card {
-	height: 100%;
-	width: 100%;
-	margin: 0;
-	background-color: gainsboro;
-}
+
 #register_card {
 	height: 100%;
 	width: 100%;
@@ -62,6 +61,12 @@
 	background-color: gainsboro;
 }
 #invalid_card {
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	background-color: gainsboro;
+}
+#invalid_login_card {
 	height: 100%;
 	width: 100%;
 	margin: 0;
@@ -87,10 +92,6 @@
 	margin: 0;
 }
 
-ion-button {
-	text-transform: none !important;
-}
-
 #login_but {
 	margin-left: 10px;
 	margin-right: 10px;
@@ -109,4 +110,18 @@ ion-button {
 	margin-left: 10px;
 	margin-right: 10px;
 	margin-bottom: 10px;
+}
+
+ion-item {
+	margin: 5px;
+	margin: 5px;
+	border-radius: 5px;
+}
+
+.invalid {
+	--background: rgb(255, 209, 209)
+}
+
+.valid {
+	--background: rgb(207, 253, 217)
 }

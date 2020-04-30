@@ -1,7 +1,8 @@
 {
   "name": "front-end",
   "integrations": {
-    "capacitor": {}
+    "capacitor": {},
+    "cordova": {}
   },
   "type": "angular"
 }

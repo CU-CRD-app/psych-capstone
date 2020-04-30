@@ -6,7 +6,7 @@
     </ion-label>
     <ion-icon *ngIf="showOverview" (click)="toggleOverview()" slot="start" color="dark" name="arrow-back" style="height: 3vh"></ion-icon>
     <ion-icon (click)="toggleOverview()" slot="end" color="dark" name="help-circle" style="height: 3vh" [ngClass]="{'hidden': task == 'Start' || task == 'Overview' || hideQuit}"></ion-icon>
-    <ion-icon *ngIf="!showOverview" slot="start" color="dark" name="close-circle" style="margin-right: 10px; height: 3vh" (click)="closeModal()"></ion-icon> <!--[ngClass]="{'hidden': hideQuit}" PUT THIS BACK IN FOR PRODUCTION-->
+    <ion-icon *ngIf="!showOverview" slot="start" color="dark" name="close-circle" style="margin-right: 10px; height: 3vh" (click)="closeModal()" [ngClass]="{'hidden': hideQuit}"></ion-icon>
   </ion-item>
 
   <ion-slides #slideElement (ionSlideDidChange)="changeSlide()" style="height: 80%">

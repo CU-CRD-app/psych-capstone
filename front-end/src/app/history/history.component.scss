@@ -4,45 +4,15 @@
 
 ion-card {
 	--background: gainsboro;
-
-	color: black;
 }
 
-#repeating_div {
-	height: 20vh !important;
+.not-completed {
+	--background: rgb(185, 185, 185);
+	opacity: 0.8;
 }
 
-#level_text {
-	margin-bottom: 5px;
-}
-
-#history_row {
-	height: 18vh !important;
-}
-
-#small_col {
-	height: 100% !important;
-}
-
-#date_card {
-	margin: 0;
-	height: 100%;
-}
-
-#prescore_card {
-	margin: 0;
-	height: 100%;
-}
-
-#postscore_card {
-	margin: 0;
-	height: 100%;
-}
-
-#not_completed_card {
-	height: 100%;
-}
-
-.score {
-	font-size: large;
+.center-col {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
