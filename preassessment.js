@@ -10,6 +10,9 @@ function allDefined(req){
     if(typeof(req.race) === 'undefined'){
         return false;
     }
+    if(typeof(req.date) === 'undefined'){
+        return false;
+    }
     return true;
 }
 
@@ -37,8 +40,7 @@ module.exports = {
             })
         }
 
-        // insert this too
-        // let now = new Date().toUTCString();
+        // insert req.date
 
         pgClient.query("INSERT INTO preassessment(userid, score, race, completed) VALUES ($1, $2, $3, $4)", [req.token, req.score, req.race, true])
             .then(res => {

@@ -10,6 +10,9 @@ function allDefined(req){
     if(typeof(req.race) === 'undefined'){
         return false;
     }
+    if(typeof(req.date) === 'undefined'){
+        return false;
+    }
     return true;
 }
 
