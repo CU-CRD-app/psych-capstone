@@ -8,6 +8,7 @@ var login = require('./login.js');
 var tasks = require('./tasks.js');
 var preassessment = require('./preassessment.js');
 var postassessment = require('./postassessment.js');
+var confirmEmail = require('./confirmEmail.js');
 
 initialize.start()
     .then(res => console.log(res))
