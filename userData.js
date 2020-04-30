@@ -23,7 +23,7 @@ module.exports = {
         pgClient.connect();
 
         //TODO: Query will need to be updated to use the email associated with the token, not just the token as the email
-        let res = await pgClient.query("SELECT * FROM users WHERE email = $1", [req.token]);
+        let res = await pgClient.query("SELECT * FROM users WHERE userid = $1", [req.token]);
         if(res.rows.length == 0){
             pgClient.end();
             return new Promise(function(resolve, reject){
@@ -31,7 +31,6 @@ module.exports = {
             })
         }
 
-        //TODO: Only supports one race, changes will need to be support other races
         let resDays = await pgClient.query("SELECT * FROM day WHERE userid = $1", [res.rows[0].userid]);
     
         let preCount = await pgClient.query("SELECT * FROM preassessment WHERE userid = $1", [res.rows[0].userid]);
@@ -40,20 +39,28 @@ module.exports = {
 
         let level = resDays.rows.length + preCount.rows.length + postCount.rows.length;
 
-        if (resDays.rows[resDays.rows.length - 1].indexOf(-1) > -1) {
-            level--;
+        if (preCount.rows.length == 0) {
+            level = 0;
+        } else {
+            for (var i = 0; i < resDays.rows.length; i++) {
+                if (resDays.rows[i]['nameface'] == -1 || resDays.rows[i]['whosnew'] == -1 || resDays.rows[i]['memory'] == -1 || resDays.rows[i]['shuffle'] == -1 || resDays.rows[i]['forcedchoice'] == -1 || resDays.rows[i]['samedifferent'] == -1) {
+                    level = i + 1;
+                    break;
+                }
+            }
         }
 
-        //TODO: Update this to match login return when pre and post assessment dates are returned
-        let preScore = 0;
-        let postScore = 0;
+        let preAssessment = {};
+        let postAssessment= {};
 
         if(preCount.rows.length > 0){
-            preScore = preCount.rows[0].score;
+            preAssessment['score'] = preCount.rows[0].score;
+            preAssessment['date'] = preCount.rows[0].date;
         }
 
         if(postCount.rows.length > 0){
-            postScore = postCount.rows[0].score;
+            postAssessment['score'] = postCount.rows[0].score;
+            postAssessment['date'] = postCount.rows[0].date;
         }
 
         pgClient.end();
@@ -61,8 +68,8 @@ module.exports = {
         let sendObject = {
             days: resDays.rows,
             level: level,
-            pre: preScore,
-            post: postScore
+            pre: preAssessment,
+            post: postAssessment
         }
 
         return new Promise(function(resolve, reject){

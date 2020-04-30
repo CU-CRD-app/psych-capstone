@@ -26,7 +26,7 @@ module.exports = {
         pgClient.connect();
 
         //TODO: password hashing
-        let res = await pgClient.query("SELECT * FROM users WHERE email = $1 AND hashedpassword = $2", [req.email, req.password]);
+        let res = await pgClient.query("SELECT * FROM users WHERE email = $1 AND hashedpassword = $2", [req.email.toLowerCase(), req.password]);
         if(res.rows.length == 0){
             pgClient.end();
             return new Promise(function(resolve, reject){
@@ -34,35 +34,10 @@ module.exports = {
             })
         }
 
-        //TODO: Only supports one race, changes will need to be support other races
-        let resDays = await pgClient.query("SELECT * FROM day WHERE userid = $1", [res.rows[0].userid]);
-    
-        let preCount = await pgClient.query("SELECT * FROM preassessment WHERE userid = $1", [res.rows[0].userid]);
-
-        let postCount = await pgClient.query("SELECT * FROM postassessment WHERE userid = $1", [res.rows[0].userid]);
-
-        let level = resDays.rows.length + preCount.rows.length+ postCount.rows.length;
-
-        // make these a dict or array to also pass the date
-        let preScore = 0;
-        let postScore = 0;
-
-        if(preCount.rows.length > 0){
-            preScore = preCount.rows[0].score;
-        }
-
-        if(postCount.rows.length > 0){
-            postScore = postCount.rows[0].score;
-        }
-
         pgClient.end();
         //TODO: implement token
         let sendObject = {
-            days: resDays.rows,
-            token: res.rows[0].userid,
-            level: level,
-            pre: preScore,
-            post: postScore
+            token: res.rows[0].userid
         }
 
         return new Promise(function(resolve, reject){
