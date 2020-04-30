@@ -50,16 +50,17 @@ module.exports = {
             }
         }
 
-        //TODO: Update this to return pre and post assessment dates
-        let preScore = null;
-        let postScore = null;
+        let preAssessment = {};
+        let postAssessment= {};
 
         if(preCount.rows.length > 0){
-            preScore = preCount.rows[0].score;
+            preAssessment['score'] = preCount.rows[0].score;
+            preAssessment['date'] = preCount.rows[0].date;
         }
 
         if(postCount.rows.length > 0){
-            postScore = postCount.rows[0].score;
+            postAssessment['score'] = postCount.rows[0].score;
+            postAssessment['date'] = postCount.rows[0].date;
         }
 
         pgClient.end();
