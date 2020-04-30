@@ -34,16 +34,6 @@ var server = app.listen(process.env.PORT || 8080, function () {
     console.log("App now running on port", port);
 });
 
-app.get("/", cors(corsOptions), function(req, res, next) {
-    if(req.headers.authorization != undefined){
-        let auth = req.headers.authorization.split(' ')[1];
-        let [user, pass] = Buffer.from(auth, 'base64').toString().split(':');
-        res.send(user+' '+pass);
-        return;
-    }
-    res.status(401).send("No login provided");
-})
-
 app.put("/register/", cors(corsOptions), function(req, res, next) {
     register.user(req.body)
         .then(result => res.send(result))
