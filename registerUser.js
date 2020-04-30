@@ -1,4 +1,5 @@
 var { Client } = require('pg');
+var bcrypt = require('bcryptjs');
 
 function allDefined(req){
     if(typeof(req.email) === 'undefined'){
@@ -81,12 +82,17 @@ module.exports = {
             })
         }
 
-        //TODO: password hashing
-        pgClient.query("INSERT INTO users(userid, email, hashedpassword, race, nationality, gender, age) VALUES (DEFAULT, $1, $2, $3, $4, $5, $6)", [req.email.toLowerCase(), req.password, req.race, req.nationality, req.gender, req.age])
+        await pgClient.query("INSERT INTO users(userid, email, hashedpassword, race, nationality, gender, age) VALUES (DEFAULT, $1, $2, $3, $4, $5, $6)", [req.email.toLowerCase(), null, req.race, req.nationality, req.gender, req.age])
+        
+        let updated = await pgClient.query("SELECT userid FROM users WHERE email = $1",[req.email.toLowerCase()]);
+        let userId = updated.rows[0].userid;
+        let salt = await bcrypt.genSalt(userId);
+        let hash = await bcrypt.hash(req.password, salt);
+        pgClient.query("UPDATE users SET hashedpassword = $1 WHERE userid = $2", [hash, userId])
             .then(res => {
                 pgClient.end();
                 return new Promise(function(resolve, reject){
-                    resolve(req.email+" successfully registered!");
+                    resolve(req.email+" successfully registered!"); //NOTE: Return value doesn't seem to be passing right now.  May need to use another await?
                 })
             })
             .catch(err => {
