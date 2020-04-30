@@ -49,8 +49,8 @@ module.exports = {
         }
 
         //TODO: Update this to return pre and post assessment dates
-        let preScore = 0;
-        let postScore = 0;
+        let preScore = null;
+        let postScore = null;
 
         if(preCount.rows.length > 0){
             preScore = preCount.rows[0].score;
