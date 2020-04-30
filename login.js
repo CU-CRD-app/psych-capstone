@@ -1,4 +1,5 @@
 var { Client } = require('pg');
+var bcrypt = require('bcryptjs');
 
 function allDefined(req){
     if(typeof(req.email) === 'undefined'){
@@ -26,7 +27,7 @@ module.exports = {
         pgClient.connect();
 
         //TODO: password hashing
-        let res = await pgClient.query("SELECT * FROM users WHERE email = $1 AND hashedpassword = $2", [req.email.toLowerCase(), req.password]);
+        let res = await pgClient.query("SELECT * FROM users WHERE email = $1", [req.email.toLowerCase()]);
         if(res.rows.length == 0){
             pgClient.end();
             return new Promise(function(resolve, reject){
@@ -35,13 +36,23 @@ module.exports = {
         }
 
         pgClient.end();
-        //TODO: implement token
-        let sendObject = {
-            token: res.rows[0].userid
-        }
 
-        return new Promise(function(resolve, reject){
-            resolve(sendObject);
-        })
+        let match = await bcrypt.compare(req.password, res.rows[0].hashedpassword);
+
+        if(match){
+            let sendObject = {
+            token: res.rows[0].userid //TODO: implement token
+            }
+
+            return new Promise(function(resolve, reject){
+                resolve(sendObject);
+            })
+        }
+        else{
+            return new Promise(function(resolve, reject){
+                reject("Account not found");
+            })
+        }
+        
     }
 }
