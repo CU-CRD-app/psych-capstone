@@ -1,6 +1,6 @@
 var { Client } = require('pg');
 
-allDefined = function(req){
+function allDefined(req){
     if(typeof(req.email) === 'undefined'){
         return false;
     }
@@ -26,20 +26,18 @@ module.exports = {
         pgClient.connect();
 
         //TODO: password hashing
-        let res = await pgClient.query("SELECT * FROM users WHERE email = $1 AND hashedpassword = $2", [req.email, req.password]);
+        let res = await pgClient.query("SELECT * FROM users WHERE email = $1 AND hashedpassword = $2", [req.email.toLowerCase(), req.password]);
         if(res.rows.length == 0){
+            pgClient.end();
             return new Promise(function(resolve, reject){
                 reject("Account not found");
             })
         }
 
-        //TODO: sort?
-        let resDays = await pgClient.query("SELECT * FROM day WHERE userid = $1", [res.rows[0].userid]);
-
+        pgClient.end();
         //TODO: implement token
         let sendObject = {
-            days: resDays.rows,
-            token: null
+            token: res.rows[0].userid
         }
 
         return new Promise(function(resolve, reject){
