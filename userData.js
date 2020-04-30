@@ -68,8 +68,8 @@ module.exports = {
         let sendObject = {
             days: resDays.rows,
             level: level,
-            pre: preScore,
-            post: postScore
+            pre: preAssessment,
+            post: postAssessment
         }
 
         return new Promise(function(resolve, reject){
