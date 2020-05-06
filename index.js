@@ -92,6 +92,7 @@ app.post("/tasks/", cors(corsOptions), function(req, res, next) {
 })
 
 app.post("/userData/", cors(corsOptions), function(req, res, next) {
+    console.log(req.header('Authorization').split(' ')[1]);
     tokenHandler.verify(req.header('Authorization').split(' ')[1])
         .then(id => {
             userData.userData(id)
