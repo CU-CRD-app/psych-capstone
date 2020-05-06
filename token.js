@@ -13,9 +13,9 @@ module.exports = {
             }
             email = decoded.email;
         }
-        catch(err){
+        catch{
             return new Promise(function(resolve, reject){
-                reject(err);
+                reject("Invalid token");
             })
         }
 
