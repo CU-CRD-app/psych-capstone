@@ -4,16 +4,15 @@ var { Client } = require('pg');
 module.exports = {
     verify: async function(token){
         let email = "";
-        jwt.verify(token, process.env.public, function(err, decoded) {
-            if(typeof(err) !== 'undefined'){
-                return new Promise(function(resolve, reject){
-                    reject(err);
-                })
-            }
-            else{
-                email = decoded.email;
-            }
-        })
+        try{
+            let decoded = await jwt.verify(token, process.env.public);
+            email = decoded.email;
+        }
+        catch(err){
+            return new Promise(function(resolve, reject){
+                reject(err);
+            })
+        }
 
         const pgClient = new Client({
             connectionString: process.env.DATABASE_URL,
