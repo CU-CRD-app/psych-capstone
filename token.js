@@ -28,17 +28,13 @@ module.exports = {
         })
     },
 
-    generate: async function(email){
+    generate: function(email){
         jwt.sign({email: email}, process.env.secret, {expiresIn:'3h', algorithm:'RS256'}, function(err, token){
             if(err){
-                return new Promise(function(resolve, reject){
-                    reject(err);
-                })
+                return err;
             }
             console.log("0 "+token)
-            return new Promise(function(resolve, reject){
-                resolve(token);
-            })
+            return token;
         })
     }
 }
