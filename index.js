@@ -113,10 +113,13 @@ app.post("/userData/", cors(corsOptions), function(req, res, next) {
 })
 
 app.put("/checktoken/", cors(corsOptions), function(req, res, next){
-    //TODO: actually implement token logic
-    tokenHandler.verify(req.header('Authorization').split(' ')[1])
-        .then(res.status(200).json({message: "Valid token"}))
-        .catch(res.status(401).json({message: "Invalid token"}))
+    try{
+        tokenHandler.verify(req.header('Authorization').split(' ')[1])
+            .then(res.status(200).json({message: "Valid token"}))
+    }
+    catch{
+        res.status(401).json({message: "Invalid token"})
+    }
 })
 
 app.put("/preassessment/", cors(corsOptions), function(req, res, next){
