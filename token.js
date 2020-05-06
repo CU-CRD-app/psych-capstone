@@ -35,6 +35,7 @@ module.exports = {
                     reject(err);
                 })
             }
+            console.log("0 "+token)
             return new Promise(function(resolve, reject){
                 resolve(token);
             })
