@@ -27,7 +27,6 @@ module.exports = {
 
         pgClient.connect();
 
-        //TODO: password hashing
         let res = await pgClient.query("SELECT * FROM users WHERE email = $1", [req.email.toLowerCase()]);
         if(res.rows.length == 0){
             pgClient.end();
@@ -40,13 +39,20 @@ module.exports = {
 
         let match = await bcrypt.compare(req.password, res.rows[0].hashedpassword);
 
+
         if(match){
-            tokenHandler.generate(req.email.toLowerCase())
-                .then(res => {
-                    return new Promise(function(resolve, reject){
-                        resolve(res);
-                    })
-                }) 
+            let token = ""
+            try{
+                token = await tokenHandler.generate(req.email.toLowerCase())
+            }
+            catch(err){
+                return new Promise(function(resolve, reject){
+                    reject(err);
+                })
+            }
+            return new Promise(function(resolve, reject){
+                resolve(token);
+            })
         }
         else{
             return new Promise(function(resolve, reject){
