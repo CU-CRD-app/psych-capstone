@@ -5,7 +5,7 @@ module.exports = {
     verify: async function(token){
         let email = "";
         jwt.verify(token, process.env.public, function(err, decoded) {
-            if(err){
+            if(typeof(err) !== 'undefined'){
                 return new Promise(function(resolve, reject){
                     reject(err);
                 })
