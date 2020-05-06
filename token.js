@@ -31,7 +31,6 @@ module.exports = {
     generate: async function(email){
         let token = await jwt.sign({email: email}, process.env.secret, {expiresIn:'3h', algorithm:'RS256'})
         return new Promise(function(resolve, reject){
-            console.log("0 "+token);
             resolve(token);
         })
     }
