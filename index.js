@@ -79,81 +79,91 @@ app.post("/tasks/", cors(corsOptions), function(req, res, next) {
     if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' '.length < 2)){
         res.status(401).send("Please provide a properly formatted token")
     }
-    tokenHandler.verify(req.header('Authorization').split(' ')[1])
-        .then(id => {
-            tasks.upload(req.body, id)
-                .then(result => res.json({result:result}))
-                .catch(err => {
-                    if(typeof(err) === 'string'){
-                        res.status(400).send(err);
-                    }
-                    else{
-                        res.status(500).send("Internal server error");
-                    }
-                })
-        })
-        .catch(err => res.status(401).send("Invalid token"))
+    else{
+       tokenHandler.verify(req.header('Authorization').split(' ')[1])
+            .then(id => {
+                tasks.upload(req.body, id)
+                    .then(result => res.json({result:result}))
+                    .catch(err => {
+                        if(typeof(err) === 'string'){
+                            res.status(400).send(err);
+                        }
+                        else{
+                            res.status(500).send("Internal server error");
+                        }
+                    })
+            })
+            .catch(err => res.status(401).send("Invalid token")) 
+    }
+    
 })
 
 app.post("/userData/", cors(corsOptions), function(req, res, next) {
     if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' '.length < 2)){
         res.status(401).send("Please provide a properly formatted token")
     }
-    tokenHandler.verify(req.header('Authorization').split(' ')[1])
-        .then(id => {
-            userData.userData(id)
-                .then(result => res.send(result))
-                .catch(err => {
-                    if(typeof(err) === 'string'){
-                        if(err == "Account not found"){
-                            res.status(401).send(err);
+    else{
+        tokenHandler.verify(req.header('Authorization').split(' ')[1])
+            .then(id => {
+                userData.userData(id)
+                    .then(result => res.send(result))
+                    .catch(err => {
+                        if(typeof(err) === 'string'){
+                            if(err == "Account not found"){
+                                res.status(401).send(err);
+                            }
+                            else{
+                                res.status(400).send(err);
+                            }
                         }
                         else{
-                            res.status(400).send(err);
+                            res.status(500).send("Internal server error");
                         }
-                    }
-                    else{
-                        res.status(500).send("Internal server error");
-                    }
-                })
-        })
-        .catch(err => res.status(401).send("Invalid token"))
+                    })
+            })
+            .catch(err => res.status(401).send("Invalid token"))
+    } 
 })
 
 app.put("/checktoken/", cors(corsOptions), function(req, res, next){
     if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' '.length < 2)){
         res.status(401).send("Please provide a properly formatted token")
     }
-    tokenHandler.verify(req.header('Authorization').split(' ')[1])
-        .then(id => res.status(200).json({message: "Valid token"}))
-        .catch(err => res.status(401).json({message: "Invalid token"}))
+    else{
+        tokenHandler.verify(req.header('Authorization').split(' ')[1])
+            .then(id => res.status(200).json({message: "Valid token"}))
+            .catch(err => res.status(401).json({message: "Invalid token"}))
+    }
 })
 
 app.put("/preassessment/", cors(corsOptions), function(req, res, next){
     if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' '.length < 2)){
         res.status(401).send("Please provide a properly formatted token")
     }
-    tokenHandler.verify(req.header('Authorization').split(' ')[1])
-        .then(id => {
-            preassessment.upload(req.body, id)
-                .then(result => res.send(result))
-                .catch(err => {
-                    if(typeof(err) === 'string'){
-                        res.status(400).send(err);
-                    }
-                    else{
-                        res.status(500).send("Internal server error");
-                    }
-                })
-        })
-        .catch(err => res.status(401).send("Invalid token"))
+    else{
+        tokenHandler.verify(req.header('Authorization').split(' ')[1])
+            .then(id => {
+                preassessment.upload(req.body, id)
+                    .then(result => res.send(result))
+                    .catch(err => {
+                        if(typeof(err) === 'string'){
+                            res.status(400).send(err);
+                        }
+                        else{
+                            res.status(500).send("Internal server error");
+                        }
+                    })
+            })
+            .catch(err => res.status(401).send("Invalid token"))
+    }
 })
 
 app.put("/postassessment/", cors(corsOptions), function(req, res, next){
     if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' '.length < 2)){
         res.status(401).send("Please provide a properly formatted token")
     }
-    tokenHandler.verify(req.header('Authorization').split(' ')[1])
+    else{
+      tokenHandler.verify(req.header('Authorization').split(' ')[1])
         .then(id => {
             postassessment.upload(req.body, id)
                 .then(result => res.send(result))
@@ -166,5 +176,6 @@ app.put("/postassessment/", cors(corsOptions), function(req, res, next){
                     }
                 })
         })
-        .catch(err => res.status(401).send("Invalid token"))
+        .catch(err => res.status(401).send("Invalid token"))  
+    } 
 })
