@@ -94,7 +94,7 @@ app.post("/tasks/", cors(corsOptions), function(req, res, next) {
 app.post("/userData/", cors(corsOptions), function(req, res, next) {
     tokenHandler.verify(req.header('Authorization').split(' ')[1])
     .then(id => {
-        userData.userData(req.body)
+        userData.userData(id)
             .then(result => res.send(result))
             .catch(err => {
                 if(typeof(err) === 'string'){
