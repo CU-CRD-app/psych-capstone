@@ -93,23 +93,23 @@ app.post("/tasks/", cors(corsOptions), function(req, res, next) {
 
 app.post("/userData/", cors(corsOptions), function(req, res, next) {
     tokenHandler.verify(req.header('Authorization').split(' ')[1])
-    .then(id => {
-        userData.userData(id)
-            .then(result => res.send(result))
-            .catch(err => {
-                if(typeof(err) === 'string'){
-                    if(err == "Account not found"){
-                        res.status(401).send(err);
+        .then(id => {
+            userData.userData(id)
+                .then(result => res.send(result))
+                .catch(err => {
+                    if(typeof(err) === 'string'){
+                        if(err == "Account not found"){
+                            res.status(401).send(err);
+                        }
+                        else{
+                            res.status(400).send(err);
+                        }
                     }
                     else{
-                        res.status(400).send(err);
+                        res.status(500).send("Internal server error");
                     }
-                }
-                else{
-                    res.status(500).send("Internal server error");
-                }
-            })
-    })
+                })
+        })
 })
 
 app.put("/checktoken/", cors(corsOptions), function(req, res, next){
