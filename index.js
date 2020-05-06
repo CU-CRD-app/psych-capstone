@@ -76,7 +76,7 @@ app.post("/login/", cors(corsOptions), function(req, res, next) {
 // All endpoints past this point require a token to access
 
 app.post("/tasks/", cors(corsOptions), function(req, res, next) {
-    if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' '.length < 2)){
+    if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
         res.status(401).send("Please provide a properly formatted token")
     }
     else{
@@ -99,7 +99,7 @@ app.post("/tasks/", cors(corsOptions), function(req, res, next) {
 })
 
 app.post("/userData/", cors(corsOptions), function(req, res, next) {
-    if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' '.length < 2)){
+    if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
         res.status(401).send("Please provide a properly formatted token")
     }
     else{
@@ -126,7 +126,7 @@ app.post("/userData/", cors(corsOptions), function(req, res, next) {
 })
 
 app.put("/checktoken/", cors(corsOptions), function(req, res, next){
-    if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' '.length < 2)){
+    if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
         res.status(401).send("Please provide a properly formatted token")
     }
     else{
@@ -137,7 +137,7 @@ app.put("/checktoken/", cors(corsOptions), function(req, res, next){
 })
 
 app.put("/preassessment/", cors(corsOptions), function(req, res, next){
-    if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' '.length < 2)){
+    if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
         res.status(401).send("Please provide a properly formatted token")
     }
     else{
@@ -159,7 +159,7 @@ app.put("/preassessment/", cors(corsOptions), function(req, res, next){
 })
 
 app.put("/postassessment/", cors(corsOptions), function(req, res, next){
-    if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' '.length < 2)){
+    if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
         res.status(401).send("Please provide a properly formatted token")
     }
     else{
