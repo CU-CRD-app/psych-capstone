@@ -4,7 +4,7 @@ var { Client } = require('pg');
 module.exports = {
     verify: async function(token){
         let email = "";
-        jwt.verify(token, process.env.secret, function(err, decoded) {
+        jwt.verify(token, process.env.public, function(err, decoded) {
             if(err){
                 return new Promise(function(resolve, reject){
                     reject(err);
