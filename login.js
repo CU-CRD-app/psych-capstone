@@ -43,7 +43,7 @@ module.exports = {
         if(match){
             let token = ""
             try{
-                token = tokenHandler.generate(req.email.toLowerCase())
+                token = await tokenHandler.generate(req.email.toLowerCase())
                 console.log("1 "+token);
             }
             catch(err){
