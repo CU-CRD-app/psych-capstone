@@ -44,12 +44,14 @@ module.exports = {
             let token = ""
             try{
                 token = await tokenHandler.generate(req.email.toLowerCase())
+                console.log("1 "+token);
             }
             catch(err){
                 return new Promise(function(resolve, reject){
                     reject(err);
                 })
             }
+            console.log("2 "+token);
             return new Promise(function(resolve, reject){
                 resolve(token);
             })
