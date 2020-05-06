@@ -66,44 +66,50 @@ app.post("/login/", cors(corsOptions), function(req, res, next) {
         })
 })
 
-app.use(function(req, res, next) {
-    if (!req.headers.authorization) {
-        return res.status(403).json({ error: 'No credentials sent!' });
-    }
-    next();
-});
+// app.use(function(req, res, next) {
+//     if (!req.headers.authorization) {
+//         return res.status(403).json({ error: 'No credentials sent!' });
+//     }
+//     next();
+// });
 
 // All endpoints past this point require a token to access
 
 app.post("/tasks/", cors(corsOptions), function(req, res, next) {
-    tasks.upload(req.body)
-        .then(result => res.json({result:result}))
-        .catch(err => {
-            if(typeof(err) === 'string'){
-                res.status(400).send(err);
-            }
-            else{
-                res.status(500).send("Internal server error");
-            }
-        })
+    tokenHandler.verify(req.header('Authorization').split(' ')[1])
+    .then(id => {
+        tasks.upload(req.body, id)
+            .then(result => res.json({result:result}))
+            .catch(err => {
+                if(typeof(err) === 'string'){
+                    res.status(400).send(err);
+                }
+                else{
+                    res.status(500).send("Internal server error");
+                }
+            })
+    })
 })
 
 app.post("/userData/", cors(corsOptions), function(req, res, next) {
-    userData.userData(req.body)
-        .then(result => res.send(result))
-        .catch(err => {
-            if(typeof(err) === 'string'){
-                if(err == "Account not found"){
-                    res.status(401).send(err);
+    tokenHandler.verify(req.header('Authorization').split(' ')[1])
+    .then(id => {
+        userData.userData(req.body)
+            .then(result => res.send(result))
+            .catch(err => {
+                if(typeof(err) === 'string'){
+                    if(err == "Account not found"){
+                        res.status(401).send(err);
+                    }
+                    else{
+                        res.status(400).send(err);
+                    }
                 }
                 else{
-                    res.status(400).send(err);
+                    res.status(500).send("Internal server error");
                 }
-            }
-            else{
-                res.status(500).send("Internal server error");
-            }
-        })
+            })
+    })
 })
 
 app.put("/checktoken/", cors(corsOptions), function(req, res, next){
