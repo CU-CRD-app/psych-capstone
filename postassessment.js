@@ -1,7 +1,7 @@
 var { Client } = require('pg');
 
-function allDefined(req){
-    if(typeof(req.token) === 'undefined'){
+function allDefined(req, id){
+    if(typeof(id) === 'undefined'){
         return false;
     }
     if(typeof(req.score) === 'undefined'){
@@ -14,7 +14,7 @@ function allDefined(req){
 }
 
 module.exports = {
-    upload: async function(req){
+    upload: async function(req, id){
         if(!allDefined(req)){
             return new Promise(function(resolve, reject){
                 reject("Missing parameter");
@@ -28,8 +28,7 @@ module.exports = {
     
         pgClient.connect();
     
-        //TODO: Token is used as userID
-        let res = await pgClient.query("SELECT COUNT(score) FROM postassessment WHERE userid = $1 AND race = $2", [req.token, req.race]);
+        let res = await pgClient.query("SELECT COUNT(score) FROM postassessment WHERE userid = $1 AND race = $2", [id, req.race]);
         if(res.rows[0].count > 0){
             pgClient.end();
             return new Promise(function(resolve, reject){
@@ -39,7 +38,7 @@ module.exports = {
 
         let now = new Date().toUTCString();
 
-        pgClient.query("INSERT INTO postassessment(userid, score, race, date) VALUES ($1, $2, $3, $4)", [req.token, req.score, req.race, now])
+        pgClient.query("INSERT INTO postassessment(userid, score, race, date) VALUES ($1, $2, $3, $4)", [id, req.score, req.race, now])
             .then(res => {
                 pgClient.end();
                 return new Promise(function(resolve, reject){
