@@ -6,6 +6,11 @@ module.exports = {
         let email = "";
         try{
             let decoded = await jwt.verify(token, process.env.public);
+            if(typeof(decoded) === 'undefined'){
+                return new Promise(function(resolve, reject){
+                    reject("Invalid token");
+                })
+            }
             email = decoded.email;
         }
         catch(err){
