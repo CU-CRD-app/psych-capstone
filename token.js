@@ -5,7 +5,7 @@ module.exports = {
     verify: async function(token){
         let email = "";
         try{
-            let decoded = jwt.verify(token, process.env.public);
+            let decoded = await jwt.verify(token, process.env.public);
             if(typeof(decoded) === 'undefined'){
                 return new Promise(function(resolve, reject){
                     reject("Invalid token");
