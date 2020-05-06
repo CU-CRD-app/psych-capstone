@@ -37,6 +37,7 @@ module.exports = {
             }
             console.log("0 "+token)
             return new Promise(function(resolve, reject){
+                console.log("a");
                 resolve(token);
             })
         })
