@@ -15,7 +15,7 @@ function allDefined(req){
 }
 
 function validPassword(pass){
-    if(!/[a-z]/.test(req.password) || !/[A-Z]/.test(req.password) || !/[0-9]/.test(req.password) || !req.password.indexOf(' ') < 0 || req.password.length < 7 || req.password.length > 16 || req.password == 'Passw0rd' || req.password == 'Password123'){
+    if(!/[a-z]/.test(pass) || !/[A-Z]/.test(pass) || !/[0-9]/.test(pass) || !pass.indexOf(' ') < 0 || pass.length < 7 || pass.length > 16 || pass == 'Passw0rd' || pass == 'Password123'){
         return false;
     }
     return true;
