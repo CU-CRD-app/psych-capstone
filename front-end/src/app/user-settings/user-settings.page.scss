@@ -1,35 +1,15 @@
-ion-label {
-    color: white;
-    margin-left: 10px;
-}
-
-ion-input {
-    margin: 20px;
-    width: 85%;
+ion-item {
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 5%;
     border-radius: 10px;
     background-color: white;
-    --padding-start: 10px;
-    border-left: 10px solid white;
-}
-
-.little-label {
-    margin-left: 20px;
-    font-size: 70%;
-}
-
-.little-input {
-    margin-top: 0px;
-    margin-bottom: 0px;
-}
-
-.edited-valid {
-    border-left: 10px solid dodgerblue;
-}
-
-.valid {
-    border-left: 10px solid #01DF74;
 }
 
 .invalid {
-    border-left: 10px solid #FE2E2E;
+	--background: rgb(255, 209, 209)
+}
+
+.valid {
+	--background: rgb(207, 253, 217)
 }

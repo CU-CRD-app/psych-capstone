@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { timer, interval } from 'rxjs';
-import { AlertController, ModalController, IonRouterOutlet, Events } from '@ionic/angular';
+import { AlertController, ModalController, IonRouterOutlet, ToastController } from '@ionic/angular';
 import { HelpModalComponent } from '../help-modal/help-modal.component';
 import { takeUntil } from 'rxjs/operators';
 import { createAnimation } from '@ionic/core';
 import { GetProgressService } from '../service/get-progress.service';
 import { SubmitScoresService } from '../service/submit-scores.service';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 enum Race { BLACK, ASIAN }
 enum Stage { START, TRAINING, ASSESSMENT, DONE }
@@ -25,20 +26,6 @@ let raceProperties = {
       8: ['Peter', 'Nathan', 'Zach', 'Walter', 'Kyle', 'Harry', 'Carl', 'Jeremy']
     },
     facePath: 'assets/sample-faces/black/'
-  },
-  1: {
-    race: Race.ASIAN,
-    namePool: {
-      1: [],
-      2: [],
-      3: [],
-      4: [],
-      5: [],
-      6: [],
-      7: [],
-      8: []
-    },
-    facePath: 'assets/sample-faces/asian/'
   }
 }
 
@@ -49,29 +36,15 @@ let raceProperties = {
 })
 export class TrainingPage {
 
-  constructor(public alertController: AlertController, public modalController: ModalController, private routerOutlet: IonRouterOutlet, public getProgress: GetProgressService, public submitScores: SubmitScoresService, public events: Events) {
+  constructor(public alertController: AlertController, public modalController: ModalController, private routerOutlet: IonRouterOutlet, public getProgress: GetProgressService, public submitScores: SubmitScoresService, public toastController : ToastController, public localNotifications : LocalNotifications) {
 
     this.routerOutlet.swipeGesture = false;
 
+  }
+
+  ionViewWillEnter() {
     this.currentRace = Race.BLACK;
-    
-    events.subscribe('getProgress', (blackLevel, asianLevel) => {
-
-      if (this.currentRace == Race.BLACK) {
-        this.userLevel = blackLevel;
-      } else {
-        this.userLevel = asianLevel;
-      }
-
-      this.stage = Stage.START;
-      this.task = null;
-      this.learningDone = false;
-      this.scores = [-1, -1, -1, -1, -1, -1];
-      this.levelCompletedToday = false;
-
-    });
-
-    this.initCurrentLevel(Race.BLACK);
+    this.initCurrentLevel();
   }
 
   ngAfterViewInit() {
@@ -85,10 +58,10 @@ export class TrainingPage {
   Race = Race;
   Stage = Stage;
   Task = Task;
-  stage : Stage;
-  task : Task;
-  learningDone : boolean;
-  scores : number[];
+  stage : Stage = null;
+  task : Task = null;
+  learningDone : boolean = false;
+  scores : number[] = [-1, -1, -1, -1, -1, -1];
 
   minTrainScore : number = 0.75;
   taskLengths : number[] = [8, 8, 32, 16, 8, 8];
@@ -105,63 +78,111 @@ export class TrainingPage {
   progress : number;
   currentRace : any;
   userLevel : any;
-  levelCompletedToday : boolean;
 
-  initCurrentLevel(race : Race) {
+  initCurrentLevel(race : Race = Race.BLACK) {
 
     this.currentRace = race;
 
-    this.getProgress.giveProgress(); // Pull current level and progress
+    this.getProgress.getData().subscribe((res) => {
 
-    if (this.userLevel == 0 || this.userLevel == 9) {
+      let days = res['days'];
+      this.userLevel = res['level'];
+      let levelCompletedToday = false;
+      this.stage = Stage.START;
 
-      this.assessmentFacePaths = this.getAssessmentFaces(false);
+      if (this.userLevel == 0 || this.userLevel == 9) {
 
-    } else if (this.userLevel > 0 && this.userLevel < 9 && !this.levelCompletedToday) {
+        this.assessmentFacePaths = this.getAssessmentFaces(false);
 
-      this.setNames = raceProperties[this.currentRace].namePool[this.userLevel];
-      this.trainingFacePaths = this.getTrainingFaces();
-      this.whosNewFacePaths = this.getWhosNewFaces();
-      this.assessmentFacePaths = this.getAssessmentFaces(true);
+        let images : any[] = [];
+        for (let i = 0; i < this.assessmentFacePaths.length; i++) {
+          images.push(new Image());
+          images[i].src = this.assessmentFacePaths[i];
+        }
 
-      // Preload images
-      let images : any[] = [];
-      for (let i = 0; i < this.trainingFacePaths.length; i++) {
-        images.push(new Image());
-        images[i].src = this.trainingFacePaths[i];
+      } else if (this.userLevel > 0 && this.userLevel < 9) {
+
+        let today = new Date().toLocaleDateString();
+        let lastDay = '';
+        for (let day in days) {
+          if ([days[day]['nameface'], days[day]['whosnew'], days[day]['memory'], days[day]['shuffle'], days[day]['forcedchoice'], days[day]['samedifferent']].indexOf(-1) < 0) {
+            lastDay = new Date(days[day]['date']).toLocaleDateString();
+          }
+        }
+        if (today == lastDay) {
+          levelCompletedToday = true;
+        }
+
+        if (!levelCompletedToday) {
+
+          this.setNames = raceProperties[this.currentRace].namePool[this.userLevel];
+          this.trainingFacePaths = this.getTrainingFaces();
+          this.whosNewFacePaths = this.getWhosNewFaces();
+          this.assessmentFacePaths = this.getAssessmentFaces(true);
+
+          // Preload images
+          let images : any[] = [];
+          for (let i = 0; i < this.trainingFacePaths.length; i++) {
+            images.push(new Image());
+            images[i].src = this.trainingFacePaths[i];
+          }
+          for (let i = 0; i < this.whosNewFacePaths.length; i++) {
+            images.push(new Image());
+            images[i].src = this.whosNewFacePaths[i];
+          }
+          for (let i = 0; i < this.assessmentFacePaths.length; i++) {
+            images.push(new Image());
+            images[i].src = this.assessmentFacePaths[i];
+          }
+
+          if (days[this.userLevel - 1]) {
+            this.scores = [days[this.userLevel - 1]['nameface'], days[this.userLevel - 1]['whosnew'], days[this.userLevel - 1]['memory'], days[this.userLevel - 1]['shuffle'], days[this.userLevel - 1]['forcedchoice'], days[this.userLevel - 1]['samedifferent']];
+            this.learningDone = this.scores.indexOf(-1) > -1;
+          }
+
+          this.iterateStage();
+
+        } else {
+          this.userLevel--;
+          this.finishLevel();
+        }
+
+      } else {
+        this.stage = Stage.DONE;
       }
 
-      this.iterateStage();
-
-    } else {
-      this.stage = Stage.DONE;
-    }
-
-    let images : any[] = [];
-    for (let i = 0; i < this.assessmentFacePaths.length; i++) {
+      let images : any[] = [];
       images.push(new Image());
-      images[i].src = this.assessmentFacePaths[i];
-    }
-    images.push(new Image());
-    images[images.length - 1].src = 'assets/background_imgs/mask1.png';
+      images[images.length - 1].src = 'assets/background_imgs/mask1.png';
+
+    }, async (err) => { 
+      const toast = await this.toastController.create({
+        message: 'Something went wrong. Please try logging out and back in',
+        color: 'danger',
+        duration: 2000
+      });
+      toast.present();
+    });
 
   }
 
   iterateStage() {
-    let currentStage = this.stage;
     this.task = null;
     if (!this.learningDone) {
       this.stage = Stage.START;
-    } else if (this.trainingDone()) {
+    } else if (this.trainingNotDone()) {
       this.stage = Stage.TRAINING;
+      if (this.scores[Task.NAME_FACE] == -1 && this.scores[Task.WHOS_NEW] == -1 && this.scores[Task.MEMORY] == -1 && this.scores[Task.SAME_DIFFERENT] == -1) {
+        this.renderLevelOneHelp();
+      }
     } else if (this.scores.includes(-1)) {
       this.stage = Stage.ASSESSMENT;
+      if (this.scores[Task.FORCED_CHOICE] == -1 && this.scores[Task.SAME_DIFFERENT] == -1) {
+        this.renderLevelOneHelp();
+      }
     } else {
       this.finishLevel();
-    }
-
-    if (this.stage != currentStage && this.stage != Stage.DONE) {
-      this.renderLevelOneHelp();
+      this.scheduleNotification();
     }
   }
 
@@ -247,7 +268,7 @@ export class TrainingPage {
     let facePaths : string[] = [];
     let faceNums : number[] = [];
 
-    let faceNumber : number = daily ? this.numFaces : this.numFaces;
+    let faceNumber : number = daily ? this.numFaces : this.assessmentPoolSize;
 
     for (let i = 0; i < faceNumber; i++) {
       let face = Math.floor(Math.random() * this.assessmentPoolSize);
@@ -278,7 +299,16 @@ export class TrainingPage {
         this.iterateStage();
       }
     }
-    // save today's progress to database
+    this.submitScores.submitTaskScores(this.userLevel, this.scores);
+  }
+
+  finishPrePost(score : number[]) {
+    if (this.userLevel == 0) {
+      this.submitScores.submitPreAssessment(score[0]);
+    } else if (this.userLevel == 9) {
+      this.submitScores.submitPreAssessment(score[0]);
+    }
+    this.finishLevel();
   }
 
   async taskExitAlert() {
@@ -341,8 +371,6 @@ export class TrainingPage {
 
   finishLevel() {
 
-    this.getProgress.updateProgress(this.userLevel + 1);
-
     this.stage = Stage.DONE;
 
     let currentTask : Task = this.task;
@@ -384,16 +412,27 @@ export class TrainingPage {
         this.progress += .1;
       });
 
-    } else {
-      this.userLevel++;
     }
-
   }
 
-  trainingDone() {
+  trainingNotDone() {
     return this.scores[Task.NAME_FACE] < this.taskLengths[Task.NAME_FACE] * this.minTrainScore ||
       this.scores[Task.WHOS_NEW] < this.taskLengths[Task.WHOS_NEW] * this.minTrainScore  ||
       this.scores[Task.MEMORY] < this.taskLengths[Task.MEMORY] * this.minTrainScore  ||
       this.scores[Task.SHUFFLE] < this.taskLengths[Task.SHUFFLE] * this.minTrainScore
+  }
+
+  scheduleNotification() {
+    let date = new Date();
+    date.setMinutes(0);
+    date.setSeconds(0);
+    date.setHours(8);
+    date.setDate(date.getDate() + 1);
+    this.localNotifications.schedule({
+      id: 1,
+      text: 'You\'re next training is now available!',
+      foreground: true,
+      trigger: {at: date}
+    });
   }
 }

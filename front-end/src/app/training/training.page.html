@@ -11,6 +11,10 @@
     </ion-toolbar>
   </ion-header>
 
+  <div *ngIf="stage == null" style="height: 90%; display: flex; justify-content: center; align-items: center">
+    <ion-spinner name="crescent" color="light"></ion-spinner>
+  </div>
+
   <div *ngIf="task == null" style="color: white; text-align: center">
 
     <!--Start Page-->
@@ -65,7 +69,7 @@
         <ion-icon [src]=face_icon></ion-icon>
       </ion-button>
 
-      <ion-button (click)="startAssessmentAlert()" style="padding: 0; margin: 1%" [disabled]="trainingDone()">
+      <ion-button (click)="startAssessmentAlert()" style="padding: 0; margin: 1%" [disabled]="trainingNotDone()">
         <ion-icon [src]=assessment_icon ></ion-icon>
       </ion-button>
 
@@ -80,7 +84,7 @@
         <div>Forced Choice<span *ngIf="scores[4] > -1">: {{scores[Task.FORCED_CHOICE]}}/{{taskLengths[Task.FORCED_CHOICE]}}</span></div>
       </ion-card>
 
-      <ion-card (click)="scores[5] == -1 ? task = Task.SAME_DIFFERENT : null" button [ngClass]="{'task-done': scores[5] != -1}">
+      <ion-card (click)="scores[5] == -1 ? task = Task.SAME_DIFFERENT : null; renderLevelOneHelp()" button [ngClass]="{'task-done': scores[5] != -1}">
         <ion-icon slot="start" name="contacts" style="font-size: 300%"></ion-icon>
         <div>Same Different<span *ngIf="scores[5] > -1">: {{scores[Task.SAME_DIFFERENT]}}/{{taskLengths[Task.SAME_DIFFERENT]}}</span></div>
       </ion-card>
@@ -90,15 +94,15 @@
     <!--Done Page-->
     <div *ngIf="stage == Stage.DONE" style="margin-top: 50%">
 
-      <div *ngIf="userLevel <= 9">
+      <div *ngIf="userLevel <= 9" style="display: flex; flex-direction: column; justify-content: center; align-items: center">
 
         <div class="header" style="margin: 5%"><b>Finished!</b></div>
-        <ion-progress-bar style="width: 80%; margin-left: 30px" value={{progress}}></ion-progress-bar>
-        <div style="text-align: center; font-size: 4vh">Level <span class="level">{{userLevel}}</span></div>
+        <ion-progress-bar style="width: 80%" value={{progress}}></ion-progress-bar>
+        <div style="margin-top: 5%; font-size: 4vh">Level <span class="level">{{userLevel}}</span></div>
 
         <div *ngIf="userLevel == 1" class="fade-in">
           <div class="subheader" style="margin: 5%">You've entered level 1! Click to begin your training.</div>
-          <ion-button color="success" (click)="initCurrentLevel(currentRace)">Train</ion-button>
+          <ion-button color="success" (click)="initCurrentLevel()">Train</ion-button>
         </div>
 
         <div *ngIf="userLevel > 0 && userLevel < 9" class="fade-in">
@@ -108,7 +112,7 @@
 
         <div *ngIf="userLevel == 9" class="fade-in">
           <div class="subheader" style="margin: 5%">You've completed all eight levels! Now it's time for your post-assessment.</div>
-          <ion-button color="success" (click)="initCurrentLevel(currentRace)">Post-Assessment</ion-button>
+          <ion-button color="success" (click)="initCurrentLevel()">Post-Assessment</ion-button>
         </div>
 
       </div>
@@ -137,23 +141,21 @@
   <!--Same-Different-->
   <app-same-different *ngIf="task == Task.SAME_DIFFERENT" [facePaths]="assessmentFacePaths" (finished)="finished($event, 5)"></app-same-different>
   <!--Pre-Post-Assessment-->
-  <app-same-different *ngIf="task == Task.PRETEST || task == Task.POSTTEST" [facePaths]="assessmentFacePaths" (finished)="finishLevel()"></app-same-different>
+  <app-same-different *ngIf="task == Task.PRETEST || task == Task.POSTTEST" [facePaths]="assessmentFacePaths" (finished)="finishPrePost($event)"></app-same-different>
 
   <!--For development only-->
-  <br><br><br><br><br><br><br><br><br><br><br><br>
-  <div style="text-align:center">
+  <div *ngIf="stage">
     <br><br><br><br><br><br><br><br><br><br><br><br>
-    <h3 style=color:red>For Development Only</h3>
-    <ion-button (click)="task = Task.LEARNING">Learning</ion-button>
-    <ion-button (click)="task = Task.NAME_FACE">Name and Face: {{scores[Task.NAME_FACE]}}</ion-button>
-    <ion-button (click)="task = Task.WHOS_NEW">Who's New: {{scores[Task.WHOS_NEW]}}</ion-button>
-    <ion-button (click)="task = Task.MEMORY">Memory: {{scores[Task.MEMORY]}}</ion-button>
-    <ion-button (click)="task = Task.SHUFFLE">Shuffle: {{scores[Task.SHUFFLE]}}</ion-button>
-    <ion-button (click)="task = Task.FORCED_CHOICE">Forced Choice: {{scores[4]}}</ion-button>
-    <ion-button (click)="task = Task.SAME_DIFFERENT">Same Different: {{scores[5]}}</ion-button>
-    <ion-button (click)="getProgress.updateProgress(0); initCurrentLevel(currentRace)">Pre Assessment</ion-button>
-    <ion-button (click)="getProgress.updateProgress(1); initCurrentLevel(currentRace)">Training</ion-button>
-    <ion-button (click)="getProgress.updateProgress(9); initCurrentLevel(currentRace)">Post Assessment</ion-button>
+    <div style="text-align:center">
+      <br><br><br><br><br><br><br><br><br><br><br><br>
+      <ion-button (click)="task = Task.LEARNING">Learning</ion-button>
+      <ion-button (click)="task = Task.NAME_FACE">Name and Face</ion-button>
+      <ion-button (click)="task = Task.WHOS_NEW">Who's New</ion-button>
+      <ion-button (click)="task = Task.MEMORY">Memory</ion-button>
+      <ion-button (click)="task = Task.SHUFFLE">Shuffle</ion-button>
+      <ion-button (click)="task = Task.FORCED_CHOICE">Forced Choice</ion-button>
+      <ion-button (click)="task = Task.SAME_DIFFERENT">Same Different</ion-button>
+    </div>
   </div>
 
 </ion-content>

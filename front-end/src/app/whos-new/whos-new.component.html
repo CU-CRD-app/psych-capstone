@@ -3,7 +3,7 @@
   <ion-progress-bar style="margin-top: 0px" value={{progressPercent}}></ion-progress-bar>
 
   <span *ngIf="!scoreCardDisplayed()">
-    <div class="score-banner">Score: {{score}}/{{taskLength}}</div>
+    <div class="score-banner"><b>Score: {{score}}/{{progressPercent * taskLength}}</b></div>
     <div class="score-change">+1</div>
   </span>
 

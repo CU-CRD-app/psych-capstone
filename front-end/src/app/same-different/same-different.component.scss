@@ -2,6 +2,9 @@
     background-color: gainsboro;
     height: 310px;
     width: 270px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
 }
 
 .swipe-footer {
