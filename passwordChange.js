@@ -70,6 +70,7 @@ module.exports = {
             })
         }
         else{
+            pgClient.end();
             return new Promise(function(resolve, reject){
                 reject("Password does not match");
             })
