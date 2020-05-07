@@ -9,6 +9,7 @@ var tasks = require('./tasks.js');
 var preassessment = require('./preassessment.js');
 var postassessment = require('./postassessment.js');
 var tokenHandler = require('./token.js');
+var password = require('./passwordChange.js');
 
 initialize.start()
     .then(res => console.log(res))
@@ -178,4 +179,26 @@ app.put("/postassessment/", cors(corsOptions), function(req, res, next){
         })
         .catch(err => res.status(401).send("Invalid token"))  
     } 
+})
+
+app.put("/changepassword/", cors(corsOptions), function(req, res, next){
+    if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
+        res.status(401).send("Please provide a properly formatted token")
+    }
+    else{
+        tokenHandler.verify(req.header('Authorization').split(' ')[1])
+            .then(id => {
+                password.update(req.body)   
+                    .then(result => res.send(result))
+                    .catch(err => {
+                        if(typeof(err) === 'string'){
+                            res.status(400).send(err);
+                        }
+                        else{
+                            res.status(500).send("Internal server error");
+                        }
+                    })
+            })
+            .catch(err => res.status(401).send("Invalid token")) 
+    }
 })
