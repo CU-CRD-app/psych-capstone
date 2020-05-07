@@ -13,7 +13,6 @@ export class SubmitScoresService {
   post_url : string = "https://crossfacerecognition.herokuapp.com/postassessment/";
 
   //general
-  token : any;
   race : string;
   body : any;
   //tasks
@@ -36,20 +35,19 @@ export class SubmitScoresService {
   /**********************************************
   TASKS
     To submit scores, inject this service into the component that needs to submit,
-      then call this.submitScores.submitTaskScores(token, level, scores, race)
-      where token and level are numbers, scores is an array of scores in the order
+      then call this.submitScores.submitTaskScores(level, scores, race)
+      where level is a number, scores is an array of scores in the order
       of the normal scores array, and race is a string defaulted to "Black".
   **********************************************/
   /**********************************************
   PRE and POST
     To submit scores, inject, then call either submitPreAssessment or submitPostAssessment
-    Both functions take (token: any, score: number, race: string (optional, default "Black"))
+    Both functions take (score: number, race: string (optional, default "Black"))
   **********************************************/
 
   //TASKS
-  setScores(token: any, level: number, scores: number[], race: string = "Black"): Promise<any> {
+  setScores(level: number, scores: number[], race: string = "Black"): Promise<any> {
     let promise = new Promise((resolve, reject) => {
-      this.token = token;
       this.level = level;
       this.race = race;
       this.nameface = scores[0];
@@ -60,7 +58,6 @@ export class SubmitScoresService {
       this.samedifferent = scores[5];
 
       this.body = {
-        "token": this.token,
         "level": this.level,
         "race": this.race,
         "shuffle": this.shuffle,
@@ -76,14 +73,15 @@ export class SubmitScoresService {
     return promise;
   }
 
-  async putScores(token: any, level: number, scores: number[], race: string = "Black") {
+  async putScores(level: number, scores: number[], race: string = "Black") {
     const httpOptions = {
         headers: new HttpHeaders({
-          'Content-Type': 'application/json; charset=utf-8'
+          'Content-Type': 'application/json; charset=utf-8',
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
         })
       };
 
-    await this.setScores(token, level, scores, race);
+    await this.setScores(level, scores, race);
 
     console.log("Sent: ", JSON.stringify(this.body));
     this.http.post(this.scores_url, this.body, httpOptions).subscribe((response: Response) => {
@@ -93,21 +91,19 @@ export class SubmitScoresService {
     });
   }
 
-  submitTaskScores(token: any, level: number, scores : number[], race: string = "Black")
+  submitTaskScores(level: number, scores : number[], race: string = "Black")
   {
-    this.putScores(token, level, scores, race);
+    this.putScores(level, scores, race);
   }
 
 
   //PRE-ASSESSMENT
-  setPre(token: any, score: number, race: string = "Black"): Promise<any>{
+  setPre(score: number, race: string = "Black"): Promise<any>{
     let promise = new Promise((resolve, reject) => {
-      this.token = token;
       this.pre_score = score;
       this.race = race;
 
       this.body = {
-        "token": this.token,
         "score": this.pre_score,
         "race": this.race
       }
@@ -118,14 +114,15 @@ export class SubmitScoresService {
     return promise;
   }
 
-  async submitPreAssessment(token: any, score: number, race: string = "Black") {
+  async submitPreAssessment(score: number, race: string = "Black") {
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json; charset=utf-8'
+        'Content-Type': 'application/json; charset=utf-8',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
       })
     };
 
-    await this.setPre(token, score, race);
+    await this.setPre(score, race);
 
     console.log("Sent to pre: ", JSON.stringify(this.body));
     this.http.put(this.pre_url, this.body, httpOptions).subscribe((response: Response) => {
@@ -137,14 +134,12 @@ export class SubmitScoresService {
   }
 
   //POST-ASSESSMENT
-  setPost(token: any, score: number, race: string = "Black"): Promise<any>{
+  setPost(score: number, race: string = "Black"): Promise<any>{
     let promise = new Promise((resolve, reject) => {
-      this.token = token;
       this.post_score = score;
       this.race = race;
 
       this.body = {
-        "token": this.token,
         "score": this.post_score,
         "race": this.race
       }
@@ -155,14 +150,15 @@ export class SubmitScoresService {
     return promise;
   }
 
-  async submitPostAssessment(token: any, score: number, race: string = "Black") {
+  async submitPostAssessment(score: number, race: string = "Black") {
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json; charset=utf-8'
+        'Content-Type': 'application/json; charset=utf-8',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
       })
     };
 
-    await this.setPost(token, score, race);
+    await this.setPost(score, race);
 
     console.log("Sent to post: ", JSON.stringify(this.body));
     this.http.put(this.post_url, this.body, httpOptions).subscribe((response: Response) => {

@@ -1,0 +1,40 @@
+<ion-content>
+  
+  <div style="display: flex; flex-direction: column; justify-content: center; height: 100%">
+
+    <h2 style="text-align: center">Terms and Conditions</h2>
+
+    <div>
+      <div style="margin: 5%">
+        This research has been approved by the Institutional Review Board at the University of Colorado.
+      </div>
+
+      <div style="margin: 5%">
+        To participate, all participants must read and provide consent.
+      </div>
+
+      <div style="margin: 5%">
+        Please read and download the consent form <a style="color: dodgerblue; text-decoration: none" href="http://psych.colorado.edu/~jclab/app_consent"><b>here</b></a>.
+      </div>
+
+      <div style="margin: 5%">
+        By clicking “I consent,” you indicate that your are at least 18 years of age and that you consent to participate in this research.
+      </div>
+    </div>
+
+    <br>
+
+    <div>
+      <ion-item lines="none">
+        <ion-label>I consent</ion-label>
+        <ion-checkbox slot="start" (click)="closeModal(true)" [checked]="consent == true"></ion-checkbox>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>I do not consent</ion-label>
+        <ion-checkbox slot="start" (click)="closeModal(false)" [checked]="consent == false"></ion-checkbox>
+      </ion-item>
+    </div>
+
+  </div>
+
+</ion-content>

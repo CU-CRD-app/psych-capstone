@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastController } from '@ionic/angular';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { OpenNativeSettings } from '@ionic-native/open-native-settings/ngx';
+import { interval } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-user-settings',
@@ -8,25 +12,36 @@ import { ToastController } from '@ionic/angular';
 })
 export class UserSettingsPage implements OnInit {
 
-  constructor(public toastController : ToastController) { }
+  constructor(public toastController : ToastController, public localNotifications: LocalNotifications, private openNativeSettings: OpenNativeSettings, private http: HttpClient) { }
 
   ngOnInit() {
-    // set values for user here
+    this.userEmail = localStorage.getItem('username');
     this.boundEmail = this.userEmail;
   }
 
-  userEmail : string = 'placeholder@email.com'; // after connected to db delete set values
-  userPassword : string = '12345678';
+  ionViewWillEnter() {
+    this.updateNotification = interval(2000).subscribe(async () => {
+      this.notifications = await this.localNotifications.hasPermission();
+    });
+  }
+
+  async ionViewWillLeave() {
+    this.updateNotification.unsubscribe();
+  }
+
+  userEmail : string;
   placeholderPassword : string = '12345678';
   boundEmail : string;
   oldPassword : string = '';
   newPasswordFirst : string = '';
   newPasswordSecond : string = '';
+  notifications : boolean;
 
   emailPattern : RegExp = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/
 
   editingPassword : boolean = false;
   waitingForResponse : boolean = false;
+  updateNotification : any;
 
   validateEmail() {
     if (this.boundEmail != this.userEmail) {
@@ -35,12 +50,19 @@ export class UserSettingsPage implements OnInit {
     return null;
   }
 
-  validatePassword() {
-    // pattern?
+  validatePasswords() {
     if (this.editingPassword) {
-      return this.newPasswordFirst == this.newPasswordSecond && this.oldPassword != '' && this.newPasswordFirst != '';
+      let ret = true;
+      ret = ret && this.validatePassword(this.newPasswordFirst);
+      ret = ret && this.validatePassword(this.newPasswordSecond);
+      ret = ret && this.validatePassword(this.oldPassword);
+      return ret && this.newPasswordFirst == this.newPasswordSecond && this.oldPassword != '' && this.newPasswordFirst != '' && this.oldPassword != this.newPasswordFirst;
     }
     return null;
+  }
+
+  validatePassword(password : string) {
+    return /[a-z]/.test(password) && /[A-Z]/.test(password) && /[0-9]/.test(password) && password.length >= 7 && password.length <= 16 && password.indexOf(' ') < 0;
   }
 
   formTouched() {
@@ -48,35 +70,39 @@ export class UserSettingsPage implements OnInit {
   }
 
   validateForm() {
-    return (this.validateEmail() || this.validateEmail() == null) && (this.validatePassword() || this.validatePassword() == null) && this.formTouched();
+    return (this.validateEmail() || this.validateEmail() == null) && (this.validatePasswords() || this.validatePasswords() == null) && this.formTouched();
   }
 
-  async saveForm() {
-    this.waitingForResponse = true;
-    // http request to db and validate changes
-    this.waitingForResponse = false;
-    let errorOccured : boolean = false; // set based on http request
-    if (!errorOccured) {
-      this.userEmail = this.boundEmail;
-      this.userPassword = this.newPasswordFirst;
-      this.resetPasswordForm();
-      const toast = await this.toastController.create({
-        message: 'Your settings have been saved.',
-        duration: 2000,
-        color: 'success'
+  saveForm() {
+
+    if (this.validateForm()) {
+
+      let body = {
+        "email": localStorage.getItem('username'),
+        "oldpassword": this.oldPassword,
+        "newpassword": this.newPasswordFirst
+      }
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json; charset=utf-8',
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        })
+      };
+
+      this.waitingForResponse = true;
+      this.http.put('https://crossfacerecognition.herokuapp.com/changepassword/', body, httpOptions).subscribe(() => {
+        this.waitingForResponse = false;
+        this.resetPasswordForm();
+        this.successToast('Your settings have been saved');
+      }, (err) => {
+        this.waitingForResponse = false;
+        err["error"] == "Password does not match" ? this.dangerToast("Old password incorrect") : this.dangerToast("Something went wrong. Please try again later");
       });
-      toast.present();
+
     } else {
-      const toast = await this.toastController.create({
-        message: 'There was a problem saving your settings, please try again later.',
-        duration: 2000,
-        color: 'danger'
-      });
-      toast.present();
+      this.dangerToast('Invalid fields');
     }
-    this.oldPassword = '';
-    this.newPasswordFirst = '';
-    this.newPasswordSecond = '';
+
   }
 
   resetPasswordForm() {
@@ -84,5 +110,27 @@ export class UserSettingsPage implements OnInit {
     this.oldPassword = '';
     this.newPasswordFirst = '';
     this.newPasswordSecond = '';
+  }
+
+  async dangerToast(toastMessage : string) {
+    const toast = await this.toastController.create({
+      message: toastMessage,
+      color: 'danger',
+      duration: 2000
+    });
+    toast.present();
+  }
+
+  async successToast(toastMessage : string) {
+    const toast = await this.toastController.create({
+      message: toastMessage,
+      color: 'success',
+      duration: 2000
+    });
+    toast.present();
+  }
+
+  openSettings() {
+    this.openNativeSettings.open('application_details');
   }
 }

@@ -7,6 +7,8 @@ import { IonicModule } from '@ionic/angular';
 import { UserSettingsPageRoutingModule } from './user-settings-routing.module';
 
 import { UserSettingsPage } from './user-settings.page';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { OpenNativeSettings } from '@ionic-native/open-native-settings/ngx';
 
 @NgModule({
   imports: [
@@ -15,6 +17,7 @@ import { UserSettingsPage } from './user-settings.page';
     IonicModule,
     UserSettingsPageRoutingModule
   ],
-  declarations: [UserSettingsPage]
+  declarations: [UserSettingsPage],
+  providers: [LocalNotifications, OpenNativeSettings]
 })
 export class UserSettingsPageModule {}

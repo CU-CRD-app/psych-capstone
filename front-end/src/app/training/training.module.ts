@@ -15,6 +15,7 @@ import { ScorePageComponent } from '../score-page/score-page.component';
 import { HelpModalComponent } from '../help-modal/help-modal.component';
 import * as Hammer from 'hammerjs';
 import { HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 export class MyHammerConfig extends HammerGestureConfig {
   overrides = <any> {
@@ -47,6 +48,7 @@ export class MyHammerConfig extends HammerGestureConfig {
       provide: HAMMER_GESTURE_CONFIG,
       useClass: MyHammerConfig,
     },
+    LocalNotifications
   ],
   entryComponents: [HelpModalComponent]
 })

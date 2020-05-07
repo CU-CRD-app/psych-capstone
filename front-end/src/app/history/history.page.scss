@@ -1,1 +1,14 @@
+ion-card {
+	--background: gainsboro;
+}
 
+.not-completed {
+	--background: rgb(185, 185, 185);
+	opacity: 0.8;
+}
+
+.center-col {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
