@@ -195,6 +195,7 @@ app.put("/changepassword/", cors(corsOptions), function(req, res, next){
                             res.status(400).send(err);
                         }
                         else{
+                            console.log(err);
                             res.status(500).send("Internal server error");
                         }
                     })
