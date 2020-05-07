@@ -3,7 +3,7 @@
   <ion-progress-bar style="margin-top: 0px" value={{progressPercent}}></ion-progress-bar>
 
   <span *ngIf="!scoreCardDisplayed()">
-    <div class="score-banner">Score: {{score}}/{{taskLength}}</div>
+    <div class="score-banner"><b>Score: {{score}}/{{progressPercent * taskLength}}</b></div>
     <div class="score-change">+1</div>
   </span>
 
@@ -22,8 +22,8 @@
         <div class="prompt" *ngIf="slideInfo[slideIndex].stage == Stage.START">Memorize the face: {{memorizeTime}}</div>
         <div class="prompt" *ngIf="slideInfo[slideIndex].stage == Stage.MEMORIZE">Memorize the face: <span class="time-left">{{timeRemaining}}</span></div>
         <div class="prompt" *ngIf="slideInfo[slideIndex].stage == Stage.MASK">Hold the face in your mind...</div>
-        <ion-card style="height: 310px; width: 270px">
-          <img *ngIf="slideInfo[slideIndex].stage != Stage.START" style="height: 270px; margin: 20px auto;" [src]="slideInfo[slideIndex].stage == Stage.MEMORIZE ? slideInfo[slideIndex].correctFace : mask" [ngStyle]="{'width': slideInfo[slideIndex].stage == Stage.MASK ? '85%' : 'auto'}"/>
+        <ion-card style="height: 310px; width: 270px; display: flex; justify-content: center; align-items: center; background-color: gainsboro">
+          <img *ngIf="slideInfo[slideIndex].stage != Stage.START" style="height: 270px" [src]="slideInfo[slideIndex].stage == Stage.MEMORIZE ? slideInfo[slideIndex].correctFace : mask" [ngStyle]="{'width': slideInfo[slideIndex].stage == Stage.MASK ? '85%' : 'auto'}"/>
         </ion-card>
         <ion-button style="visibility: hidden"></ion-button>
       </div>

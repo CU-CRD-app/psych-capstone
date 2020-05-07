@@ -8,26 +8,30 @@
     <ion-content>
       <ion-menu-toggle>
         <ion-list>
-          <ion-item routerLink="/dashboard" routerDirection="forward" [ngStyle]="{'color': isCurrentPage('dashboard') ? 'dodgerblue' : 'black'}">
+          <ion-item lines="full" routerLink="/dashboard" routerDirection="forward" [ngStyle]="{'color': isCurrentPage('dashboard') ? 'dodgerblue' : 'black'}">
             <ion-label>Dashboard</ion-label>
             <ion-icon name="speedometer"></ion-icon>
           </ion-item>
-          <ion-item routerLink="/train" routerDirection="forward" [ngStyle]="{'color': isCurrentPage('train') ? 'dodgerblue' : 'black'}">
+          <ion-item lines="full" routerLink="/train" routerDirection="forward" [ngStyle]="{'color': isCurrentPage('train') ? 'dodgerblue' : 'black'}">
             <ion-label>Train</ion-label>
             <ion-icon name="fitness"></ion-icon>
           </ion-item>
-          <ion-item routerLink="/history" routerDirection="forward" [ngStyle]="{'color': isCurrentPage('history') ? 'dodgerblue' : 'black'}">
+          <ion-item lines="full" routerLink="/history" routerDirection="forward" [ngStyle]="{'color': isCurrentPage('history') ? 'dodgerblue' : 'black'}">
             <ion-label>History</ion-label>
             <ion-icon name="analytics"></ion-icon>
           </ion-item>
-          <ion-item routerLink="/about" routerDirection="forward" [ngStyle]="{'color': isCurrentPage('about') ? 'dodgerblue' : 'black'}">
-            <ion-label>About</ion-label>
+          <ion-item lines="full" routerLink="/about" routerDirection="forward" [ngStyle]="{'color': isCurrentPage('about') ? 'dodgerblue' : 'black'}">
+            <ion-label>About Us</ion-label>
             <ion-icon name="information-circle-outline"></ion-icon>
           </ion-item>
-          <ion-item routerLink="/settings" routerDirection="forward" [ngStyle]="{'color': isCurrentPage('settings') ? 'dodgerblue' : 'black'}">
+          <ion-item lines="full" routerLink="/settings" routerDirection="forward" [ngStyle]="{'color': isCurrentPage('settings') ? 'dodgerblue' : 'black'}">
             <ion-label>Settings</ion-label>
             <ion-icon name="cog"></ion-icon>
           </ion-item>
+          <br>
+          <div style="display: flex; justify-content: center; align-items: flex-end">
+            <ion-button color="danger" (click)="logout()" lines="none">Logout</ion-button>
+          </div>
         </ion-list>
       </ion-menu-toggle>
     </ion-content>

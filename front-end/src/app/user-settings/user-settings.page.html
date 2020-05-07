@@ -4,37 +4,61 @@
     <ion-buttons slot="start">
       <ion-menu-button autoHide="false"></ion-menu-button>
     </ion-buttons>
-    <ion-spinner *ngIf="waitingForResponse" slot="end" name="dots" style="size: 50%"></ion-spinner>
   </ion-toolbar>
 </ion-header>
 
 <ion-content style="--background: gray">
 
-  <br>
+  <div style="margin-top: 5%; margin-left: 5%; display: flex; align-items: center; justify-content: space-between">
+    <div style="color: white">Email Address:</div>
+    <ion-icon *ngIf="boundEmail != userEmail && !waitingForResponse" style="align-self: flex-end; margin-right: 5%; font-size: 120%" name="close-circle-outline" (click)="boundEmail = userEmail"></ion-icon>      
+  </div>
 
-  <ion-label>Email Address:</ion-label>
-  <ion-icon *ngIf="boundEmail != userEmail" style="float: right; font-size: 150%; margin-right: 20px; margin-top: 2px" name="close-circle-outline" (click)="boundEmail = userEmail"></ion-icon>
+  <ion-item lines="none" [ngClass]="{'valid': validateEmail(), 'invalid': boundEmail != userEmail && !validateEmail()}" disabled> <!--[disabled]="waitingForResponse"-->
+    <ion-input type="email" [(ngModel)]="boundEmail" clearInput></ion-input>
+  </ion-item>
+  <div *ngIf="boundEmail != userEmail && !validateEmail()" style="color: white; margin-top: 2%; margin-left: 7%; font-size: 4vw">Must be valid email</div>
 
-  <ion-input type="email" [(ngModel)]="boundEmail" clearInput [ngClass]="{'edited-valid': validateEmail(), 'invalid': boundEmail != userEmail && !validateEmail()}"></ion-input>
+  <div style="margin-top: 5%; margin-left: 5%; display: flex; align-items: center; justify-content: space-between">
+    <div style="color: white">Password:</div>
+    <ion-icon *ngIf="editingPassword && !waitingForResponse" style="align-self: flex-end; margin-right: 5%; font-size: 120%" name="close-circle-outline" (click)="resetPasswordForm()"></ion-icon>
+  </div>
 
-  <ion-label>Password:</ion-label>
-  <ion-icon *ngIf="editingPassword" style="float: right; font-size: 150%; margin-right: 20px; margin-top: 2px" name="close-circle-outline" (click)="resetPasswordForm()"></ion-icon>
-
-  <ion-input *ngIf="!editingPassword" type="password" value={{placeholderPassword}} button (click)="editingPassword = !editingPassword"></ion-input>
+  <ion-item lines="none" *ngIf="!editingPassword" [disabled]="waitingForResponse">
+    <ion-input type="password" value={{placeholderPassword}} button (click)="editingPassword = !editingPassword"></ion-input>
+  </ion-item>
 
   <div *ngIf="editingPassword">
 
-    <ion-label class="little-label">Old Password:</ion-label>
-    <ion-input class="little-input" type="password" [(ngModel)]="oldPassword" clearInput></ion-input>
+    <ion-item lines="none" [ngClass]="{'valid': validatePassword(oldPassword), 'invalid': !validatePassword(oldPassword) && oldPassword != ''}" [disabled]="waitingForResponse">
+      <ion-input placeholder="Old Password" type="password" [(ngModel)]="oldPassword" clearInput></ion-input>
+    </ion-item>
 
-    <ion-label class="little-label">New Password:</ion-label>
-    <ion-input class="little-input" type="password" [(ngModel)]="newPasswordFirst" clearInput [ngClass]="{'valid': newPasswordFirst != ''}"></ion-input>
+    <ion-item lines="none" [ngClass]="{'valid': validatePassword(newPasswordFirst) && oldPassword != newPasswordFirst, 'invalid': newPasswordFirst != '' && (!validatePassword(newPasswordFirst) || oldPassword == newPasswordFirst)}" [disabled]="waitingForResponse">
+      <ion-input placeholder="New Password" type="password" [(ngModel)]="newPasswordFirst" clearInput></ion-input>
+    </ion-item>
+    <div *ngIf="!validatePassword(newPasswordFirst) && newPasswordFirst != ''" style="color: white; margin-top: 2%; margin-left: 7%; font-size: 4vw">Must a new password with 1 uppercase letter, 1 lowercase letter, 1 number, no spaces, and 7-16 characters</div>
+    <div *ngIf="newPasswordFirst != '' && oldPassword == newPasswordFirst" style="color: white; margin-top: 2%; margin-left: 7%; font-size: 4vw">Matches new password</div>
 
-    <ion-label class="little-label">Retype New:</ion-label>
-    <ion-input class="little-input" type="password" [(ngModel)]="newPasswordSecond" clearInput [ngClass]="{'valid': newPasswordFirst == newPasswordSecond && newPasswordFirst != '', 'invalid': newPasswordFirst != newPasswordSecond}"></ion-input>
-
+    <ion-item lines="none" [ngClass]="{'valid': newPasswordFirst == newPasswordSecond && newPasswordFirst != '', 'invalid': newPasswordFirst != newPasswordSecond}" [disabled]="waitingForResponse">
+      <ion-input placeholder="Confirm Password" type="password" [(ngModel)]="newPasswordSecond" clearInput></ion-input>
+    </ion-item>
+    <div *ngIf="newPasswordFirst != newPasswordSecond" style="color: white; margin-top: 2%; margin-left: 7%; font-size: 4vw">Must be match previous entry</div>
+      
+    <ion-item lines="none" *ngIf="validateForm() || waitingForResponse" style="--background: grey; border-radius: 0px; margin-left: 0px; margin-right: 0px">
+      <ion-button (click)="saveForm()" style="height: 90%; width: 45%; margin-left: 50%" [disabled]="waitingForResponse">
+        <span *ngIf="!waitingForResponse">Save</span>
+        <ion-spinner *ngIf="waitingForResponse" name="dots"></ion-spinner>
+      </ion-button>
+    </ion-item>
   </div>
 
-  <ion-button *ngIf="validateForm()" (click)="saveForm()" style="float: right; margin-right: 20px; width: 45%">Save</ion-button>
+  <div style="margin-top: 5%; margin-left: 5%">
+    <div style="color: white">Notifications:</div>
+  </div>
+  <ion-item button lines="none" (click)="openSettings()">
+    <ion-label *ngIf="notifications">On</ion-label>
+    <ion-label *ngIf="!notifications">Off</ion-label>
+  </ion-item>
 
 </ion-content>

@@ -3,7 +3,7 @@
   <ion-progress-bar style="margin-top: 0px" value={{progressPercent}}></ion-progress-bar>
 
   <span *ngIf="!scoreCardDisplayed()">
-    <div class="score-banner">Score: {{score}}/{{taskLength}}</div>
+    <div class="score-banner"><b>Score: {{score}}/{{progressPercent * taskLength}}</b></div>
     <div class="score-change">+1</div>
   </span>
 
@@ -25,9 +25,9 @@
       <div class="prompt" *ngIf="slideInfo[slideIndex].stage == Stage.INCORRECT">Incorrect!</div>
 
       <ion-card *ngIf="slideInfo[slideIndex].stage != Stage.CORRECT && slideInfo[slideIndex].stage != Stage.INCORRECT" class="swipe-card">
-        <ion-icon *ngIf="slideInfo[slideIndex].stage == Stage.SELECT" (click)="selectFace(false)" color="dark" name="arrow-back" style="display: inline-block; margin-bottom: 45%; margin-right: 3%; font-size: 150%"></ion-icon>
-        <img *ngIf="slideInfo[slideIndex].stage != Stage.START" [src]="getSrc(slideIndex)" style="height: 270px; margin: 0 auto; display: inline-block; margin-top: 20px" [ngStyle]="{'width': slideInfo[slideIndex].stage == Stage.MASK ? '85%' : 'auto'}"/>
-        <ion-icon *ngIf="slideInfo[slideIndex].stage == Stage.SELECT" (click)="selectFace(true)" color="dark" name="arrow-forward" style="display: inline-block; margin-bottom: 45%; margin-left: 3%; font-size: 150%"></ion-icon>
+        <ion-icon *ngIf="slideInfo[slideIndex].stage == Stage.SELECT" (click)="selectFace(false)" color="dark" name="arrow-back" style="font-size: 150%"></ion-icon>
+        <img *ngIf="slideInfo[slideIndex].stage != Stage.START" [src]="getSrc(slideIndex)" style="height: 270px" [ngStyle]="{'width': slideInfo[slideIndex].stage == Stage.MASK ? '85%' : 'auto'}"/>
+        <ion-icon *ngIf="slideInfo[slideIndex].stage == Stage.SELECT" (click)="selectFace(true)" color="dark" name="arrow-forward" style="font-size: 150%"></ion-icon>
       </ion-card>
 
       <div *ngIf="slideInfo[slideIndex].stage != Stage.CORRECT && slideInfo[slideIndex].stage != Stage.INCORRECT" class="swipe-footer">

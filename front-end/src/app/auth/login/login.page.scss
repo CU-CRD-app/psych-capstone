@@ -1,0 +1,28 @@
+#login-view {
+	--height: 100vh;
+	--width: auto;
+	--background: white url("../../../assets/background_imgs/splash.png") no-repeat center center / contain;
+	background-repeat: no-repeat;
+}
+
+#row-with-default-card {
+	height: 96%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	align-items: center;
+}
+
+ion-item {
+	margin: 5px;
+	margin: 5px;
+	border-radius: 5px;
+}
+
+.invalid {
+	--background: rgb(255, 209, 209)
+}
+
+.valid {
+	--background: rgb(207, 253, 217)
+}

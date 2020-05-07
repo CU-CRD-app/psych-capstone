@@ -73,7 +73,7 @@ const slideValues = {
   ],
   'Pre-Assessment': [
     ['assets/help-slides/pre-post/0.png', 'Welcome to your pre-assessment. This is a one-time test; it will provide a baseline for your current CRD.'],
-    ['assets/help-slides/same-different/0.png', 'Click \'Reveal\' to show the face and begin the timer.'],
+    ['assets/help-slides/same-different/0.png', 'Click anywhere to show the face and begin the timer.'],
     ['assets/help-slides/same-different/1.png', 'You will have 3 seconds to memorize the face.'],
     ['assets/help-slides/same-different/2.png', 'After the timer is up, decide whether the face is the same.'],
     ['assets/help-slides/pre-post/1.png', 'This test consists of 30 questions, so set aside a few minutes to complete it.'],

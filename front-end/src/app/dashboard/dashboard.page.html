@@ -1,33 +1,42 @@
 <ion-content [fullscreen]="true" style="--background: gray;">
 
-  <app-login *ngIf="!loggedIn" (finished)="loggedIn = true"></app-login>
+  <ion-header>
+    <ion-toolbar style="border-bottom-width: medium; border-bottom-style: solid; border-bottom-color: dodgerblue">
+      <ion-title>Dashboard</ion-title>
+      <ion-buttons slot="start">
+        <ion-menu-button autoHide="false"></ion-menu-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
 
-  <div *ngIf="loggedIn">
+  <div *ngIf="waitingForResponse" style="height: 90%; display: flex; justify-content: center; align-items: center">
+    <ion-spinner name="crescent" color="light"></ion-spinner>
+  </div>
 
-    <ion-header>
-      <ion-toolbar style="border-bottom-width: medium; border-bottom-style: solid; border-bottom-color: dodgerblue">
-        <ion-title>Dashboard</ion-title>
-        <ion-icon slot="end" color="medium" name="exit" style="margin-right: 10px; height: 30px" (click)="logoutAlert()"></ion-icon>
-        <ion-buttons slot="start">
-          <ion-menu-button autoHide="false"></ion-menu-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
+  <div *ngIf="!waitingForResponse" style="height: 90%; display: flex; flex-direction: column; justify-content: space-evenly; align-items: center">
+    <div style="color: white; font-size: 11vw; width: 100%; margin-left: 10%">
+      <div *ngIf="level == 0">Pre-Assessment</div>
+      <div *ngIf="level > 0 && level < 9">Level {{level}}</div>
+      <div *ngIf="level == 9">Post-Assessment</div>
+      <div *ngIf="level > 9">Complete</div>
+    </div>
 
-    <div style="margin-left: 3vw">
-      <div class="header" style="margin-top: 5%; margin-bottom: 5%">
-        <b>
-          <div *ngIf="level == 0">Pre-Assessment</div>
-          <div *ngIf="level > 0 && level < 9">Level: {{level}}</div>
-          <div *ngIf="level == 9">Post-Assessment</div>
-          <div *ngIf="level > 9">Complete</div>
-        </b>
+    <div *ngIf="level > 0 && level < 9" style="width: 100%; display: flex; justify-content: center; align-items: center">
+      <div class="subheader" style="width: 25%">Today:</div>
+      <div style="text-align: center; width: 60%; margin-top: 9%">
+        <ion-progress-bar style="width: 100%; margin: 0 auto" value={{progressToday}}></ion-progress-bar>
+        <div style="color: white; margin-top: 3%">{{progressToday * 100}}%</div>
       </div>
-      <div *ngIf="level > 0 && level < 9" style="margin-bottom: 5%">
-        <div class="subheader" style="margin-bottom: 2%">Level Progress: {{progressToday * 100}}%</div>
-        <ion-progress-bar style="width: 80%" value={{progressToday}}></ion-progress-bar>
+    </div>
+    <div style="width: 100%; display: flex; justify-content: center; align-items: center">
+      <div class="subheader" style="width: 25%">Overall:</div>
+      <div style="text-align: center; width: 60%; margin-top: 9%">
+        <ion-progress-bar style="width: 100%; margin: 0 auto" value={{progressOverall}}></ion-progress-bar>
+        <div style="color: white; margin-top: 3%">{{progressOverall * 100}}%</div>
       </div>
+    </div>
 
+    <div style="text-align: center; width: 100%">
       <ion-button color="success" routerLink="/train" routerDirection="forward">
         <ion-label slot="start">Train</ion-label>
         <ion-icon slot="end" name="fitness"></ion-icon>
