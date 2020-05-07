@@ -14,11 +14,24 @@ function allDefined(req){
     return true;
 }
 
+function validPassword(pass){
+    if(!/[a-z]/.test(req.password) || !/[A-Z]/.test(req.password) || !/[0-9]/.test(req.password) || !req.password.indexOf(' ') < 0 || req.password.length < 7 || req.password.length > 16 || req.password == 'Passw0rd' || req.password == 'Password123'){
+        return false;
+    }
+    return true;
+}
+
 module.exports = {
     update: async function(req){
         if(!allDefined(req)){
             return new Promise(function(resolve, reject){
                 reject("Missing parameter");
+            })
+        }
+
+        if(!validPassword(req.newpassword)){
+            return new Promise(function(resolve, reject){
+                reject("Invalid new password");
             })
         }
 
