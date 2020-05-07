@@ -1,3 +1,5 @@
+// This file defines functions to create a new user in a database, and hashes their passwords
+
 var { Client } = require('pg');
 var bcrypt = require('bcryptjs');
 

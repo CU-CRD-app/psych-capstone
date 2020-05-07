@@ -1,3 +1,5 @@
+//This file defines functions to upload postassessment data for a given user
+
 var { Client } = require('pg');
 
 function allDefined(req, id){

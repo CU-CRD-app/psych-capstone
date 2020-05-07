@@ -1,3 +1,5 @@
+// This file defines functions to store tasks scores in the database for a specified user
+
 var { Client } = require('pg');
 
 function allDefined(req, id){

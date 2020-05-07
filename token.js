@@ -1,3 +1,5 @@
+//This file defines functions to create and verify JSON Web Tokens
+
 var jwt = require('jsonwebtoken');
 var { Client } = require('pg');
 

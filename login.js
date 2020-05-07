@@ -1,3 +1,5 @@
+// This file defines functions to verify a user's email and password, and returns a token for the corresponding account
+
 var { Client } = require('pg');
 var bcrypt = require('bcryptjs');
 var tokenHandler = require('./token.js');

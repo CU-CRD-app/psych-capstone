@@ -1,3 +1,5 @@
+//This file defines a function allowing a user to change their password
+
 var { Client } = require('pg');
 var bcrypt = require('bcryptjs');
 

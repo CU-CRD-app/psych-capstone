@@ -1,3 +1,5 @@
+// This file defines functions to return a user's level and scores from the database
+
 var { Client } = require('pg');
 
 function allDefined(id){
