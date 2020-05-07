@@ -3,3 +3,7 @@
 auth.json
 
 /.vscode
+
+*.key
+
+*.key.pub

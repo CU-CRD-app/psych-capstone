@@ -1,13 +1,15 @@
+// This file defines functions to store tasks scores in the database for a specified user
+
 var { Client } = require('pg');
 
-function allDefined(req){
+function allDefined(req, id){
     if(typeof(req.level) === 'undefined'){
         return false;
     }
     if(typeof(req.race) === 'undefined'){
         return false;
     }
-    if(typeof(req.token) === 'undefined'){
+    if(typeof(id) === 'undefined'){
         return false;
     }
     if(typeof(req.shuffle) === 'undefined'){
@@ -32,7 +34,7 @@ function allDefined(req){
 }
 
 module.exports = {
-    upload: async function(req){
+    upload: async function(req, id){
         if(!allDefined(req)){
             return new Promise(function(resolve, reject){
                 reject("Missing parameter");
@@ -45,12 +47,11 @@ module.exports = {
 
         pgClient.connect();
 
-        //TODO: Token is used directly as userid throughout this file, needs to change when token is properly implemented
-        let day = await pgClient.query("SELECT * FROM day WHERE userid = $1 AND level = $2", [req.token, req.level]);
+        let day = await pgClient.query("SELECT * FROM day WHERE userid = $1 AND level = $2", [id, req.level]);
 
         let now = new Date().toUTCString();
 
-        let values = [req.token, req.level, req.race, now, req.nameface, req.whosnew, req.memory, req.shuffle, req.forcedchoice, req.samedifferent];
+        let values = [id, req.level, req.race, now, req.nameface, req.whosnew, req.memory, req.shuffle, req.forcedchoice, req.samedifferent];
 
         if(day.rows.length > 0){
             if (day.rows[0]['nameface'] == -1 || day.rows[0]['whosnew'] == -1 || day.rows[0]['memory'] == -1 || day.rows[0]['shuffle'] == -1 || day.rows[0]['forcedchoice'] == -1 || day.rows[0]['samedifferent'] == -1){

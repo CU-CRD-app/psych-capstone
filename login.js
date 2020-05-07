@@ -1,5 +1,8 @@
+// This file defines functions to verify a user's email and password, and returns a token for the corresponding account
+
 var { Client } = require('pg');
 var bcrypt = require('bcryptjs');
+var tokenHandler = require('./token.js');
 
 function allDefined(req){
     if(typeof(req.email) === 'undefined'){
@@ -26,7 +29,6 @@ module.exports = {
 
         pgClient.connect();
 
-        //TODO: password hashing
         let res = await pgClient.query("SELECT * FROM users WHERE email = $1", [req.email.toLowerCase()]);
         if(res.rows.length == 0){
             pgClient.end();
@@ -39,14 +41,20 @@ module.exports = {
 
         let match = await bcrypt.compare(req.password, res.rows[0].hashedpassword);
 
-        if(match){
-            let sendObject = {
-            token: res.rows[0].userid //TODO: implement token
-            }
 
-            return new Promise(function(resolve, reject){
-                resolve(sendObject);
-            })
+        if(match){
+            try{
+                let token = await tokenHandler.generate(req.email.toLowerCase());
+                return new Promise(function(resolve, reject){
+                    resolve(token);
+                })
+                
+            }
+            catch(err){
+                return new Promise(function(resolve, reject){
+                    reject(err);
+                })
+            }            
         }
         else{
             return new Promise(function(resolve, reject){

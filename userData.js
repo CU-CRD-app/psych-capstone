@@ -1,15 +1,17 @@
+// This file defines functions to return a user's level and scores from the database
+
 var { Client } = require('pg');
 
-function allDefined(req){
-    if(typeof(req.token) === 'undefined'){
+function allDefined(id){
+    if(typeof(id) === 'undefined'){
         return false;
     }
     return true;
 }
 
 module.exports = {
-    userData: async function(req){
-        if(!allDefined(req)){
+    userData: async function(id){
+        if(!allDefined(id)){
             return new Promise(function(resolve, reject){
                 reject("Missing parameter");
             })
@@ -22,8 +24,7 @@ module.exports = {
 
         pgClient.connect();
 
-        //TODO: Query will need to be updated to use the email associated with the token, not just the token as the email
-        let res = await pgClient.query("SELECT * FROM users WHERE userid = $1", [req.token]);
+        let res = await pgClient.query("SELECT * FROM users WHERE userid = $1", [id]);
         if(res.rows.length == 0){
             pgClient.end();
             return new Promise(function(resolve, reject){

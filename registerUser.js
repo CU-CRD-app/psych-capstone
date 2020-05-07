@@ -1,3 +1,5 @@
+// This file defines functions to create a new user in a database, and hashes their passwords
+
 var { Client } = require('pg');
 var bcrypt = require('bcryptjs');
 
@@ -86,7 +88,7 @@ module.exports = {
         
         let updated = await pgClient.query("SELECT userid FROM users WHERE email = $1",[req.email.toLowerCase()]);
         let userId = updated.rows[0].userid;
-        let salt = await bcrypt.genSalt(userId);
+        let salt = await bcrypt.genSalt((userId%15)+1);
         let hash = await bcrypt.hash(req.password, salt);
         pgClient.query("UPDATE users SET hashedpassword = $1 WHERE userid = $2", [hash, userId])
             .then(res => {
