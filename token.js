@@ -26,6 +26,7 @@ module.exports = {
 
         pgClient.connect();
         let queryRes = await pgClient.query("SELECT userid FROM users WHERE email = $1", [email]);
+        pgClient.end();
         return new Promise(function(resolve, reject){
             resolve(queryRes.rows[0].userid);
         })
