@@ -79,6 +79,7 @@ app.post("/tasks/", cors(corsOptions), function(req, res, next) {
     else{
        tokenHandler.verify(req.header('Authorization').split(' ')[1])
             .then(id => {
+                console.log(id)
                 tasks.upload(req.body, id)
                     .then(result => res.json({result:result}))
                     .catch(err => {
