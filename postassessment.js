@@ -17,7 +17,7 @@ function allDefined(req, id){
 
 module.exports = {
     upload: async function(req, id){
-        if(!allDefined(req)){
+        if(!allDefined(req, id)){
             return new Promise(function(resolve, reject){
                 reject("Missing parameter");
             })

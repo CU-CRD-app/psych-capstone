@@ -3,9 +3,6 @@
 var { Client } = require('pg');
 
 function allDefined(req, id){
-    console.log(req.level, req.race, id, req.shuffle, req.memory, req.whosnew, req.nameface, req.forcedchoice, req.samedifferent)
-    console.log(typeof(req.level), typeof(req.race), typeof(id), typeof(req.shuffle), typeof(req.memory), typeof(req.whosnew), typeof(req.nameface), typeof(req.forcedchoice), typeof(req.samedifferent))
-
     if(typeof(req.level) === 'undefined'){
         return false;
     }
@@ -38,7 +35,7 @@ function allDefined(req, id){
 
 module.exports = {
     upload: async function(req, id){
-        if(!allDefined(req)){
+        if(!allDefined(req, id)){
             return new Promise(function(resolve, reject){
                 reject("Missing parameter");
             })
