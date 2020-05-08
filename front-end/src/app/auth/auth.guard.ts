@@ -20,6 +20,7 @@ export class AuthGuard implements CanActivate {
       return this.checkLogin().pipe(map(res => {
         if (!res) {
           this.router.navigate(['/login']);
+          localStorage.removeItem("token")
         }
         return res;
       }));
@@ -41,7 +42,7 @@ export class AuthGuard implements CanActivate {
       })
     };
     return this.http.put("https://crossfacerecognition.herokuapp.com/checktoken/", {}, httpOptions)
-      .pipe(map((res) => res["message"] == 'Valid token' ? true : false))
+      .pipe(map((res) => res["message"] == 'Valid token' ? true : false));
   }
 
 }
