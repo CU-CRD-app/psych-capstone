@@ -129,7 +129,7 @@ app.put("/checktoken/", cors(corsOptions), function(req, res, next){
     else{
         tokenHandler.verify(req.header('Authorization').split(' ')[1])
             .then(id => res.status(200).json({message: "Valid token"}))
-            .catch(err => res.status(401).json({message: "Invalid token"}))
+            .catch(err => res.status(308).json({message: "Invalid token"}))
     }
 })
 

@@ -9,7 +9,7 @@ const routes: Routes = [
   { path: 'about', canActivate: [AuthGuard], loadChildren: './about-us/about-us.module#AboutUsPageModule' },
   { path: 'settings', canActivate: [AuthGuard], loadChildren: './user-settings/user-settings.module#UserSettingsPageModule' },
   { path: 'login', loadChildren: './auth/login/login.module#LoginPageModule' },
-  { path: '**', redirectTo: 'dashboard' }
+  { path: '**', redirectTo: 'login' }
 ];
 
 @NgModule({
