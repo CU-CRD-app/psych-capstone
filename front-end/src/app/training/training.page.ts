@@ -109,9 +109,9 @@ export class TrainingPage {
             lastDay = new Date(days[day]['date']).toLocaleDateString();
           }
         }
-        if (today == lastDay) {
+        /*if (today == lastDay) {
           levelCompletedToday = true;
-        }
+        }*/
 
         if (!levelCompletedToday) {
 
@@ -434,5 +434,13 @@ export class TrainingPage {
       foreground: true,
       trigger: {at: date}
     });
+  }
+
+  completeTraining() {
+    this.submitScores.submitTaskScores(this.userLevel, [8, 8, 32, 16, -1, -1])
+  }
+
+  completeAssessment() {
+    this.submitScores.submitTaskScores(this.userLevel, [8, 8, 32, 16, 8, 8])
   }
 }
