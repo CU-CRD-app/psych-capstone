@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, CanActivate, Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 
 
@@ -42,7 +42,8 @@ export class AuthGuard implements CanActivate {
       })
     };
     return this.http.put("https://crossfacerecognition.herokuapp.com/checktoken/", {}, httpOptions)
-      .pipe(map((res) => res["message"] == 'Valid token' ? true : false));
+      .pipe(map((res) => true))
+      .pipe(catchError((err) => of(false)));
   }
 
 }
