@@ -144,7 +144,7 @@
   <!--Pre-Post-Assessment-->
   <app-same-different *ngIf="task == Task.PRETEST || task == Task.POSTTEST" [facePaths]="assessmentFacePaths" (finished)="finishPrePost($event)"></app-same-different>
 
-  <!--For development only-->
+  <!--For development only
   <div>
     <br><br><br><br><br><br><br><br><br><br><br><br>
     <ion-button (click)="completeTraining()">Complete Training</ion-button>
@@ -160,6 +160,6 @@
       <ion-button (click)="task = Task.FORCED_CHOICE">Forced Choice</ion-button>
       <ion-button (click)="task = Task.SAME_DIFFERENT">Same Different</ion-button>
     </div>
-  </div>
+  </div>-->
 
 </ion-content>

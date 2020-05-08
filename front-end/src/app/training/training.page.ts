@@ -268,7 +268,7 @@ export class TrainingPage {
     let facePaths : string[] = [];
     let faceNums : number[] = [];
 
-    let faceNumber : number = daily ? this.numFaces : this.numFaces;
+    let faceNumber : number = daily ? this.numFaces : this.assessmentPoolSize;
 
     for (let i = 0; i < faceNumber; i++) {
       let face = Math.floor(Math.random() * this.assessmentPoolSize);
@@ -436,17 +436,5 @@ export class TrainingPage {
       foreground: true,
       trigger: {at: date}
     });
-  }
-
-  completeTraining() {
-    this.submitScores.submitTaskScores(this.userLevel, [8, 8, 32, 16, -1, -1])
-  }
-
-  completeAssessment() {
-    this.submitScores.submitTaskScores(this.userLevel, [8, 8, 32, 16, 8, 8])
-  }
-
-  completeMost() {
-    this.submitScores.submitTaskScores(this.userLevel, [8, 8, 32, 16, 8, -1])
   }
 }
