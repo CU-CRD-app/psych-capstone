@@ -47,6 +47,10 @@ export class TrainingPage {
     this.initCurrentLevel();
   }
 
+  ionViewWillLeave() {
+    Array.from(document.getElementsByClassName('fade-in') as HTMLCollectionOf<HTMLElement>)[0].style.opacity = '0';
+  }
+
   ngAfterViewInit() {
     if (this.userLevel == 0) {
       timer(500).subscribe(() => {
