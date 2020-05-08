@@ -31,31 +31,33 @@ export class DashboardPage {
           lastDay = new Date(this.days[day]['date']).toLocaleDateString();
         }
       }
-      if (today == lastDay) {
-        this.progressToday = 1;
-      } else {
-        this.progressToday = 0;
-        if (this.days[this.level]) {
-          if (this.days[this.level].nameface >= 6) {
-            this.progressToday++;
+      if (this.level > 0 && this.level < 9) {
+        if (today == lastDay) {
+          this.progressToday = 1;
+        } else {
+          this.progressToday = 0;
+          if (this.days[this.level - 1]) {
+            if (this.days[this.level - 1].nameface >= 6) {
+              this.progressToday++;
+            }
+            if (this.days[this.level - 1].whosnew >= 6) {
+              this.progressToday++;
+            }
+            if (this.days[this.level - 1].memory >= 24) {
+              this.progressToday++;
+            }
+            if (this.days[this.level - 1].shuffle >= 12) {
+              this.progressToday++;
+            }
+            if (this.days[this.level - 1].forcedchoice >= 6) {
+              this.progressToday++;
+            }
+            if (this.days[this.level - 1].samedifferent >= 6) {
+              this.progressToday++;
+            }
           }
-          if (this.days[this.level].whosnew >= 6) {
-            this.progressToday++;
-          }
-          if (this.days[this.level].memory >= 24) {
-            this.progressToday++;
-          }
-          if (this.days[this.level].shuffle >= 12) {
-            this.progressToday++;
-          }
-          if (this.days[this.level].forcedchoice >= 6) {
-            this.progressToday++;
-          }
-          if (this.days[this.level].samedifferent >= 6) {
-            this.progressToday++;
-          }
+          this.progressToday = parseFloat((this.progressToday / 6).toFixed(2));
         }
-        this.progressToday = parseFloat((this.progressToday / 6).toFixed(2));
       }
 
       this.progressOverall = this.level / 10;

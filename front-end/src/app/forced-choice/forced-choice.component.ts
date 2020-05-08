@@ -152,6 +152,18 @@ export class ForcedChoiceComponent implements OnInit {
 
     this.timeRemaining = this.memorizeTime;
     this.slideInfo[this.currentSlide].stage = Stage.MEMORIZE;
+    timer(100).subscribe(() => {
+      let inflate = createAnimation()
+      .addElement(document.querySelector('.time-left'))
+      .fill('none')
+      .duration(400)
+      .keyframes([
+        { offset: 0, transform: 'scale(1, 1)' },
+        { offset: 0.5, transform: 'scale(2, 2)' },
+        { offset: 1, transform: 'scale(1, 1)' }
+      ]);
+      inflate.play();
+    });
     this.timer = timer(this.timeRemaining * 1000).subscribe(() => {
       this.startMaskTimer();
     });
@@ -160,17 +172,7 @@ export class ForcedChoiceComponent implements OnInit {
         takeUntil(timer(this.timeRemaining * 1000))
       )
       .subscribe(async () => {
-        let inflate = createAnimation()
-          .addElement(document.querySelector('.time-left'))
-          .fill('none')
-          .duration(400)
-          .keyframes([
-            { offset: 0, transform: 'scale(1, 1)' },
-            { offset: 0.5, transform: 'scale(2, 2)' },
-            { offset: 1, transform: 'scale(1, 1)' }
-          ]);
         this.timeRemaining--;
-        await inflate.play();
       });
   }
 
@@ -183,6 +185,16 @@ export class ForcedChoiceComponent implements OnInit {
 
   firstStage(index : number) {
     return this.slideInfo[index].stage == Stage.START || this.slideInfo[index].stage == Stage.MEMORIZE || this.slideInfo[index].stage == Stage.MASK;
+  }
+
+  getSrc(index : number) {
+    if (this.slideInfo[index].stage == Stage.MEMORIZE) {
+      return this.slideInfo[index].correctFace;
+    } else if (this.slideInfo[index].stage == Stage.MASK) {
+      return this.mask;
+    } else {
+      return null;
+    }
   }
 
   showFeedback() {

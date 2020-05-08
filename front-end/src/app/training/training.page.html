@@ -6,7 +6,7 @@
       <ion-buttons *ngIf="task == null" slot="start">
         <ion-menu-button autoHide="false"></ion-menu-button>
       </ion-buttons>
-      <ion-icon *ngIf="task != null && task != Task.PRETEST && task != Task.POSTTEST" slot="start" color="medium" name="arrow-back" style="margin-left: 1vw; height: 3vh" (click)="taskExitAlert()"></ion-icon>
+      <ion-icon *ngIf="task != null && task != Task.FORCED_CHOICE && task != Task.SAME_DIFFERENT && task != Task.PRETEST && task != Task.POSTTEST" slot="start" color="medium" name="arrow-back" style="margin-left: 1vw; height: 3vh" (click)="taskExitAlert()"></ion-icon>
       <ion-icon *ngIf="userLevel <= 9" slot="end" color="medium" name="help-circle" style="margin-right: 1vw; height: 3vh" (click)="getHelp(false)"></ion-icon>
     </ion-toolbar>
   </ion-header>

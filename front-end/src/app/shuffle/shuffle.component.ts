@@ -184,6 +184,18 @@ export class ShuffleComponent implements OnInit {
 
     this.timeRemaining = this.memorizeTime;
     this.slideInfo[this.currentSlide].stage = Stage.MEMORIZE;
+    timer(100).subscribe(() => {
+      let inflate = createAnimation()
+      .addElement(document.querySelector('.time-left'))
+      .fill('none')
+      .duration(400)
+      .keyframes([
+        { offset: 0, transform: 'scale(1, 1)' },
+        { offset: 0.5, transform: 'scale(2, 2)' },
+        { offset: 1, transform: 'scale(1, 1)' }
+      ]);
+      inflate.play();
+    });
     this.timer = timer(this.timeRemaining * 1000).subscribe(() => {
       this.startMaskTimer();
     });
@@ -192,19 +204,7 @@ export class ShuffleComponent implements OnInit {
         takeUntil(timer(this.timeRemaining * 1000))
       )
       .subscribe(async () => {
-        let inflate = createAnimation()
-          .addElement(document.querySelector('.time-left'))
-          .fill('none')
-          .duration(400)
-          .keyframes([
-            { offset: 0, transform: 'scale(1, 1)' },
-            { offset: 0.5, transform: 'scale(2, 2)' },
-            { offset: 1, transform: 'scale(1, 1)' }
-          ]);
         this.timeRemaining--;
-        if (this.timeRemaining > this.memorizeTime - 2 || this.timeRemaining < 4) {
-          await inflate.play();
-        }
       });
   }
 

@@ -96,7 +96,7 @@ export class SameDifferentComponent implements OnInit {
         .duration(200)
         .keyframes([
           { offset: 0, transform: 'translateX(0%)' },
-          { offset: 1, transform: 'translateX(100%)' }
+          { offset: 1, transform: 'translateX(-100%)' }
         ]);
         await swipeRight.play();
       } else {
@@ -106,7 +106,7 @@ export class SameDifferentComponent implements OnInit {
         .duration(200)
         .keyframes([
           { offset: 0, transform: 'translateX(0%)' },
-          { offset: 1, transform: 'translateX(-100%)' }
+          { offset: 1, transform: 'translateX(100%)' }
         ]);
         await swipeLeft.play();
       }
@@ -167,6 +167,18 @@ export class SameDifferentComponent implements OnInit {
 
     this.timeRemaining = this.memorizeTime;
     this.slideInfo[this.currentSlide].stage = Stage.MEMORIZE;
+    timer(100).subscribe(() => {
+      let inflate = createAnimation()
+      .addElement(document.querySelector('.time-left'))
+      .fill('none')
+      .duration(400)
+      .keyframes([
+        { offset: 0, transform: 'scale(1, 1)' },
+        { offset: 0.5, transform: 'scale(2, 2)' },
+        { offset: 1, transform: 'scale(1, 1)' }
+      ]);
+      inflate.play();
+    });
     this.timer = timer(this.timeRemaining * 1000).subscribe(() => {
       this.startMaskTimer();
     });
@@ -175,17 +187,7 @@ export class SameDifferentComponent implements OnInit {
         takeUntil(timer(this.timeRemaining * 1000))
       )
       .subscribe(async () => {
-        let inflate = createAnimation()
-          .addElement(document.querySelector('.time-left'))
-          .fill('none')
-          .duration(400)
-          .keyframes([
-            { offset: 0, transform: 'scale(1, 1)' },
-            { offset: 0.5, transform: 'scale(2, 2)' },
-            { offset: 1, transform: 'scale(1, 1)' }
-          ]);
         this.timeRemaining--;
-        await inflate.play();
       });
   }
 
