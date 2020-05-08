@@ -109,9 +109,9 @@ export class TrainingPage {
             lastDay = new Date(days[day]['date']).toLocaleDateString();
           }
         }
-        /*if (today == lastDay) {
+        if (today == lastDay) {
           levelCompletedToday = true;
-        }*/
+        }
 
         if (!levelCompletedToday) {
 
