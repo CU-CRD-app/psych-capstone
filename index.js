@@ -212,7 +212,7 @@ app.put("/getTrainingPictures/", cors(corsOptions), function(req, res, next){
                     var images = [];
                     for (var i = 0; i < 8; i++) {
                         var data = fs.readFileSync(`./front-end/src/assets/sample-faces/black/training/level-${req.body.level}/${i}.png`);
-                        images.push(new Blob([new Buffer(data, 'binary').toString('base64')]));
+                        images.push(new Blob([new ArrayBuffer(data)]));
                     }
                     res.status(200).send({images: images});
                 } catch (err) {
