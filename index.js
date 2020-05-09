@@ -199,3 +199,27 @@ app.put("/changepassword/", cors(corsOptions), function(req, res, next){
             .catch(err => res.status(401).send("Invalid token")) 
     }
 })
+
+app.put("/getTrainingPictures/", cors(corsOptions), function(req, res, next){
+    if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
+        res.status(401).send("Please provide a properly formatted token")
+    }
+    else{
+        tokenHandler.verify(req.header('Authorization').split(' ')[1])
+            .then(id => {
+                try {
+                    var fs = require("fs");
+                    var images = [];
+                    for (var i = 0; i < 8; i++) {
+                        fs.readFile(`front-end/src/assets/sample-faces/black/training/level-${req.body.level}/${i}.png`, function(err, data) {
+                            images.push(new Buffer(data, 'binary').toString('base64'));
+                        });
+                    }
+                    res.status(200).send({images: images});
+                } catch (err) {
+                    res.status(500).send("Internal server error");
+                }
+            })
+            .catch(err => res.status(401).send("Invalid token")) 
+    }
+})
