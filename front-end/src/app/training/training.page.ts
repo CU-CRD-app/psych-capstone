@@ -43,7 +43,9 @@ export class TrainingPage {
   }
 
   ionViewWillEnter() {
-    timer(1000).subscribe(() => {
+    this.stage = null;
+    this.task = null;
+    timer(500).subscribe(() => {
       this.currentRace = Race.BLACK;
       this.initCurrentLevel();
     });
@@ -89,7 +91,7 @@ export class TrainingPage {
 
     this.currentRace = race;
 
-    this.getProgress.getData().subscribe(async (res) => {
+    this.getProgress.getData().subscribe((res) => {
 
       let days = res['days'];
       this.userLevel = res['level'];
@@ -97,15 +99,12 @@ export class TrainingPage {
 
       if (this.userLevel == 0 || this.userLevel == 9) {
 
-        this.assessmentFacePaths = await this.getPrePostAssessmentFaces();
-
-        let images : any[] = [];
-        for (let i = 0; i < this.assessmentFacePaths.length; i++) {
-          images.push(new Image());
-          images[i].src = this.assessmentFacePaths[i];
-        }
-
-        this.stage = Stage.START;
+        this.getPrePostAssessmentFaces().then((faces) => {
+          this.assessmentFacePaths = faces;
+          timer(1000).subscribe(() => {
+            this.stage = Stage.START;
+          });
+        });
 
       } else if (this.userLevel > 0 && this.userLevel < 9) {
 
@@ -123,31 +122,22 @@ export class TrainingPage {
         if (!levelCompletedToday) {
 
           this.setNames = raceProperties[this.currentRace].namePool[this.userLevel];
-          this.trainingFacePaths = await this.getTrainingFaces();
-          this.whosNewFacePaths = await this.getWhosNewFaces();
-          this.assessmentFacePaths = await this.getDailyAssessmentFaces();
-
-          // Preload images
-          let images : any[] = [];
-          for (let i = 0; i < this.trainingFacePaths.length; i++) {
-            images.push(new Image());
-            images[i].src = this.trainingFacePaths[i];
-          }
-          for (let i = 0; i < this.whosNewFacePaths.length; i++) {
-            images.push(new Image());
-            images[i].src = this.whosNewFacePaths[i];
-          }
-          for (let i = 0; i < this.assessmentFacePaths.length; i++) {
-            images.push(new Image());
-            images[i].src = this.assessmentFacePaths[i];
-          }
-
-          if (days[this.userLevel - 1]) {
-            this.scores = [days[this.userLevel - 1]['nameface'], days[this.userLevel - 1]['whosnew'], days[this.userLevel - 1]['memory'], days[this.userLevel - 1]['shuffle'], days[this.userLevel - 1]['forcedchoice'], days[this.userLevel - 1]['samedifferent']];
-            this.learningDone = this.scores.indexOf(-1) > -1;
-          }
-
-          this.iterateStage();
+          this.getTrainingFaces().then((faces) => {
+            this.trainingFacePaths = faces;
+            this.getWhosNewFaces().then((faces) => {
+              this.whosNewFacePaths = faces;
+              this.getDailyAssessmentFaces().then((faces) => {
+                this.assessmentFacePaths = faces;
+                if (days[this.userLevel - 1]) {
+                  this.scores = [days[this.userLevel - 1]['nameface'], days[this.userLevel - 1]['whosnew'], days[this.userLevel - 1]['memory'], days[this.userLevel - 1]['shuffle'], days[this.userLevel - 1]['forcedchoice'], days[this.userLevel - 1]['samedifferent']];
+                  this.learningDone = this.scores.indexOf(-1) > -1;
+                }
+                timer(1000).subscribe(() => {
+                  this.iterateStage();
+                })
+              });
+            });
+          });
 
         } else {
           this.userLevel--;
