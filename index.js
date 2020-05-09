@@ -289,11 +289,11 @@ app.put("/getWhosNewPictures/", cors(corsOptions), function(req, res, next){
                     var afterFaces = 8 - req.body.level + (1 - Math.round(req.body.level/8));
                     var beforeFaces = 8 - afterFaces;
                     for (var i = 0; i < afterFaces; i++) {
-                        var data = fs.readFileSync(`./front-end/src/assets/sample-faces/black/training/level-${req.body.level + 1}/${i}.jpg`);
+                        var data = fs.readFileSync(`./front-end/src/assets/sample-faces/black/training/level-${req.body.level + 1}/${i}.png`);
                         images.push(new Buffer(data, 'binary').toString('base64'));
                     }
                     for (var i = 0; i < beforeFaces; i++) {
-                        var data = fs.readFileSync(`./front-end/src/assets/sample-faces/black/training/level-${req.body.level - 1}/${i}.jpg`);
+                        var data = fs.readFileSync(`./front-end/src/assets/sample-faces/black/training/level-${req.body.level - 1}/${i}.png`);
                         images.push(new Buffer(data, 'binary').toString('base64'));
                     }
                     res.status(200).send({images: images});
