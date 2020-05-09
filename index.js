@@ -200,7 +200,7 @@ app.put("/changepassword/", cors(corsOptions), function(req, res, next){
     }
 })
 
-app.put("/getTrainingPictures/", cors(corsOptions), function(req, res, next){
+app.put("/getTrainingFaces/", cors(corsOptions), function(req, res, next){
     if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
         res.status(401).send("Please provide a properly formatted token")
     }
@@ -223,7 +223,7 @@ app.put("/getTrainingPictures/", cors(corsOptions), function(req, res, next){
     }
 })
 
-app.put("/getDailyAssessmentPictures/", cors(corsOptions), function(req, res, next){
+app.put("/getDailyAssessmentFaces/", cors(corsOptions), function(req, res, next){
     if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
         res.status(401).send("Please provide a properly formatted token")
     }
@@ -252,7 +252,7 @@ app.put("/getDailyAssessmentPictures/", cors(corsOptions), function(req, res, ne
     }
 })
 
-app.put("/getPrePostAssessmentPictures/", cors(corsOptions), function(req, res, next){
+app.put("/getPrePostAssessmentFaces/", cors(corsOptions), function(req, res, next){
     if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
         res.status(401).send("Please provide a properly formatted token")
     }
@@ -276,7 +276,7 @@ app.put("/getPrePostAssessmentPictures/", cors(corsOptions), function(req, res, 
 })
 
 
-app.put("/getWhosNewPictures/", cors(corsOptions), function(req, res, next){
+app.put("/getWhosNewFaces/", cors(corsOptions), function(req, res, next){
     if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
         res.status(401).send("Please provide a properly formatted token")
     }
