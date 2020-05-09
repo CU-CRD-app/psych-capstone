@@ -43,8 +43,10 @@ export class TrainingPage {
   }
 
   ionViewWillEnter() {
-    this.currentRace = Race.BLACK;
-    this.initCurrentLevel();
+    timer(1000).subscribe(() => {
+      this.currentRace = Race.BLACK;
+      this.initCurrentLevel();
+    });
   }
 
   ionViewWillLeave() {
