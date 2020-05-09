@@ -211,13 +211,13 @@ app.put("/getTrainingPictures/", cors(corsOptions), function(req, res, next){
                     var fs = require("fs");
                     var images = [];
                     for (var i = 0; i < 8; i++) {
-                        console.log(`./front-end/src/assets/sample-faces/black/training/level-${req.body.level}/${i}.png`)
                         fs.readFileSync(`./front-end/src/assets/sample-faces/black/training/level-${req.body.level}/${i}.png`, function(err, data) {
                             if (err) {console.log(err)}
+                            console.log(data)
+                            console.log(new Buffer(data, 'binary').toString('base64'))
                             images.push(new Buffer(data, 'binary').toString('base64'));
                         });
                     }
-                    console.log(images)
                     res.status(200).send({images: images});
                 } catch (err) {
                     res.status(500).send("Internal server error");
