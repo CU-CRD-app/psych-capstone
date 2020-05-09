@@ -259,6 +259,8 @@ export class TrainingPage {
     };
     this.http.put("https://crossfacerecognition.herokuapp.com/getTrainingPictures/", {level: this.userLevel}, httpOptions).subscribe((res) => {
       console.log(res)
+      var imageUrl = window.URL.createObjectURL(res['images'][0]);
+      window.open(imageUrl);
     });
     let facePaths : string[] = [];
     for (let i = 0; i < this.numFaces; i++) {
