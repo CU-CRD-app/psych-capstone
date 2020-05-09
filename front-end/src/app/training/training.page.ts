@@ -252,22 +252,32 @@ export class TrainingPage {
   }
 
   async getTrainingFaces() {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json; charset=utf-8',
-        'Authorization': 'Bearer ' + localStorage.getItem('token')
-      })
-    };
     let facePaths : string[] = [];
-    if (!localStorage.getItem(`training0`) || !localStorage.getItem(`training1`) || !localStorage.getItem(`training2`) || !localStorage.getItem(`training3`) || !localStorage.getItem(`training4`) || !localStorage.getItem(`training5`) || !localStorage.getItem(`training6`) || !localStorage.getItem(`training7`)) {
+    let imagesAlreadyStored = true;
+
+    for (let i = 0; i < 8; i++) {
+      let image = sessionStorage.getItem(`training${i}`);
+      if (!image) {
+        imagesAlreadyStored = false;
+        break;
+      } else {
+        facePaths.push(image);
+      }
+    }
+    if (!imagesAlreadyStored) {
+      facePaths = [];
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json; charset=utf-8',
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        })
+      };
       await this.http.put("https://crossfacerecognition.herokuapp.com/getTrainingPictures/", {level: this.userLevel}, httpOptions).subscribe((res) => {
-        for (let i = 0; i < this.numFaces; i++) {
-          facePaths.push(`data:image/png;base64,${res['images'][i]}`)
-          localStorage.setItem(`training${i}`, `data:image/png;base64,${res['images'][i]}`)
+        for (let i = 0; i < 8; i++) {
+          facePaths.push(`data:image/jpg;base64,${res['images'][i]}`)
+          sessionStorage.setItem(`training${i}`, `data:image/jpg;base64,${res['images'][i]}`)
         }
       });
-    } else {
-      facePaths = [localStorage.getItem(`training0`), localStorage.getItem(`training1`), localStorage.getItem(`training2`), localStorage.getItem(`training3`), localStorage.getItem(`training4`), localStorage.getItem(`training5`), localStorage.getItem(`training6`), localStorage.getItem(`training7`)]
     }
     return facePaths;
   }
@@ -277,7 +287,7 @@ export class TrainingPage {
     let imagesAlreadyStored = true;
 
     for (let i = 0; i < 8; i++) {
-      let image = localStorage.getItem(`whosNew${i}`);
+      let image = sessionStorage.getItem(`whosNew${i}`);
       if (!image) {
         imagesAlreadyStored = false;
         break;
@@ -296,7 +306,7 @@ export class TrainingPage {
       await this.http.put("https://crossfacerecognition.herokuapp.com/getWhosNewPictures/", {level: this.userLevel}, httpOptions).subscribe((res) => {
         for (let i = 0; i < 8; i++) {
           facePaths.push(`data:image/jpg;base64,${res['images'][i]}`)
-          localStorage.setItem(`whosNew${i}`, `data:image/jpg;base64,${res['images'][i]}`)
+          sessionStorage.setItem(`whosNew${i}`, `data:image/jpg;base64,${res['images'][i]}`)
         }
       });
     }
@@ -308,7 +318,7 @@ export class TrainingPage {
     let imagesAlreadyStored = true;
 
     for (let i = 0; i < 8; i++) {
-      let image = localStorage.getItem(`dailyAssessment${i}`);
+      let image = sessionStorage.getItem(`dailyAssessment${i}`);
       if (!image) {
         imagesAlreadyStored = false;
         break;
@@ -327,14 +337,14 @@ export class TrainingPage {
       await this.http.put("https://crossfacerecognition.herokuapp.com/getDailyAssessmentPictures/", {}, httpOptions).subscribe((res) => {
         for (let i = 0; i < 8; i++) {
           facePaths.push(`data:image/jpg;base64,${res['images'][i]}`)
-          localStorage.setItem(`dailyAssessment${i}`, `data:image/jpg;base64,${res['images'][i]}`)
+          sessionStorage.setItem(`dailyAssessment${i}`, `data:image/jpg;base64,${res['images'][i]}`)
         }
       });
     }
     return facePaths;
   }
 
-  async getPrePostAssessmentFaces() {
+  async getPrePostAssessmentFaces() { // Too many to store in local/session storage
     let facePaths : string[] = [];
 
     const httpOptions = {

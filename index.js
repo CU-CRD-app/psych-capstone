@@ -298,6 +298,7 @@ app.put("/getWhosNewPictures/", cors(corsOptions), function(req, res, next){
                     }
                     res.status(200).send({images: images});
                 } catch (err) {
+                    console.log(err)
                     res.status(500).send("Internal server error");
                 }
             })
