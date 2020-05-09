@@ -234,8 +234,8 @@ app.put("/getDailyAssessmentPictures/", cors(corsOptions), function(req, res, ne
                     var fs = require("fs");
                     var images = [];
                     var faceNums = [];
-                    for (let i = 0; i < 8; i++) { // Generate 8 random numbers between 0 and 30
-                        let face = Math.floor(Math.random() * 30);
+                    for (var i = 0; i < 8; i++) { // Generate 8 random numbers between 0 and 30
+                        var face = Math.floor(Math.random() * 30);
                         while (faceNums.indexOf(face) > -1) { // Account for repeats
                           face = Math.floor(Math.random() * 30);
                         }
@@ -264,6 +264,36 @@ app.put("/getPrePostAssessmentPictures/", cors(corsOptions), function(req, res, 
                     var images = [];
                     for (var i = 0; i < 30; i++) {
                         var data = fs.readFileSync(`./front-end/src/assets/sample-faces/black/pre-post-assessment/${i}.jpg`);
+                        images.push(new Buffer(data, 'binary').toString('base64'));
+                    }
+                    res.status(200).send({images: images});
+                } catch (err) {
+                    res.status(500).send("Internal server error");
+                }
+            })
+            .catch(err => res.status(401).send("Invalid token")) 
+    }
+})
+
+
+app.put("/getWhosNewPictures/", cors(corsOptions), function(req, res, next){
+    if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
+        res.status(401).send("Please provide a properly formatted token")
+    }
+    else{
+        tokenHandler.verify(req.header('Authorization').split(' ')[1])
+            .then(id => {
+                try {
+                    var fs = require("fs");
+                    var images = [];
+                    var afterFaces = 8 - req.body.level + (1 - Math.round(req.body.level/8));
+                    var beforeFaces = 8 - afterFaces;
+                    for (var i = 0; i < afterFaces; i++) {
+                        var data = fs.readFileSync(`./front-end/src/assets/sample-faces/black/training/level-${req.body.level + 1}/${i}.jpg`);
+                        images.push(new Buffer(data, 'binary').toString('base64'));
+                    }
+                    for (var i = 0; i < beforeFaces; i++) {
+                        var data = fs.readFileSync(`./front-end/src/assets/sample-faces/black/training/level-${req.body.level - 1}/${i}.jpg`);
                         images.push(new Buffer(data, 'binary').toString('base64'));
                     }
                     res.status(200).send({images: images});
