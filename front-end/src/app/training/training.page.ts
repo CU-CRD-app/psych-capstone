@@ -95,17 +95,18 @@ export class TrainingPage {
       let days = res['days'];
       this.userLevel = res['level'];
       let levelCompletedToday = false;
-      this.stage = Stage.START;
 
       if (this.userLevel == 0 || this.userLevel == 9) {
 
-        this.assessmentFacePaths = this.getAssessmentFaces(false);
+        this.assessmentFacePaths = await this.getAssessmentFaces(false);
 
         let images : any[] = [];
         for (let i = 0; i < this.assessmentFacePaths.length; i++) {
           images.push(new Image());
           images[i].src = this.assessmentFacePaths[i];
         }
+
+        this.stage = Stage.START;
 
       } else if (this.userLevel > 0 && this.userLevel < 9) {
 
@@ -125,7 +126,7 @@ export class TrainingPage {
           this.setNames = raceProperties[this.currentRace].namePool[this.userLevel];
           this.trainingFacePaths = await this.getTrainingFaces();
           this.whosNewFacePaths = this.getWhosNewFaces();
-          this.assessmentFacePaths = this.getAssessmentFaces(true);
+          this.assessmentFacePaths = await this.getAssessmentFaces(true);
 
           // Preload images
           let images : any[] = [];
@@ -268,6 +269,7 @@ export class TrainingPage {
     } else {
       facePaths = [localStorage.getItem('training0'), localStorage.getItem('training1'), localStorage.getItem('training2'), localStorage.getItem('training3'), localStorage.getItem('training4'), localStorage.getItem('training5'), localStorage.getItem('training6'), localStorage.getItem('training7')]
     }
+    console.log(facePaths)
     return facePaths;
   }
 
@@ -287,7 +289,6 @@ export class TrainingPage {
   async getAssessmentFaces(daily : boolean) {
     let faceNums : number[] = [];
     let storagePrefix = daily ? 'daily-assessment' : 'pre-post-assessment'
-
     let faceNumber : number = daily ? this.numFaces : this.assessmentPoolSize;
 
     for (let i = 0; i < faceNumber; i++) {
@@ -324,6 +325,7 @@ export class TrainingPage {
         }
       });
     }
+    console.log(facePaths)
     return facePaths;
   }
 

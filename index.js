@@ -233,7 +233,8 @@ app.put("/getAssessmentPictures/", cors(corsOptions), function(req, res, next){
                 try {
                     var fs = require("fs");
                     var images = [];
-                    for (var i = 0; i < 30; i++) {
+                    var numFaces = req.body.daily ? 8 : 30;
+                    for (var i = 0; i < numFaces; i++) {
                         var path;
                         if (req.body.daily) {
                             path = `./front-end/src/assets/sample-faces/black/daily-assessment/${i}.jpg`;
