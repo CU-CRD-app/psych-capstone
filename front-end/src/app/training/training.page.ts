@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { timer, interval } from 'rxjs';
 import { AlertController, ModalController, IonRouterOutlet, ToastController } from '@ionic/angular';
 import { HelpModalComponent } from '../help-modal/help-modal.component';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, map } from 'rxjs/operators';
 import { createAnimation } from '@ionic/core';
 import { GetProgressService } from '../service/get-progress.service';
 import { SubmitScoresService } from '../service/submit-scores.service';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
 
 enum Race { BLACK, ASIAN }
 enum Stage { START, TRAINING, ASSESSMENT, DONE }
@@ -36,7 +37,7 @@ let raceProperties = {
 })
 export class TrainingPage {
 
-  constructor(public alertController: AlertController, public modalController: ModalController, private routerOutlet: IonRouterOutlet, public getProgress: GetProgressService, public submitScores: SubmitScoresService, public toastController : ToastController, public localNotifications : LocalNotifications) {
+  constructor(public alertController: AlertController, public modalController: ModalController, private routerOutlet: IonRouterOutlet, public getProgress: GetProgressService, public submitScores: SubmitScoresService, public toastController : ToastController, public localNotifications : LocalNotifications, public http : HttpClient) {
 
     this.routerOutlet.swipeGesture = false;
 
@@ -250,6 +251,15 @@ export class TrainingPage {
   }
 
   getTrainingFaces() {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json; charset=utf-8',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      })
+    };
+    this.http.put("https://crossfacerecognition.herokuapp.com/getTrainingPictures/", {level: this.userLevel}, httpOptions).subscribe((res) => {
+      console.log(res)
+    });
     let facePaths : string[] = [];
     for (let i = 0; i < this.numFaces; i++) {
       facePaths.push(raceProperties[this.currentRace].facePath + "training/level-" + this.userLevel + "/" + i + ".png");
