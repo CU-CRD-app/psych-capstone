@@ -13,6 +13,7 @@ var preassessment = require('./preassessment.js');
 var postassessment = require('./postassessment.js');
 var tokenHandler = require('./token.js');
 var password = require('./passwordChange.js');
+var fs = require("fs");
 
 initialize.start()
     .then(res => console.log(res))
@@ -208,10 +209,9 @@ app.put("/getTrainingFaces/", cors(corsOptions), function(req, res, next){
         tokenHandler.verify(req.header('Authorization').split(' ')[1])
             .then(id => {
                 try {
-                    var fs = require("fs");
                     var images = [];
                     for (var i = 0; i < 8; i++) {
-                        var data = fs.readFileSync(`./front-end/src/assets/sample-faces/black/training/level-${req.body.level}/${i}.png`);
+                        var data = fs.readFileSync(`./faces/black/training/level-${req.body.level}/${i}.png`);
                         images.push(new Buffer(data, 'binary').toString('base64'));
                     }
                     res.status(200).send({images: images});
@@ -231,7 +231,6 @@ app.put("/getDailyAssessmentFaces/", cors(corsOptions), function(req, res, next)
         tokenHandler.verify(req.header('Authorization').split(' ')[1])
             .then(id => {
                 try {
-                    var fs = require("fs");
                     var images = [];
                     var faceNums = [];
                     for (var i = 0; i < 8; i++) { // Generate 8 random numbers between 0 and 30
@@ -240,7 +239,7 @@ app.put("/getDailyAssessmentFaces/", cors(corsOptions), function(req, res, next)
                           face = Math.floor(Math.random() * 30);
                         }
                         faceNums.push(face);
-                        var data = fs.readFileSync(`./front-end/src/assets/sample-faces/black/daily-assessment/${faceNums[i]}.jpg`);
+                        var data = fs.readFileSync(`./faces/black/daily-assessment/${faceNums[i]}.jpg`);
                         images.push(new Buffer(data, 'binary').toString('base64'));
                     }
                     res.status(200).send({images: images});
@@ -260,10 +259,9 @@ app.put("/getPrePostAssessmentFaces/", cors(corsOptions), function(req, res, nex
         tokenHandler.verify(req.header('Authorization').split(' ')[1])
             .then(id => {
                 try {
-                    var fs = require("fs");
                     var images = [];
                     for (var i = 0; i < 30; i++) {
-                        var data = fs.readFileSync(`./front-end/src/assets/sample-faces/black/pre-post-assessment/${i}.jpg`);
+                        var data = fs.readFileSync(`./faces/black/pre-post-assessment/${i}.jpg`);
                         images.push(new Buffer(data, 'binary').toString('base64'));
                     }
                     res.status(200).send({images: images});
@@ -284,16 +282,15 @@ app.put("/getWhosNewFaces/", cors(corsOptions), function(req, res, next){
         tokenHandler.verify(req.header('Authorization').split(' ')[1])
             .then(id => {
                 try {
-                    var fs = require("fs");
                     var images = [];
                     var afterFaces = 8 - req.body.level + (1 - Math.round(req.body.level/8));
                     var beforeFaces = 8 - afterFaces;
                     for (var i = 0; i < afterFaces; i++) {
-                        var data = fs.readFileSync(`./front-end/src/assets/sample-faces/black/training/level-${req.body.level + 1}/${i}.png`);
+                        var data = fs.readFileSync(`./faces/black/training/level-${req.body.level + 1}/${i}.png`);
                         images.push(new Buffer(data, 'binary').toString('base64'));
                     }
                     for (var i = 0; i < beforeFaces; i++) {
-                        var data = fs.readFileSync(`./front-end/src/assets/sample-faces/black/training/level-${req.body.level - 1}/${i}.png`);
+                        var data = fs.readFileSync(`./faces/black/training/level-${req.body.level - 1}/${i}.png`);
                         images.push(new Buffer(data, 'binary').toString('base64'));
                     }
                     res.status(200).send({images: images});
