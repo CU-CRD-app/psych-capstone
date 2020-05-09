@@ -223,7 +223,7 @@ app.put("/getTrainingPictures/", cors(corsOptions), function(req, res, next){
     }
 })
 
-app.put("/getAssessmentPictures/", cors(corsOptions), function(req, res, next){
+app.put("/getDailyAssessmentPictures/", cors(corsOptions), function(req, res, next){
     if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
         res.status(401).send("Please provide a properly formatted token")
     }
@@ -233,15 +233,37 @@ app.put("/getAssessmentPictures/", cors(corsOptions), function(req, res, next){
                 try {
                     var fs = require("fs");
                     var images = [];
-                    var numFaces = req.body.daily ? 8 : 30;
-                    for (var i = 0; i < numFaces; i++) {
-                        var path;
-                        if (req.body.daily) {
-                            path = `./front-end/src/assets/sample-faces/black/daily-assessment/${i}.jpg`;
-                        } else {
-                            path = `./front-end/src/assets/sample-faces/black/pre-post-assessment/${i}.jpg`
+                    var faceNums = [];
+                    for (let i = 0; i < 8; i++) { // Generate 8 random numbers between 0 and 30
+                        let face = Math.floor(Math.random() * 30);
+                        while (faceNums.indexOf(face) > -1) { // Account for repeats
+                          face = Math.floor(Math.random() * 30);
                         }
-                        var data = fs.readFileSync(path);
+                        faceNums.push(face);
+                        var data = fs.readFileSync(`./front-end/src/assets/sample-faces/black/daily-assessment/${faceNums[i]}.jpg`);
+                        images.push(new Buffer(data, 'binary').toString('base64'));
+                    }
+                    res.status(200).send({images: images});
+                } catch (err) {
+                    res.status(500).send("Internal server error");
+                }
+            })
+            .catch(err => res.status(401).send("Invalid token")) 
+    }
+})
+
+app.put("/getPrePostAssessmentPictures/", cors(corsOptions), function(req, res, next){
+    if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
+        res.status(401).send("Please provide a properly formatted token")
+    }
+    else{
+        tokenHandler.verify(req.header('Authorization').split(' ')[1])
+            .then(id => {
+                try {
+                    var fs = require("fs");
+                    var images = [];
+                    for (var i = 0; i < 30; i++) {
+                        var data = fs.readFileSync(`./front-end/src/assets/sample-faces/black/pre-post-assessment/${i}.jpg`);
                         images.push(new Buffer(data, 'binary').toString('base64'));
                     }
                     res.status(200).send({images: images});

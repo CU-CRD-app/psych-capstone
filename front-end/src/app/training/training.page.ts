@@ -98,7 +98,7 @@ export class TrainingPage {
 
       if (this.userLevel == 0 || this.userLevel == 9) {
 
-        this.assessmentFacePaths = await this.getAssessmentFaces(false);
+        this.assessmentFacePaths = await this.getPrePostAssessmentFaces();
 
         let images : any[] = [];
         for (let i = 0; i < this.assessmentFacePaths.length; i++) {
@@ -126,7 +126,7 @@ export class TrainingPage {
           this.setNames = raceProperties[this.currentRace].namePool[this.userLevel];
           this.trainingFacePaths = await this.getTrainingFaces();
           this.whosNewFacePaths = this.getWhosNewFaces();
-          this.assessmentFacePaths = await this.getAssessmentFaces(true);
+          this.assessmentFacePaths = await this.getDailyAssessmentFaces();
 
           // Preload images
           let images : any[] = [];
@@ -269,7 +269,6 @@ export class TrainingPage {
     } else {
       facePaths = [localStorage.getItem('training0'), localStorage.getItem('training1'), localStorage.getItem('training2'), localStorage.getItem('training3'), localStorage.getItem('training4'), localStorage.getItem('training5'), localStorage.getItem('training6'), localStorage.getItem('training7')]
     }
-    console.log(facePaths)
     return facePaths;
   }
 
@@ -286,23 +285,12 @@ export class TrainingPage {
     return facePaths;
   }
   
-  async getAssessmentFaces(daily : boolean) {
-    let faceNums : number[] = [];
-    let storagePrefix = daily ? 'daily-assessment' : 'pre-post-assessment'
-    let faceNumber : number = daily ? this.numFaces : this.assessmentPoolSize;
-
-    for (let i = 0; i < faceNumber; i++) {
-      let face = Math.floor(Math.random() * this.assessmentPoolSize);
-      while (faceNums.indexOf(face) > -1) { // Account for repeats
-        face = Math.floor(Math.random() * this.assessmentPoolSize);
-      }
-      faceNums.push(face);
-    }
-
+  async getDailyAssessmentFaces() {
     let facePaths : string[] = [];
     let imagesAlreadyStored = true;
-    for (let i = 0; i < 30; i++) {
-      let image = localStorage.getItem(`${storagePrefix}${i}`);
+
+    for (let i = 0; i < 8; i++) {
+      let image = localStorage.getItem(`dailyAssessment${i}`);
       if (!image) {
         imagesAlreadyStored = false;
         break;
@@ -318,14 +306,45 @@ export class TrainingPage {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         })
       };
-      await this.http.put("https://crossfacerecognition.herokuapp.com/getAssessmentPictures/", {daily: daily}, httpOptions).subscribe((res) => {
-        for (let face of faceNums) {
-          facePaths.push(`data:image/png;base64,${res['images'][face]}`)
-          localStorage.setItem(`${storagePrefix}${face}`, `data:image/png;base64,${res['images'][face]}`)
+      await this.http.put("https://crossfacerecognition.herokuapp.com/getDailyAssessmentPictures/", {}, httpOptions).subscribe((res) => {
+        for (let i = 0; i < 8; i++) {
+          facePaths.push(`data:image/png;base64,${res['images'][i]}`)
+          localStorage.setItem(`dailyAssessment${i}`, `data:image/png;base64,${res['images'][i]}`)
         }
       });
     }
     console.log(facePaths)
+    return facePaths;
+  }
+
+  async getPrePostAssessmentFaces() {
+    let facePaths : string[] = [];
+    let imagesAlreadyStored = true;
+
+    for (let i = 0; i < 30; i++) {
+      let image = localStorage.getItem(`prePostAssessment${i}`);
+      if (!image) {
+        imagesAlreadyStored = false;
+        break;
+      } else {
+        facePaths.push(image);
+      }
+    }
+    if (!imagesAlreadyStored) {
+      facePaths = [];
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json; charset=utf-8',
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        })
+      };
+      await this.http.put("https://crossfacerecognition.herokuapp.com/getPrePostAssessmentPictures/", {}, httpOptions).subscribe((res) => {
+        for (let i = 0; i < 30; i++) {
+          facePaths.push(`data:image/png;base64,${res['images'][i]}`)
+          localStorage.setItem(`prePostAssessment${i}`, `data:image/png;base64,${res['images'][i]}`)
+        }
+      });
+    }
     return facePaths;
   }
 
