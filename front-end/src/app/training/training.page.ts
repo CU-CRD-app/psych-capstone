@@ -90,7 +90,7 @@ export class TrainingPage {
 
     this.currentRace = race;
 
-    this.getProgress.getData().subscribe((res) => {
+    this.getProgress.getData().subscribe(async (res) => {
 
       let days = res['days'];
       this.userLevel = res['level'];
@@ -123,7 +123,7 @@ export class TrainingPage {
         if (!levelCompletedToday) {
 
           this.setNames = raceProperties[this.currentRace].namePool[this.userLevel];
-          this.trainingFacePaths = this.getTrainingFaces();
+          this.trainingFacePaths = await this.getTrainingFaces();
           this.whosNewFacePaths = this.getWhosNewFaces();
           this.assessmentFacePaths = this.getAssessmentFaces(true);
 
@@ -250,21 +250,23 @@ export class TrainingPage {
     }
   }
 
-  getTrainingFaces() {
+  async getTrainingFaces() {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json; charset=utf-8',
         'Authorization': 'Bearer ' + localStorage.getItem('token')
       })
     };
-    this.http.put("https://crossfacerecognition.herokuapp.com/getTrainingPictures/", {level: this.userLevel}, httpOptions).subscribe((res) => {
-      console.log(res)
-      var imageUrl = window.URL.createObjectURL(new Blob(res['images'][0]));
-      window.open(imageUrl);
-    });
     let facePaths : string[] = [];
-    for (let i = 0; i < this.numFaces; i++) {
-      facePaths.push(raceProperties[this.currentRace].facePath + "training/level-" + this.userLevel + "/" + i + ".png");
+    if (!localStorage.getItem('training0') || !localStorage.getItem('training1') || !localStorage.getItem('training2') || !localStorage.getItem('training3') || !localStorage.getItem('training4') || !localStorage.getItem('training5') || !localStorage.getItem('training6') || !localStorage.getItem('training7')) {
+      await this.http.put("https://crossfacerecognition.herokuapp.com/getTrainingPictures/", {level: this.userLevel}, httpOptions).subscribe((res) => {
+        for (let i = 0; i < this.numFaces; i++) {
+          facePaths.push(`data:image/png;base64,${res['images'][i]}`)
+          localStorage.setItem(`training${i}`, `data:image/png;base64,${res['images'][i]}`)
+        }
+      });
+    } else {
+      facePaths = [localStorage.getItem('training0'), localStorage.getItem('training1'), localStorage.getItem('training2'), localStorage.getItem('training3'), localStorage.getItem('training4'), localStorage.getItem('training5'), localStorage.getItem('training6'), localStorage.getItem('training7')]
     }
     return facePaths;
   }
@@ -282,9 +284,9 @@ export class TrainingPage {
     return facePaths;
   }
   
-  getAssessmentFaces(daily : boolean) {
-    let facePaths : string[] = [];
+  async getAssessmentFaces(daily : boolean) {
     let faceNums : number[] = [];
+    let storagePrefix = daily ? 'daily-assessment' : 'pre-post-assessment'
 
     let faceNumber : number = daily ? this.numFaces : this.assessmentPoolSize;
 
@@ -295,12 +297,32 @@ export class TrainingPage {
       }
       faceNums.push(face);
     }
-    for (let face of faceNums) {
-      if (daily) {
-        facePaths.push(raceProperties[this.currentRace].facePath + "daily-assessment/" + face + ".jpg");
+
+    let facePaths : string[] = [];
+    let imagesAlreadyStored = true;
+    for (let i = 0; i < 30; i++) {
+      let image = localStorage.getItem(`${storagePrefix}${i}`);
+      if (!image) {
+        imagesAlreadyStored = false;
+        break;
       } else {
-        facePaths.push(raceProperties[this.currentRace].facePath + "pre-post-assessment/" + face + ".jpg");
+        facePaths.push(image);
       }
+    }
+    if (!imagesAlreadyStored) {
+      facePaths = [];
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json; charset=utf-8',
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        })
+      };
+      await this.http.put("https://crossfacerecognition.herokuapp.com/getAssessmentPictures/", {daily: daily}, httpOptions).subscribe((res) => {
+        for (let face of faceNums) {
+          facePaths.push(`data:image/png;base64,${res['images'][face]}`)
+          localStorage.setItem(`${storagePrefix}${face}`, `data:image/png;base64,${res['images'][face]}`)
+        }
+      });
     }
     return facePaths;
   }
