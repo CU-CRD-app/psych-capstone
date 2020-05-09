@@ -215,6 +215,7 @@ app.put("/getTrainingPictures/", cors(corsOptions), function(req, res, next){
                             images.push(new Buffer(data, 'binary').toString('base64'));
                         });
                     }
+                    console.log(images)
                     res.status(200).send({images: images});
                 } catch (err) {
                     res.status(500).send("Internal server error");
