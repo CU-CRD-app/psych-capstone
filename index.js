@@ -211,7 +211,9 @@ app.put("/getTrainingPictures/", cors(corsOptions), function(req, res, next){
                     var fs = require("fs");
                     var images = [];
                     for (var i = 0; i < 8; i++) {
-                        fs.readFile(`front-end/src/assets/sample-faces/black/training/level-${req.body.level}/${i}.png`, function(err, data) {
+                        console.log(`./front-end/src/assets/sample-faces/black/training/level-${req.body.level}/${i}.png`)
+                        fs.readFileSync(`./front-end/src/assets/sample-faces/black/training/level-${req.body.level}/${i}.png`, function(err, data) {
+                            if (err) {console.log(err)}
                             images.push(new Buffer(data, 'binary').toString('base64'));
                         });
                     }
