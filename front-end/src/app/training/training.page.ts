@@ -284,32 +284,19 @@ export class TrainingPage {
 
   async getWhosNewFaces() {
     let facePaths : string[] = [];
-    let imagesAlreadyStored = true;
 
-    for (let i = 0; i < 8; i++) {
-      let image = sessionStorage.getItem(`whosNew${i}`);
-      if (!image) {
-        imagesAlreadyStored = false;
-        break;
-      } else {
-        facePaths.push(image);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json; charset=utf-8',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      })
+    };
+    await this.http.put("https://crossfacerecognition.herokuapp.com/getWhosNewPictures/", {level: this.userLevel}, httpOptions).subscribe((res) => {
+      for (let i = 0; i < 8; i++) {
+        facePaths.push(`data:image/png;base64,${res['images'][i]}`)
       }
-    }
-    if (!imagesAlreadyStored) {
-      facePaths = [];
-      const httpOptions = {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json; charset=utf-8',
-          'Authorization': 'Bearer ' + localStorage.getItem('token')
-        })
-      };
-      await this.http.put("https://crossfacerecognition.herokuapp.com/getWhosNewPictures/", {level: this.userLevel}, httpOptions).subscribe((res) => {
-        for (let i = 0; i < 8; i++) {
-          facePaths.push(`data:image/png;base64,${res['images'][i]}`)
-          sessionStorage.setItem(`whosNew${i}`, `data:image/png;base64,${res['images'][i]}`)
-        }
-      });
-    }
+    });
+
     return facePaths;
   }
   
