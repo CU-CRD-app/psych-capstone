@@ -20,37 +20,41 @@ export class HistoryPage {
 
     this.waitingForResponse = true;
 
-    this.getProgress.getData().subscribe((res) => {
+    timer(1000).subscribe(() => {
 
-      for (let i : number = 0; i < res['days'].length; i++) {
-        if (res['days'][i]['nameface'] != -1 && res['days'][i]['whosnew'] != -1 && res['days'][i]['memory'] != -1 && res['days'][i]['shuffle'] != -1 && res['days'][i]['forcedchoice'] != -1 && res['days'][i]['samedifferent'] != -1) {
-          this.days[i] = res['days'][i];
-          this.days[i]['date'] = new Date(this.days[i]['date']).toLocaleDateString();
+      this.getProgress.getData().subscribe((res) => {
+
+        for (let i : number = 0; i < res['days'].length; i++) {
+          if (res['days'][i]['nameface'] != -1 && res['days'][i]['whosnew'] != -1 && res['days'][i]['memory'] != -1 && res['days'][i]['shuffle'] != -1 && res['days'][i]['forcedchoice'] != -1 && res['days'][i]['samedifferent'] != -1) {
+            this.days[i] = res['days'][i];
+            this.days[i]['date'] = new Date(this.days[i]['date']).toLocaleDateString();
+          }
         }
-      }
 
-      this.level = res['level']
-      if (this.level > 0) {
-        this.level--;
-      }
+        this.level = res['level']
+        if (this.level > 0) {
+          this.level--;
+        }
 
-      if (res['pre']['score']) {
-        this.pre_post[0] = {score: res['pre']['score'], date: new Date(res['pre']['date']).toLocaleDateString()};
-      }
-      if (res['post']['score']) {
-        this.pre_post[1] = {score: res['post']['score'], date: new Date(res['post']['date']).toLocaleDateString()};
-      }
+        if (res['pre']['score']) {
+          this.pre_post[0] = {score: res['pre']['score'], date: new Date(res['pre']['date']).toLocaleDateString()};
+        }
+        if (res['post']['score']) {
+          this.pre_post[1] = {score: res['post']['score'], date: new Date(res['post']['date']).toLocaleDateString()};
+        }
 
-      this.waitingForResponse = false;
-      timer(1000).subscribe(() => {this.slide(this.level)})
+        this.waitingForResponse = false;
+        timer(1000).subscribe(() => {this.slide(this.level)})
 
-    }, async (err) => { 
-      const toast = await this.toastController.create({
-        message: 'Something went wrong. Please try logging out and back in',
-        color: 'danger',
-        duration: 2000
+      }, async (err) => { 
+        const toast = await this.toastController.create({
+          message: 'Something went wrong. Please try logging out and back in',
+          color: 'danger',
+          duration: 2000
+        });
+        toast.present();
       });
-      toast.present();
+
     });
 
   }

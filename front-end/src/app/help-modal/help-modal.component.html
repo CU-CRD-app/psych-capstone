@@ -9,7 +9,7 @@
     <ion-icon *ngIf="!showOverview" slot="start" color="dark" name="close-circle" style="margin-right: 10px; height: 3vh" (click)="closeModal()" [ngClass]="{'hidden': hideQuit}"></ion-icon>
   </ion-item>
 
-  <ion-slides #slideElement (ionSlideDidChange)="changeSlide()" style="height: 80%">
+  <ion-slides #slideElement (ionSlideWillChange)="changeSlide()" style="height: 80%">
     <ion-slide *ngFor="let slide of slides; let i = index" style="height: 100%; width: 100%; display: flex; flex-direction: column; justify-content: space-evenly; padding-left: 5%; padding-right: 5%">
       <img [src]="slide[0]">
       <div style="display: flex; align-items: center; flex-shrink: 2; margin-left: 5%; margin-right: 5%; font-size: 5vw">{{slide[1]}}</div>

@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { timer, interval } from 'rxjs';
 import { AlertController, ModalController, IonRouterOutlet, ToastController } from '@ionic/angular';
 import { HelpModalComponent } from '../help-modal/help-modal.component';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, map } from 'rxjs/operators';
 import { createAnimation } from '@ionic/core';
 import { GetProgressService } from '../service/get-progress.service';
 import { SubmitScoresService } from '../service/submit-scores.service';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
 
 enum Race { BLACK, ASIAN }
 enum Stage { START, TRAINING, ASSESSMENT, DONE }
@@ -24,8 +25,7 @@ let raceProperties = {
       6: ['Frank', 'Ben', 'Greg', 'Sam', 'Ray', 'Patrick', 'Alex', 'Jack'],
       7: ['Dennis', 'Jerry', 'Tyler', 'Aaron', 'Jose', 'Henry', 'Doug', 'Adam'],
       8: ['Peter', 'Nathan', 'Zach', 'Walter', 'Kyle', 'Harry', 'Carl', 'Jeremy']
-    },
-    facePath: 'assets/sample-faces/black/'
+    }
   }
 }
 
@@ -36,15 +36,23 @@ let raceProperties = {
 })
 export class TrainingPage {
 
-  constructor(public alertController: AlertController, public modalController: ModalController, private routerOutlet: IonRouterOutlet, public getProgress: GetProgressService, public submitScores: SubmitScoresService, public toastController : ToastController, public localNotifications : LocalNotifications) {
+  constructor(public alertController: AlertController, public modalController: ModalController, private routerOutlet: IonRouterOutlet, public getProgress: GetProgressService, public submitScores: SubmitScoresService, public toastController : ToastController, public localNotifications : LocalNotifications, public http : HttpClient) {
 
     this.routerOutlet.swipeGesture = false;
 
   }
 
   ionViewWillEnter() {
-    this.currentRace = Race.BLACK;
-    this.initCurrentLevel();
+    this.stage = null;
+    this.task = null;
+    timer(500).subscribe(() => {
+      this.currentRace = Race.BLACK;
+      this.initCurrentLevel();
+    });
+  }
+
+  ionViewWillLeave() {
+    Array.from(document.getElementsByClassName('fade-in') as HTMLCollectionOf<HTMLElement>)[0].style.opacity = '0';
   }
 
   ngAfterViewInit() {
@@ -88,17 +96,15 @@ export class TrainingPage {
       let days = res['days'];
       this.userLevel = res['level'];
       let levelCompletedToday = false;
-      this.stage = Stage.START;
 
       if (this.userLevel == 0 || this.userLevel == 9) {
 
-        this.assessmentFacePaths = this.getAssessmentFaces(false);
-
-        let images : any[] = [];
-        for (let i = 0; i < this.assessmentFacePaths.length; i++) {
-          images.push(new Image());
-          images[i].src = this.assessmentFacePaths[i];
-        }
+        this.getPrePostAssessmentFaces().then((faces) => {
+          this.assessmentFacePaths = faces;
+          timer(1000).subscribe(() => {
+            this.stage = Stage.START;
+          });
+        });
 
       } else if (this.userLevel > 0 && this.userLevel < 9) {
 
@@ -116,31 +122,22 @@ export class TrainingPage {
         if (!levelCompletedToday) {
 
           this.setNames = raceProperties[this.currentRace].namePool[this.userLevel];
-          this.trainingFacePaths = this.getTrainingFaces();
-          this.whosNewFacePaths = this.getWhosNewFaces();
-          this.assessmentFacePaths = this.getAssessmentFaces(true);
-
-          // Preload images
-          let images : any[] = [];
-          for (let i = 0; i < this.trainingFacePaths.length; i++) {
-            images.push(new Image());
-            images[i].src = this.trainingFacePaths[i];
-          }
-          for (let i = 0; i < this.whosNewFacePaths.length; i++) {
-            images.push(new Image());
-            images[i].src = this.whosNewFacePaths[i];
-          }
-          for (let i = 0; i < this.assessmentFacePaths.length; i++) {
-            images.push(new Image());
-            images[i].src = this.assessmentFacePaths[i];
-          }
-
-          if (days[this.userLevel - 1]) {
-            this.scores = [days[this.userLevel - 1]['nameface'], days[this.userLevel - 1]['whosnew'], days[this.userLevel - 1]['memory'], days[this.userLevel - 1]['shuffle'], days[this.userLevel - 1]['forcedchoice'], days[this.userLevel - 1]['samedifferent']];
-            this.learningDone = this.scores.indexOf(-1) > -1;
-          }
-
-          this.iterateStage();
+          this.getTrainingFaces().then((faces) => {
+            this.trainingFacePaths = faces;
+            this.getWhosNewFaces().then((faces) => {
+              this.whosNewFacePaths = faces;
+              this.getDailyAssessmentFaces().then((faces) => {
+                this.assessmentFacePaths = faces;
+                if (days[this.userLevel - 1]) {
+                  this.scores = [days[this.userLevel - 1]['nameface'], days[this.userLevel - 1]['whosnew'], days[this.userLevel - 1]['memory'], days[this.userLevel - 1]['shuffle'], days[this.userLevel - 1]['forcedchoice'], days[this.userLevel - 1]['samedifferent']];
+                  this.learningDone = this.scores.indexOf(-1) > -1;
+                }
+                timer(1000).subscribe(() => {
+                  this.iterateStage();
+                })
+              });
+            });
+          });
 
         } else {
           this.userLevel--;
@@ -243,47 +240,101 @@ export class TrainingPage {
     }
   }
 
-  getTrainingFaces() {
+  async getTrainingFaces() {
     let facePaths : string[] = [];
-    for (let i = 0; i < this.numFaces; i++) {
-      facePaths.push(raceProperties[this.currentRace].facePath + "training/level-" + this.userLevel + "/" + i + ".png");
+    let imagesAlreadyStored = true;
+
+    for (let i = 0; i < 8; i++) {
+      let image = sessionStorage.getItem(`training${i}`);
+      if (!image) {
+        imagesAlreadyStored = false;
+        break;
+      } else {
+        facePaths.push(image);
+      }
+    }
+    if (!imagesAlreadyStored) {
+      facePaths = [];
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json; charset=utf-8',
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        })
+      };
+      await this.http.put("https://crossfacerecognition.herokuapp.com/getTrainingFaces/", {level: this.userLevel}, httpOptions).subscribe((res) => {
+        for (let i = 0; i < 8; i++) {
+          facePaths.push(`data:image/png;base64,${res['images'][i]}`)
+          sessionStorage.setItem(`training${i}`, `data:image/png;base64,${res['images'][i]}`)
+        }
+      });
     }
     return facePaths;
   }
 
-  getWhosNewFaces() {
+  async getWhosNewFaces() {
     let facePaths : string[] = [];
-    let afterFaces = this.numFaces - this.userLevel + (1 - Math.round(this.userLevel/this.numFaces));
-    let beforeFaces = this.numFaces - afterFaces;
-    for (let i = 0; i < afterFaces; i++) {
-      facePaths.push(raceProperties[this.currentRace].facePath + "training/level-" + (this.userLevel + 1) + "/" + i + ".png");
-    }
-    for (let i = 0; i < beforeFaces; i++) {
-      facePaths.push(raceProperties[this.currentRace].facePath + "training/level-" + (this.userLevel - 1) + "/" + i + ".png");
-    }
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json; charset=utf-8',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      })
+    };
+    await this.http.put("https://crossfacerecognition.herokuapp.com/getWhosNewFaces/", {level: this.userLevel}, httpOptions).subscribe((res) => {
+      for (let i = 0; i < 8; i++) {
+        facePaths.push(`data:image/png;base64,${res['images'][i]}`)
+      }
+    });
+
     return facePaths;
   }
   
-  getAssessmentFaces(daily : boolean) {
+  async getDailyAssessmentFaces() {
     let facePaths : string[] = [];
-    let faceNums : number[] = [];
+    let imagesAlreadyStored = true;
 
-    let faceNumber : number = daily ? this.numFaces : this.assessmentPoolSize;
-
-    for (let i = 0; i < faceNumber; i++) {
-      let face = Math.floor(Math.random() * this.assessmentPoolSize);
-      while (faceNums.indexOf(face) > -1) { // Account for repeats
-        face = Math.floor(Math.random() * this.assessmentPoolSize);
-      }
-      faceNums.push(face);
-    }
-    for (let face of faceNums) {
-      if (daily) {
-        facePaths.push(raceProperties[this.currentRace].facePath + "daily-assessment/" + face + ".jpg");
+    for (let i = 0; i < 8; i++) {
+      let image = sessionStorage.getItem(`dailyAssessment${i}`);
+      if (!image) {
+        imagesAlreadyStored = false;
+        break;
       } else {
-        facePaths.push(raceProperties[this.currentRace].facePath + "pre-post-assessment/" + face + ".jpg");
+        facePaths.push(image);
       }
     }
+    if (!imagesAlreadyStored) {
+      facePaths = [];
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json; charset=utf-8',
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        })
+      };
+      await this.http.put("https://crossfacerecognition.herokuapp.com/getDailyAssessmentFaces/", {}, httpOptions).subscribe((res) => {
+        for (let i = 0; i < 8; i++) {
+          facePaths.push(`data:image/jpg;base64,${res['images'][i]}`)
+          sessionStorage.setItem(`dailyAssessment${i}`, `data:image/jpg;base64,${res['images'][i]}`)
+        }
+      });
+    }
+    return facePaths;
+  }
+
+  async getPrePostAssessmentFaces() { // Too many to store in local/session storage
+    let facePaths : string[] = [];
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json; charset=utf-8',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      })
+    };
+    await this.http.put("https://crossfacerecognition.herokuapp.com/getPrePostAssessmentFaces/", {}, httpOptions).subscribe((res) => {
+      for (let i = 0; i < 30; i++) {
+        facePaths.push(`data:image/jpg;base64,${res['images'][i]}`)
+      }
+    });
+
     return facePaths;
   }
 
@@ -306,7 +357,7 @@ export class TrainingPage {
     if (this.userLevel == 0) {
       this.submitScores.submitPreAssessment(score[0]);
     } else if (this.userLevel == 9) {
-      this.submitScores.submitPreAssessment(score[0]);
+      this.submitScores.submitPostAssessment(score[0]);
     }
     this.finishLevel();
   }
@@ -412,6 +463,8 @@ export class TrainingPage {
         this.progress += .1;
       });
 
+    } else {
+      this.userLevel++;
     }
   }
 

@@ -13,7 +13,7 @@
     </div>
   </div>
 
-  <ion-slides #slideElement (ionSlideWillChange)="changeSlide()">
+  <ion-slides #slideElement (ionSlideDidChange)="changeSlide()">
 
     <ion-slide *ngFor="let slide of slideInfo; let slideIndex = index" class="flex-slide">
 

@@ -160,17 +160,25 @@ export class ForcedChoiceComponent implements OnInit {
         takeUntil(timer(this.timeRemaining * 1000))
       )
       .subscribe(async () => {
-        let inflate = createAnimation()
+        let first = createAnimation()
           .addElement(document.querySelector('.time-left'))
           .fill('none')
-          .duration(400)
+          .duration(100)
           .keyframes([
-            { offset: 0, transform: 'scale(1, 1)' },
-            { offset: 0.5, transform: 'scale(2, 2)' },
-            { offset: 1, transform: 'scale(1, 1)' }
+            { offset: 0, transform: 'translateY(0%)', opacity: '1' },
+            { offset: 1, transform: 'translateY(100%)', opacity: '0' }
           ]);
+        await first.play();
         this.timeRemaining--;
-        await inflate.play();
+        let second = createAnimation()
+          .addElement(document.querySelector('.time-left'))
+          .fill('none')
+          .duration(100)
+          .keyframes([
+            { offset: 0, transform: 'translateY(-100%)', opacity: '0' },
+            { offset: 1, transform: 'translateY(0%)', opacity: '1' }
+          ]);
+        await second.play();
       });
   }
 
@@ -183,6 +191,16 @@ export class ForcedChoiceComponent implements OnInit {
 
   firstStage(index : number) {
     return this.slideInfo[index].stage == Stage.START || this.slideInfo[index].stage == Stage.MEMORIZE || this.slideInfo[index].stage == Stage.MASK;
+  }
+
+  getSrc(index : number) {
+    if (this.slideInfo[index].stage == Stage.MEMORIZE) {
+      return this.slideInfo[index].correctFace;
+    } else if (this.slideInfo[index].stage == Stage.MASK) {
+      return this.mask;
+    } else {
+      return null;
+    }
   }
 
   showFeedback() {

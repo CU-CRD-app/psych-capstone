@@ -6,7 +6,7 @@
       <ion-buttons *ngIf="task == null" slot="start">
         <ion-menu-button autoHide="false"></ion-menu-button>
       </ion-buttons>
-      <ion-icon *ngIf="task != null && task != Task.PRETEST && task != Task.POSTTEST" slot="start" color="medium" name="arrow-back" style="margin-left: 1vw; height: 3vh" (click)="taskExitAlert()"></ion-icon>
+      <ion-icon *ngIf="task != null && task != Task.FORCED_CHOICE && task != Task.SAME_DIFFERENT && task != Task.PRETEST && task != Task.POSTTEST" slot="start" color="medium" name="arrow-back" style="margin-left: 1vw; height: 3vh" (click)="taskExitAlert()"></ion-icon>
       <ion-icon *ngIf="userLevel <= 9" slot="end" color="medium" name="help-circle" style="margin-right: 1vw; height: 3vh" (click)="getHelp(false)"></ion-icon>
     </ion-toolbar>
   </ion-header>
@@ -92,7 +92,7 @@
     </div>
 
     <!--Done Page-->
-    <div *ngIf="stage == Stage.DONE" style="margin-top: 50%">
+    <div *ngIf="stage == Stage.DONE" style="margin-top: 40%">
 
       <div *ngIf="userLevel <= 9" style="display: flex; flex-direction: column; justify-content: center; align-items: center">
 
@@ -119,7 +119,8 @@
 
       <div *ngIf="userLevel > 9">
         <div class="header" style="margin: 5%"><b>You're all done.</b></div>
-        <div class="subheader" style="margin: 5%">Since you've completed all eight levels and the post assessment, you don't have anything else! Thank you for your participation in this research.</div>
+        <div class="subheader" style="margin: 5%">Since you've completed all eight levels and the post assessment, you don't have anything else to do! Thank you for your participation in this research.</div>
+        <ion-button color="success" routerLink="/dashboard" routerDirection="forward">Home</ion-button>
       </div>
 
     </div>
@@ -143,9 +144,12 @@
   <!--Pre-Post-Assessment-->
   <app-same-different *ngIf="task == Task.PRETEST || task == Task.POSTTEST" [facePaths]="assessmentFacePaths" (finished)="finishPrePost($event)"></app-same-different>
 
-  <!--For development only-->
-  <div *ngIf="stage">
+  <!--For development only
+  <div>
     <br><br><br><br><br><br><br><br><br><br><br><br>
+    <ion-button (click)="completeTraining()">Complete Training</ion-button>
+    <ion-button (click)="completeAssessment()">Complete Assessment</ion-button>
+    <ion-button (click)="completeMost()">Complete Most</ion-button>
     <div style="text-align:center">
       <br><br><br><br><br><br><br><br><br><br><br><br>
       <ion-button (click)="task = Task.LEARNING">Learning</ion-button>
@@ -156,6 +160,6 @@
       <ion-button (click)="task = Task.FORCED_CHOICE">Forced Choice</ion-button>
       <ion-button (click)="task = Task.SAME_DIFFERENT">Same Different</ion-button>
     </div>
-  </div>
+  </div>-->
 
 </ion-content>

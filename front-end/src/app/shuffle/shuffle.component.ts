@@ -192,19 +192,25 @@ export class ShuffleComponent implements OnInit {
         takeUntil(timer(this.timeRemaining * 1000))
       )
       .subscribe(async () => {
-        let inflate = createAnimation()
+        let first = createAnimation()
           .addElement(document.querySelector('.time-left'))
           .fill('none')
-          .duration(400)
+          .duration(100)
           .keyframes([
-            { offset: 0, transform: 'scale(1, 1)' },
-            { offset: 0.5, transform: 'scale(2, 2)' },
-            { offset: 1, transform: 'scale(1, 1)' }
+            { offset: 0, transform: 'translateY(0%)', opacity: '1' },
+            { offset: 1, transform: 'translateY(100%)', opacity: '0' }
           ]);
+        await first.play();
         this.timeRemaining--;
-        if (this.timeRemaining > this.memorizeTime - 2 || this.timeRemaining < 4) {
-          await inflate.play();
-        }
+        let second = createAnimation()
+          .addElement(document.querySelector('.time-left'))
+          .fill('none')
+          .duration(100)
+          .keyframes([
+            { offset: 0, transform: 'translateY(-100%)', opacity: '0' },
+            { offset: 1, transform: 'translateY(0%)', opacity: '1' }
+          ]);
+        await second.play();
       });
   }
 

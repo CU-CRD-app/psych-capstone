@@ -13,9 +13,9 @@
     </div>
   </div>
 
-  <ion-slides #slideElement (ionSlideWillChange)="changeSlide()">
+  <ion-slides #slideElement (ionSlideDidChange)="changeSlide()">
 
-    <ion-slide *ngFor="let slide of slideInfo; let slideIndex = index" (swipeleft)="selectFace(false)" (swiperight)="selectFace(true)" class="flex-slide">
+    <ion-slide *ngFor="let slide of slideInfo; let slideIndex = index" (swipeleft)="selectFace(true)" (swiperight)="selectFace(false)" class="flex-slide">
 
       <div class="prompt" *ngIf="slideInfo[slideIndex].stage == Stage.START">Memorize the face: {{memorizeTime}}</div>
       <div class="prompt" *ngIf="slideInfo[slideIndex].stage == Stage.MEMORIZE">Memorize the face: <span class="time-left">{{timeRemaining}}</span></div>
@@ -31,8 +31,8 @@
       </ion-card>
 
       <div *ngIf="slideInfo[slideIndex].stage != Stage.CORRECT && slideInfo[slideIndex].stage != Stage.INCORRECT" class="swipe-footer">
-        <ion-button (click)="selectFace(false)" color="secondary">Different</ion-button>
         <ion-button (click)="selectFace(true)" color="primary">Same</ion-button>
+        <ion-button (click)="selectFace(false)" color="secondary">Different</ion-button>
       </div>
 
       <div *ngIf="slideInfo[slideIndex].stage == Stage.CORRECT || slideInfo[slideIndex].stage == Stage.INCORRECT" style="height: 100%; width: 100%; padding-top: 20%; text-align: center; margin: 0 auto">

@@ -13,7 +13,7 @@
     </div>
   </div>
 
-  <ion-slides #slideElement (ionSlideWillChange)="ngAfterViewInit(); resetSelected()" (ionSlideReachStart)="firstSlide = true" (ionSlideReachEnd)="firstSlide = false">
+  <ion-slides #slideElement (ionSlideDidChange)="ngAfterViewInit(); resetSelected()" (ionSlideReachStart)="firstSlide = true" (ionSlideReachEnd)="firstSlide = false">
 
     <ion-slide class="flex-slide">
 
