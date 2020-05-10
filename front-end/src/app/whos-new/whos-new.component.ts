@@ -14,7 +14,7 @@ export class WhosNewComponent implements OnInit {
   @Input() facePaths : string[];
   @Input() newFacePaths : string[];
   @Output() finished = new EventEmitter<[number, number]>();
-  @ViewChild('slideElement', {static: false}) slideElement: IonSlides;
+  @ViewChild('slideElement') slideElement: IonSlides;
 
   constructor() {}
   

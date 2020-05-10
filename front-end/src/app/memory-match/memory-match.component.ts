@@ -3,6 +3,7 @@ import { timer, interval } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { createAnimation } from '@ionic/core';
 import { IonSlides } from '@ionic/angular';
+import { trigger, state, style, transition, animate, keyframes} from '@angular/animations';
 
 enum Stage { START, MEMORIZE, MASK, SELECT, CORRECT, INCORRECT }
 
@@ -10,11 +11,37 @@ enum Stage { START, MEMORIZE, MASK, SELECT, CORRECT, INCORRECT }
   selector: 'app-memory-match',
   templateUrl: './memory-match.component.html',
   styleUrls: ['./memory-match.component.scss'],
+  animations: [
+    trigger('fadeInOut', [
+      state('visible', style({
+        opacity: .9,
+      })),
+      state('invisible', style({
+        opacity: 0,
+      })),
+      transition(':enter', [
+        animate(500)
+      ]),
+      transition(':leave', [
+        animate(500)
+      ])
+    ]),
+    trigger('countdown', [
+      transition('active <=> inactive', [
+        animate(200, keyframes([
+          style({ transform: 'translateY(0%)', opacity: '1' }),
+          style({ transform: 'translateY(100%)', opacity: '0' }),
+          style({ transform: 'translateY(-100%)', opacity: '0' }),
+          style({ transform: 'translateY(0%)', opacity: '1' })
+        ]))
+      ])
+    ])
+  ]
 })
 export class MemoryMatchComponent implements OnInit {
   @Input() facePaths : string[];
   @Output() finished = new EventEmitter<[number, number]>();
-  @ViewChild('slideElement', {static: false}) slideElement: IonSlides;
+  @ViewChild('slideElement') slideElement: IonSlides;
 
   constructor() { }
 
@@ -44,17 +71,6 @@ export class MemoryMatchComponent implements OnInit {
       this.randomFaces[j] = temp;
     }
 
-    this.timer = timer(500).subscribe(async () => {
-      let fadeIn = createAnimation()
-        .addElement(document.querySelectorAll('.overlay'))
-        .fill('none')
-        .duration(500)
-        .fromTo('opacity', '0', '.9');
-      await fadeIn.play();
-      if (this.stage == Stage.START) {
-        Array.from(document.getElementsByClassName('overlay') as HTMLCollectionOf<HTMLElement>)[0].style.opacity = '.9';
-      }
-    });
   }
 
   ngAfterViewInit() {
@@ -107,7 +123,7 @@ export class MemoryMatchComponent implements OnInit {
         this.selectedFace = null;
         this.resetSelected();
       }
-      if (this.correctFaces.indexOf(this.randomFaces[face]) < 0 && face != this.selectedFace) { // Click on a valid face
+      if (this.correctFaces.indexOf(this.randomFaces[face]) < 0 && face != this.selectedFace) { // Tap on a valid face
 
         if (this.selectedFace == null) { // Select first face
           this.selectedFace = face;
@@ -183,13 +199,6 @@ export class MemoryMatchComponent implements OnInit {
 
     if (this.stage == Stage.START) {
 
-      let fadeOutOverlay = createAnimation()
-      .addElement(document.querySelectorAll('.overlay'))
-        .fill('none')
-        .duration(200)
-        .fromTo('opacity', '.9', '0');
-      await fadeOutOverlay.play();
-
       this.timeRemaining = this.memorizeTime;
       this.stage = Stage.MEMORIZE;
 
@@ -202,25 +211,7 @@ export class MemoryMatchComponent implements OnInit {
           takeUntil(timer(this.timeRemaining * 1000))
         )
         .subscribe(async () => {
-          let first = createAnimation()
-            .addElement(document.querySelector('.time-left'))
-            .fill('none')
-            .duration(100)
-            .keyframes([
-              { offset: 0, transform: 'translateY(0%)', opacity: '1' },
-              { offset: 1, transform: 'translateY(100%)', opacity: '0' }
-            ]);
-          await first.play();
           this.timeRemaining--;
-          let second = createAnimation()
-            .addElement(document.querySelector('.time-left'))
-            .fill('none')
-            .duration(100)
-            .keyframes([
-              { offset: 0, transform: 'translateY(-100%)', opacity: '0' },
-              { offset: 1, transform: 'translateY(0%)', opacity: '1' }
-            ]);
-          await second.play();
         });
     }
 

@@ -9,8 +9,8 @@ import { timer } from 'rxjs';
   styleUrls: ['history.page.scss']
 })
 export class HistoryPage {
-  @ViewChild('slideElement', {static: false}) slideElement: IonSlides;
-  @ViewChild('rangeElement', {static: false}) rangeElement: IonSlides;
+  @ViewChild('slideElement') slideElement: IonSlides;
+  @ViewChild('rangeElement') rangeElement: IonSlides;
 
   constructor(public toastController : ToastController, public getProgress : GetProgressService) {}
 

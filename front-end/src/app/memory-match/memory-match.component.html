@@ -7,9 +7,9 @@
     <div class="score-change" style="right: 12vw">{{stage == Stage.CORRECT ? '+4' : '-1'}}</div>
   </span>
 
-  <div *ngIf="stage == Stage.START" (click)="startMemorizeTimer()" class="overlay" button>
+  <div *ngIf="stage == Stage.START" (click)="startMemorizeTimer()" class="overlay" [@fadeInOut]="stage == Stage.START ? 'visible' : 'invisible'" button>
     <div class="overlay-content">
-      Click anywhere to reveal
+      Tap to reveal
     </div>
   </div>
 
@@ -18,7 +18,7 @@
     <ion-slide class="flex-slide">
 
       <div class="prompt-small" *ngIf="stage == Stage.START">Memorize the face placement: {{memorizeTime}}</div>
-      <div class="prompt-small" *ngIf="stage == Stage.MEMORIZE">Memorize the face placement: <span class="time-left">{{timeRemaining}}</span></div>
+      <div class="prompt-small" *ngIf="stage == Stage.MEMORIZE">Memorize the face placement: <span [@countdown]="timeRemaining % 2 == 0 ? 'active' : 'inactive'" class="time-left">{{timeRemaining}}</span></div>
       <div class="prompt-small" *ngIf="stage == Stage.MASK">Hold the faces in your mind...</div>
       <div class="prompt-small" *ngIf="stage == Stage.SELECT">Match the faces</div>
       <div class="prompt-small" *ngIf="stage == Stage.CORRECT">Correct!</div>

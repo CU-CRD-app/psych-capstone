@@ -36,26 +36,26 @@ const slideValues = {
     ['assets/help-slides/whos-new/2.png', 'Whenever you guess incorrectly, you\'ll be shown the correct answer.']
   ],
   'Memory Match': [
-    ['assets/help-slides/memory-match/0.png', 'Click anywhere to show the faces and begin the timer.'],
+    ['assets/help-slides/memory-match/0.png', 'Tap to show the faces and begin the timer.'],
     ['assets/help-slides/memory-match/1.png', 'You will have 10 seconds to memorize the placement of as many face pairs as you can.'],
     ['assets/help-slides/memory-match/2.png', 'After the timer is up, click the cards to match the pairs. When you correctly match a pair, they will be revealed.'],
     ['assets/help-slides/memory-match/3.png', 'Correct matches award 4 points, while incorrect matches deduct 1 point.']
   ],
   'Shuffle': [
-    ['assets/help-slides/shuffle/0.png', 'Click anywhere to show the faces and begin the timer.'],
+    ['assets/help-slides/shuffle/0.png', 'Tap to show the faces and begin the timer.'],
     ['assets/help-slides/shuffle/1.png', 'You will have 10 seconds to memorize the placement of the faces.'],
-    ['assets/help-slides/shuffle/2.png', 'After the timer is up, click cards to swap their positions. Click \'Done\' when you think the positions are correct.'],
+    ['assets/help-slides/shuffle/2.png', 'After the timer is up, click cards to swap their positions. Tap \'Done\' when you think the positions are correct.'],
     ['assets/help-slides/shuffle/3.png', 'For an incorrect solution, incorrect cards will be colored red. You will be awarded a point for each correct card.'],
     ['assets/help-slides/shuffle/4.png', 'You can toggle between your solution and the correct solution with the toggle at the bottom.']
   ],
   'Forced Choice': [
-    ['assets/help-slides/forced-choice/0.png', 'Click anywhere to show the face and begin the timer.'],
+    ['assets/help-slides/forced-choice/0.png', 'Tap to show the face and begin the timer.'],
     ['assets/help-slides/forced-choice/1.png', 'You will have 3 seconds to memorize the face.'],
     ['assets/help-slides/forced-choice/2.png', 'After the timer is up select the face that you saw.'],
     ['assets/help-slides/forced-choice/3.png', 'You will receive a point for each correct answer.']
   ],
   'Same-Different': [
-    ['assets/help-slides/same-different/0.png', 'Click anywhere to show the face and begin the timer.'],
+    ['assets/help-slides/same-different/0.png', 'Tap to show the face and begin the timer.'],
     ['assets/help-slides/same-different/1.png', 'You will have 3 seconds to memorize the face.'],
     ['assets/help-slides/same-different/2.png', 'After the timer is up, decide whether the face is the same.'],
     ['assets/help-slides/same-different/3.png', 'You will receive a point for each correct answer.']
@@ -73,7 +73,7 @@ const slideValues = {
   ],
   'Pre-Assessment': [
     ['assets/help-slides/pre-post/0.png', 'Welcome to your pre-assessment. This is a one-time test; it will provide a baseline for your current CRD.'],
-    ['assets/help-slides/same-different/0.png', 'Click anywhere to show the face and begin the timer.'],
+    ['assets/help-slides/same-different/0.png', 'Tap to show the face and begin the timer.'],
     ['assets/help-slides/same-different/1.png', 'You will have 3 seconds to memorize the face.'],
     ['assets/help-slides/same-different/2.png', 'After the timer is up, decide whether the face is the same.'],
     ['assets/help-slides/pre-post/1.png', 'This test consists of 30 questions, so set aside a few minutes to complete it.'],
@@ -93,7 +93,7 @@ const slideValues = {
 
 export class HelpModalComponent implements OnInit {
   @Input() firstDisplayed : boolean;
-  @ViewChild('slideElement', {static: false}) slideElement: IonSlides;
+  @ViewChild('slideElement') slideElement: IonSlides;
 
   constructor(private modalController: ModalController, private navParams: NavParams) { }
 

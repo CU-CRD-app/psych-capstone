@@ -3,6 +3,7 @@ import { timer, interval } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { createAnimation } from '@ionic/core';
 import { IonSlides } from '@ionic/angular';
+import { trigger, state, style, transition, animate, keyframes} from '@angular/animations';
 
 enum Stage { START, MEMORIZE, MASK, SELECT, CORRECT, INCORRECT }
 
@@ -10,11 +11,37 @@ enum Stage { START, MEMORIZE, MASK, SELECT, CORRECT, INCORRECT }
   selector: 'app-shuffle',
   templateUrl: './shuffle.component.html',
   styleUrls: ['./shuffle.component.scss'],
+  animations: [
+    trigger('fadeInOut', [
+      state('visible', style({
+        opacity: .9,
+      })),
+      state('invisible', style({
+        opacity: 0,
+      })),
+      transition(':enter', [
+        animate(500)
+      ]),
+      transition(':leave', [
+        animate(500)
+      ])
+    ]),
+    trigger('countdown', [
+      transition('active <=> inactive', [
+        animate(200, keyframes([
+          style({ transform: 'translateY(0%)', opacity: '1' }),
+          style({ transform: 'translateY(100%)', opacity: '0' }),
+          style({ transform: 'translateY(-100%)', opacity: '0' }),
+          style({ transform: 'translateY(0%)', opacity: '1' })
+        ]))
+      ])
+    ])
+  ]
 })
 export class ShuffleComponent implements OnInit {
   @Input() facePaths : string[];
   @Output() finished = new EventEmitter<[number, number]>();
-  @ViewChild('slideElement', {static: false}) slideElement: IonSlides;
+  @ViewChild('slideElement') slideElement: IonSlides;
 
   constructor() { }
 
@@ -37,18 +64,6 @@ export class ShuffleComponent implements OnInit {
         selectedFace: null
       });
     }
-
-    this.timer = timer(500).subscribe(async () => {
-      let fadeInOverlay = createAnimation()
-        .addElement(document.querySelectorAll('.overlay'))
-        .fill('none')
-        .duration(500)
-        .fromTo('opacity', '0', '.9');
-      await fadeInOverlay.play();
-      if (this.slideInfo[this.currentSlide].stage == Stage.START) {
-        Array.from(document.getElementsByClassName('overlay') as HTMLCollectionOf<HTMLElement>)[0].style.opacity = '.9';
-      }
-    });
 
   }
 
@@ -173,15 +188,6 @@ export class ShuffleComponent implements OnInit {
 
   async startMemorizeTimer() {
 
-    if (this.currentSlide == 0) {
-      let fadeOutOverlay = createAnimation()
-        .addElement(document.querySelectorAll('.overlay'))
-        .fill('none')
-        .duration(300)
-        .fromTo('opacity', '.9', '0');
-      await fadeOutOverlay.play();
-    }
-
     this.timeRemaining = this.memorizeTime;
     this.slideInfo[this.currentSlide].stage = Stage.MEMORIZE;
     this.timer = timer(this.timeRemaining * 1000).subscribe(() => {
@@ -192,25 +198,7 @@ export class ShuffleComponent implements OnInit {
         takeUntil(timer(this.timeRemaining * 1000))
       )
       .subscribe(async () => {
-        let first = createAnimation()
-          .addElement(document.querySelector('.time-left'))
-          .fill('none')
-          .duration(100)
-          .keyframes([
-            { offset: 0, transform: 'translateY(0%)', opacity: '1' },
-            { offset: 1, transform: 'translateY(100%)', opacity: '0' }
-          ]);
-        await first.play();
         this.timeRemaining--;
-        let second = createAnimation()
-          .addElement(document.querySelector('.time-left'))
-          .fill('none')
-          .duration(100)
-          .keyframes([
-            { offset: 0, transform: 'translateY(-100%)', opacity: '0' },
-            { offset: 1, transform: 'translateY(0%)', opacity: '1' }
-          ]);
-        await second.play();
       });
   }
 

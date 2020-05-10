@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,7 +25,8 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
   	IonicModule.forRoot(), 
   	AppRoutingModule,
   	FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule
   ],
 
   providers: [

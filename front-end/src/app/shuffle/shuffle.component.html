@@ -7,9 +7,9 @@
     <div class="score-change" style="right: 12vw">+{{changeScoreValue}}</div>
   </span>
 
-  <div *ngIf="slideInfo[currentSlide].stage == Stage.START" (click)="startMemorizeTimer()" class="overlay" button>
+  <div *ngIf="slideInfo[currentSlide].stage == Stage.START" (click)="startMemorizeTimer()" class="overlay" [@fadeInOut]="slideInfo[currentSlide].stage == Stage.START ? 'visible' : 'invisible'" button>
     <div class="overlay-content">
-      Click anywhere to reveal
+      Tap to reveal
     </div>
   </div>
 
@@ -18,7 +18,7 @@
     <ion-slide *ngFor="let slide of slideInfo; let slideIndex = index" class="flex-slide">
 
       <div class="prompt-small" *ngIf="slideInfo[slideIndex].stage == Stage.START">Memorize the face placement: {{memorizeTime}}</div>
-      <div class="prompt-small" *ngIf="slideInfo[slideIndex].stage == Stage.MEMORIZE">Memorize the face placement: <span class="time-left">{{timeRemaining}}</span></div>
+      <div class="prompt-small" *ngIf="slideInfo[slideIndex].stage == Stage.MEMORIZE">Memorize the face placement: <span [@countdown]="timeRemaining % 2 == 0 ? 'active' : 'inactive'" class="time-left">{{timeRemaining}}</span></div>
       <div class="prompt-small" *ngIf="slideInfo[slideIndex].stage == Stage.MASK">Hold the faces in your mind...</div>
       <div class="prompt-small" *ngIf="slideInfo[slideIndex].stage == Stage.SELECT">Rearrange the faces</div>
       <div class="prompt-small" *ngIf="slideInfo[slideIndex].stage == Stage.CORRECT">Correct!</div>

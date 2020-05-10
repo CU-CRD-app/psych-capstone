@@ -7,9 +7,9 @@
     <div class="score-change">+1</div>
   </span>
 
-  <div *ngIf="slideInfo[currentSlide].stage == Stage.START" (click)="startMemorizeTimer()" class="overlay" button>
+  <div *ngIf="slideInfo[currentSlide].stage == Stage.START" (click)="startMemorizeTimer()" class="overlay" [@fadeInOut]="slideInfo[currentSlide].stage == Stage.START ? 'visible' : 'invisible'" button>
     <div class="overlay-content">
-      Click anywhere to reveal
+      Tap to reveal
     </div>
   </div>
 
@@ -20,7 +20,7 @@
       <!--Memorizing the face-->
       <div *ngIf="firstStage(slideIndex)" class="flex-slide" style="align-items: center">
         <div class="prompt" *ngIf="slideInfo[slideIndex].stage == Stage.START">Memorize the face: {{memorizeTime}}</div>
-        <div class="prompt" *ngIf="slideInfo[slideIndex].stage == Stage.MEMORIZE">Memorize the face: <span class="time-left">{{timeRemaining}}</span></div>
+        <div class="prompt" *ngIf="slideInfo[slideIndex].stage == Stage.MEMORIZE">Memorize the face: <span [@countdown]="timeRemaining % 2 == 0 ? 'active' : 'inactive'" class="time-left">{{timeRemaining}}</span></div>
         <div class="prompt" *ngIf="slideInfo[slideIndex].stage == Stage.MASK">Hold the face in your mind...</div>
         <ion-card style="height: 310px; width: 270px; display: flex; justify-content: center; align-items: center; background-color: gainsboro">
           <img *ngIf="slideInfo[slideIndex].stage != Stage.START" style="height: 270px" [src]="slideInfo[slideIndex].stage == Stage.MEMORIZE ? slideInfo[slideIndex].correctFace : mask" [ngStyle]="{'width': slideInfo[slideIndex].stage == Stage.MASK ? '85%' : 'auto'}"/>

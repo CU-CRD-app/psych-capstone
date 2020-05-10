@@ -14,7 +14,7 @@ export class NameFaceComponent implements OnInit {
   @Input() setNames : string[];
   @Input() facePaths : string[];
   @Output() finished = new EventEmitter<[number, number]>();
-  @ViewChild('slideElement', {static: false}) slideElement: IonSlides;
+  @ViewChild('slideElement') slideElement: IonSlides;
 
   constructor() {}
 
