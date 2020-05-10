@@ -13,14 +13,15 @@ import { ForcedChoiceComponent } from '../forced-choice/forced-choice.component'
 import { SameDifferentComponent } from '../same-different/same-different.component';
 import { ScorePageComponent } from '../score-page/score-page.component';
 import { HelpModalComponent } from '../help-modal/help-modal.component';
-import * as Hammer from 'hammerjs';
-import { HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
+import { HammerModule, HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 @Injectable()
 export class MyHammerConfig extends HammerGestureConfig {
   overrides = <any> {
-    swipe: { direction: Hammer.DIRECTION_ALL },
+    'swipe': {
+      direction: 31
+    }
   };
 }
 
@@ -30,6 +31,7 @@ export class MyHammerConfig extends HammerGestureConfig {
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    HammerModule,
     RouterModule.forChild([{ path: '', component: TrainingPage }])
   ],
   declarations: [
