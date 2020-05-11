@@ -30,8 +30,8 @@ enum Stage { START, MEMORIZE, MASK, SELECT, CORRECT, INCORRECT }
       transition('active <=> inactive', [
         animate(200, keyframes([
           style({ transform: 'translateY(0%)', opacity: '1' }),
-          style({ transform: 'translateY(100%)', opacity: '0' }),
-          style({ transform: 'translateY(-100%)', opacity: '0' }),
+          style({ transform: 'translateY(75%)', opacity: '0' }),
+          style({ transform: 'translateY(-75%)', opacity: '0' }),
           style({ transform: 'translateY(0%)', opacity: '1' })
         ]))
       ])
