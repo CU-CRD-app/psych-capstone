@@ -144,22 +144,16 @@
   <!--Pre-Post-Assessment-->
   <app-same-different *ngIf="task == Task.PRETEST || task == Task.POSTTEST" [facePaths]="assessmentFacePaths" (finished)="finishPrePost($event)"></app-same-different>
 
-  For development only
-  <div>
+  <!--For development only
+  <div style="text-align:center">
     <br><br><br><br><br><br><br><br><br><br><br><br>
-    <!--<ion-button (click)="completeTraining()">Complete Training</ion-button>
-    <ion-button (click)="completeAssessment()">Complete Assessment</ion-button>
-    <ion-button (click)="completeMost()">Complete Most</ion-button>-->
-    <div style="text-align:center">
-      <br><br><br><br><br><br><br><br><br><br><br><br>
-      <ion-button (click)="task = Task.LEARNING">Learning</ion-button>
-      <ion-button (click)="task = Task.NAME_FACE">Name and Face</ion-button>
-      <ion-button (click)="task = Task.WHOS_NEW">Who's New</ion-button>
-      <ion-button (click)="task = Task.MEMORY">Memory</ion-button>
-      <ion-button (click)="task = Task.SHUFFLE">Shuffle</ion-button>
-      <ion-button (click)="task = Task.FORCED_CHOICE">Forced Choice</ion-button>
-      <ion-button (click)="task = Task.SAME_DIFFERENT">Same Different</ion-button>
-    </div>
-  </div>
+    <ion-button (click)="task = Task.LEARNING">Learning</ion-button>
+    <ion-button (click)="task = Task.NAME_FACE">Name and Face</ion-button>
+    <ion-button (click)="task = Task.WHOS_NEW">Who's New</ion-button>
+    <ion-button (click)="task = Task.MEMORY">Memory</ion-button>
+    <ion-button (click)="task = Task.SHUFFLE">Shuffle</ion-button>
+    <ion-button (click)="task = Task.FORCED_CHOICE">Forced Choice</ion-button>
+    <ion-button (click)="task = Task.SAME_DIFFERENT">Same Different</ion-button>
+  </div>-->
 
 </ion-content>
