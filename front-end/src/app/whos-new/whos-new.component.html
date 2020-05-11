@@ -41,7 +41,7 @@
 
         </div>
 
-        <ion-item class="footer" lines="none">
+        <ion-item [@fadeFooter]="showFeedback() ? 'visible' : 'invisible'" class="footer" lines="none">
           <ion-label>Swipe to Continue</ion-label>
           <ion-icon slot="end" color="medium" name="arrow-back"></ion-icon>    
         </ion-item>

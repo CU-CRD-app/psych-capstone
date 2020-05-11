@@ -15,7 +15,7 @@
 
   <ion-slides #slideElement (ionSlideDidChange)="changeSlide()">
 
-    <ion-slide *ngFor="let slide of slideInfo; let slideIndex = index" (swipeleft)="selectFace(true)" (swiperight)="selectFace(false)" class="flex-slide">
+    <ion-slide *ngFor="let slide of slideInfo; let slideIndex = index" class="flex-slide">
 
       <div class="prompt" *ngIf="slideInfo[slideIndex].stage == Stage.START">Memorize the face: {{memorizeTime}}</div>
       <div class="prompt" *ngIf="slideInfo[slideIndex].stage == Stage.MEMORIZE">Memorize the face: <span [@countdown]="timeRemaining % 2 == 0 ? 'active' : 'inactive'" class="time-left">{{timeRemaining}}</span></div>
@@ -24,32 +24,39 @@
       <div class="prompt" *ngIf="slideInfo[slideIndex].stage == Stage.CORRECT">Correct!</div>
       <div class="prompt" *ngIf="slideInfo[slideIndex].stage == Stage.INCORRECT">Incorrect!</div>
 
-      <ion-card *ngIf="slideInfo[slideIndex].stage != Stage.CORRECT && slideInfo[slideIndex].stage != Stage.INCORRECT" class="swipe-card">
-        <ion-icon *ngIf="slideInfo[slideIndex].stage == Stage.SELECT" (click)="selectFace(true)" color="dark" name="arrow-back" style="font-size: 150%"></ion-icon>
-        <img *ngIf="slideInfo[slideIndex].stage != Stage.START" [src]="getSrc(slideIndex)" style="height: 270px" [ngStyle]="{'width': slideInfo[slideIndex].stage == Stage.MASK ? '85%' : 'auto'}"/>
-        <ion-icon *ngIf="slideInfo[slideIndex].stage == Stage.SELECT" (click)="selectFace(false)" color="dark" name="arrow-forward" style="font-size: 150%"></ion-icon>
-      </ion-card>
+      <div *ngIf="slideInfo[slideIndex].stage != Stage.CORRECT && slideInfo[slideIndex].stage != Stage.INCORRECT" class="flipper" [@swipeCard]="slideInfo[slideIndex].selection == true ? 'left' : 'right'" (pan)="drag($event)" (panend)="returnCenter($event)">
+        <div class="front">
+          <ion-icon *ngIf="slideInfo[slideIndex].stage == Stage.SELECT" (click)="selectFace(true)" color="dark" name="arrow-back" style="font-size: 150%"></ion-icon>
+          <img *ngIf="slideInfo[slideIndex].stage != Stage.START" [src]="getSrc(slideIndex)" style="height: 270px; border-radius: 10%;"/>
+          <ion-icon *ngIf="slideInfo[slideIndex].stage == Stage.SELECT" (click)="selectFace(false)" color="dark" name="arrow-forward" style="font-size: 150%"></ion-icon>
+        </div>
+        <div class="back">
+          <img [src]="mask" style="height: 270px; width: 85%; border-radius: 10%; backface-visibility: hidden"/>
+        </div>
+      </div>
 
-      <div *ngIf="slideInfo[slideIndex].stage != Stage.CORRECT && slideInfo[slideIndex].stage != Stage.INCORRECT" class="swipe-footer">
+      <div *ngIf="slideInfo[slideIndex].stage == Stage.CORRECT || slideInfo[slideIndex].stage == Stage.INCORRECT" style="width: 100%; display: flex; flex-direction: column; justify-content: center">
+        <div *ngIf="slideInfo[slideIndex].correctFace == slideInfo[slideIndex].displayedFace" class="subheader">Same</div>
+        <div *ngIf="slideInfo[slideIndex].correctFace != slideInfo[slideIndex].displayedFace" class="subheader">Different</div>
+        <div>
+          <ion-card class="grid-card" style="--background: gainsboro;">
+            <img [src]="slideInfo[slideIndex].correctFace">
+          </ion-card>
+          <ion-card class="grid-card" style="--background: gainsboro;">
+            <img [src]="slideInfo[slideIndex].displayedFace">
+          </ion-card>
+        </div>
+      </div>
+
+      <div *ngIf="slideInfo[slideIndex].stage == Stage.SELECT" [@fadeFooter]="slideInfo[slideIndex].stage == Stage.SELECT ? 'sameDifferent' : 'invisible'" class="swipe-footer">
         <ion-button (click)="selectFace(true)" color="primary">Same</ion-button>
         <ion-button (click)="selectFace(false)" color="secondary">Different</ion-button>
       </div>
 
-      <div *ngIf="slideInfo[slideIndex].stage == Stage.CORRECT || slideInfo[slideIndex].stage == Stage.INCORRECT" style="height: 100%; width: 100%; padding-top: 20%; text-align: center; margin: 0 auto">
-        <div *ngIf="slideInfo[slideIndex].correctFace == slideInfo[slideIndex].displayedFace" class="subheader">Same</div>
-        <div *ngIf="slideInfo[slideIndex].correctFace != slideInfo[slideIndex].displayedFace" class="subheader">Different</div>
-        <ion-card class="grid-card" style="--background: gainsboro;">
-          <img [src]="slideInfo[slideIndex].correctFace">
-        </ion-card>
-        <ion-card class="grid-card" style="--background: gainsboro;">
-          <img [src]="slideInfo[slideIndex].displayedFace">
-        </ion-card>
-
-        <ion-item class="footer" lines="none" style="margin-top: 30%">
-          <ion-label>Swipe to Continue</ion-label>
-          <ion-icon slot="end" color="dark" name="arrow-back" style="margin-top: 10px"></ion-icon>    
-        </ion-item>
-      </div>
+      <ion-item *ngIf="slideInfo[slideIndex].stage != Stage.SELECT" [@fadeFooter]="showFeedback() ? 'visible' : 'invisible'" class="footer" lines="none">
+        <ion-label>Swipe to Continue</ion-label>
+        <ion-icon slot="end" color="dark" name="arrow-back"></ion-icon>    
+      </ion-item>
 
     </ion-slide>
 

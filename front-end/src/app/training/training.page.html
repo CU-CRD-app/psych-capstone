@@ -100,17 +100,17 @@
         <ion-progress-bar style="width: 80%" value={{progress}}></ion-progress-bar>
         <div style="margin-top: 5%; font-size: 4vh">Level <span class="level">{{userLevel}}</span></div>
 
-        <div *ngIf="userLevel == 1" class="fade-in">
+        <div *ngIf="userLevel == 1" [@fadeIn]>
           <div class="subheader" style="margin: 5%">You've entered level 1! Tap to begin your training.</div>
           <ion-button color="success" (click)="initCurrentLevel()">Train</ion-button>
         </div>
 
-        <div *ngIf="userLevel > 0 && userLevel < 9" class="fade-in">
+        <div *ngIf="userLevel > 0 && userLevel < 9" [@fadeIn]>
           <div class="subheader" style="margin: 5%">You've moved on to the next level! Come back tomorrow for your next training.</div>
           <ion-button color="success" routerLink="/dashboard" routerDirection="forward">Home</ion-button>
         </div>
 
-        <div *ngIf="userLevel == 9" class="fade-in">
+        <div *ngIf="userLevel == 9" [@fadeIn]>
           <div class="subheader" style="margin: 5%">You've completed all eight levels! Now it's time for your post-assessment.</div>
           <ion-button color="success" (click)="initCurrentLevel()">Post-Assessment</ion-button>
         </div>
@@ -144,7 +144,7 @@
   <!--Pre-Post-Assessment-->
   <app-same-different *ngIf="task == Task.PRETEST || task == Task.POSTTEST" [facePaths]="assessmentFacePaths" (finished)="finishPrePost($event)"></app-same-different>
 
-  <!--For development only
+  For development only
   <div style="text-align:center">
     <br><br><br><br><br><br><br><br><br><br><br><br>
     <ion-button (click)="task = Task.LEARNING">Learning</ion-button>
@@ -154,6 +154,6 @@
     <ion-button (click)="task = Task.SHUFFLE">Shuffle</ion-button>
     <ion-button (click)="task = Task.FORCED_CHOICE">Forced Choice</ion-button>
     <ion-button (click)="task = Task.SAME_DIFFERENT">Same Different</ion-button>
-  </div>-->
+  </div>
 
 </ion-content>
