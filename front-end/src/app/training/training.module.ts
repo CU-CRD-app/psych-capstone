@@ -1,6 +1,6 @@
 import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
-import { NgModule, Injectable } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TrainingPage } from './training.page';
@@ -13,17 +13,7 @@ import { ForcedChoiceComponent } from '../forced-choice/forced-choice.component'
 import { SameDifferentComponent } from '../same-different/same-different.component';
 import { ScorePageComponent } from '../score-page/score-page.component';
 import { HelpModalComponent } from '../help-modal/help-modal.component';
-import { HammerModule, HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
-
-@Injectable()
-export class MyHammerConfig extends HammerGestureConfig {
-  overrides = <any> {
-    'swipe': {
-      direction: 31
-    }
-  };
-}
 
 @NgModule({
   imports: [
@@ -31,7 +21,6 @@ export class MyHammerConfig extends HammerGestureConfig {
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    HammerModule,
     RouterModule.forChild([{ path: '', component: TrainingPage }])
   ],
   declarations: [
@@ -47,10 +36,6 @@ export class MyHammerConfig extends HammerGestureConfig {
     HelpModalComponent
   ],
   providers: [
-    {
-      provide: HAMMER_GESTURE_CONFIG,
-      useClass: MyHammerConfig,
-    },
     LocalNotifications
   ],
   entryComponents: [HelpModalComponent]

@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { NgModule, Injectable } from '@angular/core';
+import { BrowserModule, HammerModule, HAMMER_GESTURE_CONFIG, HammerGestureConfig } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -15,6 +15,16 @@ import { FormsModule } from '@angular/forms';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import 'hammerjs';
+
+@Injectable()
+export class CustomHammerConfig extends HammerGestureConfig {
+  overrides = <any> {
+    'swipe': {
+      direction: 31
+    }
+  };
+}
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,6 +36,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   	AppRoutingModule,
   	FormsModule,
     HttpClientModule,
+    HammerModule,
     BrowserAnimationsModule
   ],
 
@@ -34,7 +45,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     SplashScreen,
     LocalNotifications,
     NativeStorage,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    { provide: HAMMER_GESTURE_CONFIG, useClass: CustomHammerConfig }
   ],
   bootstrap: [AppComponent]
 })
