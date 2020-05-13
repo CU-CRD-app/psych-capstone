@@ -5,10 +5,13 @@
     display: flex;
     justify-content: space-evenly;
     align-items: center;
+    img {
+        height: 270px;
+    }
 }
 
 .swipe-footer {
 	opacity: 0;
-    background: transparent;
+    --background: grey;
     width: 100%;
 }

@@ -60,7 +60,7 @@
 
       </div>
 
-      <ion-item class="footer" lines="none">
+      <ion-item [@fadeFooter]="correctFaces.length == facePaths.length ? 'visible' : 'invisible'" class="footer" lines="none">
         <ion-label>Swipe to Continue</ion-label>
         <ion-icon slot="end" color="dark" name="arrow-back"></ion-icon> 
       </ion-item>

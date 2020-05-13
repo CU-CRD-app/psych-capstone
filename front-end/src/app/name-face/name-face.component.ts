@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, Input, ViewChild } from '@angular/core';
 import { IonSlides } from '@ionic/angular';
-import { timer } from 'rxjs';
 import { createAnimation } from '@ionic/core';
+import { trigger, state, style, transition, animate, keyframes } from '@angular/animations';
 
 enum Stage { SELECT, CORRECT, INCORRECT }
 
@@ -9,6 +9,27 @@ enum Stage { SELECT, CORRECT, INCORRECT }
   selector: 'app-name-face',
   templateUrl: './name-face.component.html',
   styleUrls: ['./name-face.component.scss'],
+  animations: [
+    trigger('fadeFooter', [
+      state('visible', style({
+        opacity: .75,
+      })),
+      state('invisible', style({
+        opacity: 0,
+      })),
+      transition('invisible => visible', [
+        animate(1500, keyframes([
+          style({ opacity: '0' }),
+          style({ opacity: '0' }),
+          style({ opacity: '0' }),
+          style({ opacity: '.75' }),
+        ]))
+      ]),
+      transition('visible => invisible', [
+        animate(200)
+      ])
+    ])
+  ]
 })
 export class NameFaceComponent implements OnInit {
   @Input() setNames : string[];
@@ -23,7 +44,6 @@ export class NameFaceComponent implements OnInit {
     this.score = 0;
     this.currentSlide = 0;
     this.progressPercent = 0;
-    this.fadeIn = createAnimation();
     this.changeScore = createAnimation();
     this.taskLength = this.facePaths.length;
 
@@ -75,7 +95,6 @@ export class NameFaceComponent implements OnInit {
   taskLength : number;
   shuffledNames : any;
   slideInfo : any;
-  fadeIn : any;
   changeScore : any;
 
   selectFace(face : string) {
@@ -107,19 +126,6 @@ export class NameFaceComponent implements OnInit {
 
       this.slideElement.lockSwipes(false);
       this.slideElement.lockSwipeToPrev(true);
-      
-      let slide = this.currentSlide;
-      timer(1000).subscribe(async () => {
-        this.fadeIn = createAnimation()
-          .addElement(document.querySelectorAll('.footer'))
-          .fill('none')
-          .duration(500)
-          .fromTo('opacity', '0', '0.75');
-        if (slide == this.currentSlide) {
-          await this.fadeIn.play();
-          Array.from(document.getElementsByClassName('footer') as HTMLCollectionOf<HTMLElement>)[this.currentSlide].style.opacity = '.75';  
-        }
-      });
     }
   }
 
@@ -168,11 +174,6 @@ export class NameFaceComponent implements OnInit {
       this.currentSlide = await this.slideElement.getActiveIndex();
       await this.slideElement.lockSwipes(true);
       await this.changeScore.stop();
-      await this.fadeIn.stop();
-      let footers = Array.from(document.getElementsByClassName('footer') as HTMLCollectionOf<HTMLElement>);
-      for (let i = 0; i < footers.length; i++) {
-        footers[i].style.opacity = '0';
-      }
     }
   }
 }

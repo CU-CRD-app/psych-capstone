@@ -2,12 +2,13 @@ import { Component } from '@angular/core';
 import { timer, interval } from 'rxjs';
 import { AlertController, ModalController, IonRouterOutlet, ToastController } from '@ionic/angular';
 import { HelpModalComponent } from '../help-modal/help-modal.component';
-import { takeUntil, map } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { createAnimation } from '@ionic/core';
 import { GetProgressService } from '../service/get-progress.service';
 import { SubmitScoresService } from '../service/submit-scores.service';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { trigger, state, style, transition, animate, keyframes } from '@angular/animations';
 
 enum Race { BLACK, ASIAN }
 enum Stage { START, TRAINING, ASSESSMENT, DONE }
@@ -32,7 +33,18 @@ let raceProperties = {
 @Component({
   selector: 'app-training',
   templateUrl: 'training.page.html',
-  styleUrls: ['training.page.scss']
+  styleUrls: ['training.page.scss'],
+  animations: [
+    trigger('fadeIn', [
+      transition(':enter', [
+        animate(2800, keyframes([
+          style({ offset: 0, opacity: '0' }),
+          style({ offset: .7, opacity: '0' }),
+          style({ offset: 1, opacity: '1' })
+        ]))
+      ])
+    ])
+  ]
 })
 export class TrainingPage {
 
@@ -49,10 +61,6 @@ export class TrainingPage {
       this.currentRace = Race.BLACK;
       this.initCurrentLevel();
     });
-  }
-
-  ionViewWillLeave() {
-    Array.from(document.getElementsByClassName('fade-in') as HTMLCollectionOf<HTMLElement>)[0].style.opacity = '0';
   }
 
   ngAfterViewInit() {
@@ -428,8 +436,11 @@ export class TrainingPage {
     this.task = null;
 
     if (currentTask != Task.POSTTEST) {
+
       this.progress = 0;
+
       timer(1200).subscribe(async () => {
+
         this.userLevel++;
 
         let inflate = createAnimation()
@@ -442,16 +453,6 @@ export class TrainingPage {
           { offset: 1, transform: 'scale(1, 1)' }
         ]);
         await inflate.play();
-
-        timer(500).subscribe(async () => {
-          let fadeIn = createAnimation()
-          .addElement(document.querySelector('.fade-in'))
-          .fill('none')
-          .duration(500)
-          .fromTo('opacity', '0', '1');
-          await fadeIn.play();
-          Array.from(document.getElementsByClassName('fade-in') as HTMLCollectionOf<HTMLElement>)[0].style.opacity = '1';
-        });
 
       });
 

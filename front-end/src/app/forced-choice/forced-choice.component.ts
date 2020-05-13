@@ -35,6 +35,25 @@ enum Stage { START, MEMORIZE, MASK, SELECT, CORRECT, INCORRECT }
           style({ transform: 'translateY(0%)', opacity: '1' })
         ]))
       ])
+    ]),
+    trigger('fadeFooter', [
+      state('visible', style({
+        opacity: .75,
+      })),
+      state('invisible', style({
+        opacity: 0,
+      })),
+      transition('invisible => visible', [
+        animate(1500, keyframes([
+          style({ opacity: '0' }),
+          style({ opacity: '0' }),
+          style({ opacity: '0' }),
+          style({ opacity: '.75' }),
+        ]))
+      ]),
+      transition('visible => invisible', [
+        animate(200)
+      ])
     ])
   ]
 })
@@ -50,7 +69,6 @@ export class ForcedChoiceComponent implements OnInit {
     this.currentSlide = 0;
     this.progressPercent = 0;
     this.score = 0;
-    this.fadeIn = createAnimation();
     this.changeScore = createAnimation();
     this.taskLength = this.facePaths.length;
 
@@ -92,7 +110,6 @@ export class ForcedChoiceComponent implements OnInit {
   interval : any;
   timer : any;
   slideInfo : any;
-  fadeIn : any;
   changeScore : any;
 
   selectFace(face : string) {
@@ -124,19 +141,6 @@ export class ForcedChoiceComponent implements OnInit {
 
       this.slideElement.lockSwipes(false);
       this.slideElement.lockSwipeToPrev(true);
-      
-      let slide = this.currentSlide;
-      timer(1000).subscribe(async () => {
-        this.fadeIn = createAnimation()
-          .addElement(document.querySelectorAll('.footer'))
-          .fill('none')
-          .duration(500)
-          .fromTo('opacity', '0', '0.75');
-        if (slide == this.currentSlide) {
-          await this.fadeIn.play();
-          Array.from(document.getElementsByClassName('footer') as HTMLCollectionOf<HTMLElement>)[this.currentSlide].style.opacity = '.75';  
-        }
-      });
     }
   }
 
@@ -204,12 +208,6 @@ export class ForcedChoiceComponent implements OnInit {
       this.currentSlide = await this.slideElement.getActiveIndex();
       await this.slideElement.lockSwipes(true);
       await this.changeScore.stop();
-      await this.fadeIn.stop();
-      let footers = Array.from(document.getElementsByClassName('footer') as HTMLCollectionOf<HTMLElement>);
-      for (let i = 0; i < footers.length; i++) {
-        footers[i].style.opacity = '0';
-      }
-
       if (!this.scoreCardDisplayed()) {
         this.startMemorizeTimer();
       }

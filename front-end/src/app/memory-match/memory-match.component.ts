@@ -35,6 +35,25 @@ enum Stage { START, MEMORIZE, MASK, SELECT, CORRECT, INCORRECT }
           style({ transform: 'translateY(0%)', opacity: '1' })
         ]))
       ])
+    ]),
+    trigger('fadeFooter', [
+      state('visible', style({
+        opacity: .75,
+      })),
+      state('invisible', style({
+        opacity: 0,
+      })),
+      transition('invisible => visible', [
+        animate(1500, keyframes([
+          style({ opacity: '0' }),
+          style({ opacity: '0' }),
+          style({ opacity: '0' }),
+          style({ opacity: '.75' }),
+        ]))
+      ]),
+      transition('visible => invisible', [
+        animate(200)
+      ])
     ])
   ]
 })
@@ -137,7 +156,6 @@ export class MemoryMatchComponent implements OnInit {
           if (this.correctFaces.length == this.facePaths.length) { // Done
             this.score = Math.ceil(this.score);
             this.slideElement.lockSwipes(false);
-            this.revealFooter();
           }
           await this.waitForFeedback();
 
@@ -228,15 +246,4 @@ export class MemoryMatchComponent implements OnInit {
     return !this.firstSlide;
   }
 
-  revealFooter() {
-    this.timer = timer(500).subscribe(async () => {
-      let fadeIn = createAnimation()
-        .addElement(document.querySelectorAll('.footer'))
-        .fill('none')
-        .duration(500)
-        .fromTo('opacity', '0', '0.75');
-      await fadeIn.play();
-      Array.from(document.getElementsByClassName('footer') as HTMLCollectionOf<HTMLElement>)[0].style.opacity = '0.75';  
-    });
-  }
 }

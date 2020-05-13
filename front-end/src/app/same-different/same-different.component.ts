@@ -35,6 +35,45 @@ enum Stage { START, MEMORIZE, MASK, SELECT, CORRECT, INCORRECT }
           style({ transform: 'translateY(0%)', opacity: '1' })
         ]))
       ])
+    ]),
+    trigger('fadeFooter', [
+      state('visible', style({
+        opacity: .75,
+      })),
+      state('sameDifferent', style({
+        opacity: 1,
+      })),
+      state('invisible', style({
+        opacity: 0,
+      })),
+      transition('void => visible', [
+        animate(1500, keyframes([
+          style({ opacity: '0' }),
+          style({ opacity: '0' }),
+          style({ opacity: '0' }),
+          style({ opacity: '.75' }),
+        ]))
+      ]),
+      transition('void => sameDifferent', [
+        animate(500)
+      ]),
+      transition('visible => invisible', [
+        animate(200)
+      ])
+    ]),
+    trigger('swipeCard', [
+      transition('right => void', [
+        animate(200, keyframes([
+          style({ transform: '*', position: 'absolute', zIndex: '21' }),
+          style({ transform: 'translateY(-50%) translateX(100%) rotate(100deg)', position: 'absolute', zIndex: '21' })
+        ]))
+      ]),
+      transition('left => void', [
+        animate(200, keyframes([
+          style({ transform: '*', position: 'absolute', zIndex: '21' }),
+          style({ transform: 'translateY(-50%) translateX(-100%) rotate(-100deg)', position: 'absolute', zIndex: '21' })
+        ]))
+      ])
     ])
   ],
 })
@@ -50,7 +89,6 @@ export class SameDifferentComponent implements OnInit {
     this.currentSlide = 0;
     this.progressPercent = 0;
     this.score = 0;
-    this.fadeIn = createAnimation();
     this.changeScore = createAnimation();
     this.taskLength = this.facePaths.length;
 
@@ -70,7 +108,6 @@ export class SameDifferentComponent implements OnInit {
       });
 
     }
-
   }
 
   ngAfterViewInit() {
@@ -98,73 +135,41 @@ export class SameDifferentComponent implements OnInit {
   interval : any;
   timer : any;
   slideInfo : any;
-  fadeIn : any;
   changeScore : any;
 
   async selectFace(sameFace : boolean) {
+
     if (this.slideInfo[this.currentSlide].stage == Stage.SELECT) {
 
-      if (sameFace) {
-        let swipeRight = createAnimation()
-        .addElement(document.querySelector('.swipe-card'))
-        .fill('none')
-        .duration(200)
-        .keyframes([
-          { offset: 0, transform: 'translateX(0%)' },
-          { offset: 1, transform: 'translateX(-100%)' }
-        ]);
-        await swipeRight.play();
-      } else {
-        let swipeLeft = createAnimation()
-        .addElement(document.querySelector('.swipe-card'))
-        .fill('none')
-        .duration(200)
-        .keyframes([
-          { offset: 0, transform: 'translateX(0%)' },
-          { offset: 1, transform: 'translateX(100%)' }
-        ]);
-        await swipeLeft.play();
-      }
-
       this.slideInfo[this.currentSlide].selection = sameFace;
-      if (sameFace == (this.slideInfo[this.currentSlide].displayedFace == this.slideInfo[this.currentSlide].correctFace)) {
-        this.score++;
-        this.slideInfo[this.currentSlide].stage = Stage.CORRECT;
-        this.changeScore = createAnimation()
-          .addElement(document.querySelectorAll('.score-change'))
-          .fill('none')
-          .duration(2000)
-          .keyframes([
-            { offset: 0, transform: 'translateY(0%)' },
-            { offset: 0.05, transform: 'translateY(100%)' },
-            { offset: 0.1, transform: 'translateY(200%)' },
-            { offset: 0.3, transform: 'translateY(200%)' },
-            { offset: 0.5, transform: 'translateY(200%)' },
-            { offset: 0.7, transform: 'translateY(200%)' },
-            { offset: 0.9, transform: 'translateY(200%)' },
-            { offset: 0.95, transform: 'translateY(100%)' },
-            { offset: 1, transform: 'translateY(0%)' }
-          ]);
-        this.changeScore.play();
-      } else {
-        this.slideInfo[this.currentSlide].stage = Stage.INCORRECT;
-      }
-      this.progressPercent = (this.currentSlide + 1)/this.taskLength;
-
-      this.slideElement.lockSwipes(false);
-      this.slideElement.lockSwipeToPrev(true);
-      
-      let slide = this.currentSlide;
-      timer(1000).subscribe(async () => {
-        this.fadeIn = createAnimation()
-          .addElement(document.querySelectorAll('.footer'))
-          .fill('none')
-          .duration(500)
-          .fromTo('opacity', '0', '0.75');
-        if (slide == this.currentSlide) {
-          await this.fadeIn.play();
-          Array.from(document.getElementsByClassName('footer') as HTMLCollectionOf<HTMLElement>)[this.currentSlide].style.opacity = '.75';  
+      this.timer = timer(10).subscribe(() => {
+        if (sameFace == (this.slideInfo[this.currentSlide].displayedFace == this.slideInfo[this.currentSlide].correctFace)) {
+          this.score++;
+          this.slideInfo[this.currentSlide].stage = Stage.CORRECT;
+          this.changeScore = createAnimation()
+            .addElement(document.querySelectorAll('.score-change'))
+            .fill('none')
+            .duration(2000)
+            .keyframes([
+              { offset: 0, transform: 'translateY(0%)' },
+              { offset: 0.05, transform: 'translateY(100%)' },
+              { offset: 0.1, transform: 'translateY(200%)' },
+              { offset: 0.3, transform: 'translateY(200%)' },
+              { offset: 0.5, transform: 'translateY(200%)' },
+              { offset: 0.7, transform: 'translateY(200%)' },
+              { offset: 0.9, transform: 'translateY(200%)' },
+              { offset: 0.95, transform: 'translateY(100%)' },
+              { offset: 1, transform: 'translateY(0%)' }
+            ]);
+          this.changeScore.play();
+        } else {
+          this.slideInfo[this.currentSlide].stage = Stage.INCORRECT;
         }
+        this.progressPercent = (this.currentSlide + 1)/this.taskLength;
+
+        this.slideElement.lockSwipes(false);
+        this.slideElement.lockSwipeToPrev(true);
+
       });
     }
   }
@@ -189,17 +194,6 @@ export class SameDifferentComponent implements OnInit {
     this.slideInfo[this.currentSlide].stage = Stage.MASK;
     this.timer = timer(2000).subscribe(() => {
       this.slideInfo[this.currentSlide].stage = Stage.SELECT;
-      timer(500).subscribe(async () => {
-        let fadeInSwipe = createAnimation()
-          .addElement(document.querySelector('.swipe-footer'))
-          .fill('none')
-          .duration(500)
-          .fromTo('opacity', '0', '1');
-        await fadeInSwipe.play();
-        if (this.slideInfo[this.currentSlide].stage == Stage.SELECT) {
-          Array.from(document.getElementsByClassName('swipe-footer') as HTMLCollectionOf<HTMLElement>)[0].style.opacity = '1';  
-        }
-      });      
     });
   }
 
@@ -226,15 +220,32 @@ export class SameDifferentComponent implements OnInit {
       this.currentSlide = await this.slideElement.getActiveIndex();
       await this.slideElement.lockSwipes(true);
       await this.changeScore.stop();
-      await this.fadeIn.stop();
-      let footers = Array.from(document.getElementsByClassName('footer') as HTMLCollectionOf<HTMLElement>);
-      for (let i = 0; i < footers.length; i++) {
-        footers[i].style.opacity = '0';
-      }
-
       if (!this.scoreCardDisplayed()) {
         this.startMemorizeTimer();
       }
     }
   }
+
+  drag(event : any) {
+    if (this.slideInfo[this.currentSlide].stage == Stage.SELECT) {
+      let card = Array.from(document.getElementsByClassName('swipe-card') as HTMLCollectionOf<HTMLElement>)[0];
+      card.setAttribute("style", `transform: translateX(${event.deltaX}px) translateY(-${Math.abs(event.deltaX/2)}px) rotate(${event.deltaX/3}deg)`);
+    }
+  }
+
+  returnCenter(event : any) {
+    if (Math.abs(event.velocityX) > .5) {
+      if (event.velocityX < 0) {
+        this.slideInfo[this.currentSlide].selection = true;
+        this.selectFace(true);
+      } else {
+        this.slideInfo[this.currentSlide].selection = false;
+        this.selectFace(false);
+      }
+    } else {
+      let card = Array.from(document.getElementsByClassName('swipe-card') as HTMLCollectionOf<HTMLElement>)[0];
+      card.setAttribute("style", "transform: translateX(0px) transform: translateY(0px) transform: rotate(0px)");
+    }
+  }
+
 }

@@ -239,7 +239,7 @@ app.put("/getDailyAssessmentFaces/", cors(corsOptions), function(req, res, next)
                           face = Math.floor(Math.random() * 30);
                         }
                         faceNums.push(face);
-                        var data = fs.readFileSync(`./faces/black/daily-assessment/${faceNums[i]}.jpg`);
+                        var data = fs.readFileSync(`./faces/black/daily-assessment/${faceNums[face]}.jpg`);
                         images.push(new Buffer(data, 'binary').toString('base64'));
                     }
                     res.status(200).send({images: images});
