@@ -198,8 +198,10 @@ export class SameDifferentComponent implements OnInit {
       .duration(2800)
       .keyframes([
         { offset: 0, transform: 'rotateY(0deg)' },
+        /*{ offset: 0.075, transform: 'rotateY(90deg) translateY(-20%)' },*/
         { offset: 0.15, transform: 'rotateY(180deg)' },
         { offset: 0.85, transform: 'rotateY(180deg)' },
+        /*{ offset: 0.925, transform: 'rotateY(90deg) translateY(-20%)' },*/
         { offset: 1, transform: 'rotateY(0deg)' }
       ]);
     flipCard.play();

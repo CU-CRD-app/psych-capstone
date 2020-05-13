@@ -24,37 +24,57 @@
       <div class="prompt-small" *ngIf="stage == Stage.CORRECT">Correct!</div>
       <div class="prompt-small" *ngIf="stage == Stage.INCORRECT">Incorrect!</div>
       
-      <div style="text-align: center;">
+      <div>
 
         <div style="display: flex; justify-content: center;">
-          <div *ngFor="let item of [].constructor(4); let i = index" style="margin: 10px">
-            <ion-card [button]="stage == Stage.SELECT || stage == Stage.CORRECT || stage == Stage.INCORRECT" (click)="clickFace(i)" [ngClass]="{'selected-card' : selectedFace == i}">
-              <img *ngIf="imageIsDisplayed(i)" [src]="stage == Stage.MASK ? mask : randomFaces[i]"/>
-            </ion-card>
+          <div *ngFor="let item of [].constructor(4); let i = index" style="margin: 10px; perspective: 500px">
+            <div class="flipper memory-card" (click)="clickFace(i)" [ngClass]="{'selected-card' : selectedFace == i}">
+              <div class="front">
+                <img *ngIf="imageIsDisplayed(i)" [src]="randomFaces[i]"/>
+              </div>
+              <div class="back">
+                <img *ngIf="imageIsDisplayed(i)" [src]="mask" style="-webkit-backface-visibility: hidden"/>
+              </div>
+            </div>
           </div>
         </div>
 
         <div style="display: flex; justify-content: center;">
-          <div *ngFor="let item of [].constructor(4); let i = index" style="margin: 10px">
-            <ion-card [button]="stage == Stage.SELECT || stage == Stage.CORRECT || stage == Stage.INCORRECT" (click)="clickFace(i + 4)" [ngClass]="{'selected-card' : selectedFace == i + 4}">
-              <img *ngIf="imageIsDisplayed(i + 4)" [src]="stage == Stage.MASK ? mask : randomFaces[i + 4]"/>
-            </ion-card>
+          <div *ngFor="let item of [].constructor(4); let i = index" style="margin: 10px; perspective: 500px">
+            <div class="flipper memory-card" (click)="clickFace(i + 4)" [ngClass]="{'selected-card' : selectedFace == i + 4}">
+              <div class="front">
+                <img *ngIf="imageIsDisplayed(i + 4)" [src]="randomFaces[i + 4]"/>
+              </div>
+              <div class="back">
+                <img *ngIf="imageIsDisplayed(i + 4)" [src]="mask" style="-webkit-backface-visibility: hidden"/>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div style="display: flex; justify-content: center">
-          <div *ngFor="let item of [].constructor(4); let i = index" style="margin: 10px">
-            <ion-card [button]="stage == Stage.SELECT || stage == Stage.CORRECT || stage == Stage.INCORRECT" (click)="clickFace(i + 8)" [ngClass]="{'selected-card' : selectedFace == i + 8}">
-              <img *ngIf="imageIsDisplayed(i + 8)" [src]="stage == Stage.MASK ? mask : randomFaces[i + 8]"/>
-            </ion-card>
+        <div style="display: flex; justify-content: center;">
+          <div *ngFor="let item of [].constructor(4); let i = index" style="margin: 10px; perspective: 500px">
+            <div class="flipper memory-card" (click)="clickFace(i + 8)" [ngClass]="{'selected-card' : selectedFace == i + 8}">
+              <div class="front">
+                <img *ngIf="imageIsDisplayed(i + 8)" [src]="randomFaces[i + 8]"/>
+              </div>
+              <div class="back">
+                <img *ngIf="imageIsDisplayed(i + 8)" [src]="mask" style="-webkit-backface-visibility: hidden"/>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div style="display: flex; justify-content: center">
-          <div *ngFor="let item of [].constructor(4); let i = index" style="margin: 10px">
-            <ion-card [button]="stage == Stage.SELECT || stage == Stage.CORRECT || stage == Stage.INCORRECT" (click)="clickFace(i + 12)" [ngClass]="{'selected-card' : selectedFace == i + 12}">
-              <img *ngIf="imageIsDisplayed(i + 12)" [src]="stage == Stage.MASK ? mask : randomFaces[i + 12]"/>
-            </ion-card>
+        <div style="display: flex; justify-content: center;">
+          <div *ngFor="let item of [].constructor(4); let i = index" style="margin: 10px; perspective: 500px">
+            <div class="flipper memory-card" (click)="clickFace(i + 12)" [ngClass]="{'selected-card' : selectedFace == i + 12}">
+              <div class="front">
+                <img *ngIf="imageIsDisplayed(i + 12)" [src]="randomFaces[i + 12]"/>
+              </div>
+              <div class="back">
+                <img *ngIf="imageIsDisplayed(i + 12)" [src]="mask" style="-webkit-backface-visibility: hidden"/>
+              </div>
+            </div>
           </div>
         </div>
 

@@ -206,16 +206,32 @@ export class ShuffleComponent implements OnInit {
       });
   }
 
-  startMaskTimer() {
-    this.slideInfo[this.currentSlide].stage = Stage.MASK;
-    this.timer = timer(2000).subscribe(() => {
+  async startMaskTimer() {
+    
+    let flipCard = createAnimation()
+      .addElement(document.querySelectorAll('.flipper'))
+      .fill('none')
+      .duration(2800)
+      .keyframes([
+        { offset: 0, transform: 'rotateY(0deg)' },
+        { offset: 0.15, transform: 'rotateY(180deg)' },
+        { offset: 0.85, transform: 'rotateY(180deg)' },
+        { offset: 1, transform: 'rotateY(0deg)' }
+      ]);
+    flipCard.play();
+
+    this.timer = timer(400).subscribe(async () => {
+      this.slideInfo[this.currentSlide].stage = Stage.MASK;
+    });
+
+    this.timer = timer(2200).subscribe(async () => {
       this.slideInfo[this.currentSlide].stage = Stage.SELECT;
     });
   }
 
   getSrc(index : number) {
     if (this.slideInfo[this.currentSlide].stage == Stage.MASK) {
-      return this.mask;
+      return null;
     } else if (this.slideInfo[this.currentSlide].stage == Stage.SELECT || (this.slideInfo[this.currentSlide].stage == Stage.INCORRECT && this.slideInfo[this.currentSlide].feedback)) {
       return this.slideInfo[this.currentSlide].shuffledOrder[index];
     } else {
@@ -225,6 +241,16 @@ export class ShuffleComponent implements OnInit {
 
   async clickCard(index : number) {
     if (this.slideInfo[this.currentSlide].stage == Stage.SELECT) {
+      let button = createAnimation()
+        .addElement(document.querySelectorAll('.small-card')[index])
+        .fill('none')
+        .duration(400)
+        .keyframes([
+          { offset: 0, transform: 'scale(1, 1)' },
+          { offset: 0.5, transform: 'scale(0.95, 0.95)' },
+          { offset: 1, transform: 'scale(1, 1)' }
+        ]);
+      button.play();
       if (this.slideInfo[this.currentSlide].selectedFace == null) {
         this.slideInfo[this.currentSlide].selectedFace = this.slideInfo[this.currentSlide].shuffledOrder[index];
       } else {

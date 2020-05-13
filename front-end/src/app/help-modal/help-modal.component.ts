@@ -112,9 +112,9 @@ export class HelpModalComponent implements OnInit {
     }
 
     this.hideQuit = false;
-    if (this.displayFirst && this.slides.length > 1) {
+    /*if (this.displayFirst && this.slides.length > 1) {
       this.hideQuit = true;
-    }
+    }*/
   }
 
   task : string;

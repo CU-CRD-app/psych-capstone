@@ -144,6 +144,17 @@ export class MemoryMatchComponent implements OnInit {
       }
       if (this.correctFaces.indexOf(this.randomFaces[face]) < 0 && face != this.selectedFace) { // Tap on a valid face
 
+        let button = createAnimation()
+          .addElement(document.querySelectorAll('.memory-card')[face])
+          .fill('none')
+          .duration(400)
+          .keyframes([
+            { offset: 0, transform: 'scale(1, 1)' },
+            { offset: 0.5, transform: 'scale(0.95, 0.95)' },
+            { offset: 1, transform: 'scale(1, 1)' }
+          ]);
+        button.play();
+
         if (this.selectedFace == null) { // Select first face
           this.selectedFace = face;
 
@@ -236,8 +247,25 @@ export class MemoryMatchComponent implements OnInit {
   }
 
   startMaskTimer() {
-    this.stage = Stage.MASK;
-    this.timer = timer(2000).subscribe(() => {
+    let flipCard = createAnimation()
+      .addElement(document.querySelectorAll('.flipper'))
+      .fill('none')
+      .duration(2800)
+      .keyframes([
+        { offset: 0, transform: 'rotateY(0deg)' },
+        /*{ offset: 0.075, transform: 'rotateY(90deg) translateY(-20%)' },*/
+        { offset: 0.15, transform: 'rotateY(180deg)' },
+        { offset: 0.85, transform: 'rotateY(180deg)' },
+        /*{ offset: 0.925, transform: 'rotateY(90deg) translateY(-20%)' },*/
+        { offset: 1, transform: 'rotateY(0deg)' }
+      ]);
+    flipCard.play();
+
+    this.timer = timer(400).subscribe(async () => {
+      this.stage = Stage.MASK;
+    });
+
+    this.timer = timer(2400).subscribe(async () => {
       this.stage = Stage.SELECT;
     });
   }

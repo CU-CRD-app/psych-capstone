@@ -22,9 +22,17 @@
         <div class="prompt" *ngIf="slideInfo[slideIndex].stage == Stage.START">Memorize the face: {{memorizeTime}}</div>
         <div class="prompt" *ngIf="slideInfo[slideIndex].stage == Stage.MEMORIZE">Memorize the face: <span [@countdown]="timeRemaining % 2 == 0 ? 'active' : 'inactive'" class="time-left">{{timeRemaining}}</span></div>
         <div class="prompt" *ngIf="slideInfo[slideIndex].stage == Stage.MASK">Hold the face in your mind...</div>
-        <ion-card style="height: 310px; width: 270px; display: flex; justify-content: center; align-items: center; background-color: gainsboro">
-          <img *ngIf="slideInfo[slideIndex].stage != Stage.START" style="height: 270px" [src]="slideInfo[slideIndex].stage == Stage.MEMORIZE ? slideInfo[slideIndex].correctFace : mask" [ngStyle]="{'width': slideInfo[slideIndex].stage == Stage.MASK ? '85%' : 'auto'}"/>
-        </ion-card>
+
+        <div style="perspective: 500px">
+          <div *ngIf="slideInfo[slideIndex].stage != Stage.CORRECT && slideInfo[slideIndex].stage != Stage.INCORRECT" class="flipper large-card">
+            <div class="front">
+              <img *ngIf="slideInfo[slideIndex].stage == Stage.MEMORIZE" [src]="slideInfo[slideIndex].correctFace"/>
+            </div>
+            <div class="back">
+              <img [src]="mask" style="width: 85%; -webkit-backface-visibility: hidden"/>
+            </div>
+          </div>
+        </div>
         <ion-item [@fadeFooter]="showFeedback() ? 'visible' : 'invisible'" class="footer" lines="none">
           <ion-label>Swipe to Continue</ion-label>
           <ion-icon slot="end" color="dark" name="arrow-back"></ion-icon>    

@@ -174,9 +174,24 @@ export class ForcedChoiceComponent implements OnInit {
       });
   }
 
-  startMaskTimer() {
-    this.slideInfo[this.currentSlide].stage = Stage.MASK;
-    this.timer = timer(2000).subscribe(() => {
+  async startMaskTimer() {
+    
+    let flipCard = createAnimation()
+      .addElement(document.querySelectorAll('.flipper'))
+      .fill('none')
+      .duration(2400)
+      .keyframes([
+        { offset: 0, transform: 'rotateY(0deg)' },
+        { offset: 0.15, transform: 'rotateY(180deg)' },
+        { offset: 1, transform: 'rotateY(180deg)' }
+      ]);
+    flipCard.play();
+
+    this.timer = timer(400).subscribe(async () => {
+      this.slideInfo[this.currentSlide].stage = Stage.MASK;
+    });
+
+    this.timer = timer(2200).subscribe(async () => {
       this.slideInfo[this.currentSlide].stage = Stage.SELECT;
     });
   }

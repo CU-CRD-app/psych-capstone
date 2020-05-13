@@ -12,3 +12,14 @@ ion-card {
         margin-top: 5px;
     }    
 }
+
+.memory-card {
+    margin: 0px;
+    height: 70px;
+    width: 52px;
+    img {
+        height: 60px;
+        width: 45px;
+        border-radius: 10%;
+    }    
+}

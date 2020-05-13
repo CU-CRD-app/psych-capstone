@@ -52,24 +52,44 @@
 
       <div>
 
-        <div>
-          <ion-card id="card-0" [button]="slideInfo[slideIndex].stage == Stage.SELECT" class="grid-card" (click)="clickCard(0)" [ngClass]="{'selected-card': slideInfo[slideIndex].stage != Stage.START && getSrc(0) == slideInfo[slideIndex].selectedFace, 'wrong-card': slideInfo[slideIndex].stage == Stage.INCORRECT && slideInfo[slideIndex].feedback && slideInfo[slideIndex].shuffledOrder[0] != slideInfo[slideIndex].correctOrder[0]}">
-            <img *ngIf="slideInfo[slideIndex].stage != Stage.START" [src]="getSrc(0)"/>
-          </ion-card>
+        <div style="display: flex; justify-content: center; perspective: 500px">
+          <div id="card-0" class="flipper small-card" (click)="clickCard(0)" [ngClass]="{'selected-card': slideInfo[slideIndex].stage == Stage.SELECT && getSrc(0) == slideInfo[slideIndex].selectedFace, 'wrong-card': slideInfo[slideIndex].stage == Stage.INCORRECT && slideInfo[slideIndex].feedback && slideInfo[slideIndex].shuffledOrder[0] != slideInfo[slideIndex].correctOrder[0]}">
+            <div class="front">
+              <img *ngIf="slideInfo[slideIndex].stage != Stage.START" [src]="getSrc(0)"/>
+            </div>
+            <div class="back">
+              <img *ngIf="slideInfo[slideIndex].stage != Stage.START" [src]="mask" style="-webkit-backface-visibility: hidden"/>
+            </div>
+          </div>
 
-          <ion-card id="card-1" [button]="slideInfo[slideIndex].stage == Stage.SELECT" class="grid-card" (click)="clickCard(1)" [ngClass]="{'selected-card': slideInfo[slideIndex].stage != Stage.START && getSrc(1) == slideInfo[slideIndex].selectedFace, 'wrong-card': slideInfo[slideIndex].stage == Stage.INCORRECT && slideInfo[slideIndex].feedback && slideInfo[slideIndex].shuffledOrder[1] != slideInfo[slideIndex].correctOrder[1]}">
-            <img *ngIf="slideInfo[slideIndex].stage != Stage.START" [src]="getSrc(1)"/>
-          </ion-card>
+          <div id="card-1" class="flipper small-card" (click)="clickCard(1)" [ngClass]="{'selected-card': slideInfo[slideIndex].stage == Stage.SELECT && getSrc(1) == slideInfo[slideIndex].selectedFace, 'wrong-card': slideInfo[slideIndex].stage == Stage.INCORRECT && slideInfo[slideIndex].feedback && slideInfo[slideIndex].shuffledOrder[1] != slideInfo[slideIndex].correctOrder[1]}">
+            <div class="front">
+              <img *ngIf="slideInfo[slideIndex].stage != Stage.START" [src]="getSrc(1)"/>
+            </div>
+            <div class="back">
+              <img *ngIf="slideInfo[slideIndex].stage != Stage.START" [src]="mask" style="-webkit-backface-visibility: hidden"/>
+            </div>
+          </div>
         </div>
 
-        <div>
-          <ion-card id="card-2" [button]="slideInfo[slideIndex].stage == Stage.SELECT" class="grid-card" (click)="clickCard(2)" [ngClass]="{'selected-card': slideInfo[slideIndex].stage != Stage.START && getSrc(2) == slideInfo[slideIndex].selectedFace, 'wrong-card': slideInfo[slideIndex].stage == Stage.INCORRECT && slideInfo[slideIndex].feedback && slideInfo[slideIndex].shuffledOrder[2] != slideInfo[slideIndex].correctOrder[2]}">
-            <img *ngIf="slideInfo[slideIndex].stage != Stage.START" [src]="getSrc(2)"/>
-          </ion-card>
+        <div style="display: flex; justify-content: center; perspective: 500px">
+          <div id="card-2" class="flipper small-card" (click)="clickCard(2)" [ngClass]="{'selected-card': slideInfo[slideIndex].stage == Stage.SELECT && getSrc(2) == slideInfo[slideIndex].selectedFace, 'wrong-card': slideInfo[slideIndex].stage == Stage.INCORRECT && slideInfo[slideIndex].feedback && slideInfo[slideIndex].shuffledOrder[2] != slideInfo[slideIndex].correctOrder[2]}">
+            <div class="front">
+              <img *ngIf="slideInfo[slideIndex].stage != Stage.START" [src]="getSrc(2)"/>
+            </div>
+            <div class="back">
+              <img *ngIf="slideInfo[slideIndex].stage != Stage.START" [src]="mask" style="-webkit-backface-visibility: hidden"/>
+            </div>
+          </div>
 
-          <ion-card id="card-3" [button]="slideInfo[slideIndex].stage == Stage.SELECT" class="grid-card" (click)="clickCard(3)" [ngClass]="{'selected-card': slideInfo[slideIndex].stage != Stage.START && getSrc(3) == slideInfo[slideIndex].selectedFace, 'wrong-card': slideInfo[slideIndex].stage == Stage.INCORRECT && slideInfo[slideIndex].feedback && slideInfo[slideIndex].shuffledOrder[3] != slideInfo[slideIndex].correctOrder[3]}">
-            <img *ngIf="slideInfo[slideIndex].stage != Stage.START" [src]="getSrc(3)"/>
-          </ion-card>
+          <div id="card-3" class="flipper small-card" (click)="clickCard(3)" [ngClass]="{'selected-card': slideInfo[slideIndex].stage == Stage.SELECT && getSrc(3) == slideInfo[slideIndex].selectedFace, 'wrong-card': slideInfo[slideIndex].stage == Stage.INCORRECT && slideInfo[slideIndex].feedback && slideInfo[slideIndex].shuffledOrder[3] != slideInfo[slideIndex].correctOrder[3]}">
+            <div class="front">
+              <img *ngIf="slideInfo[slideIndex].stage != Stage.START" [src]="getSrc(3)"/>
+            </div>
+            <div class="back">
+              <img *ngIf="slideInfo[slideIndex].stage != Stage.START" [src]="mask" style="-webkit-backface-visibility: hidden"/>
+            </div>
+          </div>
         </div>
 
       </div>
