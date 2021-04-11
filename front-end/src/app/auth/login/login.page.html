@@ -23,6 +23,9 @@
           <ion-spinner *ngIf="awaitLoginHTTP" slot="end" name="dots" style="size: 50%"></ion-spinner>
         </ion-button>
       </div>
+      <div style="display: flex; justify-content: space-evenly; width: 100%">
+        <ion-button (click)="ForgetPassword()" fill="clear" style="width: 65%; height: 2rem; color: dodgerblue" [disabled]="awaitLoginHTTP">Forgot Password?</ion-button>
+      </div>
     </div>	
   
     <div *ngIf="popup == Popup.REGISTER" style="height: 100%; background-color: white">
@@ -45,6 +48,10 @@
           <div *ngIf="(fieldNotEmpty(registerForm.value.password) || fieldNotEmpty(registerForm.value.password_check)) && (registerForm.controls.password_check.errors || registerForm.value.password_check != registerForm.value.password)" style="color: red; margin-left: 3%; font-size: 4vw">Must match previous entry</div>
         </div>
         <div>
+          <!--Recover question-->
+          <ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.age) && !registerForm.controls.age.errors, 'invalid': fieldNotEmpty(registerForm.value.age) && registerForm.controls.age.errors}">
+            <ion-input formControlName="question" type="text" placeholder="What high school did you attend?"></ion-input>
+          </ion-item>
           <!--AGE-->
           <ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.age) && !registerForm.controls.age.errors, 'invalid': fieldNotEmpty(registerForm.value.age) && registerForm.controls.age.errors}">
             <ion-input formControlName="age" type="number" placeholder="Age"></ion-input>
@@ -75,6 +82,63 @@
         <ion-item button lines="none" style="display: flex; justify-content: space-evenly" [ngClass]="{'valid': registerForm.value.agree == true, 'invalid': registerForm.value.agree == false && termsOpened}" (click)="openTermsAndConditions()">
           <ion-label>Terms and conditions</ion-label>
         </ion-item>
+        <div style="display: flex; justify-content: space-evenly; width: 100%">
+          <ion-button (click)="BackHome()" fill="clear" style="width: 45%; height: 2rem; color: dodgerblue" [disabled]="awaitLoginHTTP">Back</ion-button>
+          <ion-button (click)="SubmitRegister()" style="width: 45%; height: 2rem" [disabled]="awaitLoginHTTP">
+            <span *ngIf="!awaitRegisterHTTP">Register</span>
+            <ion-spinner *ngIf="awaitRegisterHTTP" slot="end" name="dots" style="size: 50%"></ion-spinner>
+          </ion-button>
+        </div>
+      </form>
+    </div>
+
+    <div *ngIf="popup == Popup.FORGOT" style="height: 100%; background-color: white">
+      <form [formGroup]="registerForm" style="height: 100%; width: 100%; display: flex; flex-direction: column; justify-content: space-evenly">
+        <div>
+          <div *ngIf="fieldNotEmpty(registerForm.value.username) && (registerForm.controls.username.errors || !validEmail(registerForm.value.username))" style="color: red; margin-left: 3%; font-size: 4vw">Must be valid email</div>
+          <!--PASSWORD-->
+          <ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.password) && !registerForm.controls.password.errors && validPassword(registerForm.value.password), 'invalid': fieldNotEmpty(registerForm.value.password) && (registerForm.controls.password.errors || !validPassword(registerForm.value.password))}">
+            <ion-input formControlName="password" placeholder="New Password" type="password"></ion-input>
+          </ion-item>
+          <div *ngIf="fieldNotEmpty(registerForm.value.password) && (registerForm.controls.password.errors || !validPassword(registerForm.value.password))" style="color: red; margin-left: 3%; font-size: 4vw">Must contain 1 uppercase letter, 1 lowercase letter, 1 number, no spaces, and be 7-16 characters</div>
+          <!--CONFIRM PASSWORD-->
+          <ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.password_check) && !registerForm.controls.password_check.errors && registerForm.value.password_check == registerForm.value.password, 'invalid': (fieldNotEmpty(registerForm.value.password) || fieldNotEmpty(registerForm.value.password_check)) && (registerForm.controls.password_check.errors || registerForm.value.password_check != registerForm.value.password)}">
+            <ion-input formControlName="password_check" placeholder="Confirm Password" type="password"></ion-input>
+          </ion-item>
+          <div *ngIf="(fieldNotEmpty(registerForm.value.password) || fieldNotEmpty(registerForm.value.password_check)) && (registerForm.controls.password_check.errors || registerForm.value.password_check != registerForm.value.password)" style="color: red; margin-left: 3%; font-size: 4vw">Must match previous entry</div>
+        </div>
+        <div>
+          <!--Recover question-->
+          <ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.age)}">
+            <ion-input formControlName="question" type="text" placeholder="What high school did you attend?"></ion-input>
+          </ion-item>
+          <!--AGE-->
+          <ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.age) && !registerForm.controls.age.errors, 'invalid': fieldNotEmpty(registerForm.value.age) && registerForm.controls.age.errors}">
+            <ion-input formControlName="age" type="number" placeholder="Age"></ion-input>
+          </ion-item>
+          <div *ngIf="fieldNotEmpty(registerForm.value.age) && registerForm.controls.age.errors" style="color: red; margin-left: 3%; font-size: 4vw">You must be 18 years or older to participate</div>
+          <!--RACE-->
+          <ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.race) && !registerForm.controls.race.errors, 'invalid': fieldNotEmpty(registerForm.value.race) && registerForm.controls.race.errors}">
+            <ion-label>Ethnicity</ion-label>
+            <ion-select placeholder="Ethnicity" formControlName="race">
+              <ion-select-option *ngFor="let race of raceList" value={{race}}>{{race}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <!--NATIONALITY-->
+          <ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.nationality) && !registerForm.controls.nationality.errors, 'invalid': fieldNotEmpty(registerForm.value.nationality) && registerForm.controls.nationality.errors}">
+            <ion-label>Nationality</ion-label>
+            <ion-select placeholder="Nationality" formControlName="nationality">
+              <ion-select-option *ngFor="let nation of nationList" value={{nation}}>{{nation}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <!--GENDER-->
+          <ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.gender) && !registerForm.controls.gender.errors, 'invalid': fieldNotEmpty(registerForm.value.gender) && registerForm.controls.gender.errors}">
+            <ion-label>Gender</ion-label>
+            <ion-select placeholder="Gender" formControlName="gender">
+              <ion-select-option *ngFor="let gender of genderList" value={{gender}}>{{gender}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </div>
         <div style="display: flex; justify-content: space-evenly; width: 100%">
           <ion-button (click)="BackHome()" fill="clear" style="width: 45%; height: 2rem; color: dodgerblue" [disabled]="awaitLoginHTTP">Back</ion-button>
           <ion-button (click)="SubmitRegister()" style="width: 45%; height: 2rem" [disabled]="awaitLoginHTTP">
