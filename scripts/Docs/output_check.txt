@@ -1,0 +1,125 @@
+This is level  0
+indices:  [9, 63, 74, 77, 79, 80, 88, 90, 95, 105]
+Picked photo:  9
+Picked photo:  63
+Picked photo:  74
+Picked photo:  77
+Picked photo:  79
+Picked photo:  80
+Picked photo:  88
+Picked photo:  90
+Picked photo:  95
+Picked photo:  105
+This is level  1
+indices:  [6, 67, 68, 69, 71, 75, 78, 85, 86, 89, 93, 96, 101, 102, 103, 106]
+Picked photo:  6
+Picked photo:  67
+Picked photo:  68
+Picked photo:  69
+Picked photo:  71
+Picked photo:  75
+Picked photo:  78
+Picked photo:  85
+Picked photo:  86
+Picked photo:  89
+Picked photo:  93
+Picked photo:  96
+Picked photo:  101
+Picked photo:  102
+Picked photo:  103
+Picked photo:  106
+This is level  2
+indices:  [5, 70, 73, 82, 83, 99, 107, 108]
+Picked photo:  5
+Picked photo:  70
+Picked photo:  73
+Picked photo:  82
+Picked photo:  83
+Picked photo:  99
+Picked photo:  107
+Picked photo:  108
+This is level  3
+indices:  [3, 4, 8, 10, 11, 21, 64, 81, 84, 91, 92, 94, 100, 104]
+Picked photo:  3
+Picked photo:  4
+Picked photo:  8
+Picked photo:  10
+Picked photo:  11
+Picked photo:  21
+Picked photo:  64
+Picked photo:  81
+Picked photo:  84
+Picked photo:  91
+Picked photo:  92
+Picked photo:  94
+Picked photo:  100
+Picked photo:  104
+This is level  4
+indices:  [2, 12, 13, 14, 22, 25, 26, 27, 28, 35, 39, 41, 49, 50, 54, 58, 59, 62, 65, 72]
+Picked photo:  2
+Picked photo:  12
+Picked photo:  13
+Picked photo:  14
+Picked photo:  22
+Picked photo:  25
+Picked photo:  26
+Picked photo:  27
+Picked photo:  28
+Picked photo:  35
+Picked photo:  39
+Picked photo:  41
+Picked photo:  49
+Picked photo:  50
+Picked photo:  54
+Picked photo:  58
+Picked photo:  59
+Picked photo:  62
+Picked photo:  65
+Picked photo:  72
+This is level  5
+indices:  [7, 51, 56, 57, 66, 76, 87, 97, 98]
+Picked photo:  7
+Picked photo:  51
+Picked photo:  56
+Picked photo:  57
+Picked photo:  66
+Picked photo:  76
+Picked photo:  87
+Picked photo:  97
+Picked photo:  98
+This is level  6
+indices:  [0, 18, 32, 33, 34, 38, 40, 42, 43, 46, 47, 53, 60, 61]
+Picked photo:  0
+Picked photo:  18
+Picked photo:  32
+Picked photo:  33
+Picked photo:  34
+Picked photo:  38
+Picked photo:  40
+Picked photo:  42
+Picked photo:  43
+Picked photo:  46
+Picked photo:  47
+Picked photo:  53
+Picked photo:  60
+Picked photo:  61
+This is level  7
+indices:  [1, 15, 16, 17, 19, 20, 23, 24, 29, 30, 31, 36, 37, 44, 45, 48, 52, 55]
+Picked photo:  1
+Picked photo:  15
+Picked photo:  16
+Picked photo:  17
+Picked photo:  19
+Picked photo:  20
+Picked photo:  23
+Picked photo:  24
+Picked photo:  29
+Picked photo:  30
+Picked photo:  31
+Picked photo:  36
+Picked photo:  37
+Picked photo:  44
+Picked photo:  45
+Picked photo:  48
+Picked photo:  52
+Picked photo:  55
