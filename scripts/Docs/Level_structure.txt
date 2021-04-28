@@ -1,0 +1,12 @@
+[Location, need fix]index.js line 213
+
+To form a level, take one photo from level 7, 
+then pick others from corresonding level folder.
+
+Each level folder contains a large number of photos for randomization.
+
+Level 7 is the target photo level. Level 0 - 6 are company photos. 
+The levels of a group of faces are sorted based on similarity with Level 7 group.
+The similarity score increases with level goes higher.
+
+The step similarity score risen for every level upgrade is not under consideration yet.

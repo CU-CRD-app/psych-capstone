@@ -6,7 +6,7 @@ import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { Router } from '@angular/router';
 import { TermsConditionsComponent } from '../terms-conditions/terms-conditions.component';
 
-enum Popup { HOME, LOGIN, REGISTER }
+enum Popup { HOME, LOGIN, REGISTER, FORGOT }
 
 @Component({
   selector: 'app-login',
@@ -82,6 +82,11 @@ export class LoginPage implements OnInit {
     this.resetForms();
   }
 
+  ForgetPassword() {
+    this.popup = Popup.FORGOT;
+    this.resetForms();
+  }
+
   SubmitLogin() {
 
     if (!this.awaitLoginHTTP) {
@@ -147,6 +152,7 @@ export class LoginPage implements OnInit {
           "nationality": this.registerForm.value.nationality,
           "gender": this.registerForm.value.gender,
           "age": this.registerForm.value.age,
+          "question": this.registerForm.value.question,
           "agree": this.registerForm.value.agree
         }
         const httpOptions = {
@@ -201,8 +207,9 @@ export class LoginPage implements OnInit {
     let nationality = form.value['nationality'];
     let gender = form.value['gender'];
     let agreement = form.value['agree'];
+    let question = form.value['question'];
 
-    if (race == '' || nationality == '' || gender == '') {
+    if (race == '' || nationality == '' || gender == '' || question == '') {
       return { "EMPTY_RESPONSES" : true };
     }
 

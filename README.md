@@ -7,7 +7,14 @@ Development for the CU psychology department's CRD research app.
 Professor Josh Correll (sponsored the app and is the one using it for research): <br>
   joshua.correll@colorado.edu
   
-Dev Team (this was our senior capstone so results may vary): <br>
+Dev Team Year 2 (US): <br>
+  Alvaro.Santillan@colorado.edu <br>
+  guxu4949@colorado.edu <br>
+  Liyang.Ru@colorado.edu <br>
+  Madison.Rivas@colorado.edu <br>
+  siya7259@colorado.edu <br>
+
+Dev Team Year 1: <br>
   gale9647@colorado.edu <br>
   alsa6908@colorado.edu <br>
   ka.chen@colorado.edu <br>
