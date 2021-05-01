@@ -59,7 +59,7 @@ export class LoginPage implements OnInit {
   login : string = "assets/icon/log-in.svg";
   help : string = "help-circle-outline";
 
-  base_url : string = "https://crossfacerecognition.herokuapp.com/";
+  base_url : string = "http://127.0.0.1:8080/";
   login_url : string = this.base_url + "login/";
   register_url : string = this.base_url + "register/";
 

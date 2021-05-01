@@ -17,7 +17,7 @@ export class GetProgressService {
       })
     };
   
-    return this.http.post('https://crossfacerecognition.herokuapp.com/userData/', {}, httpOptions);
+    return this.http.post('http://127.0.0.1:8080/userData/', {}, httpOptions);
   }
 
 }
