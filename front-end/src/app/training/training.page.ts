@@ -263,8 +263,8 @@ export class TrainingPage {
       };
       await this.http.put("https://crossfacerecognition.herokuapp.com/getTrainingFaces/", {level: this.userLevel}, httpOptions).subscribe((res) => {
         for (let i = 0; i < 8; i++) {
-          facePaths.push(`data:image/png;base64,${res['images'][i]}`)
-          sessionStorage.setItem(`training${i}`, `data:image/png;base64,${res['images'][i]}`)
+          facePaths.push(`data:image/jpg;base64,${res['images'][i]}`)
+          sessionStorage.setItem(`training${i}`, `data:image/jpg;base64,${res['images'][i]}`)
         }
       });
     }
@@ -282,7 +282,7 @@ export class TrainingPage {
     };
     await this.http.put("https://crossfacerecognition.herokuapp.com/getWhosNewFaces/", {level: this.userLevel}, httpOptions).subscribe((res) => {
       for (let i = 0; i < 8; i++) {
-        facePaths.push(`data:image/png;base64,${res['images'][i]}`)
+        facePaths.push(`data:image/jpg;base64,${res['images'][i]}`)
       }
     });
 
