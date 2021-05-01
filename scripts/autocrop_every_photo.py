@@ -28,11 +28,11 @@ def autocrop(file):
 
     # Read the image
     image = cv2.imread(file)
-    rgb(34,31,32) = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
     # Detect faces in the image
     faces = faceCascade.detectMultiScale(
-        rgb(34,31,32),
+        gray,
         scaleFactor=1.1,
         minNeighbors=5,
         minSize=(30, 30),

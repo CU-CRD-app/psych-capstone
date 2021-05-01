@@ -4,11 +4,11 @@ import sys
 imagePath = sys.argv[1]
 
 image = cv2.imread(imagePath)
-rgb(34,31,32) = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
 faceCascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
 faces = faceCascade.detectMultiScale(
-    rgb(34,31,32),
+    gray,
     scaleFactor=1.3,
     minNeighbors=3,
     minSize=(30, 30)
