@@ -1,7 +1,7 @@
 <ion-content style="--background: rgb(34,31,32)">
 
 	<ion-header>
-		<ion-toolbar>
+		<ion-toolbar color = "dark">
 			<ion-title>
 				History
       		</ion-title>
@@ -18,7 +18,7 @@
 	<div *ngIf="!waitingForResponse" class="center-col" style="height: 100%; width: 100%; margin-top: 10%">
 
 		<div style="height: 15%; width: 100%; text-align: center">
-			<div class="header">
+			<div class="header" style="color:white">
 				<div *ngIf="currentCard == 0">Pre-Assessment</div>
 				<div *ngIf="currentCard > 0 && currentCard < 9">Level {{currentCard}}</div>
 				<div *ngIf="currentCard == 9">Post-Assessment</div>

@@ -20,7 +20,7 @@
     <!--Start Page-->
     <div *ngIf="stage == Stage.START" style="margin-top: 50%">
       <div *ngIf="userLevel > 0 && userLevel < 9">
-        <div class="header" style="margin: 5%"><b>Level {{userLevel}}</b></div>
+        <div class="header" style="color:white;margin: 5%"><b>Level {{userLevel}}</b></div>
         <div class="subheader" style="margin: 5%">Are you ready to train?</div>
       </div>
       <div *ngIf="userLevel == 0">
@@ -28,7 +28,7 @@
         <div class="subheader" style="margin: 5%">It looks like you're new, are you ready to begin your pretest?</div>
       </div>
       <div *ngIf="userLevel == 9">
-        <div class="header"><b>Post-Assessment</b></div>
+        <div class="header" style="color: white;"><b>Post-Assessment</b></div>
         <div class="subheader" style="margin: 5%">It looks like you've completed all eight levels, are you ready to begin your post-test?</div>
       </div>
       <!--<h5>What would you like to train today?</h5>-->
@@ -96,9 +96,9 @@
 
       <div *ngIf="userLevel <= 9" style="display: flex; flex-direction: column; justify-content: center; align-items: center">
 
-        <div class="header" style="margin: 5%"><b>Finished!</b></div>
+        <div class="header" style="color:white;margin: 5%"><b>Finished!</b></div>
         <ion-progress-bar style="width: 80%" value={{progress}}></ion-progress-bar>
-        <div style="margin-top: 5%; font-size: 4vh">Level <span class="level">{{userLevel}}</span></div>
+        <div style="color:white;margin-top: 5%; font-size: 4vh">Level <span class="level">{{userLevel}}</span></div>
 
         <div *ngIf="userLevel == 1" class="fade-in">
           <div class="subheader" style="margin: 5%">You've entered level 1! Click to begin your training.</div>
@@ -118,7 +118,7 @@
       </div>
 
       <div *ngIf="userLevel > 9">
-        <div class="header" style="margin: 5%"><b>You're all done.</b></div>
+        <div class="header" style="color:white;margin: 5%"><b>You're all done.</b></div>
         <div class="subheader" style="margin: 5%">Since you've completed all eight levels and the post assessment, you don't have anything else to do! Thank you for your participation in this research.</div>
         <ion-button color="success" routerLink="/dashboard" routerDirection="forward">Home</ion-button>
       </div>
