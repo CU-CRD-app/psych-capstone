@@ -96,8 +96,5 @@
       "android",
       "ios"
     ]
-  },
-  "engines": {
-    "node": "^12"
   }
 }
