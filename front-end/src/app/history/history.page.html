@@ -1,4 +1,4 @@
-<ion-content style="--background: gray">
+<ion-content style="--background: rgb(34,31,32)">
 
 	<ion-header>
 		<ion-toolbar>
@@ -23,7 +23,7 @@
 				<div *ngIf="currentCard > 0 && currentCard < 9">Level {{currentCard}}</div>
 				<div *ngIf="currentCard == 9">Post-Assessment</div>
 			</div>
-			<ion-item style="width: 100%; --background: grey; margin-top: 5%" lines="none">
+			<ion-item style="width: 100%; --background: rgb(34,31,32); margin-top: 5%" lines="none">
 				<ion-range #rangeElement min="0" max="9" step="1" snaps="true" ticks="false" (ionChange)="slide($event.detail.value)" [(ngModel)]="currentCard"></ion-range>
 			</ion-item>
 		</div>
@@ -35,7 +35,7 @@
 				<ion-card class="center-col" style="justify-content: center; height: 100%; width: 100%" [ngClass]="{'not-completed': !pre_post[0].date}">
 				
 					<div class="center-col" *ngIf="pre_post[0].date" style="height: 100%; width: 100%; justify-content: space-evenly;">
-						<div style="text-align: center; font-size: 10vw; color: dodgerblue">
+						<div style="text-align: center; font-size: 10vw; color: rgb(206,183,124)">
 							<div>{{pre_post[0].date}}</div>
 						</div>
 						<ion-item style="--background: gainsboro; color: black" lines="none">
@@ -57,7 +57,7 @@
 				<ion-card class="center-col" style="justify-content: center; height: 100%; width: 100%" [ngClass]="{'not-completed': !day.date}">
 
 					<div *ngIf="day.date" class="center-col" style="height: 100%; width: 100%; justify-content: space-evenly">
-						<div style="text-align: center; font-size: 10vw; color: dodgerblue; margin: 5%">
+						<div style="text-align: center; font-size: 10vw; color: rgb(206,183,124); margin: 5%">
 							<div>{{day.date}}</div>
 						</div>
 						<div style="display: flex; align-items: center">
@@ -110,7 +110,7 @@
 				<ion-card class="center-col" style="justify-content: center; height: 100%; width: 100%" [ngClass]="{'not-completed': !pre_post[1].date}">
 
 					<div *ngIf="pre_post[1].date" class="center-col" style="height: 100%; width: 100%; justify-content: space-evenly;">
-						<div style="text-align: center; font-size: 10vw; color: dodgerblue">
+						<div style="text-align: center; font-size: 10vw; color: rgb(206,183,124)">
 							<div>{{pre_post[1].date}}</div>
 						</div>
 						<ion-item style="--background: gainsboro; color: black" lines="none">

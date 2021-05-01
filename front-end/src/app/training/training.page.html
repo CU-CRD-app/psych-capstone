@@ -1,7 +1,7 @@
-<ion-content style="--background: gray; height: 100%">
+<ion-content style="--background: rgb(34,31,32); height: 100%">
 
   <ion-header>
-    <ion-toolbar [ngClass]="{'blue-border' : task == null}">
+    <ion-toolbar color = dark [ngClass]="{'blue-border' : task == null}">
       <ion-title>{{getTitle()}}</ion-title>
       <ion-buttons *ngIf="task == null" slot="start">
         <ion-menu-button autoHide="false"></ion-menu-button>
@@ -24,7 +24,7 @@
         <div class="subheader" style="margin: 5%">Are you ready to train?</div>
       </div>
       <div *ngIf="userLevel == 0">
-        <div class="header"><b>Pre-Assessment</b></div>
+        <div class="header" style = "color:white"><b>Pre-Assessment</b></div>
         <div class="subheader" style="margin: 5%">It looks like you're new, are you ready to begin your pretest?</div>
       </div>
       <div *ngIf="userLevel == 9">
