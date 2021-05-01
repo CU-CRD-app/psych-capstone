@@ -19,6 +19,26 @@ initialize.start()
     .then(res => console.log(res))
     .catch(err => console.log(err))
 
+# ------- REF: https://stackoverflow.com/questions/66057755/cors-issue-with-heroku-after-deploying
+var allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+
+    // intercept OPTIONS method
+    if ('OPTIONS' == req.method) {
+      res.send(200);
+    }
+    else {
+      next();
+    }
+};
+
+app.use(allowCrossDomain);
+# -------
+
+
+
 var app = express();
 
 app.use(bodyParser.json());
