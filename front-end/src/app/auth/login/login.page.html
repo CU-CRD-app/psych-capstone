@@ -140,7 +140,7 @@
         </ion-item>
       </div>
       <div style="display: flex; justify-content: space-evenly; width: 100%">
-        <ion-button (click)="BackHome()" fill="clear" style="width: 45%; height: 2rem; color: dodgerblue" [disabled]="awaitLoginHTTP">Back</ion-button>
+        <ion-button (click)="BackHome()" fill="clear" style="width: 45%; height: 2rem; color: rgb(206,183,124)" [disabled]="awaitLoginHTTP">Back</ion-button>
         <ion-button (click)="SubmitRegister()" style="width: 45%; height: 2rem" [disabled]="awaitLoginHTTP">
           <span *ngIf="!awaitRegisterHTTP">Register</span>
           <ion-spinner *ngIf="awaitRegisterHTTP" slot="end" name="dots" style="size: 50%"></ion-spinner>
