@@ -47,7 +47,7 @@ app.use(bodyParser.json());
 const corsOptions = {
     origin: true,
     methods: ["GET","POST", "OPTIONS", "PUT"],
-    credentials: true,
+    credentials: false,
     maxAge: 3600,
     enablePreflight: true,
     preflightContinue: true
