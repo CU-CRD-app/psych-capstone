@@ -94,12 +94,26 @@ app.post("/login/", cors(corsOptions), function(req, res, next) {
 // All endpoints past this point require a token to access
 
 app.post("/tasks/", cors(corsOptions), function(req, res, next) {
-    if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
-        res.status(401).send("Please provide a properly formatted token")
-    }
-    else{
-       tokenHandler.verify(req.header('Authorization').split(' ')[1])
-            .then(id => {
+//     if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
+//         res.status(401).send("Please provide a properly formatted token")
+//     }
+//     else{
+//        tokenHandler.verify(req.header('Authorization').split(' ')[1])
+//             .then(id => {
+//                 tasks.upload(req.body, id)
+//                     .then(result => res.json({result:result}))
+//                     .catch(err => {
+//                         if(typeof(err) === 'string'){
+//                             res.status(400).send(err);
+//                         }
+//                         else{
+//                             res.status(500).send("Internal server error");
+//                         }
+//                     })
+//             })
+//             .catch(err => res.status(401).send("Invalid token")) 
+//     }
+    id => {
                 tasks.upload(req.body, id)
                     .then(result => res.json({result:result}))
                     .catch(err => {
@@ -110,19 +124,35 @@ app.post("/tasks/", cors(corsOptions), function(req, res, next) {
                             res.status(500).send("Internal server error");
                         }
                     })
-            })
-            .catch(err => res.status(401).send("Invalid token")) 
-    }
-    
+            }
 })
 
 app.post("/userData/", cors(corsOptions), function(req, res, next) {
-    if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
-        res.status(401).send("Please provide a properly formatted token")
-    }
-    else{
-        tokenHandler.verify(req.header('Authorization').split(' ')[1])
-            .then(id => {
+//     if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
+//         res.status(401).send("Please provide a properly formatted token")
+//     }
+//     else{
+//         tokenHandler.verify(req.header('Authorization').split(' ')[1])
+//             .then(id => {
+//                 userData.userData(id)
+//                     .then(result => res.send(result))
+//                     .catch(err => {
+//                         if(typeof(err) === 'string'){
+//                             if(err == "Account not found"){
+//                                 res.status(401).send(err);
+//                             }
+//                             else{
+//                                 res.status(400).send(err);
+//                             }
+//                         }
+//                         else{
+//                             res.status(500).send("Internal server error");
+//                         }
+//                     })
+//             })
+//             .catch(err => res.status(401).send("Invalid token"))
+//     } 
+    id => {
                 userData.userData(id)
                     .then(result => res.send(result))
                     .catch(err => {
@@ -138,29 +168,42 @@ app.post("/userData/", cors(corsOptions), function(req, res, next) {
                             res.status(500).send("Internal server error");
                         }
                     })
-            })
-            .catch(err => res.status(401).send("Invalid token"))
-    } 
+            }
 })
 
 app.put("/checktoken/", cors(corsOptions), function(req, res, next){
-    if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
-        res.status(401).send("Please provide a properly formatted token")
-    }
-    else{
-        tokenHandler.verify(req.header('Authorization').split(' ')[1])
-            .then(id => res.status(200).json({message: "Valid token"}))
-            .catch(err => res.status(401).json({message: "Invalid token"}))
-    }
+//     if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
+//         res.status(401).send("Please provide a properly formatted token")
+//     }
+//     else{
+//         tokenHandler.verify(req.header('Authorization').split(' ')[1])
+//             .then(id => res.status(200).json({message: "Valid token"}))
+//             .catch(err => res.status(401).json({message: "Invalid token"}))
+//     }
+    id => res.status(200).json({message: "Valid token"})
 })
 
 app.put("/preassessment/", cors(corsOptions), function(req, res, next){
-    if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
-        res.status(401).send("Please provide a properly formatted token")
-    }
-    else{
-        tokenHandler.verify(req.header('Authorization').split(' ')[1])
-            .then(id => {
+//     if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
+//         res.status(401).send("Please provide a properly formatted token")
+//     }
+//     else{
+//         tokenHandler.verify(req.header('Authorization').split(' ')[1])
+//             .then(id => {
+//                 preassessment.upload(req.body, id)
+//                     .then(result => res.send(result))
+//                     .catch(err => {
+//                         if(typeof(err) === 'string'){
+//                             res.status(400).send(err);
+//                         }
+//                         else{
+//                             res.status(500).send("Internal server error");
+//                         }
+//                     })
+//             })
+//             .catch(err => res.status(401).send("Invalid token"))
+//     }
+    id => {
                 preassessment.upload(req.body, id)
                     .then(result => res.send(result))
                     .catch(err => {
@@ -170,19 +213,30 @@ app.put("/preassessment/", cors(corsOptions), function(req, res, next){
                         else{
                             res.status(500).send("Internal server error");
                         }
-                    })
-            })
-            .catch(err => res.status(401).send("Invalid token"))
-    }
+                    }
 })
 
 app.put("/postassessment/", cors(corsOptions), function(req, res, next){
-    if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
-        res.status(401).send("Please provide a properly formatted token")
-    }
-    else{
-      tokenHandler.verify(req.header('Authorization').split(' ')[1])
-        .then(id => {
+//     if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
+//         res.status(401).send("Please provide a properly formatted token")
+//     }
+//     else{
+//       tokenHandler.verify(req.header('Authorization').split(' ')[1])
+//         .then(id => {
+//             postassessment.upload(req.body, id)
+//                 .then(result => res.send(result))
+//                 .catch(err => {
+//                     if(typeof(err) === 'string'){
+//                         res.status(400).send(err);
+//                     }
+//                     else{
+//                         res.status(500).send("Internal server error");
+//                     }
+//                 })
+//         })
+//         .catch(err => res.status(401).send("Invalid token"))  
+//     } 
+    id => {
             postassessment.upload(req.body, id)
                 .then(result => res.send(result))
                 .catch(err => {
@@ -193,18 +247,31 @@ app.put("/postassessment/", cors(corsOptions), function(req, res, next){
                         res.status(500).send("Internal server error");
                     }
                 })
-        })
-        .catch(err => res.status(401).send("Invalid token"))  
-    } 
+        }
 })
 
 app.put("/changepassword/", cors(corsOptions), function(req, res, next){
-    if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
-        res.status(401).send("Please provide a properly formatted token")
-    }
-    else{
-        tokenHandler.verify(req.header('Authorization').split(' ')[1])
-            .then(id => {
+//     if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
+//         res.status(401).send("Please provide a properly formatted token")
+//     }
+//     else{
+//         tokenHandler.verify(req.header('Authorization').split(' ')[1])
+//             .then(id => {
+//                 password.update(req.body)   
+//                     .then(result => res.send(result))
+//                     .catch(err => {
+//                         if(typeof(err) === 'string'){
+//                             res.status(400).send(err);
+//                         }
+//                         else{
+//                             console.log(err);
+//                             res.status(500).send("Internal server error");
+//                         }
+//                     })
+//             })
+//             .catch(err => res.status(401).send("Invalid token")) 
+//     }
+    id => {
                 password.update(req.body)   
                     .then(result => res.send(result))
                     .catch(err => {
@@ -216,18 +283,30 @@ app.put("/changepassword/", cors(corsOptions), function(req, res, next){
                             res.status(500).send("Internal server error");
                         }
                     })
-            })
-            .catch(err => res.status(401).send("Invalid token")) 
-    }
+            }
 })
 
 app.put("/getTrainingFaces/", cors(corsOptions), function(req, res, next){
-    if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
-        res.status(401).send("Please provide a properly formatted token")
-    }
-    else{
-        tokenHandler.verify(req.header('Authorization').split(' ')[1])
-            .then(id => {
+//     if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
+//         res.status(401).send("Please provide a properly formatted token")
+//     }
+//     else{
+//         tokenHandler.verify(req.header('Authorization').split(' ')[1])
+//             .then(id => {
+//                 try {
+//                     var images = [];
+//                     for (var i = 0; i < 8; i++) {
+//                         // var data = fs.readFileSync(`./faces/black/training/level-${req.body.level}/${i}.jpg`);
+//                         images.push(new Buffer(data, 'binary').toString('base64'));
+//                     }
+//                     res.status(200).send({images: images});
+//                 } catch (err) {
+//                     res.status(500).send("Internal server error");
+//                 }
+//             })
+//             .catch(err => res.status(401).send("Invalid token")) 
+//     }
+    id => {
                 try {
                     var images = [];
                     for (var i = 0; i < 8; i++) {
@@ -238,18 +317,36 @@ app.put("/getTrainingFaces/", cors(corsOptions), function(req, res, next){
                 } catch (err) {
                     res.status(500).send("Internal server error");
                 }
-            })
-            .catch(err => res.status(401).send("Invalid token")) 
-    }
+            }
 })
 
 app.put("/getDailyAssessmentFaces/", cors(corsOptions), function(req, res, next){
-    if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
-        res.status(401).send("Please provide a properly formatted token")
-    }
-    else{
-        tokenHandler.verify(req.header('Authorization').split(' ')[1])
-            .then(id => {
+//     if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
+//         res.status(401).send("Please provide a properly formatted token")
+//     }
+//     else{
+//         tokenHandler.verify(req.header('Authorization').split(' ')[1])
+//             .then(id => {
+//                 try {
+//                     var images = [];
+//                     var faceNums = [];
+//                     for (var i = 0; i < 8; i++) { // Generate 8 random numbers between 0 and 30
+//                         var face = Math.floor(Math.random() * 30);
+//                         while (faceNums.indexOf(face) > -1) { // Account for repeats
+//                           face = Math.floor(Math.random() * 30);
+//                         }
+//                         faceNums.push(face);
+//                         var data = fs.readFileSync(`./faces/black/daily-assessment/${faceNums[i]}.jpg`);
+//                         images.push(new Buffer(data, 'binary').toString('base64'));
+//                     }
+//                     res.status(200).send({images: images});
+//                 } catch (err) {
+//                     res.status(500).send("Internal server error");
+//                 }
+//             })
+//             .catch(err => res.status(401).send("Invalid token")) 
+//     }
+    id => {
                 try {
                     var images = [];
                     var faceNums = [];
@@ -266,18 +363,30 @@ app.put("/getDailyAssessmentFaces/", cors(corsOptions), function(req, res, next)
                 } catch (err) {
                     res.status(500).send("Internal server error");
                 }
-            })
-            .catch(err => res.status(401).send("Invalid token")) 
-    }
+            }
 })
 
 app.put("/getPrePostAssessmentFaces/", cors(corsOptions), function(req, res, next){
-    if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
-        res.status(401).send("Please provide a properly formatted token")
-    }
-    else{
-        tokenHandler.verify(req.header('Authorization').split(' ')[1])
-            .then(id => {
+//     if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
+//         res.status(401).send("Please provide a properly formatted token")
+//     }
+//     else{
+//         tokenHandler.verify(req.header('Authorization').split(' ')[1])
+//             .then(id => {
+//                 try {
+//                     var images = [];
+//                     for (var i = 0; i < 30; i++) {
+//                         var data = fs.readFileSync(`./faces/black/pre-post-assessment/${i}.jpg`);
+//                         images.push(new Buffer(data, 'binary').toString('base64'));
+//                     }
+//                     res.status(200).send({images: images});
+//                 } catch (err) {
+//                     res.status(500).send("Internal server error");
+//                 }
+//             })
+//             .catch(err => res.status(401).send("Invalid token")) 
+//     }
+    id => {
                 try {
                     var images = [];
                     for (var i = 0; i < 30; i++) {
@@ -288,19 +397,38 @@ app.put("/getPrePostAssessmentFaces/", cors(corsOptions), function(req, res, nex
                 } catch (err) {
                     res.status(500).send("Internal server error");
                 }
-            })
-            .catch(err => res.status(401).send("Invalid token")) 
-    }
+            }
 })
 
 
 app.put("/getWhosNewFaces/", cors(corsOptions), function(req, res, next){
-    if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
-        res.status(401).send("Please provide a properly formatted token")
-    }
-    else{
-        tokenHandler.verify(req.header('Authorization').split(' ')[1])
-            .then(id => {
+//     if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
+//         res.status(401).send("Please provide a properly formatted token")
+//     }
+//     else{
+//         tokenHandler.verify(req.header('Authorization').split(' ')[1])
+//             .then(id => {
+//                 try {
+//                     var images = [];
+//                     var afterFaces = 8 - req.body.level + (1 - Math.round(req.body.level/8));
+//                     var beforeFaces = 8 - afterFaces;
+//                     for (var i = 0; i < afterFaces; i++) {
+//                         var data = fs.readFileSync(`./faces/black/training/level-${req.body.level + 1}/${i}.jpg`);
+//                         images.push(new Buffer(data, 'binary').toString('base64'));
+//                     }
+//                     for (var i = 0; i < beforeFaces; i++) {
+//                         var data = fs.readFileSync(`./faces/black/training/level-${req.body.level - 1}/${i}.jpg`);
+//                         images.push(new Buffer(data, 'binary').toString('base64'));
+//                     }
+//                     res.status(200).send({images: images});
+//                 } catch (err) {
+//                     console.log(err)
+//                     res.status(500).send("Internal server error");
+//                 }
+//             })
+//             .catch(err => res.status(401).send("Invalid token")) 
+//     }
+    id => {
                 try {
                     var images = [];
                     var afterFaces = 8 - req.body.level + (1 - Math.round(req.body.level/8));
@@ -318,7 +446,5 @@ app.put("/getWhosNewFaces/", cors(corsOptions), function(req, res, next){
                     console.log(err)
                     res.status(500).send("Internal server error");
                 }
-            })
-            .catch(err => res.status(401).send("Invalid token")) 
-    }
+            }
 })
