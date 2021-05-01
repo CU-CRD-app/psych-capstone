@@ -90,7 +90,7 @@ export class UserSettingsPage implements OnInit {
       };
 
       this.waitingForResponse = true;
-      this.http.put('http://127.0.0.1:8080/changepassword/', body, httpOptions).subscribe(() => {
+      this.http.put('https://crossfacerecognition.herokuapp.com/changepassword/', body, httpOptions).subscribe(() => {
         this.waitingForResponse = false;
         this.resetPasswordForm();
         this.successToast('Your settings have been saved');

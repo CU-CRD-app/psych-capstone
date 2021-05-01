@@ -41,7 +41,7 @@ export class AuthGuard implements CanActivate {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
       })
     };
-    return this.http.put("http://127.0.0.1:8080/checktoken/", {}, httpOptions)
+    return this.http.put("https://crossfacerecognition.herokuapp.com/checktoken/", {}, httpOptions)
       .pipe(map((res) => true))
       .pipe(catchError((err) => of(false)));
   }

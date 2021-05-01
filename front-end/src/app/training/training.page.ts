@@ -261,7 +261,7 @@ export class TrainingPage {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         })
       };
-      await this.http.put("http://127.0.0.1:8080/getTrainingFaces/", {level: this.userLevel}, httpOptions).subscribe((res) => {
+      await this.http.put("https://crossfacerecognition.herokuapp.com/getTrainingFaces/", {level: this.userLevel}, httpOptions).subscribe((res) => {
         for (let i = 0; i < 8; i++) {
           facePaths.push(`data:image/png;base64,${res['images'][i]}`)
           sessionStorage.setItem(`training${i}`, `data:image/png;base64,${res['images'][i]}`)
@@ -280,7 +280,7 @@ export class TrainingPage {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
       })
     };
-    await this.http.put("http://127.0.0.1:8080/getWhosNewFaces/", {level: this.userLevel}, httpOptions).subscribe((res) => {
+    await this.http.put("https://crossfacerecognition.herokuapp.com/getWhosNewFaces/", {level: this.userLevel}, httpOptions).subscribe((res) => {
       for (let i = 0; i < 8; i++) {
         facePaths.push(`data:image/png;base64,${res['images'][i]}`)
       }
@@ -310,7 +310,7 @@ export class TrainingPage {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         })
       };
-      await this.http.put("http://127.0.0.1:8080/getDailyAssessmentFaces/", {}, httpOptions).subscribe((res) => {
+      await this.http.put("https://crossfacerecognition.herokuapp.com/getDailyAssessmentFaces/", {}, httpOptions).subscribe((res) => {
         for (let i = 0; i < 8; i++) {
           facePaths.push(`data:image/jpg;base64,${res['images'][i]}`)
           sessionStorage.setItem(`dailyAssessment${i}`, `data:image/jpg;base64,${res['images'][i]}`)
@@ -329,7 +329,7 @@ export class TrainingPage {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
       })
     };
-    await this.http.put("http://127.0.0.1:8080/getPrePostAssessmentFaces/", {}, httpOptions).subscribe((res) => {
+    await this.http.put("https://crossfacerecognition.herokuapp.com/getPrePostAssessmentFaces/", {}, httpOptions).subscribe((res) => {
       for (let i = 0; i < 30; i++) {
         facePaths.push(`data:image/jpg;base64,${res['images'][i]}`)
       }
