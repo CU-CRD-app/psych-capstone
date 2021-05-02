@@ -6,7 +6,7 @@ import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { Router } from '@angular/router';
 import { TermsConditionsComponent } from '../terms-conditions/terms-conditions.component';
 
-enum Popup { HOME, LOGIN, REGISTER }
+enum Popup { HOME, LOGIN, REGISTER, FORGOT }
 
 @Component({
   selector: 'app-login',
@@ -53,6 +53,7 @@ export class LoginPage implements OnInit {
 
   awaitLoginHTTP : boolean;
   awaitRegisterHTTP : boolean;
+  awaitRegisterHTTPTwo : true;
   clickedSubmit : boolean;
   termsOpened : boolean;
 
@@ -79,6 +80,11 @@ export class LoginPage implements OnInit {
 
   BackHome() {
     this.popup = Popup.HOME;
+    this.resetForms();
+  }
+
+  ForgetPassword() {
+    this.popup = Popup.FORGOT;
     this.resetForms();
   }
 
@@ -130,6 +136,47 @@ export class LoginPage implements OnInit {
 
   SubmitRegister() {
 
+
+    if (!this.awaitRegisterHTTPTwo) {
+
+      this.clickedSubmit = true;
+
+      // if (this.registerForm.invalid) {
+
+      //   this.dangerToast("Billy Bob");
+
+      // } else {
+
+        let body = {
+          "email": this.registerForm.value.username,
+          "password": this.registerForm.value.password,
+          "race": this.registerForm.value.race,
+          "nationality": this.registerForm.value.nationality,
+          "gender": this.registerForm.value.gender,
+          "age": this.registerForm.value.age,
+          "question": this.registerForm.value.question,
+          "agree": this.registerForm.value.agree
+        }
+        const httpOptions = {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json; charset=utf-8'
+          })
+        };
+
+        this.awaitRegisterHTTP = true;
+        this.http.put(this.register_url, body, httpOptions).subscribe((response) => {
+          this.awaitRegisterHTTP = false;
+          this.Login();
+          this.successToast("Account recovery successful!");
+        }, (err) => {
+          this.awaitRegisterHTTP = false;
+          this.successToast("Account recovery successful!");
+          this.resetForms();
+        });
+
+      // }
+    }
+
     if (!this.awaitRegisterHTTP) {
 
       this.clickedSubmit = true;
@@ -147,6 +194,7 @@ export class LoginPage implements OnInit {
           "nationality": this.registerForm.value.nationality,
           "gender": this.registerForm.value.gender,
           "age": this.registerForm.value.age,
+          "question": this.registerForm.value.question,
           "agree": this.registerForm.value.agree
         }
         const httpOptions = {
@@ -201,8 +249,9 @@ export class LoginPage implements OnInit {
     let nationality = form.value['nationality'];
     let gender = form.value['gender'];
     let agreement = form.value['agree'];
+    let question = form.value['question'];
 
-    if (race == '' || nationality == '' || gender == '') {
+    if (race == '' || nationality == '' || gender == '' || question == '') {
       return { "EMPTY_RESPONSES" : true };
     }
 
