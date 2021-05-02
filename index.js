@@ -201,6 +201,25 @@ app.put("/changepassword/", cors(corsOptions), function(req, res, next){
     }
 })
 
+// -------REF: https://bost.ocks.org/mike/shuffle/ -------
+function shuffle(array) {
+    var m = array.length, t, i;
+  
+    // While there remain elements to shuffle…
+    while (m) {
+  
+      // Pick a remaining element…
+      i = Math.floor(Math.random() * m--);
+  
+      // And swap it with the current element.
+      t = array[m];
+      array[m] = array[i];
+      array[i] = t;
+    }
+    return array;
+  }
+// -------shuffle function ends -------
+
 app.put("/getTrainingFaces/", cors(corsOptions), function(req, res, next){
     if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
         res.status(401).send("Please provide a properly formatted token")
@@ -219,9 +238,9 @@ app.put("/getTrainingFaces/", cors(corsOptions), function(req, res, next){
                     var total_num = fs.readdirSync(`./faces/white/training/level-${req.body.level - 1}`).length;
                     // var img_indices = [0, 1, 2, 3, 4, 5, 6, 7];
                     var img_indices = Array.from(Array(total_num).keys());
-                    shuffle(img_indices);
+                    shuffled_indices = shuffle(img_indices);
                     for (var i = 0; i < 7; i++) {
-                        random_index = img_indices[i];
+                        random_index = shuffled_indices[i];
                         var data = fs.readFileSync(`./faces/white/training/level-${req.body.level - 1}/${random_index}.jpg`);
                         images.push(new Buffer(data, 'binary').toString('base64'));
                     }
