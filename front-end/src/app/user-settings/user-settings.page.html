@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color = "dark">
     <ion-title>Settings</ion-title>
     <ion-buttons slot="start">
       <ion-menu-button autoHide="false"></ion-menu-button>
@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content style="--background: gray">
+<ion-content style="--background: rgb(34,31,32)">
 
   <div style="margin-top: 5%; margin-left: 5%; display: flex; align-items: center; justify-content: space-between">
     <div style="color: white">Email Address:</div>
@@ -45,7 +45,7 @@
     </ion-item>
     <div *ngIf="newPasswordFirst != newPasswordSecond" style="color: white; margin-top: 2%; margin-left: 7%; font-size: 4vw">Must be match previous entry</div>
       
-    <ion-item lines="none" *ngIf="validateForm() || waitingForResponse" style="--background: grey; border-radius: 0px; margin-left: 0px; margin-right: 0px">
+    <ion-item lines="none" *ngIf="validateForm() || waitingForResponse" style="--background: rgb(34,31,32); border-radius: 0px; margin-left: 0px; margin-right: 0px">
       <ion-button (click)="saveForm()" style="height: 90%; width: 45%; margin-left: 50%" [disabled]="waitingForResponse">
         <span *ngIf="!waitingForResponse">Save</span>
         <ion-spinner *ngIf="waitingForResponse" name="dots"></ion-spinner>

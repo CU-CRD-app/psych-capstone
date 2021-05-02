@@ -51,7 +51,7 @@
 }
 
 .default {
-    --background: gray;
+    --background: rgb(34,31,32);
 }
 
 .selected-wrong-card {
@@ -59,7 +59,7 @@
 }
 
 .selected-card {
-    background-color: dodgerblue !important;
+    background-color: rgb(206,183,124) !important;
 }
 
 .disabled-card {
@@ -74,7 +74,7 @@
     top: 0px;
     left: 0px;
     color: white;
-    background-color: dodgerblue;
+    background-color: rgb(206,183,124);
     z-index: 100;
     opacity: 0;
 }
@@ -119,7 +119,7 @@
 
 .header {
     font-size: 10vw;
-    color: white;
+    color: black;
 }
 
 .subheader {
