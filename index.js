@@ -227,9 +227,13 @@ app.put("/getTrainingFaces/", cors(corsOptions), function(req, res, next){
                     // }
                     // res.status(200).send({images: images});
                     var images = [];
-                    // var total_num = fs.readdirSync(`./faces/asian/training/level-${req.body.level - 1}`).length;
+                    var total_num = fs.readdirSync(`./faces/asian/training/level-${req.body.level - 1}`).length;
+                    // var img_indices = Array.from(Array(total_num).keys());
+                    var img_indices = [0, 1, 2, 3, 4, 5, 6, 7];
+                    shuffle(img_indices);
                     for (var i = 0; i < 8; i++) {
-                        var data = fs.readFileSync(`./faces/asian/training/level-${req.body.level - 1}/${i}.jpg`);
+                        random_index = img_indices[i];
+                        var data = fs.readFileSync(`./faces/asian/training/level-${req.body.level - 1}/${random_index}.jpg`);
                         images.push(new Buffer(data, 'binary').toString('base64'));
                     }
                     res.status(200).send({images: images});
