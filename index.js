@@ -219,9 +219,9 @@ app.put("/getTrainingFaces/", cors(corsOptions), function(req, res, next){
                     var total_num = fs.readdirSync(`./faces/white/training/level-${req.body.level - 1}`).length;
                     // var img_indices = [0, 1, 2, 3, 4, 5, 6, 7];
                     var img_indices = Array.from(Array(total_num).keys());
-                    var shuffled_indices = _.shuffle(img_indices);
+                    shuffle(img_indices);
                     for (var i = 0; i < 7; i++) {
-                        random_index = shuffled_indices[i];
+                        random_index = img_indices[i];
                         var data = fs.readFileSync(`./faces/white/training/level-${req.body.level - 1}/${random_index}.jpg`);
                         images.push(new Buffer(data, 'binary').toString('base64'));
                     }
