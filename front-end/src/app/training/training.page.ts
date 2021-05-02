@@ -90,6 +90,7 @@ export class TrainingPage {
   userLevel : any;
 
   initCurrentLevel(race : Race = Race.BLACK) {
+    this.showRaceSelect();
 
     this.currentRace = race;
 
@@ -162,7 +163,6 @@ export class TrainingPage {
       });
       toast.present();
     });
-    this.showRaceSelect();
 
   }
 
