@@ -209,20 +209,26 @@ app.put("/getTrainingFaces/", cors(corsOptions), function(req, res, next){
         tokenHandler.verify(req.header('Authorization').split(' ')[1])
             .then(id => {
                 try {
+                    // var images = [];
+                    // //random choose 1 picture from Level-7
+                    // var total_num = fs.readdirSync(`./faces/asian/training/level-7`).length;
+                    // var random_index = Math.floor(Math.random() * total_num );
+                    // var data = fs.readFileSync(`./faces/asian/training/level-7/${random_index}.jpg`);
+                    // images.push(new Buffer(data, 'binary').toString('base64'));
+                    // //random choose 7 pictures from Level-X
+                    // var total_num = fs.readdirSync(`./faces/asian/training/level-${req.body.level - 1}`).length;
+                    // // var img_indices = Array.from(Array(total_num).keys());
+                    // var img_indices = [0, 1, 2, 3, 4, 5, 6];
+                    // img_indices.shuffle();
+                    // for (var i = 0; i < 7; i++) {
+                    //     random_index = img_indices[i];
+                    //     var data = fs.readFileSync(`./faces/asian/training/level-${req.body.level - 1}/${random_index}.jpg`);
+                    //     images.push(new Buffer(data, 'binary').toString('base64'));
+                    // }
+                    // res.status(200).send({images: images});
                     var images = [];
-                    //random choose 1 picture from Level-7
-                    var total_num = fs.readdirSync(`./faces/asian/training/level-7`).length;
-                    var random_index = Math.floor(Math.random() * total_num );
-                    var data = fs.readFileSync(`./faces/asian/training/level-7/${random_index}.jpg`);
-                    images.push(new Buffer(data, 'binary').toString('base64'));
-                    //random choose 7 pictures from Level-X
-                    var total_num = fs.readdirSync(`./faces/asian/training/level-${req.body.level - 1}`).length;
-                    // var img_indices = Array.from(Array(total_num).keys());
-                    var img_indices = [0, 1, 2, 3, 4, 5, 6];
-                    img_indices.shuffle();
-                    for (var i = 0; i < 7; i++) {
-                        random_index = img_indices[i];
-                        var data = fs.readFileSync(`./faces/asian/training/level-${req.body.level - 1}/${random_index}.jpg`);
+                    for (var i = 0; i < 8; i++) {
+                        var data = fs.readFileSync(`./faces/asian/training/level-${req.body.level}/${i}.jpg`);
                         images.push(new Buffer(data, 'binary').toString('base64'));
                     }
                     res.status(200).send({images: images});
