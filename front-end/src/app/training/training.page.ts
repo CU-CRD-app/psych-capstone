@@ -8,6 +8,8 @@ import { GetProgressService } from '../service/get-progress.service';
 import { SubmitScoresService } from '../service/submit-scores.service';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { RaceSelectModalComponent } from '../race-select-modal/race-select-modal.component';
+import { ModalsPluginWeb } from '@capacitor/core';
 
 enum Race { BLACK, ASIAN }
 enum Stage { START, TRAINING, ASSESSMENT, DONE }
@@ -88,6 +90,7 @@ export class TrainingPage {
   userLevel : any;
 
   initCurrentLevel(race : Race = Race.BLACK) {
+    this.showRaceSelect();
 
     this.currentRace = race;
 
@@ -228,6 +231,13 @@ export class TrainingPage {
         "paramTask": this.getTitle(),
         "displayFirst": displayFirst
       }
+    });
+    await modal.present();
+  }
+
+  async showRaceSelect() {
+    const modal = await this.modalController.create({
+      component: RaceSelectModalComponent
     });
     await modal.present();
   }
