@@ -217,7 +217,8 @@ app.put("/getTrainingFaces/", cors(corsOptions), function(req, res, next){
                     images.push(new Buffer(data, 'binary').toString('base64'));
                     //random choose 7 pictures from Level-X
                     var total_num = fs.readdirSync(`./faces/asian/training/level-${req.body.level - 1}`).length;
-                    var img_indices = Array.from(Array(total_num).keys());
+                    // var img_indices = Array.from(Array(total_num).keys());
+                    var img_indices = [0, 1, 2, 3, 4, 5, 6];
                     img_indices.shuffle();
                     for (var i = 0; i < 7; i++) {
                         random_index = img_indices[i];
