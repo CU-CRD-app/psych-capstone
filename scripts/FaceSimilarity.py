@@ -99,7 +99,8 @@ def main():
     files = []
     # for filepath, dirnames, filenames in os.walk(r'CFD_cropped/asian_female/training/level-1'):
     # for filepath, dirnames, filenames in os.walk(r'CFD_cropped/asian_female/test'):
-    for filepath, dirnames, filenames in os.walk(r'CFD_cropped/asian/daily-assessment'):
+    # for filepath, dirnames, filenames in os.walk(r'CFD_cropped/asian/daily-assessment'):
+    for filepath, dirnames, filenames in os.walk(r'testPics'):
         for filename in filenames:
                 file = os.path.join(filepath, filename)
                 #print(file)
@@ -145,23 +146,23 @@ def main():
     print("coords: ", coords)
 
     # K-means clustering
-    kmeans = KMeans(n_clusters=8, random_state=0).fit(coords)
+    kmeans = KMeans(n_clusters=3, random_state=0).fit(coords)
     print("kmeans.labels_: ", kmeans.labels_)
     visied_list = [0] * len(kmeans.labels_)
-    print("kmeans.cluster_centers_: ", kmeans.cluster_centers_)
+    # print("kmeans.cluster_centers_: ", kmeans.cluster_centers_)
 
     # Building the levels.
     centers_dist_to_0 = []
     for i in kmeans.cluster_centers_:
         dist = np.linalg.norm(kmeans.cluster_centers_[0] - i)
         centers_dist_to_0.append(dist)
-    print("centers_dist_to_0: ", centers_dist_to_0)
+    # print("centers_dist_to_0: ", centers_dist_to_0)
     sorted_centers_dist_to_0 = sorted(centers_dist_to_0, reverse = True)
-    print("sorted_centers_dist_to_0: ", sorted_centers_dist_to_0)
+    # print("sorted_centers_dist_to_0: ", sorted_centers_dist_to_0)
     levels = []
     for i in sorted_centers_dist_to_0:
         levels.append(centers_dist_to_0.index(i))
-    print("levels: ", levels)
+    # print("levels: ", levels)
     # Doing a agglomerative clustering
     # agg = AgglomerativeClustering(n_clusters=4, affinity='precomputed', linkage='average', distance_threshold=None, compute_distances=True)
 
@@ -176,17 +177,23 @@ def main():
     # plt.show()
     #--------------
 
+    # Visualize
+    plt.scatter(coords[:,0],coords[:,1],c=kmeans.labels_,cmap=plt.cm.Paired)
+    # Draw centers
+    plt.scatter(kmeans.cluster_centers_[:,0], kmeans.cluster_centers_[:,1], marker='*',s=60)
+    for i in range(3):
+        plt.annotate('Center'+str(i + 1),(kmeans.cluster_centers_[i,0], kmeans.cluster_centers_[i,1]))
+    plt.show()
+
     # move photos to corresponding level folders.
-    for level in range(1, len(levels)):
-        # Take one photo from group 0, and 7 others from corresponding groups.
-        # print("Target level ", level)
-        # photo from group 0.
-        indices_1 = [i for i, x in enumerate(kmeans.labels_) if x == 0]
+    for level in range(0, len(levels)):
+        indices = [i for i, x in enumerate(kmeans.labels_) if x == level]
         # print("indices_1 =   ", indices_1)
-        for idx in indices_1:
+        for idx in indices:
             if visied_list[idx] == 0:
-                print("Picked the target photo: ", idx)
-                dir_string = 'CFD_cropped/asian/training/level-' + str(level)
+                print("Picked up the target photo: ", idx)
+                dir_string = 'testPics/training/level-' + str(level)
+                print("Put the photo into directory: ", dir_string)
                 directory = dir_string
                 if not os.path.exists(directory):
                     os.makedirs(directory)
@@ -195,34 +202,33 @@ def main():
                 temp = dir_string + '/{0}.jpg'
                 cv2.imwrite(temp.format(count), image)
                 visied_list[idx] = 1
-                break
 
             # 7 photos from other group.
-        indices_2 = [i for i, x in enumerate(kmeans.labels_) if x == levels[level - 1]] # photos indices in files
-        # print("level folder: ", levels[level - 1])
-        # print("indices_2 =   ", indices_2)
-        total = 0 # use this to count how many photos have been moved
-        for idx in indices_2:
-            if visied_list[idx] == 0:
-                print("Picked the mixup photo: ", idx)
-                # create directory, move the qualified photos to level l
-                # put files[idx] into level-l folder.
-                dir_string = 'CFD_cropped/asian/training/level-' + str(level)
-                directory = dir_string
-                if not os.path.exists(directory):
-                    os.makedirs(directory)
-                count = len([name for name in os.listdir(directory) if os.path.isfile(os.path.join(directory, name))])
-                # cv2.imwrite('CFD_cropped/{0}/daily-assessment/cropped_{1}'.format(group_name, filename), img)
-                # print("index_counter_1 = ", index_counter)
-                image = cv2.imread(files[idx])
-                temp = dir_string + '/{0}.jpg'
-                cv2.imwrite(temp.format(count), image)
+        # indices_2 = [i for i, x in enumerate(kmeans.labels_) if x == levels[level - 1]] # photos indices in files
+        # # print("level folder: ", levels[level - 1])
+        # # print("indices_2 =   ", indices_2)
+        # total = 0 # use this to count how many photos have been moved
+        # for idx in indices_2:
+        #     if visied_list[idx] == 0:
+        #         print("Picked the mixup photo: ", idx)
+        #         # create directory, move the qualified photos to level l
+        #         # put files[idx] into level-l folder.
+        #         dir_string = 'CFD_cropped/asian/training/level-' + str(level)
+        #         directory = dir_string
+        #         if not os.path.exists(directory):
+        #             os.makedirs(directory)
+        #         count = len([name for name in os.listdir(directory) if os.path.isfile(os.path.join(directory, name))])
+        #         # cv2.imwrite('CFD_cropped/{0}/daily-assessment/cropped_{1}'.format(group_name, filename), img)
+        #         # print("index_counter_1 = ", index_counter)
+        #         image = cv2.imread(files[idx])
+        #         temp = dir_string + '/{0}.jpg'
+        #         cv2.imwrite(temp.format(count), image)
 
-                total += 1
-                visied_list[idx] = 1
+        #         total += 1
+        #         visied_list[idx] = 1
 
-            if total >= 7: # determine how many photos there are in one level.
-                break
+        #     if total >= 7: # determine how many photos there are in one level.
+        #         break
 
         
         # Backup-------------------------------------

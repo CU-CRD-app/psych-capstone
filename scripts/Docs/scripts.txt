@@ -1,0 +1,22 @@
+A very crucial task is how we divide all the photos into 8 levels.
+
+We desgined that for each level of our training game, we pick up one target face, 
+and group it with 7 others from another cluster. With the level goes higher, 
+the 7 others will be more and more similar to the target face so that it is naturally 
+a harder level to pass.
+
+And here is a model of our solution. First we use VGG net to extract features as 
+embeddings. And then we use these feature vectors to calculate cosine distances.
+These distances are then used as baseline to calculate similarity score. A huge 
+similarity matrix is then constructed. After we get our similarity matrix, we can 
+perform k-means clustering on it. And it will return group labels for all the photos,
+according to how similiar they are.
+////////
+Test Run
+
+.......After we put the photos in corresponding folders, we use nodejs to call 
+corrresonding ones for each level.
+
+/////////
+The last task we did is add an oval to each face, in order to formalize them for easier
+use.

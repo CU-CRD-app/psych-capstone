@@ -1,0 +1,3 @@
+npm i :in psych-capstone level
+node index.js
+ionic serve

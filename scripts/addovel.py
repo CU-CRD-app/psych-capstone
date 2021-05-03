@@ -51,9 +51,10 @@ def addoval(img):
     return oval
 
 
-for filepath, dirnames, filenames in os.walk(r'../faces'):
+# for filepath, dirnames, filenames in os.walk(r'../faces'):
+for filepath, dirnames, filenames in os.walk(r'testPics'):
     for filename in filenames:
         file = os.path.join(filepath, filename)
         face = cv2.imread(file)
         img = addoval(face)
-        cv2.imwrite(file, img)
+        cv2.imwrite("ovaled.jpg", img)

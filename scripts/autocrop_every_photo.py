@@ -86,4 +86,4 @@ for filepath, dirnames, filenames in os.walk(r'testPics'):
         file = os.path.join(filepath, filename)
         img = cv2.imread(file)
         img = autocrop(file)
-        cv2.imwrite(file, img)
+        cv2.imwrite('cropped.jpg', img)
