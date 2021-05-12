@@ -88,10 +88,13 @@ export class TrainingPage {
   progress : number;
   currentRace : any;
   userLevel : any;
-
+  
   initCurrentLevel(race : Race = Race.BLACK) {
     this.showRaceSelect();
-
+    // Option = User's choice
+    // Option -> Database
+    // let days = res['days'];
+    // race = days[day]['race'];
     this.currentRace = race;
 
     this.getProgress.getData().subscribe((res) => {
