@@ -88,6 +88,9 @@ export class TrainingPage {
   progress : number;
   currentRace : any;
   userLevel : any;
+  // trial starts
+  userRace : any;
+  // trial ends
   
   initCurrentLevel(race : Race = Race.BLACK) {
     this.showRaceSelect();
@@ -95,12 +98,17 @@ export class TrainingPage {
     // Option -> Database
     // let days = res['days'];
     // race = days[day]['race'];
-    this.currentRace = race;
+    // this.currentRace = race;
 
     this.getProgress.getData().subscribe((res) => {
 
       let days = res['days'];
       this.userLevel = res['level'];
+      // trial starts
+      this.userRace = res['race'];
+      this.userRace = 
+      // trial ends
+
       let levelCompletedToday = false;
 
       if (this.userLevel == 0 || this.userLevel == 9) {
@@ -239,10 +247,19 @@ export class TrainingPage {
   }
 
   async showRaceSelect() {
+    // trail start
+    let currentR = null;
+    // trail end
     const modal = await this.modalController.create({
-      component: RaceSelectModalComponent
+      component: RaceSelectModalComponent,
+      // trail start
+      componentProps: {
+        'currentR': currentR
+      }
+      // trail end
     });
     await modal.present();
+    let { data } = await modal.onWillDismiss();
   }
 
   renderLevelOneHelp() {
