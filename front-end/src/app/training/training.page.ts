@@ -98,15 +98,15 @@ export class TrainingPage {
     // Option -> Database
     // let days = res['days'];
     // race = days[day]['race'];
-    // this.currentRace = race;
+    this.currentRace = race;
 
     this.getProgress.getData().subscribe((res) => {
 
       let days = res['days'];
       this.userLevel = res['level'];
       // trial starts
-      this.userRace = res['race'];
-      this.userRace = 
+      // this.userRace = res['race'];
+      // this.userRace = 
       // trial ends
 
       let levelCompletedToday = false;
