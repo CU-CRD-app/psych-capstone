@@ -88,26 +88,32 @@ export class TrainingPage {
   progress : number;
   currentRace : any;
   userLevel : any;
-  // trial starts
-  userRace : any;
-  // trial ends
+  /**
+   * trial starts
+   * userRace : any;
+   * trial ends
+  */
   
   initCurrentLevel(race : Race = Race.BLACK) {
     this.showRaceSelect();
-    // Option = User's choice
-    // Option -> Database
-    // let days = res['days'];
-    // race = days[day]['race'];
+    /**
+    * Option = User's choice
+    * Option -> Database
+    * let days = res['days'];
+    * race = days[day]['race'];
+    */
     this.currentRace = race;
 
     this.getProgress.getData().subscribe((res) => {
 
       let days = res['days'];
       this.userLevel = res['level'];
-      // trial starts
-      // this.userRace = res['race'];
-      // this.userRace = 
-      // trial ends
+      /**
+       * trial starts
+       * this.userRace = res['race'];
+       * this.userRace = 
+       * trial ends
+      */ 
 
       let levelCompletedToday = false;
 
@@ -246,7 +252,7 @@ export class TrainingPage {
     await modal.present();
   }
 
-  // async showRaceSelect() {
+  /** // async showRaceSelect() {
   //   // trail start
   //   let currentR = null;
   //   // trail end
@@ -260,7 +266,8 @@ export class TrainingPage {
   //   });
   //   await modal.present();
   //   let { data } = await modal.onWillDismiss();
-  // }
+  // }*/
+  
 
   async showRaceSelect() {
     const modal = await this.modalController.create({
