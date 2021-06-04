@@ -252,30 +252,28 @@ export class TrainingPage {
     await modal.present();
   }
 
-  /** // async showRaceSelect() {
-  //   // trail start
-  //   let currentR = null;
-  //   // trail end
-  //   const modal = await this.modalController.create({
-  //     component: RaceSelectModalComponent,
-  //     // trail start
-  //     componentProps: {
-  //       'currentR': currentR
-  //     }
-  //     // trail end
-  //   });
-  //   await modal.present();
-  //   let { data } = await modal.onWillDismiss();
-  // }*/
   
-
+  async showRaceSelect() {
+    let currentR = null;
+    const modal = await this.modalController.create({
+      component: RaceSelectModalComponent,
+      componentProps: {
+        'currentR': currentR
+      }
+    });
+    await modal.present();
+    let { data } = await modal.onWillDismiss();
+  } 
+  
+  /**
   async showRaceSelect() {
     const modal = await this.modalController.create({
       component: RaceSelectModalComponent
     });
     await modal.present();
   }
-
+  */
+ 
   renderLevelOneHelp() {
     if (this.userLevel == 1) {
       timer(500).subscribe(() => {
