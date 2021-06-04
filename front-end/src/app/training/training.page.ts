@@ -48,6 +48,7 @@ export class TrainingPage {
     this.stage = null;
     this.task = null;
     timer(500).subscribe(() => {
+      // replace with user choice
       this.currentRace = Race.BLACK;
       this.initCurrentLevel();
     });
@@ -392,7 +393,7 @@ export class TrainingPage {
     }
     this.submitScores.submitTaskScores(this.userLevel, this.scores);
   }
-  
+
   /**Pass raceName */
   finishPrePost(score : number[]) {
     if (this.userLevel == 0) {
