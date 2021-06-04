@@ -262,7 +262,7 @@ export class TrainingPage {
       }
     });
     await modal.present();
-    let { data } = await modal.onWillDismiss();
+    /**let { data } = await modal.onWillDismiss();*/
   } 
   
   /**
