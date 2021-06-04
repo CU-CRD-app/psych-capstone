@@ -252,7 +252,7 @@ export class TrainingPage {
     await modal.present();
   }
 
-  
+  /**
   async showRaceSelect() {
     let currentR = null;
     const modal = await this.modalController.create({
@@ -262,17 +262,15 @@ export class TrainingPage {
       }
     });
     await modal.present();
-    /**let { data } = await modal.onWillDismiss();*/
-  } 
+    let { data } = await modal.onWillDismiss();
+  } */
   
-  /**
   async showRaceSelect() {
     const modal = await this.modalController.create({
       component: RaceSelectModalComponent
     });
     await modal.present();
   }
-  */
  
   renderLevelOneHelp() {
     if (this.userLevel == 1) {
