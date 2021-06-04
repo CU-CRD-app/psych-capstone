@@ -18,8 +18,9 @@ enum Task { NAME_FACE, WHOS_NEW, MEMORY, SHUFFLE, FORCED_CHOICE, SAME_DIFFERENT,
 let raceProperties = {
   0: {
     race: Race.BLACK,
+    //Change to initials.
     namePool: {
-      1: ['James', 'John', 'Robert', 'Michael', 'Will', 'David', 'Richard', 'Joseph'],
+      1: ['J.S', 'John', 'Robert', 'Michael', 'Will', 'David', 'Richard', 'Joseph'],
       2: ['Thomas', 'Charlie', 'Chris', 'Daniel', 'Matthew', 'Anthony', 'Don', 'Mark'],
       3: ['Paul', 'Steven', 'Andrew', 'Ken', 'Joshua', 'George', 'Kevin', 'Brian'],
       4: ['Edward', 'Ron', 'Tim', 'Jason', 'Jeff', 'Ryan', 'Jacob', 'Gary'],
