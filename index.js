@@ -14,7 +14,7 @@ var postassessment = require('./postassessment.js');
 var tokenHandler = require('./token.js');
 var password = require('./passwordChange.js');
 var fs = require("fs");
-var raceName = "white";
+var raceName = "asian";
 
 initialize.start()
     .then(res => console.log(res))
