@@ -144,9 +144,9 @@ export class TrainingPage {
     * Option = User's choice
     * Option -> Database
     * let days = res['days'];
-    * race = days[day]['race'];
+    * race = days[day]['race'];this.currentRace = race;
     */
-    // this.currentRace = race;
+    
 
     this.getProgress.getData().subscribe((res) => {
 
