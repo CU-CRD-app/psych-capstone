@@ -11,7 +11,7 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { RaceSelectModalComponent } from '../race-select-modal/race-select-modal.component';
 import { ModalsPluginWeb } from '@capacitor/core';
 
-enum Race { BLACK, ASIAN }
+enum Race { BLACK, ASIAN, LATINO, WHITE }
 enum Stage { START, TRAINING, ASSESSMENT, DONE }
 enum Task { NAME_FACE, WHOS_NEW, MEMORY, SHUFFLE, FORCED_CHOICE, SAME_DIFFERENT, PRETEST, POSTTEST, LEARNING }
 
@@ -283,7 +283,6 @@ export class TrainingPage {
   }
 
   async getTrainingFaces() {
-    this.submitScores.submitTaskScores(-1, [-1, -1, -1, -1], 'asian_female');
     let facePaths : string[] = [];
     let imagesAlreadyStored = true;
 
