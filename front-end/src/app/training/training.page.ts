@@ -29,7 +29,7 @@ let raceProperties = {
       7: ['D.Q', 'J.N', 'T.W', 'A.G', 'J.M', 'H.K', 'D.L', 'A.P'],
       8: ['P.P', 'N.S', 'Z.S', 'W.W', 'K.F', 'H.I', 'C.B', 'J.L']
     }
-  }
+  },
   1: {
     race: Race.ASIAN,
     //Change to initials.
@@ -43,7 +43,7 @@ let raceProperties = {
       7: ['D.Q', 'J.N', 'T.W', 'A.G', 'J.M', 'H.K', 'D.L', 'A.P'],
       8: ['P.P', 'N.S', 'Z.S', 'W.W', 'K.F', 'H.I', 'C.B', 'J.L']
     }
-  }
+  },
   2: {
     race: Race.LATINO,
     //Change to initials.
@@ -57,7 +57,7 @@ let raceProperties = {
       7: ['D.Q', 'J.N', 'T.W', 'A.G', 'J.M', 'H.K', 'D.L', 'A.P'],
       8: ['P.P', 'N.S', 'Z.S', 'W.W', 'K.F', 'H.I', 'C.B', 'J.L']
     }
-  }
+  },
   3: {
     race: Race.WHITE,
     //Change to initials.
