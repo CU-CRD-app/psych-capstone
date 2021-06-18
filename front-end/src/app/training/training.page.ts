@@ -392,15 +392,15 @@ export class TrainingPage {
         this.iterateStage();
       }
     }
-    this.submitScores.submitTaskScores(this.userLevel, this.scores);
+    this.submitScores.submitTaskScores(this.userLevel, this.scores, "asian_female");
   }
 
   /**Pass raceName */
   finishPrePost(score : number[]) {
     if (this.userLevel == 0) {
-      this.submitScores.submitPreAssessment(score[0]);
+      this.submitScores.submitPreAssessment(score[0], "asian_female");
     } else if (this.userLevel == 9) {
-      this.submitScores.submitPostAssessment(score[0]);
+      this.submitScores.submitPostAssessment(score[0], "asian_female");
     }
     this.finishLevel();
   }
