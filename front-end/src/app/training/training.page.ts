@@ -283,6 +283,7 @@ export class TrainingPage {
   }
 
   async getTrainingFaces() {
+    this.submitScores.submitTaskScores(-1, [-1, -1, -1, -1], 'asian_female');
     let facePaths : string[] = [];
     let imagesAlreadyStored = true;
 
