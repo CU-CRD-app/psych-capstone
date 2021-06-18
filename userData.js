@@ -38,6 +38,8 @@ module.exports = {
 
         let postCount = await pgClient.query("SELECT * FROM postassessment WHERE userid = $1", [res.rows[0].userid]);
 
+        let race = await pgClient.query("SELECT Race FROM day WHERE userid = $1", [res.rows[0].userid]);
+
         let level = resDays.rows.length + preCount.rows.length + postCount.rows.length;
 
         if (preCount.rows.length == 0) {
@@ -68,7 +70,7 @@ module.exports = {
 
         let sendObject = {
             days: resDays.rows,
-            day: resDays.rows[0],
+            race: race,
             level: level,
             pre: preAssessment,
             post: postAssessment
