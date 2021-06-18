@@ -55,6 +55,7 @@ module.exports = {
 
         let preAssessment = {};
         let postAssessment= {};
+        let raceName = preCount.rows[0].race;
 
         if(preCount.rows.length > 0){
             preAssessment['score'] = preCount.rows[0].score;
@@ -70,7 +71,7 @@ module.exports = {
 
         let sendObject = {
             days: resDays.rows,
-            pre: preCount.rows[0].race,
+            pre: raceName,
             level: level,
             pre: preAssessment,
             post: postAssessment
