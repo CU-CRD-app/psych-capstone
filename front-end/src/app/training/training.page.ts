@@ -392,15 +392,15 @@ export class TrainingPage {
         this.iterateStage();
       }
     }
-    this.submitScores.submitTaskScores(this.userLevel, this.scores, "black");
+    this.submitScores.submitTaskScores(this.userLevel, this.scores);
   }
 
   /**Pass raceName */
   finishPrePost(score : number[]) {
     if (this.userLevel == 0) {
-      this.submitScores.submitPreAssessment(score[0], "black");
+      this.submitScores.submitPreAssessment(score[0]);
     } else if (this.userLevel == 9) {
-      this.submitScores.submitPostAssessment(score[0], "black");
+      this.submitScores.submitPostAssessment(score[0]);
     }
     this.finishLevel();
   }
