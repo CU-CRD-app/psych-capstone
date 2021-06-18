@@ -233,7 +233,7 @@ app.put("/getTrainingFaces/", cors(corsOptions), function(req, res, next){
                     // backup-${backupreq.body.race}
                     // backup-console.log("`${req.body.level}`");
                     // backup-res.sendStatus(200);
-                    if (req.body.race == 0) {
+                    if (req.body.race == "undefined") {
                         var raceName = "black";//String(req.body.race.rows[0]);//String(req.body.days[0].race);
                     }
                     else{
@@ -284,7 +284,7 @@ app.put("/getDailyAssessmentFaces/", cors(corsOptions), function(req, res, next)
                 try {
                     var images = [];
                     var faceNums = [];
-                    if (req.body.race == 0) {
+                    if (req.body.race == "undefined") {
                         var raceName = "black";//String(req.body.race.rows[0]);//String(req.body.days[0].race);
                     }
                     else{
@@ -317,7 +317,7 @@ app.put("/getPrePostAssessmentFaces/", cors(corsOptions), function(req, res, nex
             .then(id => {
                 try {
                     var images = [];
-                    if (req.body.race == 0) {
+                    if (req.body.race == "undefined") {
                         var raceName = "black";//String(req.body.race.rows[0]);//String(req.body.days[0].race);
                     }
                     else{
@@ -346,7 +346,7 @@ app.put("/getWhosNewFaces/", cors(corsOptions), function(req, res, next){
             .then(id => {
                 try {
                     var images = [];
-                    if (req.body.race == 0) {
+                    if (req.body.race == "undefined") {
                         var raceName = "black";//String(req.body.race.rows[0]);//String(req.body.days[0].race);
                     }
                     else{
