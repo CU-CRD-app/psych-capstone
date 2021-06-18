@@ -279,7 +279,7 @@ app.put("/getDailyAssessmentFaces/", cors(corsOptions), function(req, res, next)
                 try {
                     var images = [];
                     var faceNums = [];
-                    var raceName = String(req.body.race.rows[0]['race']);;//String(req.body.days[0].race);
+                    var raceName = String(req.body.race.rows[0]['race']);//String(req.body.days[0].race);
                     for (var i = 0; i < 8; i++) { // Generate 8 random numbers between 0 and 30
                         var face = Math.floor(Math.random() * 30);
                         while (faceNums.indexOf(face) > -1) { // Account for repeats
@@ -307,7 +307,7 @@ app.put("/getPrePostAssessmentFaces/", cors(corsOptions), function(req, res, nex
             .then(id => {
                 try {
                     var images = [];
-                    var raceName = String(req.body.race.rows[0]['race']);;//String(req.body.days[0].race);
+                    var raceName = String(req.body.race.rows[0]['race']);//String(req.body.days[0].race);
                     for (var i = 0; i < 30; i++) {
                         var data = fs.readFileSync(`./faces/${raceName}/pre-post-assessment/${i}.jpg`);
                         images.push(new Buffer(data, 'binary').toString('base64'));
@@ -331,7 +331,7 @@ app.put("/getWhosNewFaces/", cors(corsOptions), function(req, res, next){
             .then(id => {
                 try {
                     var images = [];
-                    var raceName = String(req.body.race.rows[0]['race']);;//String(req.body.days[0].race);
+                    var raceName = String(req.body.race.rows[0]['race']);//String(req.body.days[0].race);
                     var afterFaces = 8 - req.body.level + (1 - Math.round(req.body.level/8));
                     var beforeFaces = 8 - afterFaces;
                     for (var i = 0; i < afterFaces; i++) {
