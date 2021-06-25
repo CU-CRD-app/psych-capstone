@@ -1,6 +1,6 @@
 <div class="flex-slide">
   <div>
-    <div class="header">Your score: {{score}}/{{length}}</div>
+    <div class="header" style="color:white">Your score: {{score}}/{{length}}</div>
     <div *ngIf="failed()" class="subheader" style="margin: 5%">You need a score of at least {{length * minTrainScore}}/{{length}} ({{minTrainScore * 100}}%) to pass this module</div>
     <ion-button *ngIf="failed()" (click)="finished.emit(0)">Retry</ion-button>
     <ion-button *ngIf="failed()" (click)="finished.emit(1)">
