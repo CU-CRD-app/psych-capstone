@@ -139,7 +139,7 @@ export class TrainingPage {
   */
   
   initCurrentLevel(race : Race = Race.BLACK) {
-    this.showRaceSelect();
+    // this.showRaceSelect();
     /**
     * Option = User's choice
     * Option -> Database
