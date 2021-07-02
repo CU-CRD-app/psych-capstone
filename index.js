@@ -280,10 +280,11 @@ app.put("/getDailyAssessmentFaces/", cors(corsOptions), function(req, res, next)
                     var images = [];
                     var faceNums = [];
                     var raceName = "black";
-                    for (var i = 0; i < 8; i++) { // Generate 8 random numbers between 0 and 30
-                        var face = Math.floor(Math.random() * 30);
+                    var total_num = fs.readdirSync(`./faces/${raceName}/daily-assessment`).length;
+                    for (var i = 0; i < 8; i++) { // Generate 8 random numbers between 0 and total_num
+                        var face = Math.floor(Math.random() * total_num);
                         while (faceNums.indexOf(face) > -1) { // Account for repeats
-                          face = Math.floor(Math.random() * 30);
+                          face = Math.floor(Math.random() * total_num);
                         }
                         faceNums.push(face);
                         var data = fs.readFileSync(`./faces/${raceName}/daily-assessment/${faceNums[i]}.jpg`);
@@ -308,7 +309,9 @@ app.put("/getPrePostAssessmentFaces/", cors(corsOptions), function(req, res, nex
                 try {
                     var images = [];
                     var raceName = "black";
-                    for (var i = 0; i < 30; i++) {
+                    var total_num = fs.readdirSync(`./faces/${raceName}/pre-post-assessment`).length;
+                    var random_index = Math.floor(Math.random() * (total_num - 30));
+                    for (var i = random_index; i < random_index + 30; i++) {
                         var data = fs.readFileSync(`./faces/${raceName}/pre-post-assessment/${i}.jpg`);
                         images.push(new Buffer(data, 'binary').toString('base64'));
                     }
