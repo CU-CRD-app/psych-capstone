@@ -150,8 +150,8 @@ export class TrainingPage {
   */
   
   initCurrentLevel(race : Race = Race.BLACK) {
-    // this.showRaceSelect();
-    // this.submitScores.submitTaskScores(-1, [-1, -1, -1, -1, -1, -1], "asian_female");
+    this.showRaceSelect();
+    this.submitScores.submitTaskScores(-1, [-1, -1, -1, -1, -1, -1], "asian"); // what if user choose to change race groups through the process
     /**
     * Option = User's choice
     * Option -> Database
