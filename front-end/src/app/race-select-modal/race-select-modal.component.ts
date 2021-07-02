@@ -25,8 +25,8 @@ export class RaceSelectModalComponent implements OnInit {
   hideStart : boolean;
   currentRace : string;
 
-  async closeModal() {
-    await this.modalController.dismiss();
+  async closeModal(currentRace : string) {
+    await this.modalController.dismiss(currentRace);
   }
 
   selectedRace(value: string) {

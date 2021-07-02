@@ -11,22 +11,65 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { RaceSelectModalComponent } from '../race-select-modal/race-select-modal.component';
 import { ModalsPluginWeb } from '@capacitor/core';
 
-enum Race { BLACK, ASIAN }
+enum Race { BLACK, ASIAN, LATINO, WHITE }
 enum Stage { START, TRAINING, ASSESSMENT, DONE }
 enum Task { NAME_FACE, WHOS_NEW, MEMORY, SHUFFLE, FORCED_CHOICE, SAME_DIFFERENT, PRETEST, POSTTEST, LEARNING }
 
 let raceProperties = {
   0: {
     race: Race.BLACK,
+    //Change to initials.
     namePool: {
-      1: ['James', 'John', 'Robert', 'Michael', 'Will', 'David', 'Richard', 'Joseph'],
-      2: ['Thomas', 'Charlie', 'Chris', 'Daniel', 'Matthew', 'Anthony', 'Don', 'Mark'],
-      3: ['Paul', 'Steven', 'Andrew', 'Ken', 'Joshua', 'George', 'Kevin', 'Brian'],
-      4: ['Edward', 'Ron', 'Tim', 'Jason', 'Jeff', 'Ryan', 'Jacob', 'Gary'],
-      5: ['Nick', 'Eric', 'Stephen', 'Jonathan', 'Larry', 'Justin', 'Scott', 'Brandon'],
-      6: ['Frank', 'Ben', 'Greg', 'Sam', 'Ray', 'Patrick', 'Alex', 'Jack'],
-      7: ['Dennis', 'Jerry', 'Tyler', 'Aaron', 'Jose', 'Henry', 'Doug', 'Adam'],
-      8: ['Peter', 'Nathan', 'Zach', 'Walter', 'Kyle', 'Harry', 'Carl', 'Jeremy']
+      1: ['J.S', 'O.N', 'R.T', 'M.A', 'W.L', 'D.D', 'R.C', 'J.I'],
+      2: ['T.S', 'C.H', 'C.S', 'D.A', 'M.W', 'A.Y', 'D.J', 'M.K'],
+      3: ['P.L', 'S.T', 'A.D', 'K.D', 'J.K', 'G.W', 'K.E', 'B.C'],
+      4: ['E.D', 'R.N', 'T.M', 'J.H', 'K.H', 'R.B', 'J.Y', 'G.C'],
+      5: ['N.C', 'E.B', 'S.V', 'J.F', 'L.T', 'J.B', 'S.B', 'B.H'],
+      6: ['F.Y', 'B.S', 'G.P', 'S.R', 'R.H', 'P.J', 'A.W', 'J.C'],
+      7: ['D.Q', 'J.N', 'T.W', 'A.G', 'J.M', 'H.K', 'D.L', 'A.P'],
+      8: ['P.P', 'N.S', 'Z.S', 'W.W', 'K.F', 'H.I', 'C.B', 'J.L']
+    }
+  },
+  1: {
+    race: Race.ASIAN,
+    //Change to initials.
+    namePool: {
+      1: ['J.S', 'O.N', 'R.T', 'M.A', 'W.L', 'D.D', 'R.C', 'J.I'],
+      2: ['T.S', 'C.H', 'C.S', 'D.A', 'M.W', 'A.Y', 'D.J', 'M.K'],
+      3: ['P.L', 'S.T', 'A.D', 'K.D', 'J.K', 'G.W', 'K.E', 'B.C'],
+      4: ['E.D', 'R.N', 'T.M', 'J.H', 'K.H', 'R.B', 'J.Y', 'G.C'],
+      5: ['N.C', 'E.B', 'S.V', 'J.F', 'L.T', 'J.B', 'S.B', 'B.H'],
+      6: ['F.Y', 'B.S', 'G.P', 'S.R', 'R.H', 'P.J', 'A.W', 'J.C'],
+      7: ['D.Q', 'J.N', 'T.W', 'A.G', 'J.M', 'H.K', 'D.L', 'A.P'],
+      8: ['P.P', 'N.S', 'Z.S', 'W.W', 'K.F', 'H.I', 'C.B', 'J.L']
+    }
+  },
+  2: {
+    race: Race.LATINO,
+    //Change to initials.
+    namePool: {
+      1: ['J.S', 'O.N', 'R.T', 'M.A', 'W.L', 'D.D', 'R.C', 'J.I'],
+      2: ['T.S', 'C.H', 'C.S', 'D.A', 'M.W', 'A.Y', 'D.J', 'M.K'],
+      3: ['P.L', 'S.T', 'A.D', 'K.D', 'J.K', 'G.W', 'K.E', 'B.C'],
+      4: ['E.D', 'R.N', 'T.M', 'J.H', 'K.H', 'R.B', 'J.Y', 'G.C'],
+      5: ['N.C', 'E.B', 'S.V', 'J.F', 'L.T', 'J.B', 'S.B', 'B.H'],
+      6: ['F.Y', 'B.S', 'G.P', 'S.R', 'R.H', 'P.J', 'A.W', 'J.C'],
+      7: ['D.Q', 'J.N', 'T.W', 'A.G', 'J.M', 'H.K', 'D.L', 'A.P'],
+      8: ['P.P', 'N.S', 'Z.S', 'W.W', 'K.F', 'H.I', 'C.B', 'J.L']
+    }
+  },
+  3: {
+    race: Race.WHITE,
+    //Change to initials.
+    namePool: {
+      1: ['J.S', 'O.N', 'R.T', 'M.A', 'W.L', 'D.D', 'R.C', 'J.I'],
+      2: ['T.S', 'C.H', 'C.S', 'D.A', 'M.W', 'A.Y', 'D.J', 'M.K'],
+      3: ['P.L', 'S.T', 'A.D', 'K.D', 'J.K', 'G.W', 'K.E', 'B.C'],
+      4: ['E.D', 'R.N', 'T.M', 'J.H', 'K.H', 'R.B', 'J.Y', 'G.C'],
+      5: ['N.C', 'E.B', 'S.V', 'J.F', 'L.T', 'J.B', 'S.B', 'B.H'],
+      6: ['F.Y', 'B.S', 'G.P', 'S.R', 'R.H', 'P.J', 'A.W', 'J.C'],
+      7: ['D.Q', 'J.N', 'T.W', 'A.G', 'J.M', 'H.K', 'D.L', 'A.P'],
+      8: ['P.P', 'N.S', 'Z.S', 'W.W', 'K.F', 'H.I', 'C.B', 'J.L']
     }
   }
 }
@@ -48,6 +91,7 @@ export class TrainingPage {
     this.stage = null;
     this.task = null;
     timer(500).subscribe(() => {
+      // replace with user choice
       this.currentRace = Race.BLACK;
       this.initCurrentLevel();
     });
@@ -88,16 +132,35 @@ export class TrainingPage {
   progress : number;
   currentRace : any;
   userLevel : any;
-
+  /**
+   * trial starts
+   * userRace : any;
+   * trial ends
+  */
+  
   initCurrentLevel(race : Race = Race.BLACK) {
-    this.showRaceSelect();
-
+    // this.showRaceSelect();
+    // this.submitScores.submitTaskScores(-1, [-1, -1, -1, -1, -1, -1], "asian_female");
+    /**
+    * Option = User's choice
+    * Option -> Database
+    * let days = res['days'];
+    * race = days[day]['race'];this.currentRace = race;
+    */
     this.currentRace = race;
 
     this.getProgress.getData().subscribe((res) => {
 
       let days = res['days'];
       this.userLevel = res['level'];
+      
+      /**
+       * trial starts
+       * this.userRace = res['race'];
+       * this.userRace = 
+       * trial ends
+      */ 
+
       let levelCompletedToday = false;
 
       if (this.userLevel == 0 || this.userLevel == 9) {
@@ -235,13 +298,26 @@ export class TrainingPage {
     await modal.present();
   }
 
+  /**
+  async showRaceSelect() {
+    let currentR = null;
+    const modal = await this.modalController.create({
+      component: RaceSelectModalComponent,
+      componentProps: {
+        'currentR': currentR
+      }
+    });
+    await modal.present();
+    let { data } = await modal.onWillDismiss();
+  } */
+  
   async showRaceSelect() {
     const modal = await this.modalController.create({
       component: RaceSelectModalComponent
     });
     await modal.present();
   }
-
+ 
   renderLevelOneHelp() {
     if (this.userLevel == 1) {
       timer(500).subscribe(() => {
@@ -360,14 +436,15 @@ export class TrainingPage {
         this.iterateStage();
       }
     }
-    this.submitScores.submitTaskScores(this.userLevel, this.scores);
+    this.submitScores.submitTaskScores(this.userLevel, this.scores, "black");
   }
 
+  /**Pass raceName */
   finishPrePost(score : number[]) {
     if (this.userLevel == 0) {
-      this.submitScores.submitPreAssessment(score[0]);
+      this.submitScores.submitPreAssessment(score[0], "black");
     } else if (this.userLevel == 9) {
-      this.submitScores.submitPostAssessment(score[0]);
+      this.submitScores.submitPostAssessment(score[0], "black");
     }
     this.finishLevel();
   }

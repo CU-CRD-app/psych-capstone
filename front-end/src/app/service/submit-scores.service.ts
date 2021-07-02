@@ -46,7 +46,7 @@ export class SubmitScoresService {
   **********************************************/
 
   //TASKS
-  setScores(level: number, scores: number[], race: string = "Black"): Promise<any> {
+  setScores(level: number, scores: number[], race: string = "black"): Promise<any> {
     let promise = new Promise((resolve, reject) => {
       this.level = level;
       this.race = race;
@@ -73,7 +73,7 @@ export class SubmitScoresService {
     return promise;
   }
 
-  async putScores(level: number, scores: number[], race: string = "Black") {
+  async putScores(level: number, scores: number[], race: string = "black") {
     const httpOptions = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json; charset=utf-8',
@@ -91,14 +91,14 @@ export class SubmitScoresService {
     });
   }
 
-  submitTaskScores(level: number, scores : number[], race: string = "Black")
+  submitTaskScores(level: number, scores : number[], race: string = "black")
   {
     this.putScores(level, scores, race);
   }
 
 
   //PRE-ASSESSMENT
-  setPre(score: number, race: string = "Black"): Promise<any>{
+  setPre(score: number, race: string = "black"): Promise<any>{
     let promise = new Promise((resolve, reject) => {
       this.pre_score = score;
       this.race = race;
@@ -114,7 +114,7 @@ export class SubmitScoresService {
     return promise;
   }
 
-  async submitPreAssessment(score: number, race: string = "Black") {
+  async submitPreAssessment(score: number, race: string = "black") {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json; charset=utf-8',
@@ -134,7 +134,7 @@ export class SubmitScoresService {
   }
 
   //POST-ASSESSMENT
-  setPost(score: number, race: string = "Black"): Promise<any>{
+  setPost(score: number, race: string = "black"): Promise<any>{
     let promise = new Promise((resolve, reject) => {
       this.post_score = score;
       this.race = race;
@@ -150,7 +150,7 @@ export class SubmitScoresService {
     return promise;
   }
 
-  async submitPostAssessment(score: number, race: string = "Black") {
+  async submitPostAssessment(score: number, race: string = "black") {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json; charset=utf-8',

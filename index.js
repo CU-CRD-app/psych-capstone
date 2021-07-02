@@ -229,30 +229,34 @@ app.put("/getTrainingFaces/", cors(corsOptions), function(req, res, next){
             .then(id => {
                 try {
                     var images = [];
-                    //random choose 1 picture from Level-7
-                    var total_num = fs.readdirSync(`./faces/white/training/level-7`).length;
+                    //random choose 1 picture from Level-7 
+                    // backup-${backupreq.body.race}
+                    // backup-console.log("`${req.body.level}`");
+                    // backup-res.sendStatus(200);
+                    var raceName = "black";//String(req.body.race.rows[0]);//String(req.body.days[0].race);
+                    var total_num = fs.readdirSync(`./faces/${raceName}/training/level-7`).length;
                     var random_index = Math.floor(Math.random() * total_num );
-                    var data = fs.readFileSync(`./faces/white/training/level-7/${random_index}.jpg`);
+                    var data = fs.readFileSync(`./faces/${raceName}/training/level-7/${random_index}.jpg`);
                     images.push(new Buffer(data, 'binary').toString('base64'));
                     //random choose 7 pictures from Level-X
-                    var total_num = fs.readdirSync(`./faces/white/training/level-${req.body.level - 1}`).length;
+                    var total_num = fs.readdirSync(`./faces/${raceName}/training/level-${req.body.level - 1}`).length;
                     // var img_indices = [0, 1, 2, 3, 4, 5, 6, 7];
                     var img_indices = Array.from(Array(total_num).keys());
                     shuffled_indices = shuffle(img_indices);
                     for (var i = 0; i < 7; i++) {
                         random_index = shuffled_indices[i];
-                        var data = fs.readFileSync(`./faces/white/training/level-${req.body.level - 1}/${random_index}.jpg`);
+                        var data = fs.readFileSync(`./faces/${raceName}/training/level-${req.body.level - 1}/${random_index}.jpg`);
                         images.push(new Buffer(data, 'binary').toString('base64'));
                     }
                     // -------Debug session codes-------
                     // var images = [];
-                    // var total_num = fs.readdirSync(`./faces/asian/training/level-${req.body.level - 1}`).length;
+                    // var total_num = fs.readdirSync(`./faces/${raceName}/training/level-${req.body.level - 1}`).length;
                     // var img_indices = Array.from(Array(total_num).keys());
                     // // var img_indices = [0, 1, 2, 3, 4, 5, 6, 7];
                     // var shuffled_indices = _.shuffle(img_indices);
                     // for (var i = 0; i < 8; i++) {
                     //     random_index = shuffled_indices[i];
-                    //     var data = fs.readFileSync(`./faces/asian/training/level-${req.body.level - 1}/${random_index}.jpg`);
+                    //     var data = fs.readFileSync(`./faces/${raceName}/training/level-${req.body.level - 1}/${random_index}.jpg`);
                     //     images.push(new Buffer(data, 'binary').toString('base64'));
                     // }
                     // -------Debug session ends-------
@@ -275,13 +279,15 @@ app.put("/getDailyAssessmentFaces/", cors(corsOptions), function(req, res, next)
                 try {
                     var images = [];
                     var faceNums = [];
-                    for (var i = 0; i < 8; i++) { // Generate 8 random numbers between 0 and 30
-                        var face = Math.floor(Math.random() * 30);
+                    var raceName = "black";
+                    var total_num = fs.readdirSync(`./faces/${raceName}/daily-assessment`).length;
+                    for (var i = 0; i < 8; i++) { // Generate 8 random numbers between 0 and total_num
+                        var face = Math.floor(Math.random() * total_num);
                         while (faceNums.indexOf(face) > -1) { // Account for repeats
-                          face = Math.floor(Math.random() * 30);
+                          face = Math.floor(Math.random() * total_num);
                         }
                         faceNums.push(face);
-                        var data = fs.readFileSync(`./faces/white/daily-assessment/${faceNums[i]}.jpg`);
+                        var data = fs.readFileSync(`./faces/${raceName}/daily-assessment/${faceNums[i]}.jpg`);
                         images.push(new Buffer(data, 'binary').toString('base64'));
                     }
                     res.status(200).send({images: images});
@@ -302,8 +308,11 @@ app.put("/getPrePostAssessmentFaces/", cors(corsOptions), function(req, res, nex
             .then(id => {
                 try {
                     var images = [];
-                    for (var i = 0; i < 30; i++) {
-                        var data = fs.readFileSync(`./faces/white/pre-post-assessment/${i}.jpg`);
+                    var raceName = "black";
+                    var total_num = fs.readdirSync(`./faces/${raceName}/pre-post-assessment`).length;
+                    var random_index = Math.floor(Math.random() * (total_num - 30));
+                    for (var i = random_index; i < random_index + 30; i++) {
+                        var data = fs.readFileSync(`./faces/${raceName}/pre-post-assessment/${i}.jpg`);
                         images.push(new Buffer(data, 'binary').toString('base64'));
                     }
                     res.status(200).send({images: images});
@@ -325,14 +334,15 @@ app.put("/getWhosNewFaces/", cors(corsOptions), function(req, res, next){
             .then(id => {
                 try {
                     var images = [];
+                    var raceName = "black";
                     var afterFaces = 8 - req.body.level + (1 - Math.round(req.body.level/8));
                     var beforeFaces = 8 - afterFaces;
                     for (var i = 0; i < afterFaces; i++) {
-                        var data = fs.readFileSync(`./faces/white/training/level-${req.body.level + 1 - 1}/${i}.jpg`);
+                        var data = fs.readFileSync(`./faces/${raceName}/training/level-${req.body.level + 1 - 1}/${i}.jpg`);
                         images.push(new Buffer(data, 'binary').toString('base64'));
                     }
                     for (var i = 0; i < beforeFaces; i++) {
-                        var data = fs.readFileSync(`./faces/white/training/level-${req.body.level - 1 - 1}/${i}.jpg`);
+                        var data = fs.readFileSync(`./faces/${raceName}/training/level-${req.body.level - 1 - 1}/${i}.jpg`);
                         images.push(new Buffer(data, 'binary').toString('base64'));
                     }
                     res.status(200).send({images: images});
