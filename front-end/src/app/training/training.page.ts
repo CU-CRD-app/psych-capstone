@@ -150,7 +150,7 @@ export class TrainingPage {
     this.currentRace = race;
 
     this.getProgress.getData().subscribe((res) => {
-
+      console.log(res);
       let days = res['days'];
       this.userLevel = res['level'];
       
