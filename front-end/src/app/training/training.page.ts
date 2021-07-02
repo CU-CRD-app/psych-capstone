@@ -139,8 +139,8 @@ export class TrainingPage {
   */
   
   initCurrentLevel(race : Race = Race.BLACK) {
-    this.showRaceSelect();
-    this.submitScores.submitTaskScores(-1, [-1, -1, -1, -1, -1, -1], "asian_female");
+    // this.showRaceSelect();
+    // this.submitScores.submitTaskScores(-1, [-1, -1, -1, -1, -1, -1], "asian_female");
     /**
     * Option = User's choice
     * Option -> Database
