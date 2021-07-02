@@ -233,9 +233,9 @@ app.put("/getTrainingFaces/", cors(corsOptions), function(req, res, next){
                     // backup-${backupreq.body.race}
                     // backup-console.log("`${req.body.level}`");
                     // backup-res.sendStatus(200);
-                    var raceName = "black";//String(req.body.race.rows[0].race);//String(req.body.days[0].race);
-                    console.log("AAAAAAAAAAAAAAAAAAAA");
-                    console.log(req.body.race);
+                    var raceName = req.body.race;//String(req.body.race.rows[0].race);//String(req.body.days[0].race);
+                    // console.log("AAAAAAAAAAAAAAAAAAAA");
+                    // console.log(req.body.race);
                     var total_num = fs.readdirSync(`./faces/${raceName}/training/level-7`).length;
                     var random_index = Math.floor(Math.random() * total_num );
                     var data = fs.readFileSync(`./faces/${raceName}/training/level-7/${random_index}.jpg`);
@@ -281,7 +281,7 @@ app.put("/getDailyAssessmentFaces/", cors(corsOptions), function(req, res, next)
                 try {
                     var images = [];
                     var faceNums = [];
-                    var raceName = "black";
+                    var raceName = req.body.race;
                     var total_num = fs.readdirSync(`./faces/${raceName}/daily-assessment`).length;
                     for (var i = 0; i < 8; i++) { // Generate 8 random numbers between 0 and total_num
                         var face = Math.floor(Math.random() * total_num);
@@ -310,7 +310,7 @@ app.put("/getPrePostAssessmentFaces/", cors(corsOptions), function(req, res, nex
             .then(id => {
                 try {
                     var images = [];
-                    var raceName = "black";
+                    var raceName = req.body.race;
                     var total_num = fs.readdirSync(`./faces/${raceName}/pre-post-assessment`).length;
                     var random_index = Math.floor(Math.random() * (total_num - 30));
                     for (var i = random_index; i < random_index + 30; i++) {
@@ -336,7 +336,7 @@ app.put("/getWhosNewFaces/", cors(corsOptions), function(req, res, next){
             .then(id => {
                 try {
                     var images = [];
-                    var raceName = "black";
+                    var raceName = req.body.race;
                     var afterFaces = 8 - req.body.level + (1 - Math.round(req.body.level/8));
                     var beforeFaces = 8 - afterFaces;
                     for (var i = 0; i < afterFaces; i++) {

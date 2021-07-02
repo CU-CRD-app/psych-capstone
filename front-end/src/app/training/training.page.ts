@@ -15,64 +15,75 @@ enum Race { BLACK, ASIAN, LATINO, WHITE }
 enum Stage { START, TRAINING, ASSESSMENT, DONE }
 enum Task { NAME_FACE, WHOS_NEW, MEMORY, SHUFFLE, FORCED_CHOICE, SAME_DIFFERENT, PRETEST, POSTTEST, LEARNING }
 
-let raceProperties = {
-  0: {
-    race: Race.BLACK,
-    //Change to initials.
-    namePool: {
-      1: ['J.S', 'O.N', 'R.T', 'M.A', 'W.L', 'D.D', 'R.C', 'J.I'],
-      2: ['T.S', 'C.H', 'C.S', 'D.A', 'M.W', 'A.Y', 'D.J', 'M.K'],
-      3: ['P.L', 'S.T', 'A.D', 'K.D', 'J.K', 'G.W', 'K.E', 'B.C'],
-      4: ['E.D', 'R.N', 'T.M', 'J.H', 'K.H', 'R.B', 'J.Y', 'G.C'],
-      5: ['N.C', 'E.B', 'S.V', 'J.F', 'L.T', 'J.B', 'S.B', 'B.H'],
-      6: ['F.Y', 'B.S', 'G.P', 'S.R', 'R.H', 'P.J', 'A.W', 'J.C'],
-      7: ['D.Q', 'J.N', 'T.W', 'A.G', 'J.M', 'H.K', 'D.L', 'A.P'],
-      8: ['P.P', 'N.S', 'Z.S', 'W.W', 'K.F', 'H.I', 'C.B', 'J.L']
-    }
-  },
-  1: {
-    race: Race.ASIAN,
-    //Change to initials.
-    namePool: {
-      1: ['J.S', 'O.N', 'R.T', 'M.A', 'W.L', 'D.D', 'R.C', 'J.I'],
-      2: ['T.S', 'C.H', 'C.S', 'D.A', 'M.W', 'A.Y', 'D.J', 'M.K'],
-      3: ['P.L', 'S.T', 'A.D', 'K.D', 'J.K', 'G.W', 'K.E', 'B.C'],
-      4: ['E.D', 'R.N', 'T.M', 'J.H', 'K.H', 'R.B', 'J.Y', 'G.C'],
-      5: ['N.C', 'E.B', 'S.V', 'J.F', 'L.T', 'J.B', 'S.B', 'B.H'],
-      6: ['F.Y', 'B.S', 'G.P', 'S.R', 'R.H', 'P.J', 'A.W', 'J.C'],
-      7: ['D.Q', 'J.N', 'T.W', 'A.G', 'J.M', 'H.K', 'D.L', 'A.P'],
-      8: ['P.P', 'N.S', 'Z.S', 'W.W', 'K.F', 'H.I', 'C.B', 'J.L']
-    }
-  },
-  2: {
-    race: Race.LATINO,
-    //Change to initials.
-    namePool: {
-      1: ['J.S', 'O.N', 'R.T', 'M.A', 'W.L', 'D.D', 'R.C', 'J.I'],
-      2: ['T.S', 'C.H', 'C.S', 'D.A', 'M.W', 'A.Y', 'D.J', 'M.K'],
-      3: ['P.L', 'S.T', 'A.D', 'K.D', 'J.K', 'G.W', 'K.E', 'B.C'],
-      4: ['E.D', 'R.N', 'T.M', 'J.H', 'K.H', 'R.B', 'J.Y', 'G.C'],
-      5: ['N.C', 'E.B', 'S.V', 'J.F', 'L.T', 'J.B', 'S.B', 'B.H'],
-      6: ['F.Y', 'B.S', 'G.P', 'S.R', 'R.H', 'P.J', 'A.W', 'J.C'],
-      7: ['D.Q', 'J.N', 'T.W', 'A.G', 'J.M', 'H.K', 'D.L', 'A.P'],
-      8: ['P.P', 'N.S', 'Z.S', 'W.W', 'K.F', 'H.I', 'C.B', 'J.L']
-    }
-  },
-  3: {
-    race: Race.WHITE,
-    //Change to initials.
-    namePool: {
-      1: ['J.S', 'O.N', 'R.T', 'M.A', 'W.L', 'D.D', 'R.C', 'J.I'],
-      2: ['T.S', 'C.H', 'C.S', 'D.A', 'M.W', 'A.Y', 'D.J', 'M.K'],
-      3: ['P.L', 'S.T', 'A.D', 'K.D', 'J.K', 'G.W', 'K.E', 'B.C'],
-      4: ['E.D', 'R.N', 'T.M', 'J.H', 'K.H', 'R.B', 'J.Y', 'G.C'],
-      5: ['N.C', 'E.B', 'S.V', 'J.F', 'L.T', 'J.B', 'S.B', 'B.H'],
-      6: ['F.Y', 'B.S', 'G.P', 'S.R', 'R.H', 'P.J', 'A.W', 'J.C'],
-      7: ['D.Q', 'J.N', 'T.W', 'A.G', 'J.M', 'H.K', 'D.L', 'A.P'],
-      8: ['P.P', 'N.S', 'Z.S', 'W.W', 'K.F', 'H.I', 'C.B', 'J.L']
-    }
-  }
+// let raceProperties = {
+//   0: {
+//     race: Race.BLACK,
+//     //Change to initials.
+//     namePool: {
+//       1: ['J.S', 'O.N', 'R.T', 'M.A', 'W.L', 'D.D', 'R.C', 'J.I'],
+//       2: ['T.S', 'C.H', 'C.S', 'D.A', 'M.W', 'A.Y', 'D.J', 'M.K'],
+//       3: ['P.L', 'S.T', 'A.D', 'K.D', 'J.K', 'G.W', 'K.E', 'B.C'],
+//       4: ['E.D', 'R.N', 'T.M', 'J.H', 'K.H', 'R.B', 'J.Y', 'G.C'],
+//       5: ['N.C', 'E.B', 'S.V', 'J.F', 'L.T', 'J.B', 'S.B', 'B.H'],
+//       6: ['F.Y', 'B.S', 'G.P', 'S.R', 'R.H', 'P.J', 'A.W', 'J.C'],
+//       7: ['D.Q', 'J.N', 'T.W', 'A.G', 'J.M', 'H.K', 'D.L', 'A.P'],
+//       8: ['P.P', 'N.S', 'Z.S', 'W.W', 'K.F', 'H.I', 'C.B', 'J.L']
+//     }
+//   },
+//   1: {
+//     race: Race.ASIAN,
+//     //Change to initials.
+//     namePool: {
+//       1: ['J.S', 'O.N', 'R.T', 'M.A', 'W.L', 'D.D', 'R.C', 'J.I'],
+//       2: ['T.S', 'C.H', 'C.S', 'D.A', 'M.W', 'A.Y', 'D.J', 'M.K'],
+//       3: ['P.L', 'S.T', 'A.D', 'K.D', 'J.K', 'G.W', 'K.E', 'B.C'],
+//       4: ['E.D', 'R.N', 'T.M', 'J.H', 'K.H', 'R.B', 'J.Y', 'G.C'],
+//       5: ['N.C', 'E.B', 'S.V', 'J.F', 'L.T', 'J.B', 'S.B', 'B.H'],
+//       6: ['F.Y', 'B.S', 'G.P', 'S.R', 'R.H', 'P.J', 'A.W', 'J.C'],
+//       7: ['D.Q', 'J.N', 'T.W', 'A.G', 'J.M', 'H.K', 'D.L', 'A.P'],
+//       8: ['P.P', 'N.S', 'Z.S', 'W.W', 'K.F', 'H.I', 'C.B', 'J.L']
+//     }
+//   },
+//   2: {
+//     race: Race.LATINO,
+//     //Change to initials.
+//     namePool: {
+//       1: ['J.S', 'O.N', 'R.T', 'M.A', 'W.L', 'D.D', 'R.C', 'J.I'],
+//       2: ['T.S', 'C.H', 'C.S', 'D.A', 'M.W', 'A.Y', 'D.J', 'M.K'],
+//       3: ['P.L', 'S.T', 'A.D', 'K.D', 'J.K', 'G.W', 'K.E', 'B.C'],
+//       4: ['E.D', 'R.N', 'T.M', 'J.H', 'K.H', 'R.B', 'J.Y', 'G.C'],
+//       5: ['N.C', 'E.B', 'S.V', 'J.F', 'L.T', 'J.B', 'S.B', 'B.H'],
+//       6: ['F.Y', 'B.S', 'G.P', 'S.R', 'R.H', 'P.J', 'A.W', 'J.C'],
+//       7: ['D.Q', 'J.N', 'T.W', 'A.G', 'J.M', 'H.K', 'D.L', 'A.P'],
+//       8: ['P.P', 'N.S', 'Z.S', 'W.W', 'K.F', 'H.I', 'C.B', 'J.L']
+//     }
+//   },
+//   3: {
+//     race: Race.WHITE,
+//     //Change to initials.
+//     namePool: {
+//       1: ['J.S', 'O.N', 'R.T', 'M.A', 'W.L', 'D.D', 'R.C', 'J.I'],
+//       2: ['T.S', 'C.H', 'C.S', 'D.A', 'M.W', 'A.Y', 'D.J', 'M.K'],
+//       3: ['P.L', 'S.T', 'A.D', 'K.D', 'J.K', 'G.W', 'K.E', 'B.C'],
+//       4: ['E.D', 'R.N', 'T.M', 'J.H', 'K.H', 'R.B', 'J.Y', 'G.C'],
+//       5: ['N.C', 'E.B', 'S.V', 'J.F', 'L.T', 'J.B', 'S.B', 'B.H'],
+//       6: ['F.Y', 'B.S', 'G.P', 'S.R', 'R.H', 'P.J', 'A.W', 'J.C'],
+//       7: ['D.Q', 'J.N', 'T.W', 'A.G', 'J.M', 'H.K', 'D.L', 'A.P'],
+//       8: ['P.P', 'N.S', 'Z.S', 'W.W', 'K.F', 'H.I', 'C.B', 'J.L']
+//     }
+//   }
+// }
+let namePool = {
+  1: ['J.S', 'O.N', 'R.T', 'M.A', 'W.L', 'D.D', 'R.C', 'J.I'],
+  2: ['T.S', 'C.H', 'C.S', 'D.A', 'M.W', 'A.Y', 'D.J', 'M.K'],
+  3: ['P.L', 'S.T', 'A.D', 'K.D', 'J.K', 'G.W', 'K.E', 'B.C'],
+  4: ['E.D', 'R.N', 'T.M', 'J.H', 'K.H', 'R.B', 'J.Y', 'G.C'],
+  5: ['N.C', 'E.B', 'S.V', 'J.F', 'L.T', 'J.B', 'S.B', 'B.H'],
+  6: ['F.Y', 'B.S', 'G.P', 'S.R', 'R.H', 'P.J', 'A.W', 'J.C'],
+  7: ['D.Q', 'J.N', 'T.W', 'A.G', 'J.M', 'H.K', 'D.L', 'A.P'],
+  8: ['P.P', 'N.S', 'Z.S', 'W.W', 'K.F', 'H.I', 'C.B', 'J.L']
 }
+
 
 @Component({
   selector: 'app-training',
@@ -187,7 +198,7 @@ export class TrainingPage {
 
         if (!levelCompletedToday) {
 
-          this.setNames = raceProperties[this.currentRace].namePool[this.userLevel];
+          this.setNames = namePool[this.userLevel]; //raceProperties[this.currentRace].namePool[this.userLevel];
           this.getTrainingFaces().then((faces) => {
             this.trainingFacePaths = faces;
             this.getWhosNewFaces().then((faces) => {
