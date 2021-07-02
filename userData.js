@@ -38,7 +38,7 @@ module.exports = {
 
         let postCount = await pgClient.query("SELECT * FROM postassessment WHERE userid = $1", [res.rows[0].userid]);
 
-        let raceName = await pgClient.query("select race from day where userid = 76 and level = -1");
+        let raceName = await pgClient.query("select race from day where userid = $1 and level = -1", [res.rows[0].userid]);
 
         let level = resDays.rows.length + preCount.rows.length + postCount.rows.length;
 
