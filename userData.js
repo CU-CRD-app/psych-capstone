@@ -71,7 +71,7 @@ module.exports = {
 
         let sendObject = {
             days: resDays.rows,
-            race: raceName.rows,
+            race: raceName.rows[0].race,
             level: level,
             pre: preAssessment,
             post: postAssessment
