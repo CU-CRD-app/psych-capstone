@@ -152,7 +152,9 @@ export class TrainingPage {
   initCurrentLevel(race : Race = Race.BLACK) {
     let raceName = null;
     raceName = this.showRaceSelect();
-    this.submitScores.submitTaskScores(-1, [-1, -1, -1, -1, -1, -1], raceName); // what if user choose to change race groups through the process
+    console.log("raceName just before sumbit score:");
+    console.log(raceName);
+    this.submitScores.submitTaskScores(-1, [-1, -1, -1, -1, -1, -1], raceName); // what if user chooses to change race groups throughout the process
     /**
     * Option = User's choice
     * Option -> Database
@@ -309,21 +311,9 @@ export class TrainingPage {
     });
     await modal.present();
   }
-
-  /**
-  async showRaceSelect() {
-    let currentR = null;
-    const modal = await this.modalController.create({
-      component: RaceSelectModalComponent,
-      componentProps: {
-        'currentR': currentR
-      }
-    });
-    await modal.present();
-    let { data } = await modal.onWillDismiss();
-  } */
   
   async showRaceSelect() {
+    let raceName = null;
     const modal = await this.modalController.create({
       component: RaceSelectModalComponent,
       componentProps: {
@@ -334,18 +324,13 @@ export class TrainingPage {
     modal.onDidDismiss().then(data=>{
       console.log('data came back from modal');
       console.log(data);
-      const raceName = data;
+      raceName = data['data'];
+      console.log("raceName is:");
+      console.log(raceName);
+      return raceName;
     });
-    return await modal.present();
-    // if (data == "asian") {
-    //   raceName = "asian";
-    // } else if(data == "black") {
-    //   raceName = "black";
-    // } else if(data == "latino") {
-    //   raceName = "latino";
-    // } else{
-    //   raceName = "white";
-    // }
+    // await modal.present();
+    
   }
  
   renderLevelOneHelp() {
