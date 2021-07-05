@@ -332,8 +332,7 @@ export class TrainingPage {
       } //componentProps: { users: this.users },
     });
     // await modal.present();
-    await modal.onWillDismiss();
-    return raceName;
+    return await modal.onWillDismiss();
     // if (data == "asian") {
     //   raceName = "asian";
     // } else if(data == "black") {
