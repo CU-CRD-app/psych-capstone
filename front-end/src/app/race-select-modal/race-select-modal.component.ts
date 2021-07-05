@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ModalController, NavParams, IonSlides } from '@ionic/angular';
-const raceValues = ['Asian', 'Black', 'Latino', 'White']
+const raceValues = ['asian', 'black', 'latino', 'white']
 
 const numRaceSets = 4;
 
