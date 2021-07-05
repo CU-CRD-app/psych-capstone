@@ -150,8 +150,9 @@ export class TrainingPage {
   */
   
   initCurrentLevel(race : Race = Race.BLACK) {
-    this.showRaceSelect();
-    this.submitScores.submitTaskScores(-1, [-1, -1, -1, -1, -1, -1], "asian"); // what if user choose to change race groups through the process
+    let raceName = null;
+    raceName = this.showRaceSelect();
+    this.submitScores.submitTaskScores(-1, [-1, -1, -1, -1, -1, -1], raceName); // what if user choose to change race groups through the process
     /**
     * Option = User's choice
     * Option -> Database
@@ -323,10 +324,25 @@ export class TrainingPage {
   } */
   
   async showRaceSelect() {
+    let raceName = null;
     const modal = await this.modalController.create({
-      component: RaceSelectModalComponent
+      component: RaceSelectModalComponent,
+      componentProps: {
+        'raceName': raceName 
+      } //componentProps: { users: this.users },
     });
     await modal.present();
+    let { data } = await modal.onWillDismiss();
+    // if (data == "asian") {
+    //   raceName = "asian";
+    // } else if(data == "black") {
+    //   raceName = "black";
+    // } else if(data == "latino") {
+    //   raceName = "latino";
+    // } else{
+    //   raceName = "white";
+    // }
+    return data;
   }
  
   renderLevelOneHelp() {
