@@ -85,10 +85,13 @@ module.exports = {
         }
 
         await pgClient.query("INSERT INTO users(userid, email, hashedpassword, race, nationality, gender, age) VALUES (DEFAULT, $1, $2, $3, $4, $5, $6)", [req.email.toLowerCase(), null, req.race, req.nationality, req.gender, req.age])
-        await pgClient.query("INSERT INTO day (userid, level, race, date, nameface, whosnew, memory, shuffle, forcedchoice, samedifferent) VALUES (DEFAULT, $1, $2, $3, $4, $5, $6, $7, $8, $9)", [-1, -1, -1, -1, -1, -1, -1, -1, -1])
         
         let updated = await pgClient.query("SELECT userid FROM users WHERE email = $1",[req.email.toLowerCase()]);
         let userId = updated.rows[0].userid;
+
+        let now = new Date().toUTCString();
+        await pgClient.query("INSERT INTO day (userid, level, race, date, nameface, whosnew, memory, shuffle, forcedchoice, samedifferent) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9. $10)", [userId, -1, "asian", now, -1, -1, -1, -1, -1, -1])
+        
         let salt = await bcrypt.genSalt((userId%15)+1);
         let hash = await bcrypt.hash(req.password, salt);
         pgClient.query("UPDATE users SET hashedpassword = $1 WHERE userid = $2", [hash, userId])
