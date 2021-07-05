@@ -328,11 +328,11 @@ export class TrainingPage {
     const modal = await this.modalController.create({
       component: RaceSelectModalComponent,
       componentProps: {
-        'raceName': raceName 
+        'raceName': this.currentRace
       } //componentProps: { users: this.users },
     });
     await modal.present();
-    let { data } = await modal.onWillDismiss();
+    return raceName;
     // if (data == "asian") {
     //   raceName = "asian";
     // } else if(data == "black") {
@@ -342,7 +342,6 @@ export class TrainingPage {
     // } else{
     //   raceName = "white";
     // }
-    return data;
   }
  
   renderLevelOneHelp() {
