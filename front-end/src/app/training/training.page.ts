@@ -325,14 +325,17 @@ export class TrainingPage {
   
   async showRaceSelect() {
     const modal = await this.modalController.create({
-      component: RaceSelectModalComponent
+      component: RaceSelectModalComponent,
       // componentProps: {
-      //   'race': raceName
+      //   'race': this.currentRace
       // } //componentProps: { users: this.users },
     });
-    // await modal.present();
-    let { data } = await modal.onWillDismiss();
-    return data;
+    
+    modal.onDidDismiss().then(data=>{
+      console.log('data came back from modal');
+      console.log(data);
+    })
+    return await modal.present();
     // if (data == "asian") {
     //   raceName = "asian";
     // } else if(data == "black") {
