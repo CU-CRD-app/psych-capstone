@@ -331,7 +331,8 @@ export class TrainingPage {
         'raceName': this.currentRace
       } //componentProps: { users: this.users },
     });
-    await modal.present();
+    // await modal.present();
+    await modal.onWillDismiss();
     return raceName;
     // if (data == "asian") {
     //   raceName = "asian";
