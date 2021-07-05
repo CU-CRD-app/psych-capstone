@@ -234,8 +234,8 @@ app.put("/getTrainingFaces/", cors(corsOptions), function(req, res, next){
                     // backup-console.log("`${req.body.level}`");
                     // backup-res.sendStatus(200);
                     var raceName = req.body.race;//String(req.body.race.rows[0].race);//String(req.body.days[0].race);
-                    // console.log("AAAAAAAAAAAAAAAAAAAA");
-                    // console.log(req.body.race);
+                    console.log("AAAAAAAAAAAAAAAAAAAA");
+                    console.log(req.body.race);
                     var total_num = fs.readdirSync(`./faces/${raceName}/training/level-7`).length;
                     var random_index = Math.floor(Math.random() * total_num );
                     var data = fs.readFileSync(`./faces/${raceName}/training/level-7/${random_index}.jpg`);
