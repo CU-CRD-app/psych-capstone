@@ -16,6 +16,7 @@ import { HelpModalComponent } from '../help-modal/help-modal.component';
 import * as Hammer from 'hammerjs';
 import { HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { RaceSelectModalComponent } from '../race-select-modal/race-select-modal.component';
 
 export class MyHammerConfig extends HammerGestureConfig {
   overrides = <any> {
@@ -41,7 +42,8 @@ export class MyHammerConfig extends HammerGestureConfig {
     ForcedChoiceComponent,
     SameDifferentComponent,
     ScorePageComponent,
-    HelpModalComponent
+    HelpModalComponent,
+    RaceSelectModalComponent
   ],
   providers: [
     {
@@ -50,6 +52,6 @@ export class MyHammerConfig extends HammerGestureConfig {
     },
     LocalNotifications
   ],
-  entryComponents: [HelpModalComponent]
+  entryComponents: [HelpModalComponent, RaceSelectModalComponent]
 })
 export class TrainingPageModule {}

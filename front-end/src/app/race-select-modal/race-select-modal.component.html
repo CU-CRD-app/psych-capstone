@@ -1,0 +1,24 @@
+<ion-content style="--background: rgb(34,31,32); --color: white; ion-justify-content-center">
+
+  <ion-item lines="none" style="font-size: 4vh; margin-top: 40%; text-align: center; --background: rgb(206,183,124); --color: white">
+    <ion-label >
+      <b>Select a Facial Set</b>
+    </ion-label>
+  </ion-item>
+  
+  <ion-list style="--background: rgb(34,31,32);">
+    <ion-radio-group>
+      <ion-item style="--background: rgb(34,31,32);" *ngFor="let card of cards; let i = index">
+        <ion-label style="color: azure;">{{cards[i]}}</ion-label>
+        <ion-radio (click)="selectedRace(cards[i])"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+
+  <div class="row">
+    <div class="col text-center">
+       <ion-button *ngIf="!hideStart" color="success" class="ion-justify-content-center" [ngClass]="{'hidden': hideStart}" (click)="closeModal()">Start</ion-button>
+    </div>
+ </div>
+  
+</ion-content>
