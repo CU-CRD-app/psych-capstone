@@ -48,10 +48,6 @@
         <div *ngIf="(fieldNotEmpty(registerForm.value.password) || fieldNotEmpty(registerForm.value.password_check)) && (registerForm.controls.password_check.errors || registerForm.value.password_check != registerForm.value.password)" style="color: red; margin-left: 3%; font-size: 4vw">Must match previous entry</div>
       </div>
       <div>
-        <!--Recover question-->
-        <ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.age) && !registerForm.controls.age.errors, 'invalid': fieldNotEmpty(registerForm.value.age) && registerForm.controls.age.errors}">
-          <ion-input formControlName="question" type="text" placeholder="What high school did you attend?"></ion-input>
-        </ion-item>
         <!--AGE-->
         <ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.age) && !registerForm.controls.age.errors, 'invalid': fieldNotEmpty(registerForm.value.age) && registerForm.controls.age.errors}">
           <ion-input formControlName="age" type="number" placeholder="Age"></ion-input>
@@ -111,10 +107,6 @@
         <div *ngIf="(fieldNotEmpty(registerForm.value.password) || fieldNotEmpty(registerForm.value.password_check)) && (registerForm.controls.password_check.errors || registerForm.value.password_check != registerForm.value.password)" style="color: red; margin-left: 3%; font-size: 4vw">Must match previous entry</div>
       </div>
       <div>
-        <!--Recover question-->
-        <ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.age)}">
-          <ion-input formControlName="question" type="text" placeholder="What high school did you attend?"></ion-input>
-        </ion-item>
         <!--AGE-->
         <ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.age) && !registerForm.controls.age.errors, 'invalid': fieldNotEmpty(registerForm.value.age) && registerForm.controls.age.errors}">
           <ion-input formControlName="age" type="number" placeholder="Age"></ion-input>
