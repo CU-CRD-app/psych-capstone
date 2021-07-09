@@ -317,7 +317,7 @@ export class TrainingPage {
         race: this.currentRace
       } //componentProps: { users: this.users },
     });
-    await modal.present();
+    // await modal.present();
     await modal.onDidDismiss().then(data=>{
       console.log('data came back from modal');
       console.log(data);
@@ -341,6 +341,7 @@ export class TrainingPage {
 
   async getTrainingFaces() {
     await this.showRaceSelect();
+    console.log("passed.");
     let facePaths : string[] = [];
     let imagesAlreadyStored = true;
 
