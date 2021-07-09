@@ -150,6 +150,7 @@ export class TrainingPage {
   */
   
   initCurrentLevel(race : Race = Race.BLACK) {
+    this.showRaceSelect();
     // console.log("raceName just before sumbit score:");
     // console.log(raceName);
     //this.showRaceSelect();
@@ -340,7 +341,7 @@ export class TrainingPage {
   }
 
   async getTrainingFaces() {
-    await this.showRaceSelect();
+    //await this.showRaceSelect();
     console.log("passed.");
     let facePaths : string[] = [];
     let imagesAlreadyStored = true;
