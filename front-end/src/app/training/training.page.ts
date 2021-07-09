@@ -324,7 +324,7 @@ export class TrainingPage {
     await modal.onDidDismiss().then(data=>{
       console.log('data came back from modal');
       console.log(data);
-      raceName = data['data'];
+      raceName = data['data'].toLowerCase();
       console.log("raceName is:");
       console.log(raceName);
       this.submitScores.submitTaskScores(-1, [-1, -1, -1, -1, -1, -1], raceName); // what if user chooses to change race groups throughout the process
