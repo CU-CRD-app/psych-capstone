@@ -361,7 +361,7 @@ export class TrainingPage {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         })
       };
-      await this.http.put("https://crossfacerecognition.herokuapp.com/getTrainingFaces/", {level: this.userLevel, race: this.currentRace}, httpOptions).subscribe((res) => {
+      this.http.put("https://crossfacerecognition.herokuapp.com/getTrainingFaces/", {level: this.userLevel, race: this.currentRace}, httpOptions).subscribe((res) => {
         for (let i = 0; i < 8; i++) {
           facePaths.push(`data:image/png;base64,${res['images'][i]}`)
           sessionStorage.setItem(`training${i}`, `data:image/png;base64,${res['images'][i]}`)

@@ -231,7 +231,7 @@ app.put("/getTrainingFaces/", cors(corsOptions), function(req, res, next){
                     var images = [];
                     //random choose 1 picture from Level-7 
                     var raceName = req.body.race;
-                    console.log("AAAAAAAAAAAAAAAAAAAA");
+                    console.log("/getTrainingFaces/");
                     console.log(req.body.race);
                     var total_num = fs.readdirSync(`./faces/${raceName}/training/level-7`).length;
                     var random_index = Math.floor(Math.random() * total_num );
@@ -279,6 +279,8 @@ app.put("/getDailyAssessmentFaces/", cors(corsOptions), function(req, res, next)
                     var images = [];
                     var faceNums = [];
                     var raceName = req.body.race;
+                    console.log("/getDailyAssessmentFaces/");
+                    console.log(req.body.race);
                     var total_num = fs.readdirSync(`./faces/${raceName}/daily-assessment`).length;
                     for (var i = 0; i < 8; i++) { // Generate 8 random numbers between 0 and total_num
                         var face = Math.floor(Math.random() * total_num);
@@ -308,6 +310,8 @@ app.put("/getPrePostAssessmentFaces/", cors(corsOptions), function(req, res, nex
                 try {
                     var images = [];
                     var raceName = req.body.race;
+                    console.log("/getPrePostAssessmentFaces/");
+                    console.log(req.body.race);
                     var total_num = fs.readdirSync(`./faces/${raceName}/pre-post-assessment`).length;
                     var random_index = Math.floor(Math.random() * (total_num - 30));
                     for (var i = random_index; i < random_index + 30; i++) {
@@ -334,6 +338,8 @@ app.put("/getWhosNewFaces/", cors(corsOptions), function(req, res, next){
                 try {
                     var images = [];
                     var raceName = req.body.race;
+                    console.log("/getWhosNewFaces/");
+                    console.log(req.body.race);
                     var afterFaces = 8 - req.body.level + (1 - Math.round(req.body.level/8));
                     var beforeFaces = 8 - afterFaces;
                     for (var i = 0; i < afterFaces; i++) {
