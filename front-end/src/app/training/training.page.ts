@@ -452,7 +452,6 @@ export class TrainingPage {
     this.submitScores.submitTaskScores(this.userLevel, this.scores, "black");
   }
 
-  /**Pass raceName */
   finishPrePost(score : number[]) {
     if (this.userLevel == 0) {
       this.submitScores.submitPreAssessment(score[0], "black");
