@@ -152,7 +152,7 @@ export class TrainingPage {
   initCurrentLevel(race : Race = Race.BLACK) {
     // console.log("raceName just before sumbit score:");
     // console.log(raceName);
-    
+    this.showRaceSelect();
     /**
     * Option = User's choice
     * Option -> Database
@@ -508,7 +508,6 @@ export class TrainingPage {
   }
 
   clickStart() {
-    this.showRaceSelect();
     if (this.userLevel == 0) {
       this.task = Task.PRETEST;
       timer(500).subscribe(() => {
