@@ -368,6 +368,7 @@ export class TrainingPage {
           facePaths.push(`data:image/png;base64,${res['images'][i]}`)
           sessionStorage.setItem(`training${i}`, `data:image/png;base64,${res['images'][i]}`)
         }
+        console.log("photos updated.");
       });
     }
     return facePaths;

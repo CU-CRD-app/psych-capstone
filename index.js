@@ -1,25 +1,25 @@
 // This file defines the endpoints used in the backend, and calls the proper functions to handle data
 // The return values of those functions are then parsed and sent along with the proper http status code
 
-var express = require('express');
-var bodyParser = require('body-parser');
-var cors = require('cors');
-var initialize = require('./initializeDB.js');
-var userData = require('./userData.js');
-var register = require('./registerUser.js');
-var login = require('./login.js');
-var tasks = require('./tasks.js');
-var preassessment = require('./preassessment.js');
-var postassessment = require('./postassessment.js');
-var tokenHandler = require('./token.js');
-var password = require('./passwordChange.js');
-var fs = require("fs");
+let express = require('express');
+let bodyParser = require('body-parser');
+let cors = require('cors');
+let initialize = require('./initializeDB.js');
+let userData = require('./userData.js');
+let register = require('./registerUser.js');
+let login = require('./login.js');
+let tasks = require('./tasks.js');
+let preassessment = require('./preassessment.js');
+let postassessment = require('./postassessment.js');
+let tokenHandler = require('./token.js');
+let password = require('./passwordChange.js');
+let fs = require("fs");
 
 initialize.start()
     .then(res => console.log(res))
     .catch(err => console.log(err))
 
-var app = express();
+let app = express();
 
 app.use(bodyParser.json());
 
@@ -35,8 +35,8 @@ const corsOptions = {
 
 app.options("*", cors(corsOptions));
 
-var server = app.listen(process.env.PORT || 8080, function () {
-    var port = server.address().port;
+let server = app.listen(process.env.PORT || 8080, function () {
+    let port = server.address().port;
     console.log("App now running on port", port);
 });
 
@@ -203,7 +203,7 @@ app.put("/changepassword/", cors(corsOptions), function(req, res, next){
 
 // -------REF: https://bost.ocks.org/mike/shuffle/ -------
 function shuffle(array) {
-    var m = array.length, t, i;
+    let m = array.length, t, i;
   
     // While there remain elements to shuffle…
     while (m) {
@@ -228,34 +228,34 @@ app.put("/getTrainingFaces/", cors(corsOptions), function(req, res, next){
         tokenHandler.verify(req.header('Authorization').split(' ')[1])
             .then(id => {
                 try {
-                    var images = [];
+                    let images = [];
                     //random choose 1 picture from Level-7 
-                    var raceName = req.body.race;
+                    let raceName = req.body.race;
                     console.log("/getTrainingFaces/");
                     console.log(req.body.race);
-                    var total_num = fs.readdirSync(`./faces/${raceName}/training/level-7`).length;
-                    var random_index = Math.floor(Math.random() * total_num );
-                    var data = fs.readFileSync(`./faces/${raceName}/training/level-7/${random_index}.jpg`);
+                    let total_num = fs.readdirSync(`./faces/${raceName}/training/level-7`).length;
+                    let random_index = Math.floor(Math.random() * total_num );
+                    let data = fs.readFileSync(`./faces/${raceName}/training/level-7/${random_index}.jpg`);
                     images.push(new Buffer(data, 'binary').toString('base64'));
                     //random choose 7 pictures from Level-X
-                    var total_num = fs.readdirSync(`./faces/${raceName}/training/level-${req.body.level - 1}`).length;
-                    // var img_indices = [0, 1, 2, 3, 4, 5, 6, 7];
-                    var img_indices = Array.from(Array(total_num).keys());
+                    let total_num = fs.readdirSync(`./faces/${raceName}/training/level-${req.body.level - 1}`).length;
+                    // let img_indices = [0, 1, 2, 3, 4, 5, 6, 7];
+                    let img_indices = Array.from(Array(total_num).keys());
                     shuffled_indices = shuffle(img_indices);
-                    for (var i = 0; i < 7; i++) {
+                    for (let i = 0; i < 7; i++) {
                         random_index = shuffled_indices[i];
-                        var data = fs.readFileSync(`./faces/${raceName}/training/level-${req.body.level - 1}/${random_index}.jpg`);
+                        let data = fs.readFileSync(`./faces/${raceName}/training/level-${req.body.level - 1}/${random_index}.jpg`);
                         images.push(new Buffer(data, 'binary').toString('base64'));
                     }
                     // -------Debug session codes-------
-                    // var images = [];
-                    // var total_num = fs.readdirSync(`./faces/${raceName}/training/level-${req.body.level - 1}`).length;
-                    // var img_indices = Array.from(Array(total_num).keys());
-                    // // var img_indices = [0, 1, 2, 3, 4, 5, 6, 7];
-                    // var shuffled_indices = _.shuffle(img_indices);
-                    // for (var i = 0; i < 8; i++) {
+                    // let images = [];
+                    // let total_num = fs.readdirSync(`./faces/${raceName}/training/level-${req.body.level - 1}`).length;
+                    // let img_indices = Array.from(Array(total_num).keys());
+                    // // let img_indices = [0, 1, 2, 3, 4, 5, 6, 7];
+                    // let shuffled_indices = _.shuffle(img_indices);
+                    // for (let i = 0; i < 8; i++) {
                     //     random_index = shuffled_indices[i];
-                    //     var data = fs.readFileSync(`./faces/${raceName}/training/level-${req.body.level - 1}/${random_index}.jpg`);
+                    //     let data = fs.readFileSync(`./faces/${raceName}/training/level-${req.body.level - 1}/${random_index}.jpg`);
                     //     images.push(new Buffer(data, 'binary').toString('base64'));
                     // }
                     // -------Debug session ends-------
@@ -276,19 +276,19 @@ app.put("/getDailyAssessmentFaces/", cors(corsOptions), function(req, res, next)
         tokenHandler.verify(req.header('Authorization').split(' ')[1])
             .then(id => {
                 try {
-                    var images = [];
-                    var faceNums = [];
-                    var raceName = req.body.race;
+                    let images = [];
+                    let faceNums = [];
+                    let raceName = req.body.race;
                     console.log("/getDailyAssessmentFaces/");
                     console.log(req.body.race);
-                    var total_num = fs.readdirSync(`./faces/${raceName}/daily-assessment`).length;
-                    for (var i = 0; i < 8; i++) { // Generate 8 random numbers between 0 and total_num
-                        var face = Math.floor(Math.random() * total_num);
+                    let total_num = fs.readdirSync(`./faces/${raceName}/daily-assessment`).length;
+                    for (let i = 0; i < 8; i++) { // Generate 8 random numbers between 0 and total_num
+                        let face = Math.floor(Math.random() * total_num);
                         while (faceNums.indexOf(face) > -1) { // Account for repeats
                           face = Math.floor(Math.random() * total_num);
                         }
                         faceNums.push(face);
-                        var data = fs.readFileSync(`./faces/${raceName}/daily-assessment/${faceNums[i]}.jpg`);
+                        let data = fs.readFileSync(`./faces/${raceName}/daily-assessment/${faceNums[i]}.jpg`);
                         images.push(new Buffer(data, 'binary').toString('base64'));
                     }
                     res.status(200).send({images: images});
@@ -308,14 +308,14 @@ app.put("/getPrePostAssessmentFaces/", cors(corsOptions), function(req, res, nex
         tokenHandler.verify(req.header('Authorization').split(' ')[1])
             .then(id => {
                 try {
-                    var images = [];
-                    var raceName = req.body.race;
+                    let images = [];
+                    let raceName = req.body.race;
                     console.log("/getPrePostAssessmentFaces/");
                     console.log(req.body.race);
-                    var total_num = fs.readdirSync(`./faces/${raceName}/pre-post-assessment`).length;
-                    var random_index = Math.floor(Math.random() * (total_num - 30));
-                    for (var i = random_index; i < random_index + 30; i++) {
-                        var data = fs.readFileSync(`./faces/${raceName}/pre-post-assessment/${i}.jpg`);
+                    let total_num = fs.readdirSync(`./faces/${raceName}/pre-post-assessment`).length;
+                    let random_index = Math.floor(Math.random() * (total_num - 30));
+                    for (let i = random_index; i < random_index + 30; i++) {
+                        let data = fs.readFileSync(`./faces/${raceName}/pre-post-assessment/${i}.jpg`);
                         images.push(new Buffer(data, 'binary').toString('base64'));
                     }
                     res.status(200).send({images: images});
@@ -336,18 +336,18 @@ app.put("/getWhosNewFaces/", cors(corsOptions), function(req, res, next){
         tokenHandler.verify(req.header('Authorization').split(' ')[1])
             .then(id => {
                 try {
-                    var images = [];
-                    var raceName = req.body.race;
+                    let images = [];
+                    let raceName = req.body.race;
                     console.log("/getWhosNewFaces/");
                     console.log(req.body.race);
-                    var afterFaces = 8 - req.body.level + (1 - Math.round(req.body.level/8));
-                    var beforeFaces = 8 - afterFaces;
-                    for (var i = 0; i < afterFaces; i++) {
-                        var data = fs.readFileSync(`./faces/${raceName}/training/level-${req.body.level + 1 - 1}/${i}.jpg`);
+                    let afterFaces = 8 - req.body.level + (1 - Math.round(req.body.level/8));
+                    let beforeFaces = 8 - afterFaces;
+                    for (let i = 0; i < afterFaces; i++) {
+                        let data = fs.readFileSync(`./faces/${raceName}/training/level-${req.body.level + 1 - 1}/${i}.jpg`);
                         images.push(new Buffer(data, 'binary').toString('base64'));
                     }
-                    for (var i = 0; i < beforeFaces; i++) {
-                        var data = fs.readFileSync(`./faces/${raceName}/training/level-${req.body.level - 1 - 1}/${i}.jpg`);
+                    for (let i = 0; i < beforeFaces; i++) {
+                        let data = fs.readFileSync(`./faces/${raceName}/training/level-${req.body.level - 1 - 1}/${i}.jpg`);
                         images.push(new Buffer(data, 'binary').toString('base64'));
                     }
                     res.status(200).send({images: images});
