@@ -321,7 +321,7 @@ export class TrainingPage {
       } //componentProps: { users: this.users },
     });
     
-    modal.onDidDismiss().then(data=>{
+    await modal.onDidDismiss().then(data=>{
       console.log('data came back from modal');
       console.log(data);
       raceName = data['data'];
