@@ -353,7 +353,8 @@ export class TrainingPage {
         facePaths.push(image);
       }
     }
-    if (!imagesAlreadyStored) {
+    // if (!imagesAlreadyStored) {
+    if (true) {
       facePaths = [];
       const httpOptions = {
         headers: new HttpHeaders({
