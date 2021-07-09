@@ -56,7 +56,7 @@ module.exports = {
         if(day.rows.length > 0){
             if (day.rows[0]['nameface'] == -1 || day.rows[0]['whosnew'] == -1 || day.rows[0]['memory'] == -1 || day.rows[0]['shuffle'] == -1 || day.rows[0]['forcedchoice'] == -1 || day.rows[0]['samedifferent'] == -1){
                 //pgClient.query("UPDATE day SET date = $4, nameface = $5, whosnew = $6, memory = $7, shuffle = $8, forcedchoice = $9, samedifferent = $10 WHERE userid = $1 AND level = $2 AND race = $3", values)
-                pgClient.query("UPDATE day SET race = $3, date = $4, nameface = $5, whosnew = $6, memory = $7, shuffle = $8, forcedchoice = $9, samedifferent = $10 WHERE userid = $1 AND level = $2", values)
+                await pgClient.query("UPDATE day SET race = $3, date = $4, nameface = $5, whosnew = $6, memory = $7, shuffle = $8, forcedchoice = $9, samedifferent = $10 WHERE userid = $1 AND level = $2", values)
                 .then(res => {
                     pgClient.end();
                     return new Promise(function(resolve, reject){

@@ -317,8 +317,8 @@ export class TrainingPage {
         race: this.currentRace
       } //componentProps: { users: this.users },
     });
-    // await modal.present();
-    await modal.onDidDismiss().then(data=>{
+    await modal.present();
+    await modal.onWillDismiss().then(data=>{
       console.log('data came back from modal');
       console.log(data);
       raceName = data['data'].toLowerCase();
