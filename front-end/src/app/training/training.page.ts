@@ -268,7 +268,7 @@ export class TrainingPage {
           case Stage.START:
             return 'Start';
           case Stage.TRAINING:
-            return 'Training Tasks';
+            return 'Start';
           case Stage.ASSESSMENT:
             return 'Assessment Tasks';
           case Stage.DONE:
@@ -345,7 +345,7 @@ export class TrainingPage {
     let name = await this.showRaceSelect();
     console.log("name is:");
     console.log(name);
-    this.trainingFacePaths = name;
+    // this.trainingFacePaths = name;
     console.log("passed.");
     let facePaths : string[] = [];
     let imagesAlreadyStored = true;
