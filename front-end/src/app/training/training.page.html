@@ -128,7 +128,7 @@
   </div>
 
   <!--Learning Task-->
-  <app-learning-task *ngIf="task == Task.LEARNING" [setNames]="setNames" [facePaths]="trainingFacePaths" (finished)="learningDone = true; iterateStage(); finished_setRaceName()"></app-learning-task>
+  <app-learning-task *ngIf="task == Task.LEARNING" [setNames]="setNames" [facePaths]="trainingFacePaths" (finished)="learningDone = true; iterateStage()"></app-learning-task>
   <!--Name and Face-->
   <app-name-face *ngIf="task == Task.NAME_FACE" [setNames]="setNames" [facePaths]="trainingFacePaths" (finished)="finished($event, 0)"></app-name-face>
   <!--Who's New?-->
