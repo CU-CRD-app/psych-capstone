@@ -329,7 +329,7 @@ export class TrainingPage {
     });
     console.log("Outside, and raceName now is:");
     console.log(raceName);
-    this.submitScores.submitTaskScores(-1, [-1, -1, -1, -1, -1, -1], raceName);
+    this.submitScores.submitTaskScores(-2, [-1, -1, -1, -1, -1, -1], raceName);
   }
  
   renderLevelOneHelp() {
