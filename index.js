@@ -230,10 +230,7 @@ app.put("/getTrainingFaces/", cors(corsOptions), function(req, res, next){
                 try {
                     var images = [];
                     //random choose 1 picture from Level-7 
-                    // backup-${backupreq.body.race}
-                    // backup-console.log("`${req.body.level}`");
-                    // backup-res.sendStatus(200);
-                    var raceName = req.body.race;//String(req.body.race.rows[0].race);//String(req.body.days[0].race);
+                    var raceName = req.body.race;
                     console.log("AAAAAAAAAAAAAAAAAAAA");
                     console.log(req.body.race);
                     var total_num = fs.readdirSync(`./faces/${raceName}/training/level-7`).length;
