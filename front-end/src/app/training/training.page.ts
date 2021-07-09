@@ -354,7 +354,7 @@ export class TrainingPage {
       }
     }
     // if (!imagesAlreadyStored) {
-    if (true) {
+    if(true){
       facePaths = [];
       const httpOptions = {
         headers: new HttpHeaders({
