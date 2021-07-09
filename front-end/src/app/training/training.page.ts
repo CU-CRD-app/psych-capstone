@@ -198,7 +198,8 @@ export class TrainingPage {
         }
 
         if (!levelCompletedToday) {
-          this.showRaceSelect();
+          //this.showRaceSelect();
+          this.submitScores.submitTaskScores(-1, [-1, -1, -1, -1, -1, -1], "latino");
           this.setNames = namePool[this.userLevel]; //raceProperties[this.currentRace].namePool[this.userLevel];
           this.getTrainingFaces().then((faces) => {
             this.trainingFacePaths = faces;
