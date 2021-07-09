@@ -104,8 +104,8 @@ module.exports = {
                     reject(err);
                 })
             })
-            
-        let now = new Date().toUTCString();
+
+        let now = 'today';//new Date().toUTCString();
         pgClient.query("INSERT INTO day(userid, level, race, date, nameface, whosnew, memory, shuffle, forcedchoice, samedifferent) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9. $10)", [userId, -1, "asian", now, -1, -1, -1, -1, -1, -1])
             .then(res => {
                 pgClient.end();
