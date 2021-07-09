@@ -152,8 +152,7 @@ export class TrainingPage {
   initCurrentLevel(race : Race = Race.BLACK) {
     // console.log("raceName just before sumbit score:");
     // console.log(raceName);
-    this.showRaceSelect();
-    this.submitScores.submitTaskScores(-1, [-1, -1, -1, -1, -1, -1], 'latino');
+    //this.showRaceSelect();
     /**
     * Option = User's choice
     * Option -> Database
@@ -199,7 +198,6 @@ export class TrainingPage {
         }
 
         if (!levelCompletedToday) {
-          // this.showRaceSelect();
           this.setNames = namePool[this.userLevel]; //raceProperties[this.currentRace].namePool[this.userLevel];
           this.getTrainingFaces().then((faces) => {
             this.trainingFacePaths = faces;
@@ -330,7 +328,7 @@ export class TrainingPage {
     });
     console.log("Outside, and raceName now is:");
     console.log(raceName);
-    return raceName;
+    this.submitScores.submitTaskScores(-1, [-1, -1, -1, -1, -1, -1], raceName);
   }
  
   renderLevelOneHelp() {
@@ -342,6 +340,7 @@ export class TrainingPage {
   }
 
   async getTrainingFaces() {
+    this.showRaceSelect();
     let facePaths : string[] = [];
     let imagesAlreadyStored = true;
 
@@ -454,9 +453,9 @@ export class TrainingPage {
     this.submitScores.submitTaskScores(this.userLevel, this.scores, "black");
   }
 
-  finished_setRaceName() {
-    this.showRaceSelect();
-  }
+  // finished_setRaceName() {
+  //   this.showRaceSelect();
+  // }
 
   finishPrePost(score : number[]) {
     if (this.userLevel == 0) {
