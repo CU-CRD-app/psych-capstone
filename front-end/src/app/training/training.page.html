@@ -102,7 +102,7 @@
 
         <div *ngIf="userLevel == 1" class="fade-in">
           <div class="subheader" style="margin: 5%">You've entered level 1! Click to begin your training.</div>
-          <ion-button color="success" (click)="initCurrentLevel()">Train</ion-button>
+          <ion-button color="success" (click)="initCurrentLevel(); finished_setRaceName()">Train</ion-button>
         </div>
 
         <div *ngIf="userLevel > 0 && userLevel < 9" class="fade-in">
