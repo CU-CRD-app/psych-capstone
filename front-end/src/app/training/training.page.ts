@@ -320,7 +320,7 @@ export class TrainingPage {
         race: this.currentRace
       } //componentProps: { users: this.users },
     });
-    
+    await modal.present();
     modal.onDidDismiss().then(data=>{
       console.log('data came back from modal');
       console.log(data);
@@ -329,7 +329,7 @@ export class TrainingPage {
       console.log(raceName);
       return raceName;
     });
-    await modal.present();
+    
     
   }
  
