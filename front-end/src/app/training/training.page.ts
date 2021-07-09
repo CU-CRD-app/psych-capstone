@@ -198,7 +198,7 @@ export class TrainingPage {
         }
 
         if (!levelCompletedToday) {
-
+          this.showRaceSelect();
           this.setNames = namePool[this.userLevel]; //raceProperties[this.currentRace].namePool[this.userLevel];
           this.getTrainingFaces().then((faces) => {
             this.trainingFacePaths = faces;
@@ -338,7 +338,6 @@ export class TrainingPage {
   }
 
   async getTrainingFaces() {
-    this.showRaceSelect();
     let facePaths : string[] = [];
     let imagesAlreadyStored = true;
 
