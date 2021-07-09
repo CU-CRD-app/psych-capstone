@@ -198,7 +198,6 @@ export class TrainingPage {
         }
 
         if (!levelCompletedToday) {
-          this.showRaceSelect();
           this.setNames = namePool[this.userLevel]; //raceProperties[this.currentRace].namePool[this.userLevel];
           this.getTrainingFaces().then((faces) => {
             this.trainingFacePaths = faces;
@@ -329,7 +328,7 @@ export class TrainingPage {
     });
     console.log("Outside, and raceName now is:");
     console.log(raceName);
-    this.submitScores.submitTaskScores(-1, [-1, -1, -1, -1, -1, -1], raceName);
+    await this.submitScores.submitTaskScores(-1, [-1, -1, -1, -1, -1, -1], raceName);
   }
  
   renderLevelOneHelp() {
@@ -341,6 +340,7 @@ export class TrainingPage {
   }
 
   async getTrainingFaces() {
+    await this.showRaceSelect();
     let facePaths : string[] = [];
     let imagesAlreadyStored = true;
 
