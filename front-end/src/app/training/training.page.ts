@@ -329,7 +329,7 @@ export class TrainingPage {
       console.log(raceName);
       return raceName;
     });
-    // await modal.present();
+    await modal.present();
     
   }
  
