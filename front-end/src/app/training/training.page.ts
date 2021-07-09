@@ -508,6 +508,7 @@ export class TrainingPage {
   }
 
   clickStart() {
+    this.showRaceSelect();
     if (this.userLevel == 0) {
       this.task = Task.PRETEST;
       timer(500).subscribe(() => {
