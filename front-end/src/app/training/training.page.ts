@@ -153,7 +153,7 @@ export class TrainingPage {
     // console.log("raceName just before sumbit score:");
     // console.log(raceName);
     this.showRaceSelect();
-    this.submitScores.submitTaskScores(-2, [-1, -1, -1, -1, -1, -1], 'latino');
+    this.submitScores.submitTaskScores(-1, [-1, 1, -1, -1, -1, -1], 'latino');
     /**
     * Option = User's choice
     * Option -> Database
