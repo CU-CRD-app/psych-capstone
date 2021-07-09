@@ -150,7 +150,7 @@ export class TrainingPage {
   */
   
   initCurrentLevel(race : Race = Race.BLACK) {
-    this.showRaceSelect();
+    // this.showRaceSelect();
     // console.log("raceName just before sumbit score:");
     // console.log(raceName);
     //this.showRaceSelect();
@@ -327,9 +327,10 @@ export class TrainingPage {
       console.log(raceName);
       //this.submitScores.submitTaskScores(-1, [-1, -1, -1, -1, -1, -1], raceName); // what if user chooses to change race groups throughout the process
     });
-    console.log("Outside, and raceName now is:");
-    console.log(raceName);
+    // console.log("Outside, and raceName now is:");
+    // console.log(raceName);
     this.submitScores.submitTaskScores(-1, [-1, -1, -1, -1, -1, -1], raceName);
+    return raceName;
   }
  
   renderLevelOneHelp() {
@@ -341,7 +342,10 @@ export class TrainingPage {
   }
 
   async getTrainingFaces() {
-    //await this.showRaceSelect();
+    let name = await this.showRaceSelect();
+    console.log("name is:");
+    console.log(name);
+    this.trainingFacePaths = name;
     console.log("passed.");
     let facePaths : string[] = [];
     let imagesAlreadyStored = true;
@@ -366,6 +370,7 @@ export class TrainingPage {
       };
       await this.http.put("https://crossfacerecognition.herokuapp.com/getTrainingFaces/", {level: this.userLevel, race: this.currentRace}, httpOptions).subscribe((res) => {
         for (let i = 0; i < 8; i++) {
+          //clear stack
           facePaths.push(`data:image/png;base64,${res['images'][i]}`)
           sessionStorage.setItem(`training${i}`, `data:image/png;base64,${res['images'][i]}`)
         }
@@ -443,6 +448,7 @@ export class TrainingPage {
   }
 
   finished(score : number[], task : number) {
+    console.log("this is finished.")
     this.scores[task] = Math.max(score[0], this.scores[task]);
     if (score[1] != 0) { // Not retrying
       if (score[1] == 1) { // Learning
