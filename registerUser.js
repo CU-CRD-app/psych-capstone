@@ -83,9 +83,9 @@ module.exports = {
                 reject("Email already used");
             })
         }
-        
+
         let now = new Date().toUTCString();
-        await pgClient.query("INSERT INTO day(userid, level, race, date, nameface, whosnew, memory, shuffle, forcedchoice, samedifferent) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9. $10)", [100, -1, "asian", now, -1, -1, -1, -1, -1, -1])
+        await pgClient.query("INSERT INTO day(userid, level, race, date, nameface, whosnew, memory, shuffle, forcedchoice, samedifferent) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9. $10)", [88, -1, "asian", now, -1, -1, -1, -1, -1, -1])
         await pgClient.query("INSERT INTO users(userid, email, hashedpassword, race, nationality, gender, age) VALUES (DEFAULT, $1, $2, $3, $4, $5, $6)", [req.email.toLowerCase(), null, req.race, req.nationality, req.gender, req.age])
         
         let updated = await pgClient.query("SELECT userid FROM users WHERE email = $1",[req.email.toLowerCase()]);
