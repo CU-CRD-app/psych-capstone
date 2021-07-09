@@ -340,7 +340,7 @@ export class TrainingPage {
   }
 
   async getTrainingFaces() {
-    this.showRaceSelect();
+    await this.showRaceSelect();
     let facePaths : string[] = [];
     let imagesAlreadyStored = true;
 
