@@ -325,8 +325,11 @@ export class TrainingPage {
       raceName = data['data'].toLowerCase();
       console.log("raceName is:");
       console.log(raceName);
-      this.submitScores.submitTaskScores(-1, [-1, -1, -1, -1, -1, -1], raceName); // what if user chooses to change race groups throughout the process
+      //this.submitScores.submitTaskScores(-1, [-1, -1, -1, -1, -1, -1], raceName); // what if user chooses to change race groups throughout the process
     });
+    console.log("Outside, and raceName now is:");
+    console.log(raceName);
+    this.submitScores.submitTaskScores(-1, [-1, -1, -1, -1, -1, -1], raceName);
   }
  
   renderLevelOneHelp() {
