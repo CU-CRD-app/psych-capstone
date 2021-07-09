@@ -152,7 +152,7 @@ export class TrainingPage {
   initCurrentLevel(race : Race = Race.BLACK) {
     // console.log("raceName just before sumbit score:");
     // console.log(raceName);
-    this.showRaceSelect();
+    //this.showRaceSelect();
     /**
     * Option = User's choice
     * Option -> Database
@@ -340,6 +340,7 @@ export class TrainingPage {
   }
 
   async getTrainingFaces() {
+    await this.showRaceSelect();
     let facePaths : string[] = [];
     let imagesAlreadyStored = true;
 
@@ -360,7 +361,7 @@ export class TrainingPage {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         })
       };
-      this.http.put("https://crossfacerecognition.herokuapp.com/getTrainingFaces/", {level: this.userLevel, race: this.currentRace}, httpOptions).subscribe((res) => {
+      await this.http.put("https://crossfacerecognition.herokuapp.com/getTrainingFaces/", {level: this.userLevel, race: this.currentRace}, httpOptions).subscribe((res) => {
         for (let i = 0; i < 8; i++) {
           facePaths.push(`data:image/png;base64,${res['images'][i]}`)
           sessionStorage.setItem(`training${i}`, `data:image/png;base64,${res['images'][i]}`)
