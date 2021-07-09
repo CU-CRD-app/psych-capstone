@@ -104,8 +104,20 @@ module.exports = {
                     reject(err);
                 })
             })
+            
         let now = new Date().toUTCString();
-        await pgClient.query("INSERT INTO day(userid, level, race, date, nameface, whosnew, memory, shuffle, forcedchoice, samedifferent) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9. $10)", [userId, -1, "asian", now, -1, -1, -1, -1, -1, -1])
-        pgClient.end();
+        pgClient.query("INSERT INTO day(userid, level, race, date, nameface, whosnew, memory, shuffle, forcedchoice, samedifferent) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9. $10)", [userId, -1, "asian", now, -1, -1, -1, -1, -1, -1])
+            .then(res => {
+                pgClient.end();
+                return new Promise(function(resolve, reject){
+                    resolve("Initial race data succesfully created.");
+                })
+            })
+            .catch(err => {
+                pgClient.end();
+                return new Promise(function(resolve, reject){
+                    reject(err);
+                })
+            })
     }
 }
