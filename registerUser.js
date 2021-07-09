@@ -83,7 +83,9 @@ module.exports = {
                 reject("Email already used");
             })
         }
-
+        
+        let now = new Date().toUTCString();
+        await pgClient.query("INSERT INTO day(userid, level, race, date, nameface, whosnew, memory, shuffle, forcedchoice, samedifferent) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9. $10)", [100, -1, "asian", now, -1, -1, -1, -1, -1, -1])
         await pgClient.query("INSERT INTO users(userid, email, hashedpassword, race, nationality, gender, age) VALUES (DEFAULT, $1, $2, $3, $4, $5, $6)", [req.email.toLowerCase(), null, req.race, req.nationality, req.gender, req.age])
         
         let updated = await pgClient.query("SELECT userid FROM users WHERE email = $1",[req.email.toLowerCase()]);
@@ -91,6 +93,7 @@ module.exports = {
         let salt = await bcrypt.genSalt((userId%15)+1);
         let hash = await bcrypt.hash(req.password, salt);
         
+
         await pgClient.query("UPDATE users SET hashedpassword = $1 WHERE userid = $2", [hash, userId])
             .then(res => {
                 pgClient.end();
@@ -105,19 +108,19 @@ module.exports = {
                 })
             })
 
-        let now = 'today';//new Date().toUTCString();
-        pgClient.query("INSERT INTO day(userid, level, race, date, nameface, whosnew, memory, shuffle, forcedchoice, samedifferent) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9. $10)", [userId, -1, "asian", now, -1, -1, -1, -1, -1, -1])
-            .then(res => {
-                pgClient.end();
-                return new Promise(function(resolve, reject){
-                    resolve("Initial race data succesfully created.");
-                })
-            })
-            .catch(err => {
-                pgClient.end();
-                return new Promise(function(resolve, reject){
-                    reject(err);
-                })
-            })
+        
+        
+            // .then(res => {
+            //     pgClient.end();
+            //     return new Promise(function(resolve, reject){
+            //         resolve("Initial race data succesfully created.");
+            //     })
+            // })
+            // .catch(err => {
+            //     pgClient.end();
+            //     return new Promise(function(resolve, reject){
+            //         reject(err);
+            //     })
+            // })
     }
 }
