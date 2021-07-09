@@ -267,8 +267,8 @@ export class TrainingPage {
         switch (this.stage) {
           case Stage.START:
             return 'Start';
-          case Stage.TRAINING:
-            return 'Start';
+          // case Stage.TRAINING:
+          //   return 'Training Tasks';
           case Stage.ASSESSMENT:
             return 'Assessment Tasks';
           case Stage.DONE:
