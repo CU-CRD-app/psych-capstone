@@ -198,8 +198,7 @@ export class TrainingPage {
         }
 
         if (!levelCompletedToday) {
-          //this.showRaceSelect();
-          this.submitScores.submitTaskScores(-1, [-1, -1, -1, -1, -1, -1], "latino");
+          // this.showRaceSelect();
           this.setNames = namePool[this.userLevel]; //raceProperties[this.currentRace].namePool[this.userLevel];
           this.getTrainingFaces().then((faces) => {
             this.trainingFacePaths = faces;
@@ -449,6 +448,10 @@ export class TrainingPage {
       }
     }
     this.submitScores.submitTaskScores(this.userLevel, this.scores, "black");
+  }
+
+  finished_setRaceName() {
+    this.showRaceSelect();
   }
 
   finishPrePost(score : number[]) {
