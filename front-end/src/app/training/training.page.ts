@@ -151,10 +151,10 @@ export class TrainingPage {
   
   initCurrentLevel(race : Race = Race.BLACK) {
     let raceName = null;
-    raceName = this.showRaceSelect();
-    console.log("raceName just before sumbit score:");
-    console.log(raceName);
-    this.submitScores.submitTaskScores(-1, [-1, -1, -1, -1, -1, -1], raceName); // what if user chooses to change race groups throughout the process
+    this.showRaceSelect();
+    // console.log("raceName just before sumbit score:");
+    // console.log(raceName);
+    
     /**
     * Option = User's choice
     * Option -> Database
@@ -327,7 +327,7 @@ export class TrainingPage {
       raceName = data['data'];
       console.log("raceName is:");
       console.log(raceName);
-      return raceName;
+      this.submitScores.submitTaskScores(-1, [-1, -1, -1, -1, -1, -1], raceName); // what if user chooses to change race groups throughout the process
     });
   }
  
