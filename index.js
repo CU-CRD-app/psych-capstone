@@ -238,9 +238,9 @@ app.put("/getTrainingFaces/", cors(corsOptions), function(req, res, next){
                     let data = fs.readFileSync(`./faces/${raceName}/training/level-7/${random_index}.jpg`);
                     images.push(new Buffer(data, 'binary').toString('base64'));
                     //random choose 7 pictures from Level-X
-                    let total_num = fs.readdirSync(`./faces/${raceName}/training/level-${req.body.level - 1}`).length;
+                    let total_num_2 = fs.readdirSync(`./faces/${raceName}/training/level-${req.body.level - 1}`).length;
                     // let img_indices = [0, 1, 2, 3, 4, 5, 6, 7];
-                    let img_indices = Array.from(Array(total_num).keys());
+                    let img_indices = Array.from(Array(total_num_2).keys());
                     shuffled_indices = shuffle(img_indices);
                     for (let i = 0; i < 7; i++) {
                         random_index = shuffled_indices[i];
