@@ -47,7 +47,7 @@ export class SubmitScoresService {
 
   //TASKS
   setScores(level: number, scores: number[], race: string = "black"): Promise<any> {
-    let promise = new Promise((resolve, reject) => {
+    let promise = new Promise<void>((resolve, reject) => {
       this.level = level;
       this.race = race;
       this.nameface = scores[0];
@@ -99,7 +99,7 @@ export class SubmitScoresService {
 
   //PRE-ASSESSMENT
   setPre(score: number, race: string = "black"): Promise<any>{
-    let promise = new Promise((resolve, reject) => {
+    let promise = new Promise<void>((resolve, reject) => {
       this.pre_score = score;
       this.race = race;
 
@@ -135,7 +135,7 @@ export class SubmitScoresService {
 
   //POST-ASSESSMENT
   setPost(score: number, race: string = "black"): Promise<any>{
-    let promise = new Promise((resolve, reject) => {
+    let promise = new Promise<void>((resolve, reject) => {
       this.post_score = score;
       this.race = race;
 

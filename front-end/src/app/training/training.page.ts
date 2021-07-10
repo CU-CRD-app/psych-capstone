@@ -15,64 +15,75 @@ enum Race { BLACK, ASIAN, LATINO, WHITE }
 enum Stage { START, TRAINING, ASSESSMENT, DONE }
 enum Task { NAME_FACE, WHOS_NEW, MEMORY, SHUFFLE, FORCED_CHOICE, SAME_DIFFERENT, PRETEST, POSTTEST, LEARNING }
 
-let raceProperties = {
-  0: {
-    race: Race.BLACK,
-    //Change to initials.
-    namePool: {
-      1: ['J.S', 'O.N', 'R.T', 'M.A', 'W.L', 'D.D', 'R.C', 'J.I'],
-      2: ['T.S', 'C.H', 'C.S', 'D.A', 'M.W', 'A.Y', 'D.J', 'M.K'],
-      3: ['P.L', 'S.T', 'A.D', 'K.D', 'J.K', 'G.W', 'K.E', 'B.C'],
-      4: ['E.D', 'R.N', 'T.M', 'J.H', 'K.H', 'R.B', 'J.Y', 'G.C'],
-      5: ['N.C', 'E.B', 'S.V', 'J.F', 'L.T', 'J.B', 'S.B', 'B.H'],
-      6: ['F.Y', 'B.S', 'G.P', 'S.R', 'R.H', 'P.J', 'A.W', 'J.C'],
-      7: ['D.Q', 'J.N', 'T.W', 'A.G', 'J.M', 'H.K', 'D.L', 'A.P'],
-      8: ['P.P', 'N.S', 'Z.S', 'W.W', 'K.F', 'H.I', 'C.B', 'J.L']
-    }
-  },
-  1: {
-    race: Race.ASIAN,
-    //Change to initials.
-    namePool: {
-      1: ['J.S', 'O.N', 'R.T', 'M.A', 'W.L', 'D.D', 'R.C', 'J.I'],
-      2: ['T.S', 'C.H', 'C.S', 'D.A', 'M.W', 'A.Y', 'D.J', 'M.K'],
-      3: ['P.L', 'S.T', 'A.D', 'K.D', 'J.K', 'G.W', 'K.E', 'B.C'],
-      4: ['E.D', 'R.N', 'T.M', 'J.H', 'K.H', 'R.B', 'J.Y', 'G.C'],
-      5: ['N.C', 'E.B', 'S.V', 'J.F', 'L.T', 'J.B', 'S.B', 'B.H'],
-      6: ['F.Y', 'B.S', 'G.P', 'S.R', 'R.H', 'P.J', 'A.W', 'J.C'],
-      7: ['D.Q', 'J.N', 'T.W', 'A.G', 'J.M', 'H.K', 'D.L', 'A.P'],
-      8: ['P.P', 'N.S', 'Z.S', 'W.W', 'K.F', 'H.I', 'C.B', 'J.L']
-    }
-  },
-  2: {
-    race: Race.LATINO,
-    //Change to initials.
-    namePool: {
-      1: ['J.S', 'O.N', 'R.T', 'M.A', 'W.L', 'D.D', 'R.C', 'J.I'],
-      2: ['T.S', 'C.H', 'C.S', 'D.A', 'M.W', 'A.Y', 'D.J', 'M.K'],
-      3: ['P.L', 'S.T', 'A.D', 'K.D', 'J.K', 'G.W', 'K.E', 'B.C'],
-      4: ['E.D', 'R.N', 'T.M', 'J.H', 'K.H', 'R.B', 'J.Y', 'G.C'],
-      5: ['N.C', 'E.B', 'S.V', 'J.F', 'L.T', 'J.B', 'S.B', 'B.H'],
-      6: ['F.Y', 'B.S', 'G.P', 'S.R', 'R.H', 'P.J', 'A.W', 'J.C'],
-      7: ['D.Q', 'J.N', 'T.W', 'A.G', 'J.M', 'H.K', 'D.L', 'A.P'],
-      8: ['P.P', 'N.S', 'Z.S', 'W.W', 'K.F', 'H.I', 'C.B', 'J.L']
-    }
-  },
-  3: {
-    race: Race.WHITE,
-    //Change to initials.
-    namePool: {
-      1: ['J.S', 'O.N', 'R.T', 'M.A', 'W.L', 'D.D', 'R.C', 'J.I'],
-      2: ['T.S', 'C.H', 'C.S', 'D.A', 'M.W', 'A.Y', 'D.J', 'M.K'],
-      3: ['P.L', 'S.T', 'A.D', 'K.D', 'J.K', 'G.W', 'K.E', 'B.C'],
-      4: ['E.D', 'R.N', 'T.M', 'J.H', 'K.H', 'R.B', 'J.Y', 'G.C'],
-      5: ['N.C', 'E.B', 'S.V', 'J.F', 'L.T', 'J.B', 'S.B', 'B.H'],
-      6: ['F.Y', 'B.S', 'G.P', 'S.R', 'R.H', 'P.J', 'A.W', 'J.C'],
-      7: ['D.Q', 'J.N', 'T.W', 'A.G', 'J.M', 'H.K', 'D.L', 'A.P'],
-      8: ['P.P', 'N.S', 'Z.S', 'W.W', 'K.F', 'H.I', 'C.B', 'J.L']
-    }
-  }
+// let raceProperties = {
+//   0: {
+//     race: Race.BLACK,
+//     //Change to initials.
+//     namePool: {
+//       1: ['J.S', 'O.N', 'R.T', 'M.A', 'W.L', 'D.D', 'R.C', 'J.I'],
+//       2: ['T.S', 'C.H', 'C.S', 'D.A', 'M.W', 'A.Y', 'D.J', 'M.K'],
+//       3: ['P.L', 'S.T', 'A.D', 'K.D', 'J.K', 'G.W', 'K.E', 'B.C'],
+//       4: ['E.D', 'R.N', 'T.M', 'J.H', 'K.H', 'R.B', 'J.Y', 'G.C'],
+//       5: ['N.C', 'E.B', 'S.V', 'J.F', 'L.T', 'J.B', 'S.B', 'B.H'],
+//       6: ['F.Y', 'B.S', 'G.P', 'S.R', 'R.H', 'P.J', 'A.W', 'J.C'],
+//       7: ['D.Q', 'J.N', 'T.W', 'A.G', 'J.M', 'H.K', 'D.L', 'A.P'],
+//       8: ['P.P', 'N.S', 'Z.S', 'W.W', 'K.F', 'H.I', 'C.B', 'J.L']
+//     }
+//   },
+//   1: {
+//     race: Race.ASIAN,
+//     //Change to initials.
+//     namePool: {
+//       1: ['J.S', 'O.N', 'R.T', 'M.A', 'W.L', 'D.D', 'R.C', 'J.I'],
+//       2: ['T.S', 'C.H', 'C.S', 'D.A', 'M.W', 'A.Y', 'D.J', 'M.K'],
+//       3: ['P.L', 'S.T', 'A.D', 'K.D', 'J.K', 'G.W', 'K.E', 'B.C'],
+//       4: ['E.D', 'R.N', 'T.M', 'J.H', 'K.H', 'R.B', 'J.Y', 'G.C'],
+//       5: ['N.C', 'E.B', 'S.V', 'J.F', 'L.T', 'J.B', 'S.B', 'B.H'],
+//       6: ['F.Y', 'B.S', 'G.P', 'S.R', 'R.H', 'P.J', 'A.W', 'J.C'],
+//       7: ['D.Q', 'J.N', 'T.W', 'A.G', 'J.M', 'H.K', 'D.L', 'A.P'],
+//       8: ['P.P', 'N.S', 'Z.S', 'W.W', 'K.F', 'H.I', 'C.B', 'J.L']
+//     }
+//   },
+//   2: {
+//     race: Race.LATINO,
+//     //Change to initials.
+//     namePool: {
+//       1: ['J.S', 'O.N', 'R.T', 'M.A', 'W.L', 'D.D', 'R.C', 'J.I'],
+//       2: ['T.S', 'C.H', 'C.S', 'D.A', 'M.W', 'A.Y', 'D.J', 'M.K'],
+//       3: ['P.L', 'S.T', 'A.D', 'K.D', 'J.K', 'G.W', 'K.E', 'B.C'],
+//       4: ['E.D', 'R.N', 'T.M', 'J.H', 'K.H', 'R.B', 'J.Y', 'G.C'],
+//       5: ['N.C', 'E.B', 'S.V', 'J.F', 'L.T', 'J.B', 'S.B', 'B.H'],
+//       6: ['F.Y', 'B.S', 'G.P', 'S.R', 'R.H', 'P.J', 'A.W', 'J.C'],
+//       7: ['D.Q', 'J.N', 'T.W', 'A.G', 'J.M', 'H.K', 'D.L', 'A.P'],
+//       8: ['P.P', 'N.S', 'Z.S', 'W.W', 'K.F', 'H.I', 'C.B', 'J.L']
+//     }
+//   },
+//   3: {
+//     race: Race.WHITE,
+//     //Change to initials.
+//     namePool: {
+//       1: ['J.S', 'O.N', 'R.T', 'M.A', 'W.L', 'D.D', 'R.C', 'J.I'],
+//       2: ['T.S', 'C.H', 'C.S', 'D.A', 'M.W', 'A.Y', 'D.J', 'M.K'],
+//       3: ['P.L', 'S.T', 'A.D', 'K.D', 'J.K', 'G.W', 'K.E', 'B.C'],
+//       4: ['E.D', 'R.N', 'T.M', 'J.H', 'K.H', 'R.B', 'J.Y', 'G.C'],
+//       5: ['N.C', 'E.B', 'S.V', 'J.F', 'L.T', 'J.B', 'S.B', 'B.H'],
+//       6: ['F.Y', 'B.S', 'G.P', 'S.R', 'R.H', 'P.J', 'A.W', 'J.C'],
+//       7: ['D.Q', 'J.N', 'T.W', 'A.G', 'J.M', 'H.K', 'D.L', 'A.P'],
+//       8: ['P.P', 'N.S', 'Z.S', 'W.W', 'K.F', 'H.I', 'C.B', 'J.L']
+//     }
+//   }
+// }
+let namePool = {
+  1: ['J.S', 'O.N', 'R.T', 'M.A', 'W.L', 'D.D', 'R.C', 'J.I'],
+  2: ['T.S', 'C.H', 'C.S', 'D.A', 'M.W', 'A.Y', 'D.J', 'M.K'],
+  3: ['P.L', 'S.T', 'A.D', 'K.D', 'J.K', 'G.W', 'K.E', 'B.C'],
+  4: ['E.D', 'R.N', 'T.M', 'J.H', 'K.H', 'R.B', 'J.Y', 'G.C'],
+  5: ['N.C', 'E.B', 'S.V', 'J.F', 'L.T', 'J.B', 'S.B', 'B.H'],
+  6: ['F.Y', 'B.S', 'G.P', 'S.R', 'R.H', 'P.J', 'A.W', 'J.C'],
+  7: ['D.Q', 'J.N', 'T.W', 'A.G', 'J.M', 'H.K', 'D.L', 'A.P'],
+  8: ['P.P', 'N.S', 'Z.S', 'W.W', 'K.F', 'H.I', 'C.B', 'J.L']
 }
+
 
 @Component({
   selector: 'app-training',
@@ -139,21 +150,22 @@ export class TrainingPage {
   */
   
   initCurrentLevel(race : Race = Race.BLACK) {
-    // this.showRaceSelect();
-    // this.submitScores.submitTaskScores(-1, [-1, -1, -1, -1, -1, -1], "asian_female");
+    // console.log("raceName just before sumbit score:");
+    // console.log(raceName);
+    //this.showRaceSelect();
     /**
     * Option = User's choice
     * Option -> Database
     * let days = res['days'];
     * race = days[day]['race'];this.currentRace = race;
     */
-    this.currentRace = race;
+    // this.currentRace = race;
 
     this.getProgress.getData().subscribe((res) => {
-
+      // console.log(res);
       let days = res['days'];
       this.userLevel = res['level'];
-      
+      this.currentRace = res['race'];
       /**
        * trial starts
        * this.userRace = res['race'];
@@ -186,8 +198,7 @@ export class TrainingPage {
         }
 
         if (!levelCompletedToday) {
-
-          this.setNames = raceProperties[this.currentRace].namePool[this.userLevel];
+          this.setNames = namePool[this.userLevel]; //raceProperties[this.currentRace].namePool[this.userLevel];
           this.getTrainingFaces().then((faces) => {
             this.trainingFacePaths = faces;
             this.getWhosNewFaces().then((faces) => {
@@ -297,25 +308,28 @@ export class TrainingPage {
     });
     await modal.present();
   }
-
-  /**
+  
   async showRaceSelect() {
-    let currentR = null;
+    let raceName = null;
     const modal = await this.modalController.create({
       component: RaceSelectModalComponent,
       componentProps: {
-        'currentR': currentR
-      }
+        race: this.currentRace
+      } //componentProps: { users: this.users },
     });
     await modal.present();
-    let { data } = await modal.onWillDismiss();
-  } */
-  
-  async showRaceSelect() {
-    const modal = await this.modalController.create({
-      component: RaceSelectModalComponent
+    await modal.onWillDismiss().then(data=>{
+      console.log('data came back from modal');
+      console.log(data);
+      raceName = data['data'].toLowerCase();
+      console.log("raceName is:");
+      console.log(raceName);
+      //this.submitScores.submitTaskScores(-1, [-1, -1, -1, -1, -1, -1], raceName); // what if user chooses to change race groups throughout the process
     });
-    await modal.present();
+    // console.log("Outside, and raceName now is:");
+    // console.log(raceName);
+    this.submitScores.submitTaskScores(-1, [-1, -1, -1, -1, -1, -1], raceName);
+    return raceName;
   }
  
   renderLevelOneHelp() {
@@ -327,6 +341,11 @@ export class TrainingPage {
   }
 
   async getTrainingFaces() {
+    let name = await this.showRaceSelect();
+    console.log("name is:");
+    console.log(name);
+    // this.trainingFacePaths = name;
+    console.log("passed.");
     let facePaths : string[] = [];
     let imagesAlreadyStored = true;
 
@@ -339,7 +358,8 @@ export class TrainingPage {
         facePaths.push(image);
       }
     }
-    if (!imagesAlreadyStored) {
+    // if (!imagesAlreadyStored) {
+    if(true){
       facePaths = [];
       const httpOptions = {
         headers: new HttpHeaders({
@@ -347,11 +367,14 @@ export class TrainingPage {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         })
       };
-      await this.http.put("https://crossfacerecognition.herokuapp.com/getTrainingFaces/", {level: this.userLevel}, httpOptions).subscribe((res) => {
+      //await this.http.put("https://crossfacerecognition.herokuapp.com/getTrainingFaces/", {level: this.userLevel, race: this.currentRace}, httpOptions).subscribe((res) => {
+      await this.http.put("https://crossfacerecognition.herokuapp.com/getTrainingFaces/", {level: this.userLevel, race: name}, httpOptions).subscribe((res) => {
         for (let i = 0; i < 8; i++) {
+          //clear stack
           facePaths.push(`data:image/png;base64,${res['images'][i]}`)
           sessionStorage.setItem(`training${i}`, `data:image/png;base64,${res['images'][i]}`)
         }
+        console.log("photos updated.");
       });
     }
     return facePaths;
@@ -366,7 +389,7 @@ export class TrainingPage {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
       })
     };
-    await this.http.put("https://crossfacerecognition.herokuapp.com/getWhosNewFaces/", {level: this.userLevel}, httpOptions).subscribe((res) => {
+    await this.http.put("https://crossfacerecognition.herokuapp.com/getWhosNewFaces/", {level: this.userLevel, race: this.currentRace}, httpOptions).subscribe((res) => {
       for (let i = 0; i < 8; i++) {
         facePaths.push(`data:image/png;base64,${res['images'][i]}`)
       }
@@ -396,7 +419,7 @@ export class TrainingPage {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         })
       };
-      await this.http.put("https://crossfacerecognition.herokuapp.com/getDailyAssessmentFaces/", {}, httpOptions).subscribe((res) => {
+      await this.http.put("https://crossfacerecognition.herokuapp.com/getDailyAssessmentFaces/", {race: this.currentRace}, httpOptions).subscribe((res) => {
         for (let i = 0; i < 8; i++) {
           facePaths.push(`data:image/jpg;base64,${res['images'][i]}`)
           sessionStorage.setItem(`dailyAssessment${i}`, `data:image/jpg;base64,${res['images'][i]}`)
@@ -415,7 +438,7 @@ export class TrainingPage {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
       })
     };
-    await this.http.put("https://crossfacerecognition.herokuapp.com/getPrePostAssessmentFaces/", {}, httpOptions).subscribe((res) => {
+    await this.http.put("https://crossfacerecognition.herokuapp.com/getPrePostAssessmentFaces/", {race: this.currentRace}, httpOptions).subscribe((res) => {
       for (let i = 0; i < 30; i++) {
         facePaths.push(`data:image/jpg;base64,${res['images'][i]}`)
       }
@@ -425,6 +448,7 @@ export class TrainingPage {
   }
 
   finished(score : number[], task : number) {
+    console.log("this is finished.")
     this.scores[task] = Math.max(score[0], this.scores[task]);
     if (score[1] != 0) { // Not retrying
       if (score[1] == 1) { // Learning
@@ -439,7 +463,10 @@ export class TrainingPage {
     this.submitScores.submitTaskScores(this.userLevel, this.scores, "black");
   }
 
-  /**Pass raceName */
+  // finished_setRaceName() {
+  //   this.showRaceSelect();
+  // }
+
   finishPrePost(score : number[]) {
     if (this.userLevel == 0) {
       this.submitScores.submitPreAssessment(score[0], "black");
