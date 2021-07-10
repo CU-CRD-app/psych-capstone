@@ -165,7 +165,7 @@ export class TrainingPage {
       // console.log(res);
       let days = res['days'];
       this.userLevel = res['level'];
-      this.currentRace = res['race'];
+      // this.currentRace = res['race'];
       /**
        * trial starts
        * this.userRace = res['race'];
@@ -342,6 +342,7 @@ export class TrainingPage {
 
   async getTrainingFaces() {
     let name = await this.showRaceSelect();
+    this.currentRace = name;
     console.log("name is:");
     console.log(name);
     // this.trainingFacePaths = name;
