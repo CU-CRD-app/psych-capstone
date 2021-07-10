@@ -150,7 +150,6 @@ export class TrainingPage {
   */
   
   initCurrentLevel(race : Race = Race.BLACK) {
-    // this.showRaceSelect();
     // console.log("raceName just before sumbit score:");
     // console.log(raceName);
     //this.showRaceSelect();
