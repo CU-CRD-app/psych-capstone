@@ -112,9 +112,11 @@ export class HelpModalComponent implements OnInit {
     }
 
     this.hideQuit = false;
-    if (this.displayFirst && this.slides.length > 1) {
-      this.hideQuit = true;
-    }
+    // Comment out below, in order to enable quit all the time. 
+    // There is a "sliding" bug preventing the user to reach the last slide and close it.
+    // if (this.displayFirst && this.slides.length > 1) {
+    //   this.hideQuit = true;
+    // }
   }
 
   task : string;
