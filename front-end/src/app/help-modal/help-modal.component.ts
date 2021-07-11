@@ -61,7 +61,7 @@ const slideValues = {
     ['assets/help-slides/same-different/3.png', 'You will receive a point for each correct answer.']
   ],
   'Training Tasks': [
-    ['assets/help-slides/training/0.png', 'Welcome to the training tasks. You can revisit the learning task however often you need with the bottom left-hand button.'],
+    ['assets/help-slides/training/0.png', 'Welcome to the training tasks. You can check today`s face-name pairs however often you need with the bottom left-hand button.'],
     ['assets/help-slides/training/1.png', 'When you complete a task, you can see your highest score. You must get at least 75% to pass each task, and can do them any number of times.'],
     ['assets/help-slides/training/2.png', 'After passing every task, you can progress to the daily assessment tasks with the bottom right-hand button. You will not be able to come back today after moving on.']
   ],
