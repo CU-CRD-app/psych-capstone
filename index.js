@@ -309,9 +309,24 @@ app.put("/getPrePostAssessmentFaces/", cors(corsOptions), function(req, res, nex
             .then(id => {
                 try {
                     var images = [];
-                    var raceName = req.body.race;
+                    var raceName = null;
+                    var random_face_index = Math.floor(Math.random() * (4));//Generate random seed from 0 to 3.
+                    switch (random_face_index) {
+                        case 0:
+                            raceName = "asian";
+                            break;
+                        case 1:
+                            raceName = "black";
+                            break;
+                        case 2:
+                            raceName = "latino";
+                            break;
+                        case 3:
+                            raceName = "white";
+                            break;
+                      }
                     console.log("/getPrePostAssessmentFaces/");
-                    console.log(req.body.race);
+                    console.log(raceName);
                     var total_num = fs.readdirSync(`./faces/${raceName}/pre-post-assessment`).length;
                     var random_index = Math.floor(Math.random() * (total_num - 30));
                     for (var i = random_index; i < random_index + 30; i++) {
