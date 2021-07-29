@@ -237,7 +237,7 @@ app.put("/getTrainingFaces/", cors(corsOptions), function(req, res, next){
                     var random_index = Math.floor(Math.random() * total_num );
                     var data = fs.readFileSync(`./faces/${raceName}/training/level-7/${random_index}.jpg`);
                     images.push(new Buffer(data, 'binary').toString('base64'));
-                    //random choose 7 pictures from Level-X
+                    //random choose 7 pictures from Level "req.body.level" to Level-6.
                     var total_num_2 = fs.readdirSync(`./faces/${raceName}/training/level-${req.body.level - 1}`).length;
                     // var img_indices = [0, 1, 2, 3, 4, 5, 6, 7];
                     var img_indices = Array.from(Array(total_num_2).keys());
