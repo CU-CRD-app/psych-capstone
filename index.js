@@ -390,6 +390,8 @@ app.put("/getWhosNewFaces/", cors(corsOptions), function(req, res, next){
                         var img_indices = Array.from(Array(total_num).keys());
                         console.log("Check img_indices:");
                         console.log(img_indices);
+                        console.log("Check do_not_select_index:");
+                        console.log(do_not_select_index);
                         removeItemAll(img_indices, do_not_select_index);
                         console.log("Check img_indices after the removal:");
                         console.log(img_indices);
