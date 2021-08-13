@@ -20,6 +20,7 @@ initialize.start()
     .catch(err => console.log(err))
 
 var app = express();
+var do_not_select_index = 0;
 
 app.use(bodyParser.json());
 
@@ -218,7 +219,7 @@ function shuffle(array) {
     }
     return array;
   }
-// -------shuffle function ends -------
+// -------shuffle function ends-------
 
 app.put("/getTrainingFaces/", cors(corsOptions), function(req, res, next){
     if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
@@ -229,23 +230,36 @@ app.put("/getTrainingFaces/", cors(corsOptions), function(req, res, next){
             .then(id => {
                 try {
                     var images = [];
-                    //random choose 1 picture from Level-7 
+                    var level_index = req.body.level - 1;
                     var raceName = req.body.race;
                     console.log("/getTrainingFaces/");
                     console.log(req.body.race);
-                    var total_num = fs.readdirSync(`./faces/${raceName}/training/level-7`).length;
-                    var random_index = Math.floor(Math.random() * total_num );
-                    var data = fs.readFileSync(`./faces/${raceName}/training/level-7/${random_index}.jpg`);
-                    images.push(new Buffer(data, 'binary').toString('base64'));
-                    //random choose 7 pictures from Level-X
-                    var total_num_2 = fs.readdirSync(`./faces/${raceName}/training/level-${req.body.level - 1}`).length;
-                    // var img_indices = [0, 1, 2, 3, 4, 5, 6, 7];
-                    var img_indices = Array.from(Array(total_num_2).keys());
-                    shuffled_indices = shuffle(img_indices);
-                    for (var i = 0; i < 7; i++) {
-                        random_index = shuffled_indices[i];
-                        var data = fs.readFileSync(`./faces/${raceName}/training/level-${req.body.level - 1}/${random_index}.jpg`);
-                        images.push(new Buffer(data, 'binary').toString('base64'));
+                    
+                    //This for loop select 8 photos accordingly.
+                    for (var i = 0; i < 8; i++) {
+                        if (i == level_index) {
+                            //random choose (level_index + 1) picture(s) from level-i
+                            var total_num = fs.readdirSync(`./faces/${raceName}/training/level-${i}`).length;
+                            var img_indices = Array.from(Array(total_num).keys());
+                            shuffled_indices = shuffle(img_indices);
+                            //-------Setting up do_not_select_index for getwhosnew
+                            if (level_index == 0) {
+                                do_not_select_index = shuffled_indices[0];
+                            }
+                            //-------Setting up do_not_select_index ends here.
+                            for (var j = 0; j < level_index + 1; j++) {
+                                random_index = shuffled_indices[j];
+                                var data = fs.readFileSync(`./faces/${raceName}/training/level-${i}/${random_index}.jpg`);
+                                images.push(new Buffer(data, 'binary').toString('base64'));
+                            }
+                        }
+                        if (i > level_index) {
+                            //random choose 1 picture from Level-i 
+                            var total_num = fs.readdirSync(`./faces/${raceName}/training/level-${i}`).length;
+                            var random_index = Math.floor(Math.random() * total_num );
+                            var data = fs.readFileSync(`./faces/${raceName}/training/level-${i}/${random_index}.jpg`);
+                            images.push(new Buffer(data, 'binary').toString('base64'));
+                        }
                     }
                     // -------Debug session codes-------
                     // var images = [];
@@ -342,6 +356,19 @@ app.put("/getPrePostAssessmentFaces/", cors(corsOptions), function(req, res, nex
     }
 })
 
+// -------REF: https://stackoverflow.com/questions/5767325/how-can-i-remove-a-specific-item-from-an-array -------
+function removeItemAll(arr, value) {
+    var i = 0;
+    while (i < arr.length) {
+      if (arr[i] === value) {
+        arr.splice(i, 1);
+      } else {
+        ++i;
+      }
+    }
+    return arr;
+}
+//-------removeItemAll function ends-------
 
 app.put("/getWhosNewFaces/", cors(corsOptions), function(req, res, next){
     if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
@@ -355,15 +382,36 @@ app.put("/getWhosNewFaces/", cors(corsOptions), function(req, res, next){
                     var raceName = req.body.race;
                     console.log("/getWhosNewFaces/");
                     console.log(req.body.race);
-                    var afterFaces = 8 - req.body.level + (1 - Math.round(req.body.level/8));
-                    var beforeFaces = 8 - afterFaces;
-                    for (var i = 0; i < afterFaces; i++) {
-                        var data = fs.readFileSync(`./faces/${raceName}/training/level-${req.body.level + 1 - 1}/${i}.jpg`);
-                        images.push(new Buffer(data, 'binary').toString('base64'));
-                    }
-                    for (var i = 0; i < beforeFaces; i++) {
-                        var data = fs.readFileSync(`./faces/${raceName}/training/level-${req.body.level - 1 - 1}/${i}.jpg`);
-                        images.push(new Buffer(data, 'binary').toString('base64'));
+                    //select 8 random photos from previous stage. Except for the first level. Since there is no previous one, 
+                    //use the do_not_select_index to avoid repetition.
+                    var level_index = req.body.level - 1;
+                    if (level_index == 0) {
+                        var total_num = fs.readdirSync(`./faces/${raceName}/training/level-${level_index}`).length;
+                        var img_indices = Array.from(Array(total_num).keys());
+                        console.log("Check img_indices:");
+                        console.log(img_indices);
+                        console.log("Check do_not_select_index:");
+                        console.log(do_not_select_index);
+                        removeItemAll(img_indices, do_not_select_index);
+                        console.log("Check img_indices after the removal:");
+                        console.log(img_indices);
+                        shuffled_indices = shuffle(img_indices);
+                        for (var j = 0; j < 8; j++) {
+                            random_index = shuffled_indices[j];
+                            var data = fs.readFileSync(`./faces/${raceName}/training/level-${level_index}/${random_index}.jpg`);
+                            images.push(new Buffer(data, 'binary').toString('base64'));
+                        }
+                    } else {
+                        var total_num = fs.readdirSync(`./faces/${raceName}/training/level-${level_index - 1}`).length;
+                        var img_indices = Array.from(Array(total_num).keys());
+                        console.log("(For not-0 level)Check img_indices:");
+                        console.log(img_indices);
+                        shuffled_indices = shuffle(img_indices);
+                        for (var j = 0; j < 8; j++) {
+                            random_index = shuffled_indices[j];
+                            var data = fs.readFileSync(`./faces/${raceName}/training/level-${level_index - 1}/${random_index}.jpg`);
+                            images.push(new Buffer(data, 'binary').toString('base64'));
+                        }
                     }
                     res.status(200).send({images: images});
                 } catch (err) {
