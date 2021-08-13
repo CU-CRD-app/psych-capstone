@@ -324,7 +324,7 @@ app.put("/getPrePostAssessmentFaces/", cors(corsOptions), function(req, res, nex
                 try {
                     var images = [];
                     // var raceName = null;
-                    var random_face_index = Math.floor(Math.random() * (4));//Generate random seed from 0 to 3.
+                    // var random_face_index = Math.floor(Math.random() * (4));//Generate random seed from 0 to 3.
                     // switch (random_face_index) {
                     //     case 0:
                     //         raceName = "asian";
@@ -348,7 +348,7 @@ app.put("/getPrePostAssessmentFaces/", cors(corsOptions), function(req, res, nex
                     //     images.push(new Buffer(data, 'binary').toString('base64'));
                     // }
                     var faceNums = [];
-                    for (var i = 0; i < 30; i++) { // Generate 8 random numbers between 0 and total_num
+                    for (var i = 0; i < 30; i++) { // Generate 30 random numbers between 0 and total_num
                         var face = Math.floor(Math.random() * total_num);
                         while (faceNums.indexOf(face) > -1) { // Account for repeats
                           face = Math.floor(Math.random() * total_num);
