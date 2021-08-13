@@ -167,10 +167,10 @@ export class LoginPage implements OnInit {
         this.http.put(this.register_url, body, httpOptions).subscribe((response) => {
           this.awaitRegisterHTTP = false;
           this.Login();
-          this.successToast("Account creation successful!");
+          this.successToast("Account recovery successful!");
         }, (err) => {
           this.awaitRegisterHTTP = false;
-          this.successToast("Account creation failed!");
+          this.successToast("Account recovery failed!");
           this.resetForms();
         });
 
