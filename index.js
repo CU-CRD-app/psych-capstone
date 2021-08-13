@@ -326,7 +326,7 @@ app.put("/getPrePostAssessmentFaces/", cors(corsOptions), function(req, res, nex
                     var raceName = req.body.race;
                     console.log("/getPrePostAssessmentFaces/");
                     console.log(req.body.race);
-                    if(raceName == null){
+                    if(raceName == 0){
                         var images = [];
                         var total_num = fs.readdirSync(`./faces/pre-post-assessment`).length;
                         var faceNums = [];
