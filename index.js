@@ -344,7 +344,7 @@ app.put("/getPrePostAssessmentFaces/", cors(corsOptions), function(req, res, nex
                     var total_num = fs.readdirSync(`./faces/pre-post-assessment`).length;
                     var random_index = Math.floor(Math.random() * (total_num - 30));
                     for (var i = random_index; i < random_index + 30; i++) {
-                        var data = fs.readFileSync(`./faces/${raceName}/pre-post-assessment/${i}.jpg`);
+                        var data = fs.readFileSync(`./faces/pre-post-assessment/${i}.jpg`);
                         images.push(new Buffer(data, 'binary').toString('base64'));
                     }
                     res.status(200).send({images: images});
