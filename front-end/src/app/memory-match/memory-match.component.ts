@@ -82,7 +82,7 @@ export class MemoryMatchComponent implements OnInit {
 
   Stage = Stage;
   mask : string = 'assets/background_imgs/mask1.png';
-  memorizeTime : number = 10;
+  memorizeTime : number = 10;//Changed this from 10 to 15
   taskLength : number = 32;
 
   stage : Stage;
