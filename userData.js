@@ -32,7 +32,7 @@ module.exports = {
             })
         }
 
-        let resDays = await pgClient.query("SELECT * FROM day WHERE userid = $1 and level <> $2", [res.rows[0].userid, -1]);  //and level != -1
+        let resDays = await pgClient.query("SELECT * FROM day WHERE userid = $1", [res.rows[0].userid]);  //and level != -1
     
         let preCount = await pgClient.query("SELECT * FROM preassessment WHERE userid = $1", [res.rows[0].userid]);
 
