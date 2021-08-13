@@ -31,13 +31,15 @@
 
 .grid-card {
     display: inline-block;
-    height: 130px;
-    width: 130px;
+    height: 100px; //125
+    width: 100px;
     text-align: center;
     background-color: gainsboro;
     img {
-        height: 100px;
-        width: 100px;
+        // height: 95px;
+        // width: 70px;
+        height: 85px;
+        width: 85px;
         margin: 15px auto;
     }
 }
