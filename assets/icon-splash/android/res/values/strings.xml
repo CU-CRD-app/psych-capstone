@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">CRD Research</string>
+    <string name="title_activity_main">CRD Research</string>
+    <string name="package_name">io.colorado.crd</string>
+    <string name="custom_url_scheme">io.colorado.crd</string>
+</resources>
