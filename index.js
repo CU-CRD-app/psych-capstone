@@ -326,6 +326,7 @@ app.put("/getPrePostAssessmentFaces/", cors(corsOptions), function(req, res, nex
                     console.log("/getPrePostAssessmentFaces/");
                     console.log(req.body.race);
                     if(raceName == "asian" || raceName == "black" || raceName == "latino" || raceName == "white"){
+                        console.log(""/getPrePostAssessmentFaces/" into choosed groups.");
                         var images = [];
                         var total_num = fs.readdirSync(`./faces/${raceName}/pre-post-assessment`).length;
                         var faceNums = [];
@@ -341,6 +342,7 @@ app.put("/getPrePostAssessmentFaces/", cors(corsOptions), function(req, res, nex
                         res.status(200).send({images: images});
                     }
                     else{
+                        console.log(""/getPrePostAssessmentFaces/" into cross groups.");
                         var images = [];
                         var total_num = fs.readdirSync(`./faces/pre-post-assessment`).length;
                         var faceNums = [];
