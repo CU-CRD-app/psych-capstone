@@ -326,22 +326,7 @@ app.put("/getPrePostAssessmentFaces/", cors(corsOptions), function(req, res, nex
                     var raceName = req.body.race;
                     console.log("/getPrePostAssessmentFaces/");
                     console.log(req.body.race);
-                    if(raceName == 0){
-                        var images = [];
-                        var total_num = fs.readdirSync(`./faces/pre-post-assessment`).length;
-                        var faceNums = [];
-                        for (var i = 0; i < 30; i++) { // Generate 30 random numbers between 0 and total_num
-                            var face = Math.floor(Math.random() * total_num);
-                            while (faceNums.indexOf(face) > -1) { // Account for repeats
-                            face = Math.floor(Math.random() * total_num);
-                            }
-                            faceNums.push(face);
-                            var data = fs.readFileSync(`./faces/pre-post-assessment/${faceNums[i]}.jpg`);
-                            images.push(new Buffer(data, 'binary').toString('base64'));
-                        }
-                        res.status(200).send({images: images});
-                    }
-                    else{
+                    if(raceName == "asian" || "black" || "latino" || "white"){
                         var images = [];
                         var total_num = fs.readdirSync(`./faces/${raceName}/pre-post-assessment`).length;
                         var faceNums = [];
@@ -352,6 +337,21 @@ app.put("/getPrePostAssessmentFaces/", cors(corsOptions), function(req, res, nex
                             }
                             faceNums.push(face);
                             var data = fs.readFileSync(`./faces/${raceName}/pre-post-assessment/${faceNums[i]}.jpg`);
+                            images.push(new Buffer(data, 'binary').toString('base64'));
+                        }
+                        res.status(200).send({images: images});
+                    }
+                    else{
+                        var images = [];
+                        var total_num = fs.readdirSync(`./faces/pre-post-assessment`).length;
+                        var faceNums = [];
+                        for (var i = 0; i < 30; i++) { // Generate 30 random numbers between 0 and total_num
+                            var face = Math.floor(Math.random() * total_num);
+                            while (faceNums.indexOf(face) > -1) { // Account for repeats
+                            face = Math.floor(Math.random() * total_num);
+                            }
+                            faceNums.push(face);
+                            var data = fs.readFileSync(`./faces/pre-post-assessment/${faceNums[i]}.jpg`);
                             images.push(new Buffer(data, 'binary').toString('base64'));
                         }
                         res.status(200).send({images: images});
