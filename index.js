@@ -326,7 +326,7 @@ app.put("/getPrePostAssessmentFaces/", cors(corsOptions), function(req, res, nex
                     console.log("/getPrePostAssessmentFaces/");
                     console.log(req.body.race);
                     if(raceName == "asian" || raceName == "black" || raceName == "latino" || raceName == "white"){
-                        console.log(""/getPrePostAssessmentFaces/" into choosed groups.");
+                        console.log("/getPrePostAssessmentFaces/ into choosed groups.");
                         var images = [];
                         var total_num = fs.readdirSync(`./faces/${raceName}/pre-post-assessment`).length;
                         var faceNums = [];
@@ -342,7 +342,7 @@ app.put("/getPrePostAssessmentFaces/", cors(corsOptions), function(req, res, nex
                         res.status(200).send({images: images});
                     }
                     else{
-                        console.log(""/getPrePostAssessmentFaces/" into cross groups.");
+                        console.log("/getPrePostAssessmentFaces/ into cross groups.");
                         var images = [];
                         var total_num = fs.readdirSync(`./faces/pre-post-assessment`).length;
                         var faceNums = [];
@@ -377,22 +377,22 @@ app.put("/getPrePostAssessmentFaces/", cors(corsOptions), function(req, res, nex
                     // // console.log("/getPrePostAssessmentFaces/");
                     // // console.log(raceName);
                     // var total_num = fs.readdirSync(`./faces/pre-post-assessment`).length;
-                    // // var random_index = Math.floor(Math.random() * (total_num - 30));
-                    // // for (var i = random_index; i < random_index + 30; i++) {
-                    // //     var data = fs.readFileSync(`./faces/pre-post-assessment/${i}.jpg`);
-                    // //     images.push(new Buffer(data, 'binary').toString('base64'));
-                    // // }
                     // var faceNums = [];
+                    // console.log("flag1");
                     // for (var i = 0; i < 30; i++) { // Generate 30 random numbers between 0 and total_num
                     //     var face = Math.floor(Math.random() * total_num);
+                    //     console.log(`flag in loop: ${i}`);
                     //     while (faceNums.indexOf(face) > -1) { // Account for repeats
                     //       face = Math.floor(Math.random() * total_num);
                     //     }
                     //     faceNums.push(face);
+                    //     console.log(`flag_2 in loop: ${i}`);
                     //     var data = fs.readFileSync(`./faces/pre-post-assessment/${faceNums[i]}.jpg`);
                     //     images.push(new Buffer(data, 'binary').toString('base64'));
+                    //     console.log(`flag_3 in loop: ${i}`);
                     // }
                     // res.status(200).send({images: images});
+                    // console.log(`ending flag`);
                 } catch (err) {
                     res.status(500).send("Internal server error");
                 }
