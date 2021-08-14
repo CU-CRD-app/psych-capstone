@@ -325,7 +325,7 @@ app.put("/getPrePostAssessmentFaces/", cors(corsOptions), function(req, res, nex
                     var raceName = req.body.race;
                     console.log("/getPrePostAssessmentFaces/");
                     console.log(req.body.race);
-                    if(raceName == "asian" || "black" || "latino" || "white"){
+                    if(raceName == "asian" || raceName == "black" || raceName == "latino" || raceName == "white"){
                         var images = [];
                         var total_num = fs.readdirSync(`./faces/${raceName}/pre-post-assessment`).length;
                         var faceNums = [];
