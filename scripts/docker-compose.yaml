@@ -1,0 +1,41 @@
+version: "3.9"
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: password
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+  backend:
+    depends_on:
+      - db
+    image: "node:16"
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      DATABASE_URL: postgres:password@localhost:5432
+    volumes:
+      - ../:/home/node/app
+    ports:
+      - 8080:8080
+    command: "node index.js"
+  frontend:
+    depends_on:
+      - backend
+    image: "node:16"
+    user: "node"
+    working_dir: /home/node/app/front-end
+    environment:
+      NPM_CONFIG_PREFIX: /home/node/.npm-global
+    volumes:
+      - ../:/home/node/app
+    ports:
+      - 8100:8100
+    command: >
+      bash -c "mkdir -p /home/node/.npm-global &&
+      export 'PATH=$PATH:/home/node/.npm-global/bin' &&
+      npm install -g @ionic/cli &&
+      ionic serve --host 0.0.0.0"
+
+volumes:
+  dbdata: {}

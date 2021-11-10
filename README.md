@@ -35,4 +35,12 @@ Run this from root to start a server:
 
 Must include an auth.json file with a DATABASE_URL parameter to connect to a database when running locally.
 
-  
+## Docker
+
+To run a full stack locally using docker compose:
+
+``docker-compose -f scripts/docker-compose.yaml -p psych-capstone up``
+
+teardown:
+
+``docker-compose -f scripts/docker-compose.yaml -p psych-capstone down``
