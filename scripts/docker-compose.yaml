@@ -6,6 +6,13 @@ services:
       POSTGRES_PASSWORD: password
     volumes:
       - dbdata:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    # https://gist.github.com/mrw34/c97bb03ea1054afb551886ffc8b63c3b
+    command: >
+      -c ssl=on
+      -c ssl_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
+      -c ssl_key_file=/etc/ssl/private/ssl-cert-snakeoil.key
   backend:
     depends_on:
       - db
@@ -13,7 +20,9 @@ services:
     user: "node"
     working_dir: /home/node/app
     environment:
-      DATABASE_URL: postgres:password@localhost:5432
+      DATABASE_URL: postgres://postgres:password@db:5432/postgres
+      # https://stackoverflow.com/questions/20433287/node-js-request-cert-has-expired#answer-29397100
+      NODE_TLS_REJECT_UNAUTHORIZED: 0
     volumes:
       - ../:/home/node/app
     ports:
