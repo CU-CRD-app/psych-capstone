@@ -54,3 +54,4 @@ export DOCKER_HOST=unix:///run/user/$UID/podman/podman.sock
 ```
 
 For more details, please read the guide here from [Fedora Magazine](https://fedoramagazine.org/use-docker-compose-with-podman-to-orchestrate-containers-on-fedora/).
+For details on why docker-compose version 1.29.2 is required, rather than 2+, please see [this issue](https://github.com/containers/podman/issues/11822).
