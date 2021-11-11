@@ -44,3 +44,13 @@ To run a full stack locally using docker compose:
 teardown:
 
 ``docker-compose -f scripts/docker-compose.yaml -p psych-capstone down``
+
+If you are using rootless podman, be sure to use docker-compose@1.29.2 and [dnsname](https://github.com/containers/dnsname/blob/main/README_PODMAN.md) installed.
+Then run the following to point docker-compose to the podman socket:
+
+```
+systemctl start --user podman.socket
+export DOCKER_HOST=unix:///run/user/$UID/podman/podman.sock
+```
+
+For more details, please read the guide here from [Fedora Magazine](https://fedoramagazine.org/use-docker-compose-with-podman-to-orchestrate-containers-on-fedora/).
