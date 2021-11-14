@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Events } from '@ionic/angular';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class GetProgressService {
       })
     };
   
-    return this.http.post('https://crossfacerecognition.herokuapp.com/userData/', {}, httpOptions);
+    return this.http.post(environment.backendBaseUrl + 'userData/', {}, httpOptions);
   }
 
 }

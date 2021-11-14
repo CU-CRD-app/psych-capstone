@@ -27,7 +27,6 @@ services:
       - ../:/home/node/app
     ports:
       - 8080:8080
-    command: "node index.js"
   frontend:
     depends_on:
       - backend
@@ -44,7 +43,7 @@ services:
       bash -c "mkdir -p /home/node/.npm-global &&
       export 'PATH=$PATH:/home/node/.npm-global/bin' &&
       npm install -g @ionic/cli &&
-      ionic serve --host 0.0.0.0"
+      ionic serve --external"
 
 volumes:
   dbdata: {}
