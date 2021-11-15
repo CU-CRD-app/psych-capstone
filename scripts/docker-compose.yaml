@@ -27,6 +27,7 @@ services:
       - ../:/home/node/app
     ports:
       - 8080:8080
+    command: "node index.js"
   frontend:
     depends_on:
       - backend
