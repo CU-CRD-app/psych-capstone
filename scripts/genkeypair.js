@@ -34,4 +34,6 @@ function genDevPair(prefix) {
     })
 }
 
-genDevPair(process.env.prefix);
+if (!fs.existsSync(process.env.prefix + publicFile)) {
+    genDevPair(process.env.prefix);
+}
