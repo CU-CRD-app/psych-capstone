@@ -27,7 +27,11 @@ services:
       - ../:/home/node/app
     ports:
       - 8080:8080
-    command: "node index.js"
+    command: >
+      bash -c "prefix=/home/node/ node scripts/genkeypair.js &&
+      export public=$$(cat /home/node/public.pem) &&
+      export secret=$$(cat /home/node/private.pem) &&
+      node index.js"
   frontend:
     depends_on:
       - backend
