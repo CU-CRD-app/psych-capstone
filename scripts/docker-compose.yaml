@@ -38,17 +38,12 @@ services:
     image: "node:16"
     user: "node"
     working_dir: /home/node/app/front-end
-    environment:
-      NPM_CONFIG_PREFIX: /home/node/.npm-global
     volumes:
       - ../:/home/node/app
     ports:
       - 8100:8100
     command: >
-      bash -c "mkdir -p /home/node/.npm-global &&
-      export 'PATH=$PATH:/home/node/.npm-global/bin' &&
-      npm install -g @ionic/cli &&
-      ionic serve --external"
+      node_modules/@ionic/cli/bin/ionic serve --external
 
 volumes:
   dbdata: {}
