@@ -16,6 +16,7 @@ var password = require('./passwordChange.js');
 var fs = require("fs");
 
 var initAttempts = 5;
+var initSleep = 3 * 1000;  // 3 seconds
 
 function doInit(attempts) {
     if (attempts == 0) {
@@ -25,7 +26,15 @@ function doInit(attempts) {
     console.log(`Trying to init, ${attempts} attempts left`);
     initialize.start()
     .then(res => console.log(res))
-    .catch(err => { console.log(err); doInit(attempts - 1); })
+    .catch(
+        err => { 
+            console.log(err);
+            setTimeout(
+                function() { doInit(attempts - 1); },
+                initSleep,
+            );
+        }
+    );
 }
 
 doInit(initAttempts);
