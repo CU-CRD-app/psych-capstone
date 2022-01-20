@@ -61,4 +61,18 @@
     <ion-label *ngIf="!notifications">Off</ion-label>
   </ion-item>
 
+  <div style="margin-top: 5%; margin-left: 5%">
+    <div style="color: white">Choose Training Race:</div>
+  </div>
+
+  <ion-item button lines="none" (ionChange)="chooseRace()">
+    <ion-label>Race</ion-label>
+    <ion-select interface="dropdown" id="raceselect">
+      <ion-select-option value="Asian">Asian</ion-select-option>
+      <ion-select-option value="Black">Black</ion-select-option>
+      <ion-select-option value="Latino">Latino</ion-select-option>
+      <ion-select-option value="White">White</ion-select-option>
+    </ion-select>
+  </ion-item> 
+
 </ion-content>

@@ -133,4 +133,10 @@ export class UserSettingsPage implements OnInit {
   openSettings() {
     this.openNativeSettings.open('application_details');
   }
+
+  chooseRace(value: string) {
+    var e = document.getElementById("raceselect");
+    var trainingRace = e;
+    alert(trainingRace); 
+  }
 }
