@@ -523,6 +523,7 @@ export class TrainingPage {
   }
 
   clickStart() {
+    /**
     if (this.userLevel == 0) {
       this.task = Task.PRETEST;
       timer(500).subscribe(() => {
@@ -531,6 +532,13 @@ export class TrainingPage {
     } else if (this.userLevel == 9) {
       this.task = Task.POSTTEST;
     } else if (this.userLevel > 0 && this.userLevel < 9) {
+      this.task = Task.LEARNING;
+      this.renderLevelOneHelp();
+    }
+    **/
+    if (this.userLevel == 9) {
+      this.task = Task.POSTTEST;
+    } else if (this.userLevel >= 0 && this.userLevel < 9) {
       this.task = Task.LEARNING;
       this.renderLevelOneHelp();
     }
