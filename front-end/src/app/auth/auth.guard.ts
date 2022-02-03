@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { map, catchError } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 
 @Injectable({
@@ -41,7 +42,7 @@ export class AuthGuard implements CanActivate {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
       })
     };
-    return this.http.put("https://crossfacerecognition.herokuapp.com/checktoken/", {}, httpOptions)
+    return this.http.put(environment.backendBaseUrl + "checktoken/", {}, httpOptions)
       .pipe(map((res) => true))
       .pipe(catchError((err) => of(false)));
   }

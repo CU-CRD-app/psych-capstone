@@ -15,10 +15,29 @@ var tokenHandler = require('./token.js');
 var password = require('./passwordChange.js');
 var fs = require("fs");
 
-initialize.start()
-    .then(res => console.log(res))
-    .catch(err => console.log(err))
+var initAttempts = 5;
+var initSleep = 3 * 1000;  // 3 seconds
 
+function doInit(attempts) {
+    if (attempts == 0) {
+        console.log("Unable to initialize database!");
+        return
+    }
+    console.log(`Trying to init, ${attempts} attempts left`);
+    initialize.start()
+    .then(res => console.log(res))
+    .catch(
+        err => { 
+            console.log(err);
+            setTimeout(
+                function() { doInit(attempts - 1); },
+                initSleep,
+            );
+        }
+    );
+}
+
+doInit(initAttempts);
 var app = express();
 var do_not_select_index = 0;
 
@@ -67,6 +86,7 @@ app.post("/login/", cors(corsOptions), function(req, res, next) {
                 }
             }
             else{
+                console.log(err);
                 res.status(500).send("Internal server error");
             }
         })

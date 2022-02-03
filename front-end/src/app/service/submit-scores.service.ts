@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -8,9 +9,10 @@ export class SubmitScoresService {
 
   constructor(public http : HttpClient) { }
 
-  scores_url : string = "https://crossfacerecognition.herokuapp.com/tasks/";
-  pre_url : string = "https://crossfacerecognition.herokuapp.com/preassessment/";
-  post_url : string = "https://crossfacerecognition.herokuapp.com/postassessment/";
+  base_url : string = environment.backendBaseUrl;
+  scores_url : string = this.base_url + "tasks/";
+  pre_url : string = this.base_url + "preassessment/";
+  post_url : string = this.base_url + "postassessment/";
 
   //general
   race : string;
