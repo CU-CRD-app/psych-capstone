@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { Router } from '@angular/router';
 import { TermsConditionsComponent } from '../terms-conditions/terms-conditions.component';
+import { environment } from '../../../environments/environment';
 
 enum Popup { HOME, LOGIN, REGISTER, FORGOT }
 
@@ -60,7 +61,7 @@ export class LoginPage implements OnInit {
   login : string = "assets/icon/log-in.svg";
   help : string = "help-circle-outline";
 
-  base_url : string = "https://crossfacerecognition.herokuapp.com/";
+  base_url : string = environment.backendBaseUrl;
   login_url : string = this.base_url + "login/";
   register_url : string = this.base_url + "register/";
 

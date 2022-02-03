@@ -10,6 +10,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { RaceSelectModalComponent } from '../race-select-modal/race-select-modal.component';
 import { ModalsPluginWeb } from '@capacitor/core';
+import { environment } from '../../environments/environment';
 
 enum Race { BLACK, ASIAN, LATINO, WHITE }
 enum Stage { START, TRAINING, ASSESSMENT, DONE }
@@ -368,8 +369,8 @@ export class TrainingPage {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         })
       };
-      //await this.http.put("https://crossfacerecognition.herokuapp.com/getTrainingFaces/", {level: this.userLevel, race: this.currentRace}, httpOptions).subscribe((res) => {
-      await this.http.put("https://crossfacerecognition.herokuapp.com/getTrainingFaces/", {level: this.userLevel, race: name}, httpOptions).subscribe((res) => {
+      //await this.http.put(environment.backendBaseUrl + "getTrainingFaces/", {level: this.userLevel, race: this.currentRace}, httpOptions).subscribe((res) => {
+      await this.http.put(environment.backendBaseUrl + "getTrainingFaces/", {level: this.userLevel, race: name}, httpOptions).subscribe((res) => {
         for (let i = 0; i < 8; i++) {
           //clear stack
           facePaths.push(`data:image/png;base64,${res['images'][i]}`)
@@ -390,7 +391,7 @@ export class TrainingPage {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
       })
     };
-    await this.http.put("https://crossfacerecognition.herokuapp.com/getWhosNewFaces/", {level: this.userLevel, race: this.currentRace}, httpOptions).subscribe((res) => {
+    await this.http.put(environment.backendBaseUrl + "getWhosNewFaces/", {level: this.userLevel, race: this.currentRace}, httpOptions).subscribe((res) => {
       for (let i = 0; i < 8; i++) {
         facePaths.push(`data:image/png;base64,${res['images'][i]}`)
       }
@@ -420,7 +421,7 @@ export class TrainingPage {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         })
       };
-      await this.http.put("https://crossfacerecognition.herokuapp.com/getDailyAssessmentFaces/", {race: this.currentRace}, httpOptions).subscribe((res) => {
+      await this.http.put(environment.backendBaseUrl + "getDailyAssessmentFaces/", {race: this.currentRace}, httpOptions).subscribe((res) => {
         for (let i = 0; i < 8; i++) {
           facePaths.push(`data:image/jpg;base64,${res['images'][i]}`)
           sessionStorage.setItem(`dailyAssessment${i}`, `data:image/jpg;base64,${res['images'][i]}`)
@@ -439,7 +440,7 @@ export class TrainingPage {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
       })
     };
-    await this.http.put("https://crossfacerecognition.herokuapp.com/getPrePostAssessmentFaces/", {race: this.currentRace}, httpOptions).subscribe((res) => {
+    await this.http.put(environment.backendBaseUrl + "getPrePostAssessmentFaces/", {race: this.currentRace}, httpOptions).subscribe((res) => {
       for (let i = 0; i < 30; i++) {
         facePaths.push(`data:image/jpg;base64,${res['images'][i]}`)
       }

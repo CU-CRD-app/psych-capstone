@@ -1,0 +1,49 @@
+version: "3.9"
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: password
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    # https://gist.github.com/mrw34/c97bb03ea1054afb551886ffc8b63c3b
+    command: >
+      -c ssl=on
+      -c ssl_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
+      -c ssl_key_file=/etc/ssl/private/ssl-cert-snakeoil.key
+  backend:
+    depends_on:
+      - db
+    image: "node:16"
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      DATABASE_URL: postgres://postgres:password@db:5432/postgres
+      # https://stackoverflow.com/questions/20433287/node-js-request-cert-has-expired#answer-29397100
+      NODE_TLS_REJECT_UNAUTHORIZED: 0
+    volumes:
+      - ../:/home/node/app
+    ports:
+      - 8080:8080
+    command: >
+      bash -c "prefix=/home/node/ node scripts/genkeypair.js &&
+      export public=$$(cat /home/node/public.pem) &&
+      export secret=$$(cat /home/node/private.pem) &&
+      node index.js"
+  frontend:
+    depends_on:
+      - backend
+    image: "node:16"
+    user: "node"
+    working_dir: /home/node/app/front-end
+    volumes:
+      - ../:/home/node/app
+    ports:
+      - 8100:8100
+    command: >
+      node_modules/@ionic/cli/bin/ionic serve --external
+
+volumes:
+  dbdata: {}
