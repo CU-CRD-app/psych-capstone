@@ -1,0 +1,39 @@
+# Resources:
+# - https://github.com/marketplace/actions/deploy-to-github-pages
+# - https://github.com/actions/starter-workflows/blob/main/ci/node.js.yml
+# - https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs-or-python#using-the-node.js-starter-workflow
+# - https://www.javascripttuts.com/the-ionic-build-process-tutorial/
+# - https://ionicframework.com/docs/v3/cli/build/
+# - https://github.community/t/use-working-directory-for-entire-job/16747/2
+name: Build frontend
+
+on:
+  push:
+    branches:
+      - develop
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    name: Build and Deploy
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 16
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+        working-directory: 'front-end'
+      - name: Build with ionic
+        run: ionic build --minifyjs --minifycss --optimizejs
+        working-directory: 'front-end'
+      - name: Deploy to testing repo
+        if: github.event_name == 'push' && endsWith(github.ref, 'develop')
+        uses: JamesIves/github-pages-deploy-action@v4.2.3
+        with:
+          branch: gh-pages
+          folder: front-end/www
+          token: ${{ secrets.FRONTEND_TESTING_DEPLOY_PAT }}
+          repository-name: CU-CRD-app/psych-capstone-frontend-testing
+          clean: true
