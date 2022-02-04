@@ -5,6 +5,7 @@
 # - https://www.javascripttuts.com/the-ionic-build-process-tutorial/
 # - https://ionicframework.com/docs/v3/cli/build/
 # - https://github.community/t/use-working-directory-for-entire-job/16747/2
+# - https://ionicframework.com/docs/cli/commands/build
 name: Build frontend
 
 on:
@@ -26,7 +27,7 @@ jobs:
         run: npm ci
         working-directory: 'front-end'
       - name: Build with ionic
-        run: npx ionic build --minifyjs --minifycss --optimizejs
+        run: npx ionic build --aot --minifyjs --minifycss --optimizejs -c testing
         working-directory: 'front-end'
       - name: Deploy to testing repo
         if: github.event_name == 'push' && endsWith(github.ref, 'develop')
