@@ -6,6 +6,8 @@
 # - https://ionicframework.com/docs/v3/cli/build/
 # - https://github.community/t/use-working-directory-for-entire-job/16747/2
 # - https://ionicframework.com/docs/cli/commands/build
+# - https://thoughtbot.com/blog/sed-102-replace-in-place
+# - https://stackoverflow.com/questions/584894/environment-variable-substitution-in-sed
 name: Build frontend
 
 on:
@@ -16,6 +18,8 @@ jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     name: Build and Deploy
+    env:
+      BASE_HREF: https://cu-crd-app.github.io/psych-capstone-frontend-testing/
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js 16
@@ -27,7 +31,11 @@ jobs:
         run: npm ci
         working-directory: 'front-end'
       - name: Build with ionic
-        run: npx ionic build --aot --minifyjs --minifycss --optimizejs -c testing
+        run: npx ionic build -c testing -- --base-href ${{ env.BASE_HREF }}
+        working-directory: 'front-end'
+      - name: Set base href
+        run: |
+          sed -i 's@base href="\/"@base href="'"${{ env.BASE_HREF }}"'"@' www/index.html
         working-directory: 'front-end'
       - name: Deploy to testing repo
         if: github.event_name == 'push' && endsWith(github.ref, 'develop')
