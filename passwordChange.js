@@ -39,7 +39,10 @@ module.exports = {
 
         const pgClient = new Client({
             connectionString: process.env.DATABASE_URL,
-            ssl: true,
+            ssl: {
+                'sslmode': 'require',
+                'rejectUnauthorized': false,
+            },
         });
 
         pgClient.connect();
