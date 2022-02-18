@@ -28,6 +28,10 @@
             <ion-label>Settings</ion-label>
             <ion-icon name="cog"></ion-icon>
           </ion-item>
+          <ion-item lines="full" routerLink="/leaderboard" routerDirection="forward" [ngStyle]="{'color': isCurrentPage('settings') ? 'rgb(206,183,124)' : 'black'}">
+            <ion-label>Leaderboard</ion-label>
+            <ion-icon name="cog"></ion-icon>
+          </ion-item>
           <br>
           <div style="display: flex; justify-content: center; align-items: flex-end">
             <ion-button color="danger" (click)="logout()" lines="none">Logout</ion-button>

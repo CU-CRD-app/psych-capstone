@@ -1,6 +1,8 @@
 // This file defines the endpoints used in the backend, and calls the proper functions to handle data
 // The return values of those functions are then parsed and sent along with the proper http status code
 
+process.env.secret = "TEST_SECRET"
+
 var express = require('express');
 var bodyParser = require('body-parser');
 var cors = require('cors');
@@ -14,6 +16,7 @@ var postassessment = require('./postassessment.js');
 var tokenHandler = require('./token.js');
 var password = require('./passwordChange.js');
 var fs = require("fs");
+const leaderboard = require('./leaderboard.js');
 
 var initAttempts = 5;
 var initSleep = 3 * 1000;  // 3 seconds
@@ -71,6 +74,16 @@ app.put("/register/", cors(corsOptions), function(req, res, next) {
                 res.status(500).send("Internal server error");
             }
         })
+})
+
+app.post("/getHiscores/", cors(corsOptions), function(req, res, next) {
+    leaderboard.getHiscores(req.body.gamemode)
+    .then(result => {
+        res.send(result)
+    })
+    .catch(err => {
+        res.status(400).send("Error fetching hiscores.");
+    })
 })
 
 app.post("/login/", cors(corsOptions), function(req, res, next) {
