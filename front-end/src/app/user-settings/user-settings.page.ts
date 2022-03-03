@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastController } from '@ionic/angular';
-import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { OpenNativeSettings } from '@ionic-native/open-native-settings/ngx';
 import { interval } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+
 
 @Component({
   selector: 'app-user-settings',
@@ -133,6 +134,7 @@ export class UserSettingsPage implements OnInit {
   openSettings() {
     this.openNativeSettings.open('application_details');
   }
+
 
   chooseRace(value: string) {
     var e = document.getElementById("raceselect");
