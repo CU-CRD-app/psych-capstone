@@ -54,7 +54,7 @@ export class LeaderboardPage implements OnInit {
 
   ngOnInit() {
     this.scoreList = []
-    this.changeGame("nameface")
+    this.changeGame("all")
   }
 
 }

@@ -7,6 +7,9 @@ function allDefined(req){
     if(typeof(req.email) === 'undefined'){
         return false;
     }
+    if(typeof(req.username) === 'undefined') {
+        return false;
+    }
     if(typeof(req.password) === 'undefined'){
         return false;
     }
@@ -34,6 +37,9 @@ function allValid(req){
     var raceList = ["Caucasian", "Black", "Hispanic", "East Asian", "South Asian", "Middle Eastern", "Pacific Islander", "American Indian/Alaska Native", "Multi-racial", "Other"]
 
     if(!/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/.test(req.email.toLowerCase())){
+        return false;
+    }
+    if(req.username.length < 1) {
         return false;
     }
     if(!/[a-z]/.test(req.password) || !/[A-Z]/.test(req.password) || !/[0-9]/.test(req.password) || !req.password.indexOf(' ') < 0 || req.password.length < 7 || req.password.length > 16 || req.password == 'Passw0rd' || req.password == 'Password123'){
@@ -87,7 +93,15 @@ module.exports = {
             })
         }
 
-        await pgClient.query("INSERT INTO users(userid, email, hashedpassword, race, nationality, gender, age) VALUES (DEFAULT, $1, $2, $3, $4, $5, $6)", [req.email.toLowerCase(), null, req.race, req.nationality, req.gender, req.age])
+        res = await pgClient.query("SELECT COUNT(username) FROM users WHERE username = $1", [req.username.toLowerCase()]);
+        if(res.rows[0].count > 0) {
+            pgClient.end();
+            return new Promise(function(resolve, reject) {
+                reject("Username already used");
+            })
+        }
+
+        await pgClient.query("INSERT INTO users(userid, email, hashedpassword, race, nationality, gender, age, username) VALUES (DEFAULT, $1, $2, $3, $4, $5, $6, $7)", [req.email.toLowerCase(), null, req.race, req.nationality, req.gender, req.age, req.username.toLowerCase()])
         
         let updated = await pgClient.query("SELECT userid FROM users WHERE email = $1",[req.email.toLowerCase()]);
         let userId = updated.rows[0].userid;
