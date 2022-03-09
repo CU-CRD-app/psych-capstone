@@ -31,11 +31,19 @@
   <div *ngIf="popup == Popup.REGISTER" style="height: 100%; background-color: rgb(34,31,32)">
     <form [formGroup]="registerForm" style="height: 100%; width: 100%; display: flex; flex-direction: column; justify-content: space-evenly">
       <div>
-        <!--USERNAME-->
+        <!--EMAIL-->
         <ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.username) && !registerForm.controls.username.errors && validEmail(registerForm.value.username), 'invalid': fieldNotEmpty(registerForm.value.username) && (registerForm.controls.username.errors || !validEmail(registerForm.value.username))}">
           <ion-input formControlName="username" placeholder="Email" type="email"></ion-input>
         </ion-item>
         <div *ngIf="fieldNotEmpty(registerForm.value.username) && (registerForm.controls.username.errors || !validEmail(registerForm.value.username))" style="color: red; margin-left: 3%; font-size: 4vw">Must be valid email</div>
+       
+       <!--USERNAME-->
+        <ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.user_alias) && !registerForm.controls.user_alias.errors, 'invalid': fieldNotEmpty(registerForm.value.user_alias) && (registerForm.controls.user_alias.errors)}">
+          <ion-input formControlName="user_alias" placeholder="Username" type="text"></ion-input>
+        </ion-item>
+        <div *ngIf="fieldNotEmpty(registerForm.value.user_alias) && (registerForm.controls.user_alias.errors)" style="color: red; margin-left: 3%; font-size: 4vw">Must be valid username</div>
+        
+        
         <!--PASSWORD-->
         <ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.password) && !registerForm.controls.password.errors && validPassword(registerForm.value.password), 'invalid': fieldNotEmpty(registerForm.value.password) && (registerForm.controls.password.errors || !validPassword(registerForm.value.password))}">
           <ion-input formControlName="password" placeholder="Password" type="password"></ion-input>

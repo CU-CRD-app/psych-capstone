@@ -1,0 +1,35 @@
+<ion-content [fullscreen]="true" style="--background: rgb(34,31,32);">
+
+  <ion-header>
+    <ion-toolbar color="dark" style="border-bottom-width: medium; border-bottom-style: solid; border-bottom-color: rgb(206,183,124)">
+      <ion-title>Leaderboards</ion-title>
+      <ion-buttons slot="start">
+        <ion-menu-button autoHide="false"></ion-menu-button>
+      </ion-buttons>
+
+    </ion-toolbar>
+  </ion-header>
+
+
+  <ion-list>
+    <ion-item>
+      <ion-label>Gamemode:</ion-label>
+      <ion-select id="gamemodeSelector" #C (ionChange)="updateSelection($event)" value="all" placeholder="All Gamemodes" interface="popover" style="border-bottom-width: medium; border-bottom-style: solid; border-bottom-color: rgb(206,183,124)">
+        <ion-select-option value="all">All Gamemodes</ion-select-option>
+        <ion-select-option value="whosnew">Who's New</ion-select-option>
+        <ion-select-option value="nameface">Name-Face</ion-select-option>
+        <ion-select-option value="memory">Memory</ion-select-option>
+        <ion-select-option value="shuffle">Shuffle</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item  color="dark" style="border-bottom-width: medium; border-bottom-style: solid; border-bottom-color: rgb(206,183,124)">
+      <ion-col>Name</ion-col>
+      <ion-col>Score</ion-col>
+    </ion-item>
+    <ion-item *ngFor="let score of scoreList"  color="dark" style="border-bottom-width: medium; border-bottom-style: solid; border-bottom-color: rgb(206,183,124)">
+      <ion-col>{{score.username}}</ion-col>
+      <ion-col>{{score.score}}</ion-col>
+    </ion-item>
+  </ion-list>
+
+</ion-content>
