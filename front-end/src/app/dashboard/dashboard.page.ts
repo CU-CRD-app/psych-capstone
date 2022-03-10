@@ -18,7 +18,13 @@ export class DashboardPage {
   }
 
   ionViewWillEnter() {
-
+    this.localNotifications.schedule({
+      title: 'Remember to do your training!',
+      text: 'You have not done your training today, for better results we recommend you do 10 minutes of training every day!',
+      sound: 'file://assets/sounds/notification.mp3',
+      trigger: { every: { hour: 17, minute: 28 } }
+    });
+    
     this.waitingForResponse = true;
 
     timer(1000).subscribe(() => {
