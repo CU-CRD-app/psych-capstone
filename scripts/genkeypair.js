@@ -1,8 +1,8 @@
 const crypto = require('crypto');
 const fs = require('fs');
 
-const publicFile = 'public.pem'
-const privateFile = 'private.pem'
+const publicFile = 'public.b64'
+const privateFile = 'secret.b64'
 
 function getWriteErrorCallback(fileName) {
     return function handleError(err) {
@@ -26,6 +26,8 @@ function genDevPair(prefix) {
         if (err != undefined) {
             console.log("Unable to create dev keypair, login functionality may break", err);
         } else {
+            publicKey = Buffer.from(publicKey).toString('base64');
+            privateKey = Buffer.from(privateKey).toString('base64');
             pf = prefix + publicFile;
             prf = prefix + privateFile;
             fs.writeFile(pf, publicKey, getWriteErrorCallback(pf));
