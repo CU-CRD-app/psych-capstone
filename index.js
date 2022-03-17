@@ -1,8 +1,5 @@
 // This file defines the endpoints used in the backend, and calls the proper functions to handle data
 // The return values of those functions are then parsed and sent along with the proper http status code
-
-process.env.secret = "TEST_SECRET"
-
 var express = require('express');
 var bodyParser = require('body-parser');
 var cors = require('cors');
