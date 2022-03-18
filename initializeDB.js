@@ -26,6 +26,19 @@ const tables = [
         "SELECT COUNT(table_name) FROM INFORMATION_SCHEMA.TABLES WHERE table_name='postassessment'",
         "CREATE TABLE postassessment (userid INT, score INT, race TEXT, date TEXT);",
     ],  
+    //Holds achievements belonging to each user, only one row with same achievement title per user ensures no duplicate achievements
+    [
+        "achievements",
+        "SELECT COUNT(table_name) FROM INFORMATION_SCHEMA.TABLES WHERE table_name='achievements'",
+        `CREATE TABLE 
+        achievements 
+        (userid INT, 
+        achievement_title TEXT,
+        achievement_description TEXT NOT NULL,
+        PRIMARY KEY(achievement_title, userid)
+        )`
+    ],
+
 ];
 
 module.exports = {

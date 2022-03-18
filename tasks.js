@@ -1,6 +1,8 @@
 // This file defines functions to store tasks scores in the database for a specified user
 
 var { Client } = require('pg');
+const { achievementTitles } = require('./achievementConstants');
+const { addAchievement } = require('./achievements');
 
 function allDefined(req, id){
     if(typeof(req.level) === 'undefined'){
@@ -79,6 +81,27 @@ module.exports = {
         }
         else{
             pgClient.query("INSERT INTO day (userid, level, race, date, nameface, whosnew, memory, shuffle, forcedchoice, samedifferent) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)", values)
+            .then(res => {
+                return achievements.getConsecutiveDaysPlayed(id);
+
+
+            })
+            .then(consecutive_days => {
+                if (consecutive_days > 1) {
+                    const numDaysIndex = consecutive_days-2;
+                    const achievementTitleKeys = [
+                        "TWO_DAYS_IN_A_ROW", 
+                        "THREE_DAYS_IN_A_ROW",
+                        "FOUR_DAYS_IN_A_ROW",
+                        "FIVE_DAYS_IN_A_ROW"
+                    ]
+
+                    const achievementTitleKey = achievementTitleKeys[numDaysIndex];
+                    return addAchievement(id, achievementTitleKey)
+                } else {
+                    return Promise.resolve("No achievement to add.")
+                }
+            })
             .then(res => {
                 pgClient.end();
                 return new Promise(function(resolve, reject){
