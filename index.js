@@ -14,6 +14,11 @@ var tokenHandler = require('./token.js');
 var password = require('./passwordChange.js');
 var fs = require("fs");
 const leaderboard = require('./leaderboard.js');
+var { Client } = require('pg');
+var {addAchievement, getConsecutiveDaysPlayed} = require("./achievements");
+const achievements = require('./achievements');
+
+
 
 var initAttempts = 5;
 var initSleep = 3 * 1000;  // 3 seconds
@@ -103,6 +108,29 @@ app.post("/login/", cors(corsOptions), function(req, res, next) {
 })
 
 // All endpoints past this point require a token to access
+
+app.post("/get_achievements", cors(corsOptions), async(req, res) => {
+
+    if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
+        res.status(401).send("Please provide a properly formatted token")
+    }
+    else{
+       tokenHandler.verify(req.header('Authorization').split(' ')[1])
+            .then(id => {
+                achievements.getAchievements(id)
+                    .then(result => res.json({result:result}))
+                    .catch(err => {
+                        if(typeof(err) === 'string'){
+                            res.status(400).send(err);
+                        }
+                        else{
+                            res.status(500).send("Internal server error");
+                        }
+                    })
+            })
+            .catch(err => res.status(401).send("Invalid token")) 
+    }
+})
 
 app.post("/tasks/", cors(corsOptions), function(req, res, next) {
     if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){

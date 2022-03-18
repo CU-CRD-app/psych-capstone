@@ -1,6 +1,7 @@
 const token = require("./token")
 const { Client } = require('pg');
 const { achievementTitles, achievementDescriptions } = require("./achievementConstants");
+const { verify } = require("./token");
 
 
 module.exports = {
@@ -48,7 +49,32 @@ module.exports = {
 
         } catch (err) {
             console.log(err);
+            await pgClient.end();
             return Promise.reject("Failed to add achievement.");
+        }
+    },
+
+    getAchievements: async function(userid) {
+
+        try {
+
+            const pgClient = new Client({
+                connectionString: process.env.DATABASE_URL,
+                ssl: {
+                    'sslmode': 'require',
+                    'rejectUnauthorized': false,
+                },
+            });
+    
+            await pgClient.connect();
+    
+            let res = await pgClient.query("SELECT * FROM achievements WHERE userid = $1", [userid])
+            await pgClient.end();
+            return Promise.resolve(res.rows);
+
+        } catch (err) {
+            console.log(err);
+            return Promise.resolve("An error occurred fetching achievements.");
         }
     },
 
@@ -89,11 +115,13 @@ module.exports = {
                     consecutive_days++;
                 }
             }
+            pgClient.end();
             return consecutive_days;
             
         })
         .catch(err => {
             console.log(err);
+            pgClient.end();
         }) 
     }
 }
