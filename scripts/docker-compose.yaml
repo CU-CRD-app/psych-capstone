@@ -26,9 +26,9 @@ services:
     ports:
       - 8080:8080
     command: >
-      bash -c "encode=yes prefix=/home/node/ node scripts/genkeypair.js &&
-      export public=$$(cat /home/node/public.b64) &&
-      export secret=$$(cat /home/node/secret.b64) &&
+      bash -c "prefix=/home/node/ node scripts/genkeypair.js &&
+      export public=$$(cat /home/node/public.pem) &&
+      export secret=$$(cat /home/node/secret.pem) &&
       node index.js"
   frontend:
     depends_on:

@@ -5,10 +5,9 @@ var { Client } = require('pg');
 
 module.exports = {
     verify: async function(token){
-        let public = Buffer.from(process.env.public, 'base64').toString('ascii');
         let email = "";
         try{
-            let decoded = await jwt.verify(token, public, {algorithm: 'RS256'});
+            let decoded = await jwt.verify(token, process.env.public, {algorithm: 'RS256'});
             if(typeof(decoded) === 'undefined'){
                 return new Promise(function(resolve, reject){
                     reject("Invalid token");
@@ -39,8 +38,7 @@ module.exports = {
     },
 
     generate: async function(email){
-        let secret = Buffer.from(process.env.secret, 'base64').toString('ascii');
-        let token = await jwt.sign({email: email}, secret, {expiresIn:'3h', algorithm:'RS256'})
+        let token = await jwt.sign({email: email}, process.env.secret, {expiresIn:'3h', algorithm:'RS256'})
         return new Promise(function(resolve, reject){
             resolve(token);
         })
