@@ -36,7 +36,7 @@ export class DashboardPage {
         let today = new Date().toLocaleDateString();
         let lastDay = '';
         for (let day in this.days) {
-          if ([this.days[day]['nameface'], this.days[day]['whosnew'], this.days[day]['memory'], this.days[day]['shuffle'], this.days[day]['forcedchoice'], this.days[day]['samedifferent']].indexOf(-1) < 0) {
+          if ([this.days[day]['nameface'], this.days[day]['whosnew'], this.days[day]['memory'], this.days[day]['shuffle']].indexOf(-1) < 0) {
             lastDay = new Date(this.days[day]['date']).toLocaleDateString();
           }
         }
@@ -58,12 +58,12 @@ export class DashboardPage {
               if (this.days[this.level - 1].shuffle >= 12) {
                 this.progressToday++;
               }
-              if (this.days[this.level - 1].forcedchoice >= 6) {
-                this.progressToday++;
-              }
-              if (this.days[this.level - 1].samedifferent >= 6) {
-                this.progressToday++;
-              }
+              // if (this.days[this.level - 1].forcedchoice >= 6) {
+              //   this.progressToday++;
+              // }
+              // if (this.days[this.level - 1].samedifferent >= 6) {
+              //   this.progressToday++;
+              // }
             }
             this.progressToday = parseFloat((this.progressToday / 6).toFixed(2));
           }

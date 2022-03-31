@@ -1,7 +1,7 @@
 #login-view {
 	--height: 100vh;
 	--width: auto;
-	--background: rgb(34,31,32) url("../../../assets/background_imgs/splash.png") no-repeat center center / contain;
+	--background: rgb(34,31,32) url("../../../assets/background_imgs/splash-2.png") no-repeat center center / contain;
 	background-repeat: no-repeat;
 }
 
@@ -25,4 +25,17 @@ ion-item {
 
 .valid {
 	--background: rgb(207, 253, 217)
+}
+
+ion-button {
+	--background: #7B614A;
+	--color: rgb(255,255,255);
+	--border-radius: 5px;
+	--padding: 10px;
+	--box-shadow: 0px 0px 5px rgb(34,31,32);
+	font-size: 12px;
+}
+
+.ignore{
+	--background: rgba(0,0,0,0);
 }

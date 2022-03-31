@@ -11,6 +11,10 @@ const routes: Routes = [
   { path: 'leaderboard', canActivate: [AuthGuard], loadChildren: './leaderboard/leaderboard.module#LeaderboardPageModule' },
   { path: 'login', loadChildren: './auth/login/login.module#LoginPageModule' },
   { path: '**', redirectTo: 'login' },
+  {
+    path: 'achievements',
+    loadChildren: () => import('./achievements/achievements.module').then( m => m.AchievementsPageModule)
+  },
   /*
   {
     path: 'leaderboard',

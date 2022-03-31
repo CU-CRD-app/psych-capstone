@@ -71,14 +71,14 @@
         <ion-icon [src]=face_icon></ion-icon>
       </ion-button>
 
-      <ion-button (click)="startAssessmentAlert()" style="padding: 0; margin: 1%" [disabled]="trainingNotDone()">
+<!--       <ion-button (click)="startAssessmentAlert()" style="padding: 0; margin: 1%" [disabled]="trainingNotDone()">
         <ion-icon [src]=assessment_icon ></ion-icon>
-      </ion-button>
+      </ion-button> -->
 
     </div>
 
     <!--Assessment tasks-->
-    <div *ngIf="stage == Stage.ASSESSMENT" style="margin-top: 20px">
+<!--     <div *ngIf="stage == Stage.ASSESSMENT" style="margin-top: 20px">
       <div style="font-size: 6vw">What would you like to do next?</div>
 
       <ion-card (click)="scores[4] == -1 ? task = Task.FORCED_CHOICE : null; renderLevelOneHelp()" button [ngClass]="{'task-done': scores[4] != -1}">
@@ -91,7 +91,7 @@
         <div>Same Different<span *ngIf="scores[5] > -1">: {{scores[Task.SAME_DIFFERENT]}}/{{taskLengths[Task.SAME_DIFFERENT]}}</span></div>
       </ion-card>
 
-    </div>
+    </div> -->
 
     <!--Done Page-->
     <div *ngIf="stage == Stage.DONE" style="margin-top: 40%">
@@ -140,9 +140,9 @@
   <!--Shuffle-->
   <app-shuffle *ngIf="task == Task.SHUFFLE" [facePaths]="trainingFacePaths" (finished)="finished($event, 3)"></app-shuffle>
   <!--Forced Choice-->
-  <app-forced-choice *ngIf="task == Task.FORCED_CHOICE" [facePaths]="assessmentFacePaths" (finished)="finished($event, 4)"></app-forced-choice>
-  <!--Same-Different-->
-  <app-same-different *ngIf="task == Task.SAME_DIFFERENT" [facePaths]="assessmentFacePaths" (finished)="finished($event, 5)"></app-same-different>
+<!--   <app-forced-choice *ngIf="task == Task.FORCED_CHOICE" [facePaths]="assessmentFacePaths" (finished)="finished($event, 4)"></app-forced-choice>
+  Same-Different
+  <app-same-different *ngIf="task == Task.SAME_DIFFERENT" [facePaths]="assessmentFacePaths" (finished)="finished($event, 5)"></app-same-different> -->
   <!--Pre-Post-Assessment-->
   <app-same-different *ngIf="task == Task.POSTTEST" [facePaths]="assessmentFacePaths" (finished)="finishPrePost($event)"></app-same-different>
 

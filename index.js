@@ -14,6 +14,11 @@ var tokenHandler = require('./token.js');
 var password = require('./passwordChange.js');
 var fs = require("fs");
 const leaderboard = require('./leaderboard.js');
+var { Client } = require('pg');
+var {addAchievement, getConsecutiveDaysPlayed} = require("./achievements");
+const achievements = require('./achievements');
+
+
 
 var initAttempts = 5;
 var initSleep = 3 * 1000;  // 3 seconds
@@ -103,6 +108,29 @@ app.post("/login/", cors(corsOptions), function(req, res, next) {
 })
 
 // All endpoints past this point require a token to access
+
+app.post("/get_achievements", cors(corsOptions), async(req, res) => {
+
+    if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
+        res.status(401).send("Please provide a properly formatted token")
+    }
+    else{
+       tokenHandler.verify(req.header('Authorization').split(' ')[1])
+            .then(id => {
+                achievements.getAchievements(id)
+                    .then(result => res.json({result:result}))
+                    .catch(err => {
+                        if(typeof(err) === 'string'){
+                            res.status(400).send(err);
+                        }
+                        else{
+                            res.status(500).send("Internal server error");
+                        }
+                    })
+            })
+            .catch(err => res.status(401).send("Invalid token")) 
+    }
+})
 
 app.post("/tasks/", cors(corsOptions), function(req, res, next) {
     if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
@@ -312,37 +340,37 @@ app.put("/getTrainingFaces/", cors(corsOptions), function(req, res, next){
     }
 })
 
-app.put("/getDailyAssessmentFaces/", cors(corsOptions), function(req, res, next){
-    if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
-        res.status(401).send("Please provide a properly formatted token")
-    }
-    else{
-        tokenHandler.verify(req.header('Authorization').split(' ')[1])
-            .then(id => {
-                try {
-                    var images = [];
-                    var faceNums = [];
-                    var raceName = req.body.race;
-                    console.log("/getDailyAssessmentFaces/");
-                    console.log(req.body.race);
-                    var total_num = fs.readdirSync(`./faces/${raceName}/daily-assessment`).length;
-                    for (var i = 0; i < 8; i++) { // Generate 8 random numbers between 0 and total_num
-                        var face = Math.floor(Math.random() * total_num);
-                        while (faceNums.indexOf(face) > -1) { // Account for repeats
-                          face = Math.floor(Math.random() * total_num);
-                        }
-                        faceNums.push(face);
-                        var data = fs.readFileSync(`./faces/${raceName}/daily-assessment/${faceNums[i]}.jpg`);
-                        images.push(new Buffer(data, 'binary').toString('base64'));
-                    }
-                    res.status(200).send({images: images});
-                } catch (err) {
-                    res.status(500).send("Internal server error");
-                }
-            })
-            .catch(err => res.status(401).send("Invalid token")) 
-    }
-})
+// app.put("/getDailyAssessmentFaces/", cors(corsOptions), function(req, res, next){
+//     if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
+//         res.status(401).send("Please provide a properly formatted token")
+//     }
+//     else{
+//         tokenHandler.verify(req.header('Authorization').split(' ')[1])
+//             .then(id => {
+//                 try {
+//                     var images = [];
+//                     var faceNums = [];
+//                     var raceName = req.body.race;
+//                     console.log("/getDailyAssessmentFaces/");
+//                     console.log(req.body.race);
+//                     var total_num = fs.readdirSync(`./faces/${raceName}/daily-assessment`).length;
+//                     for (var i = 0; i < 8; i++) { // Generate 8 random numbers between 0 and total_num
+//                         var face = Math.floor(Math.random() * total_num);
+//                         while (faceNums.indexOf(face) > -1) { // Account for repeats
+//                           face = Math.floor(Math.random() * total_num);
+//                         }
+//                         faceNums.push(face);
+//                         var data = fs.readFileSync(`./faces/${raceName}/daily-assessment/${faceNums[i]}.jpg`);
+//                         images.push(new Buffer(data, 'binary').toString('base64'));
+//                     }
+//                     res.status(200).send({images: images});
+//                 } catch (err) {
+//                     res.status(500).send("Internal server error");
+//                 }
+//             })
+//             .catch(err => res.status(401).send("Invalid token")) 
+//     }
+// })
 
 app.put("/getPrePostAssessmentFaces/", cors(corsOptions), function(req, res, next){
     if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){

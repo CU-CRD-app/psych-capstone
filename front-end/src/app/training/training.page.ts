@@ -204,16 +204,16 @@ export class TrainingPage {
             this.trainingFacePaths = faces;
             this.getWhosNewFaces().then((faces) => {
               this.whosNewFacePaths = faces;
-              this.getDailyAssessmentFaces().then((faces) => {
-                this.assessmentFacePaths = faces;
-                if (days[this.userLevel - 1]) {
-                  this.scores = [days[this.userLevel - 1]['nameface'], days[this.userLevel - 1]['whosnew'], days[this.userLevel - 1]['memory'], days[this.userLevel - 1]['shuffle'], days[this.userLevel - 1]['forcedchoice'], days[this.userLevel - 1]['samedifferent']];
-                  this.learningDone = this.scores.indexOf(-1) > -1;
-                }
-                timer(1000).subscribe(() => {
-                  this.iterateStage();
-                })
-              });
+              // this.getDailyAssessmentFaces().then((faces) => {
+              //   this.assessmentFacePaths = faces;
+              //   if (days[this.userLevel - 1]) {
+              //     this.scores = [days[this.userLevel - 1]['nameface'], days[this.userLevel - 1]['whosnew'], days[this.userLevel - 1]['memory'], days[this.userLevel - 1]['shuffle'], days[this.userLevel - 1]['forcedchoice'], days[this.userLevel - 1]['samedifferent']];
+              //     this.learningDone = this.scores.indexOf(-1) > -1;
+              //   }
+              //   timer(1000).subscribe(() => {
+              //     this.iterateStage();
+              //   })
+              // });
             });
           });
 
@@ -248,11 +248,6 @@ export class TrainingPage {
     } else if (this.trainingNotDone()) {
       this.stage = Stage.TRAINING;
       if (this.scores[Task.NAME_FACE] == -1 && this.scores[Task.WHOS_NEW] == -1 && this.scores[Task.MEMORY] == -1 && this.scores[Task.SAME_DIFFERENT] == -1) {
-        this.renderLevelOneHelp();
-      }
-    } else if (this.scores.includes(-1)) {
-      this.stage = Stage.ASSESSMENT;
-      if (this.scores[Task.FORCED_CHOICE] == -1 && this.scores[Task.SAME_DIFFERENT] == -1) {
         this.renderLevelOneHelp();
       }
     } else {
@@ -400,36 +395,36 @@ export class TrainingPage {
     return facePaths;
   }
   
-  async getDailyAssessmentFaces() {
-    let facePaths : string[] = [];
-    let imagesAlreadyStored = true;
+  // async getDailyAssessmentFaces() {
+  //   let facePaths : string[] = [];
+  //   let imagesAlreadyStored = true;
 
-    for (let i = 0; i < 8; i++) {
-      let image = sessionStorage.getItem(`dailyAssessment${i}`);
-      if (!image) {
-        imagesAlreadyStored = false;
-        break;
-      } else {
-        facePaths.push(image);
-      }
-    }
-    if (!imagesAlreadyStored) {
-      facePaths = [];
-      const httpOptions = {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json; charset=utf-8',
-          'Authorization': 'Bearer ' + localStorage.getItem('token')
-        })
-      };
-      await this.http.put(environment.backendBaseUrl + "getDailyAssessmentFaces/", {race: this.currentRace}, httpOptions).subscribe((res) => {
-        for (let i = 0; i < 8; i++) {
-          facePaths.push(`data:image/jpg;base64,${res['images'][i]}`)
-          sessionStorage.setItem(`dailyAssessment${i}`, `data:image/jpg;base64,${res['images'][i]}`)
-        }
-      });
-    }
-    return facePaths;
-  }
+  //   for (let i = 0; i < 8; i++) {
+  //     let image = sessionStorage.getItem(`dailyAssessment${i}`);
+  //     if (!image) {
+  //       imagesAlreadyStored = false;
+  //       break;
+  //     } else {
+  //       facePaths.push(image);
+  //     }
+  //   }
+  //   if (!imagesAlreadyStored) {
+  //     facePaths = [];
+  //     const httpOptions = {
+  //       headers: new HttpHeaders({
+  //         'Content-Type': 'application/json; charset=utf-8',
+  //         'Authorization': 'Bearer ' + localStorage.getItem('token')
+  //       })
+  //     };
+  //     await this.http.put(environment.backendBaseUrl + "getDailyAssessmentFaces/", {race: this.currentRace}, httpOptions).subscribe((res) => {
+  //       for (let i = 0; i < 8; i++) {
+  //         facePaths.push(`data:image/jpg;base64,${res['images'][i]}`)
+  //         sessionStorage.setItem(`dailyAssessment${i}`, `data:image/jpg;base64,${res['images'][i]}`)
+  //       }
+  //     });
+  //   }
+  //   return facePaths;
+  // }
 
   async getPrePostAssessmentFaces() { // Too many to store in local/session storage
     let facePaths : string[] = [];
