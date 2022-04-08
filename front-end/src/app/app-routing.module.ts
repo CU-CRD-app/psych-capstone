@@ -9,12 +9,10 @@ const routes: Routes = [
   { path: 'about', canActivate: [AuthGuard], loadChildren: './about-us/about-us.module#AboutUsPageModule' },
   { path: 'settings', canActivate: [AuthGuard], loadChildren: './user-settings/user-settings.module#UserSettingsPageModule' },
   { path: 'leaderboard', canActivate: [AuthGuard], loadChildren: './leaderboard/leaderboard.module#LeaderboardPageModule' },
+  { path: 'achievements', canActivate: [AuthGuard], loadChildren: './achievements/achievements.module#AchievementsPageModule' },
+
   { path: 'login', loadChildren: './auth/login/login.module#LoginPageModule' },
   { path: '**', redirectTo: 'login' },
-  {
-    path: 'achievements',
-    loadChildren: () => import('./achievements/achievements.module').then( m => m.AchievementsPageModule)
-  },
   /*
   {
     path: 'leaderboard',

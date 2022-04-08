@@ -55,7 +55,6 @@ module.exports = {
     },
 
     getAchievements: async function(userid) {
-
         try {
 
             const pgClient = new Client({

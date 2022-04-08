@@ -26,9 +26,11 @@ export class AchievementsPage implements OnInit {
   }
 
   getAchievements() {
+    console.log("TEST")
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json; charset=utf-8'        
+        'Content-Type': 'application/json; charset=utf-8',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
       }),
       responseType: 'text' as 'text'
     };
@@ -36,7 +38,7 @@ export class AchievementsPage implements OnInit {
     }
     this.http.post(this.getHiscores_url, httpBody, httpOptions).subscribe(result => {
       let resultArray = JSON.parse(result);
-      this.achievementList = resultArray;
+      this.achievementList = resultArray.result;
     }, (err) => {
           this.dangerToast("Error fetching achievements.");
     });

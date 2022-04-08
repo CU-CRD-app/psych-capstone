@@ -110,8 +110,8 @@ app.post("/login/", cors(corsOptions), function(req, res, next) {
 // All endpoints past this point require a token to access
 
 app.post("/get_achievements", cors(corsOptions), async(req, res) => {
-
     if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
+        console.log("Invalid token sent to /get_achievements");
         res.status(401).send("Please provide a properly formatted token")
     }
     else{
@@ -120,6 +120,7 @@ app.post("/get_achievements", cors(corsOptions), async(req, res) => {
                 achievements.getAchievements(id)
                     .then(result => res.json({result:result}))
                     .catch(err => {
+                        console.log(err)
                         if(typeof(err) === 'string'){
                             res.status(400).send(err);
                         }
@@ -128,7 +129,11 @@ app.post("/get_achievements", cors(corsOptions), async(req, res) => {
                         }
                     })
             })
-            .catch(err => res.status(401).send("Invalid token")) 
+            .catch(err => {
+                console.log(err)
+                return res.status(401).send("Invalid token")
+            
+            }) 
     }
 })
 
