@@ -43,6 +43,20 @@
         </ion-item>
         <div *ngIf="fieldNotEmpty(registerForm.value.user_alias) && (registerForm.controls.user_alias.errors)" style="color: red; margin-left: 3%; font-size: 4vw">Must be valid username</div>
         
+        <!--Security Question-->
+        <ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.security_question) && !registerForm.controls.security_question.errors, 'invalid': fieldNotEmpty(registerForm.value.security_question) && (registerForm.controls.security_question.errors)}">
+          <ion-select placeholder="Security Question" formControlName="security_question">
+            <ion-select-option value="What is your favorite food?">What is your favorite food?</ion-select-option>
+            <ion-select-option value="What street did you grow up on?">What street did you grow up on?</ion-select-option>
+            <ion-select-option value="What color was your first car?">What color was your first car?</ion-select-option>
+            <ion-select-option value="What is your mother's maided name?">What is your mother's maiden name?</ion-select-option>
+            <ion-select-option value="What was the name of your highschool?">What was the name of your highschool?</ion-select-option>
+            <ion-select-option value="What was the name of your first pet?">What was the name of your first pet?</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.security_question_answer) && !registerForm.controls.security_question_answer.errors, 'invalid': fieldNotEmpty(registerForm.value.security_question_answer) && (registerForm.controls.security_question_answer.errors)}">
+          <ion-input formControlName="security_question_answer" placeholder="Security Question Answer" type="text"></ion-input>
+        </ion-item>
         
         <!--PASSWORD-->
         <ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.password) && !registerForm.controls.password.errors && validPassword(registerForm.value.password), 'invalid': fieldNotEmpty(registerForm.value.password) && (registerForm.controls.password.errors || !validPassword(registerForm.value.password))}">
@@ -101,6 +115,19 @@
       <div>
         <ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.username) && !registerForm.controls.username.errors && validEmail(registerForm.value.username), 'invalid': fieldNotEmpty(registerForm.value.username) && (registerForm.controls.username.errors || !validEmail(registerForm.value.username))}">
           <ion-input formControlName="username" placeholder="Email" type="email"></ion-input>
+        </ion-item>
+        <ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.security_question) && !registerForm.controls.security_question.errors, 'invalid': fieldNotEmpty(registerForm.value.security_question) && (registerForm.controls.security_question.errors)}">
+          <ion-select placeholder="Security Question">
+            <ion-select-option value="What is your favorite food?">What is your favorite food?</ion-select-option>
+            <ion-select-option value="What street did you grow up on?">What street did you grow up on?</ion-select-option>
+            <ion-select-option value="What color was your first car?">What color was your first car?</ion-select-option>
+            <ion-select-option value="What is your mother's maided name?">What is your mother's maiden name?</ion-select-option>
+            <ion-select-option value="What was the name of your highschool?">What was the name of your highschool?</ion-select-option>
+            <ion-select-option value="What was the name of your first pet?">What was the name of your first pet?</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.security_question_answer) && !registerForm.controls.security_question_answer.errors, 'invalid': fieldNotEmpty(registerForm.value.security_question_answer) && (registerForm.controls.security_question_answer.errors)}">
+          <ion-input formControlName="security_question_answer" placeholder="Security Question Answer" type="text"></ion-input>
         </ion-item>
         <!-- <div *ngIf="fieldNotEmpty(registerForm.value.username) && (registerForm.controls.username.errors || !validEmail(registerForm.value.username))" style="color: red; margin-left: 3%; font-size: 4vw">Must be valid password</div> -->
         <!--PASSWORD-->

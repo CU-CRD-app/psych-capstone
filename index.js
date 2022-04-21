@@ -17,6 +17,7 @@ const leaderboard = require('./leaderboard.js');
 var { Client } = require('pg');
 var {addAchievement, getConsecutiveDaysPlayed} = require("./achievements");
 const achievements = require('./achievements');
+const passwordChange = require('./passwordChange.js');
 
 
 
@@ -105,6 +106,29 @@ app.post("/login/", cors(corsOptions), function(req, res, next) {
                 res.status(500).send("Internal server error");
             }
         })
+})
+
+app.post("/get_security_question", cors(corsOptions), async(req, res) => {
+
+    passwordChange.getSecurityQuestion(req.body)
+    .then(security_question => {
+        res.json({security_question: security_question})
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(400).send(err);
+    })
+})
+
+app.post("/change_password_with_security_question", async(req, res) => {
+    passwordChange.changePassword(req.body)
+    .then(r => {
+        res.status(200).send("Password Changed");
+    })
+    .catch(err => {
+        console.log(err)
+        res.status(400).send(err);
+    })
 })
 
 // All endpoints past this point require a token to access

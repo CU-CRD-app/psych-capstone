@@ -28,6 +28,12 @@ function allDefined(req){
     if(typeof(req.agree) === 'undefined'){
         return false;
     }
+    if(typeof(req.security_question) === 'undefined'){
+        return false;
+    }
+    if(typeof(req.security_question_answer) === 'undefined'){
+        return false;
+    }
     return true;
 }
 
@@ -65,6 +71,7 @@ function allValid(req){
 
 module.exports = {
     user: async function(req){
+        console.log(req)
         if(!allDefined(req)){
             return new Promise(function(resolve, reject){
                 reject("Missing parameter");
@@ -101,17 +108,18 @@ module.exports = {
             })
         }
 
-        await pgClient.query("INSERT INTO users(userid, email, hashedpassword, race, nationality, gender, age, username) VALUES (DEFAULT, $1, $2, $3, $4, $5, $6, $7)", [req.email.toLowerCase(), null, req.race, req.nationality, req.gender, req.age, req.username.toLowerCase()])
+        await pgClient.query("INSERT INTO users(userid, email, hashedpassword, race, nationality, gender, age, username, security_question) VALUES (DEFAULT, $1, $2, $3, $4, $5, $6, $7, $8)", [req.email.toLowerCase(), null, req.race, req.nationality, req.gender, req.age, req.username.toLowerCase(), req.security_question])
         
         let updated = await pgClient.query("SELECT userid FROM users WHERE email = $1",[req.email.toLowerCase()]);
         let userId = updated.rows[0].userid;
         let salt = await bcrypt.genSalt((userId%15)+1);
         let hash = await bcrypt.hash(req.password, salt);
+        let hashed_security_question_answer = await(bcrypt.hash(req.security_question_answer.toLowerCase(), salt));
         
         let now = new Date().toUTCString();
         await pgClient.query("INSERT INTO day(userid, level, race, date, nameface, whosnew, memory, shuffle, forcedchoice, samedifferent) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)", [userId, -1, "asian", now, -1, -1, -1, -1, -1, -1])
 
-        await pgClient.query("UPDATE users SET hashedpassword = $1 WHERE userid = $2", [hash, userId])
+        await pgClient.query("UPDATE users SET hashedpassword = $1, security_question_answer = $3 WHERE userid = $2", [hash, userId, hashed_security_question_answer])
             .then(res => {
                 pgClient.end();
                 return new Promise(function(resolve, reject){

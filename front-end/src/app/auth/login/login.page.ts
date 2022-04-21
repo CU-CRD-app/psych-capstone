@@ -37,7 +37,10 @@ export class LoginPage implements OnInit {
       nationality: [null, Validators.compose([Validators.required])],
       gender: [null, Validators.compose([Validators.required])],
       age: [null, Validators.compose([Validators.required, Validators.min(18), Validators.max(100)])],
-      agree: [null, Validators.compose([Validators.required])]
+      agree: [null, Validators.compose([Validators.required])],
+      security_question: [null, Validators.compose([Validators.required, Validators.minLength(1)])],
+      security_question_answer: [null, Validators.compose([Validators.required, Validators.minLength(1)])]
+
     }, {validator: LoginPage.registerFormCheck});
 
   }
@@ -158,7 +161,9 @@ export class LoginPage implements OnInit {
           "gender": this.registerForm.value.gender,
           "age": this.registerForm.value.age,
           "question": this.registerForm.value.question,
-          "agree": this.registerForm.value.agree
+          "agree": this.registerForm.value.agree,
+          "security_question": this.registerForm.value.security_question,
+          "security_question_answer": this.registerForm.value.security_question_answer
         }
         const httpOptions = {
           headers: new HttpHeaders({

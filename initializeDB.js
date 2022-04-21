@@ -9,7 +9,7 @@ const tables = [
     [
         "users",
         "SELECT COUNT(table_name) FROM INFORMATION_SCHEMA.TABLES WHERE table_name='users'",
-        "CREATE TABLE users (userid SERIAL, username TEXT, email TEXT, hashedpassword TEXT, race TEXT, nationality TEXT, gender TEXT, age INT);",
+        "CREATE TABLE users (userid SERIAL, username TEXT, email TEXT, hashedpassword TEXT, race TEXT, nationality TEXT, gender TEXT, age INT, security_question TEXT, security_question_answer TEXT);",
     ],
     [
         "day",
