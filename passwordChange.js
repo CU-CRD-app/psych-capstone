@@ -101,6 +101,7 @@ module.exports = {
                 })
             })
             .catch(err => {
+                console.log(err)
                 pgClient.end();
                 return new Promise(function(resolve, reject){
                     reject(err);
@@ -160,6 +161,7 @@ module.exports = {
                 })
             })
             .catch(err => {
+                console.log(err)
                 pgClient.end();
                 return new Promise(function(resolve, reject){
                     reject(err);

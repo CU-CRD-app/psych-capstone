@@ -20,6 +20,7 @@ module.exports = {
     addAchievement: async function(userid, achievement_title_key) {
 
         try {
+            console.log("Adding achievement: " + achievement_title_key + " for userid: "+userid);
 
             if (!(achievement_title_key in achievementTitles) || !(achievement_title_key in achievementDescriptions)) {
                 throw new Error("Invalid achievement title.");
@@ -44,16 +45,21 @@ module.exports = {
             [userid, achievementTitle, achievementDescription]);
 
             await pgClient.end();
-
+            console.log("Successfully added achievement!");
             return Promise.resolve("Successfully added achievement!");
 
         } catch (err) {
+            console.log("Failed to add achievement.");
             console.log(err);
             await pgClient.end();
             return Promise.reject("Failed to add achievement.");
         }
     },
 
+    /**
+     * Call this function to get a list of achievements for the userid passed to the function.
+     * Returns a list of rows from achievements table
+     */
     getAchievements: async function(userid) {
         try {
 
@@ -77,6 +83,10 @@ module.exports = {
         }
     },
 
+
+    /**
+     * Helper function to get the number of consecutive days a user has completed training
+     */
     getConsecutiveDaysPlayed: async function(userid) {
 
         const pgClient = new Client({
