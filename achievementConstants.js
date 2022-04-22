@@ -4,7 +4,6 @@ module.exports = {
         THREE_DAYS_IN_A_ROW: "Diligent Trainer Level 2",
         FOUR_DAYS_IN_A_ROW: "Diligent Trainer Level 3",
         FIVE_DAYS_IN_A_ROW: "Diligent Trainer Level 4"
-
     },
 
     achievementDescriptions: {

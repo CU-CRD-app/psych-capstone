@@ -175,6 +175,7 @@ export class TrainingPage {
       */ 
 
       let levelCompletedToday = false;
+      this.userLevel += 1;
 
       if (this.userLevel == 0 || this.userLevel == 9) {
 
@@ -203,17 +204,18 @@ export class TrainingPage {
           this.getTrainingFaces().then((faces) => {
             this.trainingFacePaths = faces;
             this.getWhosNewFaces().then((faces) => {
+              console.log("Got faces")
               this.whosNewFacePaths = faces;
-              // this.getDailyAssessmentFaces().then((faces) => {
-              //   this.assessmentFacePaths = faces;
-              //   if (days[this.userLevel - 1]) {
-              //     this.scores = [days[this.userLevel - 1]['nameface'], days[this.userLevel - 1]['whosnew'], days[this.userLevel - 1]['memory'], days[this.userLevel - 1]['shuffle'], days[this.userLevel - 1]['forcedchoice'], days[this.userLevel - 1]['samedifferent']];
-              //     this.learningDone = this.scores.indexOf(-1) > -1;
-              //   }
-              //   timer(1000).subscribe(() => {
-              //     this.iterateStage();
-              //   })
-              // });
+              this.getDailyAssessmentFaces().then((faces) => {
+                 this.assessmentFacePaths = faces;
+                 if (days[this.userLevel - 1]) {
+                   this.scores = [days[this.userLevel - 1]['nameface'], days[this.userLevel - 1]['whosnew'], days[this.userLevel - 1]['memory'], days[this.userLevel - 1]['shuffle'], days[this.userLevel - 1]['forcedchoice'], days[this.userLevel - 1]['samedifferent']];
+                   this.learningDone = this.scores.indexOf(-1) > -1;
+                 }
+                 timer(1000).subscribe(() => {
+                   this.iterateStage();
+                 })
+               });
             });
           });
 
@@ -386,7 +388,9 @@ export class TrainingPage {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
       })
     };
+
     await this.http.put(environment.backendBaseUrl + "getWhosNewFaces/", {level: this.userLevel, race: this.currentRace}, httpOptions).subscribe((res) => {
+
       for (let i = 0; i < 8; i++) {
         facePaths.push(`data:image/png;base64,${res['images'][i]}`)
       }
@@ -395,36 +399,36 @@ export class TrainingPage {
     return facePaths;
   }
   
-  // async getDailyAssessmentFaces() {
-  //   let facePaths : string[] = [];
-  //   let imagesAlreadyStored = true;
+  async getDailyAssessmentFaces() {
+     let facePaths : string[] = [];
+     let imagesAlreadyStored = true;
 
-  //   for (let i = 0; i < 8; i++) {
-  //     let image = sessionStorage.getItem(`dailyAssessment${i}`);
-  //     if (!image) {
-  //       imagesAlreadyStored = false;
-  //       break;
-  //     } else {
-  //       facePaths.push(image);
-  //     }
-  //   }
-  //   if (!imagesAlreadyStored) {
-  //     facePaths = [];
-  //     const httpOptions = {
-  //       headers: new HttpHeaders({
-  //         'Content-Type': 'application/json; charset=utf-8',
-  //         'Authorization': 'Bearer ' + localStorage.getItem('token')
-  //       })
-  //     };
-  //     await this.http.put(environment.backendBaseUrl + "getDailyAssessmentFaces/", {race: this.currentRace}, httpOptions).subscribe((res) => {
-  //       for (let i = 0; i < 8; i++) {
-  //         facePaths.push(`data:image/jpg;base64,${res['images'][i]}`)
-  //         sessionStorage.setItem(`dailyAssessment${i}`, `data:image/jpg;base64,${res['images'][i]}`)
-  //       }
-  //     });
-  //   }
-  //   return facePaths;
-  // }
+     for (let i = 0; i < 8; i++) {
+       let image = sessionStorage.getItem(`dailyAssessment${i}`);
+       if (!image) {
+         imagesAlreadyStored = false;
+          break;
+        } else {
+          facePaths.push(image);
+        }
+      }
+      if (!imagesAlreadyStored) {
+        facePaths = [];
+        const httpOptions = {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json; charset=utf-8',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+          })
+        };
+        await this.http.put(environment.backendBaseUrl + "getDailyAssessmentFaces/", {race: this.currentRace}, httpOptions).subscribe((res) => {
+          for (let i = 0; i < 8; i++) {
+            facePaths.push(`data:image/jpg;base64,${res['images'][i]}`)
+            sessionStorage.setItem(`dailyAssessment${i}`, `data:image/jpg;base64,${res['images'][i]}`)
+          }
+        });
+      }
+      return facePaths;
+    }
 
   async getPrePostAssessmentFaces() { // Too many to store in local/session storage
     let facePaths : string[] = [];
