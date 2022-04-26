@@ -461,6 +461,8 @@ export class TrainingPage {
         this.iterateStage();
       }
     }
+    this.scores[4] = 8;
+    this.scores[5] = 8;
     this.submitScores.submitTaskScores(this.userLevel, this.scores, "black");
   }
 
@@ -501,8 +503,8 @@ export class TrainingPage {
 
   async startAssessmentAlert() {
     const alert = await this.alertController.create({
-      header: 'Assessment',
-      message: 'Do you want to move on to the assessment? You will not be able to come back to training today.',
+      header: 'Finish Training',
+      message: 'Do you want to finish training for today?',
       buttons: [
         {
           text: 'Cancel'

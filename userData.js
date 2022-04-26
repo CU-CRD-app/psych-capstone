@@ -55,6 +55,7 @@ module.exports = {
                 }
             }
         }
+        level += 1
 
         let preAssessment = {};
         let postAssessment= {};

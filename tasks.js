@@ -2,7 +2,7 @@
 
 var { Client } = require('pg');
 const { achievementTitles } = require('./achievementConstants');
-const { addAchievement } = require('./achievements');
+const achievements = require('./achievements');
 
 function allDefined(req, id){
     if(typeof(req.level) === 'undefined'){

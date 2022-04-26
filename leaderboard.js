@@ -20,9 +20,9 @@ module.exports = {
             let getHiscoresQuery = "";
             if (gamemode !== "all") {
                 const gamemodeColumn = "day." + gamemode;
-                const getHiscoresQuery = "SELECT users.username, " + gamemodeColumn + " FROM users, day WHERE day.userid = users.userid AND " + gamemodeColumn + " >= 0 ORDER BY " + gamemodeColumn + " DESC";
+                getHiscoresQuery = "SELECT users.username, " + gamemodeColumn + " FROM users, day WHERE day.userid = users.userid AND " + gamemodeColumn + " >= 0 ORDER BY " + gamemodeColumn + " DESC";
             } else {
-                getHiscoresQuery = "select users.username, GREATEST(day.nameface, day.whosnew, day.shuffle,day.memory) as max_score FROM users, day WHERE day.userid = users.userid ORDER BY max_score DESC";
+                getHiscoresQuery = "select users.username, SUM(day.nameface + day.whosnew + day.shuffle + day.memory) as max_score FROM users, day WHERE day.userid = users.userid GROUP BY users.username ORDER BY max_score DESC";
             }
 
             await pgClient.connect()
