@@ -1,0 +1,12 @@
+Notification Implimentation lives in front-end\src\app\dashboard\dashboard.page.ts
+
+It is set to remind user once everyday and it uses a custom sound made by team 3.
+
+    this.localNotifications.schedule({
+      title: 'Remember to do your training!',
+      text: 'You have not done your training today, for better results we recommend you do 10 minutes of training every day!',
+      sound: 'file://assets/sounds/notification.mp3',
+      trigger: { every: { hour: 17, minute: 28 } }
+    });
+
+For further documentation see https://ionicframework.com/docs/native/local-notifications
