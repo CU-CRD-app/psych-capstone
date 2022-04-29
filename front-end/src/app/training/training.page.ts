@@ -253,6 +253,8 @@ export class TrainingPage {
         this.renderLevelOneHelp();
       }
     } else {
+      this.scores[Task.FORCED_CHOICE] = 8;
+      this.scores[Task.SAME_DIFFERENT] = 8;
       this.finishLevel();
       this.scheduleNotification();
     }
