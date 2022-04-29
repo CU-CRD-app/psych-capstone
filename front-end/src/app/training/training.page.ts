@@ -175,7 +175,6 @@ export class TrainingPage {
       */ 
 
       let levelCompletedToday = false;
-      this.userLevel += 1;
 
       if (this.userLevel == 0 || this.userLevel == 9) {
 
