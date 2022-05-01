@@ -111,4 +111,3 @@ Currently, there is a fairly simple but effective Achievements page implemented 
 
 ![image](./AchievementsCard.png) 
 
-

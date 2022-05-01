@@ -173,6 +173,7 @@ export class TrainingPage {
        * this.userRace = 
        * trial ends
       */ 
+     console.log(this.userLevel);
 
       let levelCompletedToday = false;
 
@@ -203,18 +204,17 @@ export class TrainingPage {
           this.getTrainingFaces().then((faces) => {
             this.trainingFacePaths = faces;
             this.getWhosNewFaces().then((faces) => {
-              console.log("Got faces")
               this.whosNewFacePaths = faces;
               this.getDailyAssessmentFaces().then((faces) => {
-                 this.assessmentFacePaths = faces;
-                 if (days[this.userLevel - 1]) {
-                   this.scores = [days[this.userLevel - 1]['nameface'], days[this.userLevel - 1]['whosnew'], days[this.userLevel - 1]['memory'], days[this.userLevel - 1]['shuffle'], days[this.userLevel - 1]['forcedchoice'], days[this.userLevel - 1]['samedifferent']];
-                   this.learningDone = this.scores.indexOf(-1) > -1;
-                 }
-                 timer(1000).subscribe(() => {
-                   this.iterateStage();
-                 })
-               });
+                this.assessmentFacePaths = faces;
+                if (days[this.userLevel - 1]) {
+                  this.scores = [days[this.userLevel - 1]['nameface'], days[this.userLevel - 1]['whosnew'], days[this.userLevel - 1]['memory'], days[this.userLevel - 1]['shuffle'], days[this.userLevel - 1]['forcedchoice'], days[this.userLevel - 1]['samedifferent']];
+                  this.learningDone = this.scores.indexOf(-1) > -1;
+                }
+                timer(1000).subscribe(() => {
+                  this.iterateStage();
+                })
+              });
             });
           });
 
@@ -244,6 +244,8 @@ export class TrainingPage {
 
   iterateStage() {
     this.task = null;
+    this.scores[Task.FORCED_CHOICE] = 8;
+    this.scores[Task.SAME_DIFFERENT] = 8;
     if (!this.learningDone) {
       this.stage = Stage.START;
     } else if (this.trainingNotDone()) {
@@ -251,9 +253,12 @@ export class TrainingPage {
       if (this.scores[Task.NAME_FACE] == -1 && this.scores[Task.WHOS_NEW] == -1 && this.scores[Task.MEMORY] == -1 && this.scores[Task.SAME_DIFFERENT] == -1) {
         this.renderLevelOneHelp();
       }
+    } else if (this.scores.includes(-1)) {
+      this.stage = Stage.ASSESSMENT;
+      if (this.scores[Task.FORCED_CHOICE] == -1 && this.scores[Task.SAME_DIFFERENT] == -1) {
+        this.renderLevelOneHelp();
+      }
     } else {
-      this.scores[Task.FORCED_CHOICE] = 8;
-      this.scores[Task.SAME_DIFFERENT] = 8;
       this.finishLevel();
       this.scheduleNotification();
     }
@@ -389,9 +394,7 @@ export class TrainingPage {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
       })
     };
-
     await this.http.put(environment.backendBaseUrl + "getWhosNewFaces/", {level: this.userLevel, race: this.currentRace}, httpOptions).subscribe((res) => {
-
       for (let i = 0; i < 8; i++) {
         facePaths.push(`data:image/png;base64,${res['images'][i]}`)
       }
@@ -401,35 +404,35 @@ export class TrainingPage {
   }
   
   async getDailyAssessmentFaces() {
-     let facePaths : string[] = [];
-     let imagesAlreadyStored = true;
+    let facePaths : string[] = [];
+    let imagesAlreadyStored = true;
 
-     for (let i = 0; i < 8; i++) {
-       let image = sessionStorage.getItem(`dailyAssessment${i}`);
-       if (!image) {
-         imagesAlreadyStored = false;
-          break;
-        } else {
-          facePaths.push(image);
-        }
+    for (let i = 0; i < 8; i++) {
+      let image = sessionStorage.getItem(`dailyAssessment${i}`);
+      if (!image) {
+        imagesAlreadyStored = false;
+        break;
+      } else {
+        facePaths.push(image);
       }
-      if (!imagesAlreadyStored) {
-        facePaths = [];
-        const httpOptions = {
-          headers: new HttpHeaders({
-            'Content-Type': 'application/json; charset=utf-8',
-            'Authorization': 'Bearer ' + localStorage.getItem('token')
-          })
-        };
-        await this.http.put(environment.backendBaseUrl + "getDailyAssessmentFaces/", {race: this.currentRace}, httpOptions).subscribe((res) => {
-          for (let i = 0; i < 8; i++) {
-            facePaths.push(`data:image/jpg;base64,${res['images'][i]}`)
-            sessionStorage.setItem(`dailyAssessment${i}`, `data:image/jpg;base64,${res['images'][i]}`)
-          }
-        });
-      }
-      return facePaths;
     }
+    if (!imagesAlreadyStored) {
+      facePaths = [];
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json; charset=utf-8',
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        })
+      };
+      await this.http.put(environment.backendBaseUrl + "getDailyAssessmentFaces/", {race: this.currentRace}, httpOptions).subscribe((res) => {
+        for (let i = 0; i < 8; i++) {
+          facePaths.push(`data:image/jpg;base64,${res['images'][i]}`)
+          sessionStorage.setItem(`dailyAssessment${i}`, `data:image/jpg;base64,${res['images'][i]}`)
+        }
+      });
+    }
+    return facePaths;
+  }
 
   async getPrePostAssessmentFaces() { // Too many to store in local/session storage
     let facePaths : string[] = [];
@@ -505,13 +508,13 @@ export class TrainingPage {
   async startAssessmentAlert() {
     const alert = await this.alertController.create({
       header: 'Finish Training',
-      message: 'Do you want to finish training for today?',
+      message: "Do you want to finish training for the day? You can't come back once you submit.",
       buttons: [
         {
           text: 'Cancel'
         },
         {
-          text: 'Go',
+          text: 'Finish',
           handler: () => {
             timer(500).subscribe(() => {
               this.iterateStage();
@@ -554,6 +557,7 @@ export class TrainingPage {
     this.task = null;
 
     if (currentTask != Task.POSTTEST) {
+      console.log("not posttest")
       this.progress = 0;
       timer(1200).subscribe(async () => {
         this.userLevel++;

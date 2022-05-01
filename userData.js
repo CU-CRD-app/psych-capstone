@@ -45,17 +45,12 @@ module.exports = {
 
         let level = resDays.rows.length + preCount.rows.length + postCount.rows.length;
 
-        if (preCount.rows.length == 0) {
-            level = 0;
-        } else {
             for (var i = 0; i < resDays.rows.length; i++) {
                 if (resDays.rows[i]['nameface'] == -1 || resDays.rows[i]['whosnew'] == -1 || resDays.rows[i]['memory'] == -1 || resDays.rows[i]['shuffle'] == -1 || resDays.rows[i]['forcedchoice'] == -1 || resDays.rows[i]['samedifferent'] == -1) {
                     level = i + 1;
                     break;
                 }
             }
-        }
-        level += 1
 
         let preAssessment = {};
         let postAssessment= {};

@@ -118,7 +118,7 @@ module.exports = {
         
         let now = new Date().toUTCString();
         await pgClient.query("INSERT INTO day(userid, level, race, date, nameface, whosnew, memory, shuffle, forcedchoice, samedifferent) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)", [userId, -1, "asian", now, -1, -1, -1, -1, -1, -1])
-
+        await pgClient.query("insert into preassessment (userid, score, race, date) VALUES ($1, $2, $3, $4)", [userId, 30, "asian", now]);
         await pgClient.query("UPDATE users SET hashedpassword = $1, security_question_answer = $3 WHERE userid = $2", [hash, userId, hashed_security_question_answer])
             .then(res => {
                 pgClient.end();

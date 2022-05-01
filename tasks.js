@@ -98,7 +98,7 @@ module.exports = {
                     ]
 
                     const achievementTitleKey = achievementTitleKeys[numDaysIndex];
-                    return addAchievement(id, achievementTitleKey)
+                    return achievements.addAchievement(id, achievementTitleKey)
                 } else {
                     return Promise.resolve("No achievement to add.")
                 }

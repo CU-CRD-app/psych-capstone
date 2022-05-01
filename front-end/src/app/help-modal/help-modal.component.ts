@@ -48,26 +48,26 @@ const slideValues = {
     ['assets/help-slides/shuffle/3.png', 'For an incorrect solution, incorrect cards will be colored red. You will be awarded a point for each correct card.'],
     ['assets/help-slides/shuffle/4.png', 'You can toggle between your solution and the correct solution with the toggle at the bottom.']
   ],
-  // 'Forced Choice': [
-  //   ['assets/help-slides/forced-choice/0.png', 'Click anywhere to show the face and begin the timer.'],
-  //   ['assets/help-slides/forced-choice/1.png', 'You will have 3 seconds to memorize the face.'],
-  //   ['assets/help-slides/forced-choice/2.png', 'After the timer is up select the face that you saw.'],
-  //   ['assets/help-slides/forced-choice/3.png', 'You will receive a point for each correct answer.']
-  // ],
-  // 'Same-Different': [
-  //   ['assets/help-slides/same-different/0.png', 'Click anywhere to show the face and begin the timer.'],
-  //   ['assets/help-slides/same-different/1.png', 'You will have 3 seconds to memorize the face.'],
-  //   ['assets/help-slides/same-different/2.png', 'After the timer is up, decide whether the face is the same.'],
-  //   ['assets/help-slides/same-different/3.png', 'You will receive a point for each correct answer.']
-  // ],
+  'Forced Choice': [
+    ['assets/help-slides/forced-choice/0.png', 'Click anywhere to show the face and begin the timer.'],
+    ['assets/help-slides/forced-choice/1.png', 'You will have 3 seconds to memorize the face.'],
+    ['assets/help-slides/forced-choice/2.png', 'After the timer is up select the face that you saw.'],
+    ['assets/help-slides/forced-choice/3.png', 'You will receive a point for each correct answer.']
+  ],
+  'Same-Different': [
+    ['assets/help-slides/same-different/0.png', 'Click anywhere to show the face and begin the timer.'],
+    ['assets/help-slides/same-different/1.png', 'You will have 3 seconds to memorize the face.'],
+    ['assets/help-slides/same-different/2.png', 'After the timer is up, decide whether the face is the same.'],
+    ['assets/help-slides/same-different/3.png', 'You will receive a point for each correct answer.']
+  ],
   'Training Tasks': [
     ['assets/help-slides/training/0.png', 'Welcome to the training tasks. You can check today\'s face-name pairs however often you need with the bottom left-hand button.'],
-    ['assets/help-slides/training/1.png', 'When you complete a task, you can see your highest score. You must get at least 75% to pass each task, and can do them any number of times.']
-    // ['assets/help-slides/training/2.png', 'After passing every task, you can progress to the daily assessment tasks with the bottom right-hand button. You will not be able to come back today after moving on.']
+    ['assets/help-slides/training/1.png', 'When you complete a task, you can see your highest score. You must get at least 75% to pass each task, and can do them any number of times.'],
+    ['assets/help-slides/training/2.png', 'After passing every task, you can progress to the daily assessment tasks with the bottom right-hand button. You will not be able to come back today after moving on.']
   ],
-  // 'Assessment Tasks': [
-  //   ['assets/help-slides/assessment/0.png', 'The daily assessment tasks track your learning progress. You cannot redo or restart them.']
-  // ],
+  'Assessment Tasks': [
+    ['assets/help-slides/assessment/0.png', 'The daily assessment tasks track your learning progress. You cannot redo or restart them.']
+  ],
   'Finish': [
     ['assets/help-slides/finish/0.png', 'You are done for the day, come back tomorrow for your next training. You can see your training history on the history page.']
   ],

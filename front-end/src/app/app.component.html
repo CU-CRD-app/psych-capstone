@@ -20,20 +20,20 @@
             <ion-label>History</ion-label>
             <ion-icon name="analytics"></ion-icon>
           </ion-item>
+          <ion-item lines="full" routerLink="/leaderboard" routerDirection="forward" [ngStyle]="{'color': isCurrentPage('settings') ? 'rgb(206,183,124)' : 'black'}">
+            <ion-label>Leaderboard</ion-label>
+            <ion-icon src="../assets/icon/stats-chart-outline.svg"></ion-icon>
+          </ion-item>
+          <ion-item lines="full" routerLink="/achievements" routerDirection="forward" [ngStyle]="{'color': isCurrentPage('settings') ? 'rgb(206,183,124)' : 'black'}">
+            <ion-label>Achievements</ion-label>
+            <ion-icon src="../assets/icon/trophy-outline.svg"></ion-icon>
+          </ion-item>
           <ion-item lines="full" routerLink="/about" routerDirection="forward" [ngStyle]="{'color': isCurrentPage('about') ? 'rgb(206,183,124)' : 'black'}">
             <ion-label>About Us</ion-label>
             <ion-icon name="information-circle-outline"></ion-icon>
           </ion-item>
           <ion-item lines="full" routerLink="/settings" routerDirection="forward" [ngStyle]="{'color': isCurrentPage('settings') ? 'rgb(206,183,124)' : 'black'}">
             <ion-label>Settings</ion-label>
-            <ion-icon name="cog"></ion-icon>
-          </ion-item>
-          <ion-item lines="full" routerLink="/leaderboard" routerDirection="forward" [ngStyle]="{'color': isCurrentPage('settings') ? 'rgb(206,183,124)' : 'black'}">
-            <ion-label>Leaderboard</ion-label>
-            <ion-icon name="cog"></ion-icon>
-          </ion-item>
-          <ion-item lines="full" routerLink="/achievements" routerDirection="forward" [ngStyle]="{'color': isCurrentPage('settings') ? 'rgb(206,183,124)' : 'black'}">
-            <ion-label>Achievements</ion-label>
             <ion-icon name="cog"></ion-icon>
           </ion-item>
           <br>
