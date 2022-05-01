@@ -53,6 +53,11 @@ teardown:
 
 ``docker-compose -f scripts/docker-compose.yaml -p psych-capstone down``
 
+Note that the docker-compose file will mount `node_modules` and `front-end/node_modules` into the backend and front-end containers respectively to
+help save on stand-up time. Be sure to create these directories *before* starting up docker-compose:
+
+``npm install && cd front-end && npm install``
+
 If you are using rootless podman, be sure to use docker-compose@1.29.2 and [dnsname](https://github.com/containers/dnsname/blob/main/README_PODMAN.md) installed.
 Then run the following to point docker-compose to the podman socket:
 
