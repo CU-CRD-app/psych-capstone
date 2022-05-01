@@ -1,6 +1,6 @@
 # Year Three Notes
 
-Staging deployment automated through GHA. See `.github/workflows/frontend.yml`
+Staging deployment automated through GHA. See `.github/workflows/frontend.yml`. This workflow will build and deploy the front-end to https://github.com/CU-CRD-app/psych-capstone-frontend-testing.
 
 # Year Two Notes
 
