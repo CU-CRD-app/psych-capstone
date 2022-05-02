@@ -2,7 +2,7 @@
 
 Development for the CU psychology department's CRD research app.
 
-**More documentation can be found under [docs](docs/).**
+**More documentation can be found under [docs](docs/), with the 2021-2022 team's documentation being found in [docs/2021-2022-docs](docs/2021-2022-docs/).**
 
 ## Contact Us
 
