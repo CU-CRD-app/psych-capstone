@@ -77,6 +77,8 @@ As the name suggests, rows in the ```users``` table holds account information fo
 
 - ```email``` - a text column holding the email associated with the user, converted to all lower case characters.
 
+- ```username``` - a text field containing an anonymous username provided by the user. Utilized in the leaderboard to provide sense of accomplishment while still allowing anonymity.
+
 - ```hashedpassword``` - a text column holding the users hashed password
 
 - ```race``` - a text column holding the race of the user
@@ -157,6 +159,16 @@ The current state of the database initialization strategy was implemented by pri
 The 2021-2022 team has made a few improvements to try and make this database creation process more streamlined and understandable. Firstly, they extracted the CREATE TABLE SQL statements from the ```initializeDB.js``` file and put them in a separate ```initializeDB.sql``` file, to provide future developers with a clearly defined place to view the database creation SQL. Additionally, while we kept the DB intialization process on service startup (we did not want to tamper with the current process to heavily), we cleaned up the script to organize the checks for each table initialization more cleanly.
 
 In the future, common practice dictates that a SQL script be written to backup any existing data in the database, drop and recreate the tables as needed, and then restore the data.
+
+# Additional Notes
+
+1.  One of the main oddities I've noticed about the database schema is that for some reason, the original teams working on the application decided to store dates not as date columns in Postgres, but as text fields instead. This introduces a bit of complexity when trying to utilize the date columns in your SQL queries (sorting, selecting rows before or after a certain date, etc.)
+
+      - Luckily PostgreSQL has really robust date parsing capabilities so you can convert the text date columns to date objects that can be properly utilized right in your SQL queries. [See this link for more details on converting dates in Postgres.](https://www.postgresqltutorial.com/postgresql-date-functions/postgresql-to_date/)
+
+
+2. The none of the database tables (save for the achievements table, which was created this year 2021-2022) have any constraints defined, primary keys added to the tables, etc. Luckily it doesn't seem to be too much of an issue now as there aren't many relations between tables, but it may be worth adding foreign key constraints to the userid columns in tables other than the user table.
+
 
 
 
