@@ -2,10 +2,18 @@
 
 Development for the CU psychology department's CRD research app.
 
+**Documentation for the 2021-2022 team found in develop branch [here](https://github.com/CU-CRD-app/psych-capstone/tree/develop/docs/2021-2022-docs).**
+
 ## Contact Us
 
 Professor Josh Correll (sponsored the app and is the one using it for research): <br>
   joshua.correll@colorado.edu
+  
+Dev Team Year 3: <br>
+  ryan.drew@colorado.edu <br>
+  Naif.Alassaf@colorado.edu <br>
+  Logan.Mann@colorado.edu <br>
+  Yosan.Russom@colorado.edu <br>
   
 Dev Team Year 2 (US): <br>
   Alvaro.Santillan@colorado.edu <br>
