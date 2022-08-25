@@ -1,0 +1,28 @@
+<ion-content [fullscreen]="true" style="--background: rgb(34,31,32);">
+
+  <ion-header>
+    <ion-toolbar color="dark" style="border-bottom-width: medium; border-bottom-style: solid; border-bottom-color: rgb(206,183,124)">
+      <ion-title>Achievements</ion-title>
+      <ion-buttons slot="start">
+        <ion-menu-button autoHide="false"></ion-menu-button>
+      </ion-buttons>
+
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-item *ngIf="achievementList?.length == 0" color="dark" style="border-bottom-width: medium; border-bottom-style: solid; border-bottom-color: rgb(206,183,124)">
+    <div class="ion-text-center">No achievements found. :(</div>
+  </ion-item>
+      <ion-card  *ngFor="let achievement of achievementList" color="dark" style=" margin: 5%; border-bottom-width: medium; border-bottom-style: solid; border-bottom-color: rgb(206,183,124);">
+        <ion-card-header>
+          <ion-icon src="../../assets/icon/trophy-outline.svg"></ion-icon>
+          <ion-card-title>
+            {{achievement.achievement_title}}
+          </ion-card-title>
+          <ion-card-content>
+            {{achievement.achievement_description}}
+          </ion-card-content>
+        </ion-card-header>
+      </ion-card>
+
+</ion-content>

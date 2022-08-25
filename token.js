@@ -7,7 +7,7 @@ module.exports = {
     verify: async function(token){
         let email = "";
         try{
-            let decoded = await jwt.verify(token, process.env.public);
+            let decoded = await jwt.verify(token, process.env.public, {algorithm: 'RS256'});
             if(typeof(decoded) === 'undefined'){
                 return new Promise(function(resolve, reject){
                     reject("Invalid token");
@@ -23,7 +23,10 @@ module.exports = {
 
         const pgClient = new Client({
             connectionString: process.env.DATABASE_URL,
-            ssl: true,
+            ssl: {
+                'sslmode': 'require',
+                'rejectUnauthorized': false,
+            },
         });
 
         pgClient.connect();

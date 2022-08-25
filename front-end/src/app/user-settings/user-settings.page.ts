@@ -4,6 +4,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { OpenNativeSettings } from '@ionic-native/open-native-settings/ngx';
 import { interval } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-user-settings',
@@ -90,7 +91,7 @@ export class UserSettingsPage implements OnInit {
       };
 
       this.waitingForResponse = true;
-      this.http.put('https://crossfacerecognition.herokuapp.com/changepassword/', body, httpOptions).subscribe(() => {
+      this.http.put(environment.backendBaseUrl + 'changepassword/', body, httpOptions).subscribe(() => {
         this.waitingForResponse = false;
         this.resetPasswordForm();
         this.successToast('Your settings have been saved');

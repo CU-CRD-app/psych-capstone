@@ -24,6 +24,99 @@ function validPassword(pass){
 }
 
 module.exports = {
+
+    getSecurityQuestion: async function(req) {
+
+        if(typeof(req.email) === 'undefined'){
+            return new Promise(function(resolve, reject) {
+                reject("Invalid request.");
+            })
+        }
+        
+        const pgClient = new Client({
+            connectionString: process.env.DATABASE_URL,
+            ssl: {
+                'sslmode': 'require',
+                'rejectUnauthorized': false,
+            },
+        });
+
+        await pgClient.connect();
+
+        let result = await pgClient.query('SELECT security_question FROM users WHERE email = $1', [email]);
+        if (result.rows.length == 0) {
+            pgClient.end();
+            return new Promise(function(resolve, reject) {
+                reject("Account not found");
+            })
+        }
+
+        security_question = result.rows[0].security_question_answer;
+        return new Promise(function(resolve, reject) {
+            resolve(security_question);
+        })
+
+    },
+
+    changePassword: async function(req){
+        if(typeof(req.email) === 'undefined' ||typeof(req.security_question_answer) === 'undefined'||typeof(req.newpassword) === 'undefined' ){
+            return new Promise(function(resolve, reject){
+                reject("Invalid new password");
+            })
+        }
+
+        const pgClient = new Client({
+            connectionString: process.env.DATABASE_URL,
+            ssl: {
+                'sslmode': 'require',
+                'rejectUnauthorized': false,
+            },
+        });
+
+        await pgClient.connect();
+
+        let salt = await bcrypt.genSalt((res.rows[0].userid%15)+1);
+        let hashedSecurityQuestionAnswer = await bcrypt.hash(req.security_question_answer.toLowerCase(), salt);
+
+
+
+        let res = await pgClient.query("SELECT security_question_answer FROM users WHERE email = $1", [req.email.toLowerCase()]);
+        if(res.rows.length == 0){
+            pgClient.end();
+            return new Promise(function(resolve, reject){
+                reject("Account not found");
+            })
+        }
+
+        let match = await bcrypt.compare(hashedSecurityQuestionAnswer, res.rows[0].security_question_answer);
+
+        if(match){
+            let salt = await bcrypt.genSalt((res.rows[0].userid%15)+1);
+            let newHashedPassword = await bcrypt.hash(req.newpassword, salt);
+            pgClient.query("UPDATE users SET hashedpassword = $1 WHERE email = $2", [newHashedPassword, req.email.toLowerCase()])
+            .then(res => {
+                pgClient.end();
+                return new Promise(function(resolve, reject){
+                    resolve("Password changed"); //NOTE: Return value doesn't seem to be passing right now.  May need to use another await?
+                })
+            })
+            .catch(err => {
+                console.log(err)
+                pgClient.end();
+                return new Promise(function(resolve, reject){
+                    reject(err);
+                })
+            })
+        }
+        else{
+            pgClient.end();
+            return new Promise(function(resolve, reject){
+                reject("Security question answer does not match.");
+            })
+        }
+
+    },
+
     update: async function(req){
         if(!allDefined(req)){
             return new Promise(function(resolve, reject){
@@ -39,7 +132,10 @@ module.exports = {
 
         const pgClient = new Client({
             connectionString: process.env.DATABASE_URL,
-            ssl: true,
+            ssl: {
+                'sslmode': 'require',
+                'rejectUnauthorized': false,
+            },
         });
 
         pgClient.connect();
@@ -65,6 +161,7 @@ module.exports = {
                 })
             })
             .catch(err => {
+                console.log(err)
                 pgClient.end();
                 return new Promise(function(resolve, reject){
                     reject(err);

@@ -8,8 +8,17 @@ const routes: Routes = [
   { path: 'history', canActivate: [AuthGuard], loadChildren: './history/history.module#HistoryPageModule' },
   { path: 'about', canActivate: [AuthGuard], loadChildren: './about-us/about-us.module#AboutUsPageModule' },
   { path: 'settings', canActivate: [AuthGuard], loadChildren: './user-settings/user-settings.module#UserSettingsPageModule' },
+  { path: 'leaderboard', canActivate: [AuthGuard], loadChildren: './leaderboard/leaderboard.module#LeaderboardPageModule' },
+  { path: 'achievements', canActivate: [AuthGuard], loadChildren: './achievements/achievements.module#AchievementsPageModule' },
+
   { path: 'login', loadChildren: './auth/login/login.module#LoginPageModule' },
-  { path: '**', redirectTo: 'login' }
+  { path: '**', redirectTo: 'login' },
+  /*
+  {
+    path: 'leaderboard',
+    loadChildren: () => import('./leaderboard/leaderboard.module').then( m => m.LeaderboardPageModule)
+  }
+  */
 ];
 
 @NgModule({

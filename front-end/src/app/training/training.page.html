@@ -19,14 +19,16 @@
 
     <!--Start Page-->
     <div *ngIf="stage == Stage.START" style="margin-top: 50%">
-      <div *ngIf="userLevel > 0 && userLevel < 9">
+      <div *ngIf="userLevel >= 0 && userLevel < 9">
         <div class="header" style="color:white;margin: 5%"><b>Level {{userLevel}}</b></div>
         <div class="subheader" style="margin: 5%">Are you ready to train?</div>
       </div>
+      <!--
       <div *ngIf="userLevel == 0">
         <div class="header" style = "color:white"><b>Pre-Assessment</b></div>
         <div class="subheader" style="margin: 5%">It looks like you're new, are you ready to begin your pretest?</div>
       </div>
+      -->
       <div *ngIf="userLevel == 9">
         <div class="header" style="color: white;"><b>Post-Assessment</b></div>
         <div class="subheader" style="margin: 5%">It looks like you've completed all eight levels, are you ready to begin your post-test?</div>
@@ -142,7 +144,7 @@
   <!--Same-Different-->
   <app-same-different *ngIf="task == Task.SAME_DIFFERENT" [facePaths]="assessmentFacePaths" (finished)="finished($event, 5)"></app-same-different>
   <!--Pre-Post-Assessment-->
-  <app-same-different *ngIf="task == Task.PRETEST || task == Task.POSTTEST" [facePaths]="assessmentFacePaths" (finished)="finishPrePost($event)"></app-same-different>
+  <app-same-different *ngIf="task == Task.POSTTEST" [facePaths]="assessmentFacePaths" (finished)="finishPrePost($event)"></app-same-different>
 
   <!--For development only
   <div>

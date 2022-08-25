@@ -1,6 +1,5 @@
 // This file defines the endpoints used in the backend, and calls the proper functions to handle data
 // The return values of those functions are then parsed and sent along with the proper http status code
-
 var express = require('express');
 var bodyParser = require('body-parser');
 var cors = require('cors');
@@ -14,11 +13,37 @@ var postassessment = require('./postassessment.js');
 var tokenHandler = require('./token.js');
 var password = require('./passwordChange.js');
 var fs = require("fs");
+const leaderboard = require('./leaderboard.js');
+var { Client } = require('pg');
+var {addAchievement, getConsecutiveDaysPlayed} = require("./achievements");
+const achievements = require('./achievements');
+const passwordChange = require('./passwordChange.js');
 
-initialize.start()
+
+
+var initAttempts = 5;
+var initSleep = 3 * 1000;  // 3 seconds
+
+function doInit(attempts) {
+    if (attempts == 0) {
+        console.log("Unable to initialize database!");
+        return
+    }
+    console.log(`Trying to init, ${attempts} attempts left`);
+    initialize.start()
     .then(res => console.log(res))
-    .catch(err => console.log(err))
+    .catch(
+        err => { 
+            console.log(err);
+            setTimeout(
+                function() { doInit(attempts - 1); },
+                initSleep,
+            );
+        }
+    );
+}
 
+doInit(initAttempts);
 var app = express();
 var do_not_select_index = 0;
 
@@ -54,6 +79,16 @@ app.put("/register/", cors(corsOptions), function(req, res, next) {
         })
 })
 
+app.post("/getHiscores/", cors(corsOptions), function(req, res, next) {
+    leaderboard.getHiscores(req.body.gamemode)
+    .then(result => {
+        res.send(result)
+    })
+    .catch(err => {
+        res.status(400).send("Error fetching hiscores.");
+    })
+})
+
 app.post("/login/", cors(corsOptions), function(req, res, next) {
     login.login(req.body)
         .then(result => res.send(result))
@@ -67,12 +102,64 @@ app.post("/login/", cors(corsOptions), function(req, res, next) {
                 }
             }
             else{
+                console.log(err);
                 res.status(500).send("Internal server error");
             }
         })
 })
 
+app.post("/get_security_question", cors(corsOptions), async(req, res) => {
+
+    passwordChange.getSecurityQuestion(req.body)
+    .then(security_question => {
+        res.json({security_question: security_question})
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(400).send(err);
+    })
+})
+
+app.post("/change_password_with_security_question", async(req, res) => {
+    passwordChange.changePassword(req.body)
+    .then(r => {
+        res.status(200).send("Password Changed");
+    })
+    .catch(err => {
+        console.log(err)
+        res.status(400).send(err);
+    })
+})
+
 // All endpoints past this point require a token to access
+
+app.post("/get_achievements", cors(corsOptions), async(req, res) => {
+    if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
+        console.log("Invalid token sent to /get_achievements");
+        res.status(401).send("Please provide a properly formatted token")
+    }
+    else{
+       tokenHandler.verify(req.header('Authorization').split(' ')[1])
+            .then(id => {
+                achievements.getAchievements(id)
+                    .then(result => res.json({result:result}))
+                    .catch(err => {
+                        console.log(err)
+                        if(typeof(err) === 'string'){
+                            res.status(400).send(err);
+                        }
+                        else{
+                            res.status(500).send("Internal server error");
+                        }
+                    })
+            })
+            .catch(err => {
+                console.log(err)
+                return res.status(401).send("Invalid token")
+            
+            }) 
+    }
+})
 
 app.post("/tasks/", cors(corsOptions), function(req, res, next) {
     if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
@@ -92,7 +179,10 @@ app.post("/tasks/", cors(corsOptions), function(req, res, next) {
                         }
                     })
             })
-            .catch(err => res.status(401).send("Invalid token")) 
+            .catch(err => {
+                console.log("Invalid token");
+                res.status(401).send("Invalid token")
+            }) 
     }
     
 })
@@ -281,6 +371,38 @@ app.put("/getTrainingFaces/", cors(corsOptions), function(req, res, next){
             .catch(err => res.status(401).send("Invalid token")) 
     }
 })
+
+// app.put("/getDailyAssessmentFaces/", cors(corsOptions), function(req, res, next){
+//     if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){
+//         res.status(401).send("Please provide a properly formatted token")
+//     }
+//     else{
+//         tokenHandler.verify(req.header('Authorization').split(' ')[1])
+//             .then(id => {
+//                 try {
+//                     var images = [];
+//                     var faceNums = [];
+//                     var raceName = req.body.race;
+//                     console.log("/getDailyAssessmentFaces/");
+//                     console.log(req.body.race);
+//                     var total_num = fs.readdirSync(`./faces/${raceName}/daily-assessment`).length;
+//                     for (var i = 0; i < 8; i++) { // Generate 8 random numbers between 0 and total_num
+//                         var face = Math.floor(Math.random() * total_num);
+//                         while (faceNums.indexOf(face) > -1) { // Account for repeats
+//                           face = Math.floor(Math.random() * total_num);
+//                         }
+//                         faceNums.push(face);
+//                         var data = fs.readFileSync(`./faces/${raceName}/daily-assessment/${faceNums[i]}.jpg`);
+//                         images.push(new Buffer(data, 'binary').toString('base64'));
+//                     }
+//                     res.status(200).send({images: images});
+//                 } catch (err) {
+//                     res.status(500).send("Internal server error");
+//                 }
+//             })
+//             .catch(err => res.status(401).send("Invalid token")) 
+//     }
+// })
 
 app.put("/getDailyAssessmentFaces/", cors(corsOptions), function(req, res, next){
     if(typeof(req.header('Authorization')) === 'undefined' || req.header('Authorization').split(' ').length < 2){

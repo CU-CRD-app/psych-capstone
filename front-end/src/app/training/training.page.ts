@@ -10,6 +10,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { RaceSelectModalComponent } from '../race-select-modal/race-select-modal.component';
 import { ModalsPluginWeb } from '@capacitor/core';
+import { environment } from '../../environments/environment';
 
 enum Race { BLACK, ASIAN, LATINO, WHITE }
 enum Stage { START, TRAINING, ASSESSMENT, DONE }
@@ -172,6 +173,7 @@ export class TrainingPage {
        * this.userRace = 
        * trial ends
       */ 
+     console.log(this.userLevel);
 
       let levelCompletedToday = false;
 
@@ -242,6 +244,8 @@ export class TrainingPage {
 
   iterateStage() {
     this.task = null;
+    this.scores[Task.FORCED_CHOICE] = 8;
+    this.scores[Task.SAME_DIFFERENT] = 8;
     if (!this.learningDone) {
       this.stage = Stage.START;
     } else if (this.trainingNotDone()) {
@@ -368,8 +372,8 @@ export class TrainingPage {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         })
       };
-      //await this.http.put("https://crossfacerecognition.herokuapp.com/getTrainingFaces/", {level: this.userLevel, race: this.currentRace}, httpOptions).subscribe((res) => {
-      await this.http.put("https://crossfacerecognition.herokuapp.com/getTrainingFaces/", {level: this.userLevel, race: name}, httpOptions).subscribe((res) => {
+      //await this.http.put(environment.backendBaseUrl + "getTrainingFaces/", {level: this.userLevel, race: this.currentRace}, httpOptions).subscribe((res) => {
+      await this.http.put(environment.backendBaseUrl + "getTrainingFaces/", {level: this.userLevel, race: name}, httpOptions).subscribe((res) => {
         for (let i = 0; i < 8; i++) {
           //clear stack
           facePaths.push(`data:image/png;base64,${res['images'][i]}`)
@@ -390,7 +394,7 @@ export class TrainingPage {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
       })
     };
-    await this.http.put("https://crossfacerecognition.herokuapp.com/getWhosNewFaces/", {level: this.userLevel, race: this.currentRace}, httpOptions).subscribe((res) => {
+    await this.http.put(environment.backendBaseUrl + "getWhosNewFaces/", {level: this.userLevel, race: this.currentRace}, httpOptions).subscribe((res) => {
       for (let i = 0; i < 8; i++) {
         facePaths.push(`data:image/png;base64,${res['images'][i]}`)
       }
@@ -420,7 +424,7 @@ export class TrainingPage {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         })
       };
-      await this.http.put("https://crossfacerecognition.herokuapp.com/getDailyAssessmentFaces/", {race: this.currentRace}, httpOptions).subscribe((res) => {
+      await this.http.put(environment.backendBaseUrl + "getDailyAssessmentFaces/", {race: this.currentRace}, httpOptions).subscribe((res) => {
         for (let i = 0; i < 8; i++) {
           facePaths.push(`data:image/jpg;base64,${res['images'][i]}`)
           sessionStorage.setItem(`dailyAssessment${i}`, `data:image/jpg;base64,${res['images'][i]}`)
@@ -439,7 +443,7 @@ export class TrainingPage {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
       })
     };
-    await this.http.put("https://crossfacerecognition.herokuapp.com/getPrePostAssessmentFaces/", {race: this.currentRace}, httpOptions).subscribe((res) => {
+    await this.http.put(environment.backendBaseUrl + "getPrePostAssessmentFaces/", {race: this.currentRace}, httpOptions).subscribe((res) => {
       for (let i = 0; i < 30; i++) {
         facePaths.push(`data:image/jpg;base64,${res['images'][i]}`)
       }
@@ -461,6 +465,8 @@ export class TrainingPage {
         this.iterateStage();
       }
     }
+    this.scores[4] = 8;
+    this.scores[5] = 8;
     this.submitScores.submitTaskScores(this.userLevel, this.scores, "black");
   }
 
@@ -501,14 +507,14 @@ export class TrainingPage {
 
   async startAssessmentAlert() {
     const alert = await this.alertController.create({
-      header: 'Assessment',
-      message: 'Do you want to move on to the assessment? You will not be able to come back to training today.',
+      header: 'Finish Training',
+      message: "Do you want to finish training for the day? You can't come back once you submit.",
       buttons: [
         {
           text: 'Cancel'
         },
         {
-          text: 'Go',
+          text: 'Finish',
           handler: () => {
             timer(500).subscribe(() => {
               this.iterateStage();
@@ -522,6 +528,7 @@ export class TrainingPage {
   }
 
   clickStart() {
+    /**
     if (this.userLevel == 0) {
       this.task = Task.PRETEST;
       timer(500).subscribe(() => {
@@ -530,6 +537,13 @@ export class TrainingPage {
     } else if (this.userLevel == 9) {
       this.task = Task.POSTTEST;
     } else if (this.userLevel > 0 && this.userLevel < 9) {
+      this.task = Task.LEARNING;
+      this.renderLevelOneHelp();
+    }
+    **/
+    if (this.userLevel == 9) {
+      this.task = Task.POSTTEST;
+    } else if (this.userLevel >= 0 && this.userLevel < 9) {
       this.task = Task.LEARNING;
       this.renderLevelOneHelp();
     }
@@ -543,6 +557,7 @@ export class TrainingPage {
     this.task = null;
 
     if (currentTask != Task.POSTTEST) {
+      console.log("not posttest")
       this.progress = 0;
       timer(1200).subscribe(async () => {
         this.userLevel++;

@@ -1,8 +1,8 @@
 <ion-content id="login-view">
 
   <div *ngIf="popup == Popup.HOME" id="row-with-default-card">
-    <ion-button (click)=Login() fill="clear" style="height: 6%; width: 60%;color: rgb(206,183,124);">Login</ion-button>
-    <ion-button (click)=Register() fill="clear" style="height: 6%; width: 60%; color: rgb(206,183,124)">Register</ion-button>
+    <ion-button (click)=Login() fill="clear" style="height: 6%; width: 60%; color: #ffffff;">Login</ion-button>
+    <ion-button (click)=Register() fill="clear" style="height: 6%; width: 60%; color: #ffffff">Register</ion-button>
   </div>
 
   <div *ngIf="popup == Popup.LOGIN" style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: rgb(34,31,32)">
@@ -17,25 +17,47 @@
     </form>
     <br><br><br>
     <div style="display: flex; justify-content: space-evenly; width: 100%">
-      <ion-button (click)="BackHome()" fill="clear" style="width: 45%; color: rgb(206,183,124)" [disabled]="awaitLoginHTTP">Back</ion-button>
-      <ion-button (click)="SubmitLogin()" fill="clear" style="width: 45%; height: 2rem;color: rgb(206,183,124)" [disabled]="awaitLoginHTTP">
+      <ion-button (click)="BackHome()" fill="clear" style="width: 20%; height: 2rem; color: #ffffff" [disabled]="awaitLoginHTTP">Back</ion-button>
+      <ion-button (click)="SubmitLogin()" fill="clear" style="width: 70%; height: 2rem; color: #ffffff" [disabled]="awaitLoginHTTP">
         <span *ngIf="!awaitLoginHTTP">Login</span>
         <ion-spinner *ngIf="awaitLoginHTTP" slot="end" name="dots" style="size: 50%"></ion-spinner>
       </ion-button>
     </div>
-    <div style="display: flex; justify-content: space-evenly; width: 100%">
-      <ion-button (click)="ForgetPassword()" fill="clear" style="width: 65%; height: 2rem; color: dodgerblue" [disabled]="awaitLoginHTTP">Forgot Password?</ion-button>
+    <div style="display: flex; justify-content: space-evenly; width: 65%; height: 1.3rem;">
+      <ion-button (click)="ForgetPassword()" fill="clear" style="width: 65%; height: 1.3rem; color: #A5C0FA;" [disabled]="awaitLoginHTTP">Forgot Password?</ion-button>
     </div>
   </div>	
 
   <div *ngIf="popup == Popup.REGISTER" style="height: 100%; background-color: rgb(34,31,32)">
     <form [formGroup]="registerForm" style="height: 100%; width: 100%; display: flex; flex-direction: column; justify-content: space-evenly">
       <div>
-        <!--USERNAME-->
+        <!--EMAIL-->
         <ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.username) && !registerForm.controls.username.errors && validEmail(registerForm.value.username), 'invalid': fieldNotEmpty(registerForm.value.username) && (registerForm.controls.username.errors || !validEmail(registerForm.value.username))}">
           <ion-input formControlName="username" placeholder="Email" type="email"></ion-input>
         </ion-item>
         <div *ngIf="fieldNotEmpty(registerForm.value.username) && (registerForm.controls.username.errors || !validEmail(registerForm.value.username))" style="color: red; margin-left: 3%; font-size: 4vw">Must be valid email</div>
+       
+       <!--USERNAME-->
+        <ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.user_alias) && !registerForm.controls.user_alias.errors, 'invalid': fieldNotEmpty(registerForm.value.user_alias) && (registerForm.controls.user_alias.errors)}">
+          <ion-input formControlName="user_alias" placeholder="Username" type="text"></ion-input>
+        </ion-item>
+        <div *ngIf="fieldNotEmpty(registerForm.value.user_alias) && (registerForm.controls.user_alias.errors)" style="color: red; margin-left: 3%; font-size: 4vw">Must be valid username</div>
+        
+        <!--Security Question-->
+        <ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.security_question) && !registerForm.controls.security_question.errors, 'invalid': fieldNotEmpty(registerForm.value.security_question) && (registerForm.controls.security_question.errors)}">
+          <ion-select placeholder="Security Question" formControlName="security_question">
+            <ion-select-option value="What is your favorite food?">What is your favorite food?</ion-select-option>
+            <ion-select-option value="What street did you grow up on?">What street did you grow up on?</ion-select-option>
+            <ion-select-option value="What color was your first car?">What color was your first car?</ion-select-option>
+            <ion-select-option value="What is your mother's maided name?">What is your mother's maiden name?</ion-select-option>
+            <ion-select-option value="What was the name of your highschool?">What was the name of your highschool?</ion-select-option>
+            <ion-select-option value="What was the name of your first pet?">What was the name of your first pet?</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.security_question_answer) && !registerForm.controls.security_question_answer.errors, 'invalid': fieldNotEmpty(registerForm.value.security_question_answer) && (registerForm.controls.security_question_answer.errors)}">
+          <ion-input formControlName="security_question_answer" placeholder="Security Question Answer" type="text"></ion-input>
+        </ion-item>
+        
         <!--PASSWORD-->
         <ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.password) && !registerForm.controls.password.errors && validPassword(registerForm.value.password), 'invalid': fieldNotEmpty(registerForm.value.password) && (registerForm.controls.password.errors || !validPassword(registerForm.value.password))}">
           <ion-input formControlName="password" placeholder="Password" type="password"></ion-input>
@@ -93,6 +115,19 @@
       <div>
         <ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.username) && !registerForm.controls.username.errors && validEmail(registerForm.value.username), 'invalid': fieldNotEmpty(registerForm.value.username) && (registerForm.controls.username.errors || !validEmail(registerForm.value.username))}">
           <ion-input formControlName="username" placeholder="Email" type="email"></ion-input>
+        </ion-item>
+        <ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.security_question) && !registerForm.controls.security_question.errors, 'invalid': fieldNotEmpty(registerForm.value.security_question) && (registerForm.controls.security_question.errors)}">
+          <ion-select placeholder="Security Question">
+            <ion-select-option value="What is your favorite food?">What is your favorite food?</ion-select-option>
+            <ion-select-option value="What street did you grow up on?">What street did you grow up on?</ion-select-option>
+            <ion-select-option value="What color was your first car?">What color was your first car?</ion-select-option>
+            <ion-select-option value="What is your mother's maided name?">What is your mother's maiden name?</ion-select-option>
+            <ion-select-option value="What was the name of your highschool?">What was the name of your highschool?</ion-select-option>
+            <ion-select-option value="What was the name of your first pet?">What was the name of your first pet?</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item lines="none" [ngClass]="{'valid': fieldNotEmpty(registerForm.value.security_question_answer) && !registerForm.controls.security_question_answer.errors, 'invalid': fieldNotEmpty(registerForm.value.security_question_answer) && (registerForm.controls.security_question_answer.errors)}">
+          <ion-input formControlName="security_question_answer" placeholder="Security Question Answer" type="text"></ion-input>
         </ion-item>
         <!-- <div *ngIf="fieldNotEmpty(registerForm.value.username) && (registerForm.controls.username.errors || !validEmail(registerForm.value.username))" style="color: red; margin-left: 3%; font-size: 4vw">Must be valid password</div> -->
         <!--PASSWORD-->

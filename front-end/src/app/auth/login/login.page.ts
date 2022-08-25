@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { Router } from '@angular/router';
 import { TermsConditionsComponent } from '../terms-conditions/terms-conditions.component';
+import { environment } from '../../../environments/environment';
 
 enum Popup { HOME, LOGIN, REGISTER, FORGOT }
 
@@ -29,13 +30,17 @@ export class LoginPage implements OnInit {
 
     this.registerForm = formBuilder.group({
       username: [null, Validators.compose([Validators.required])],
+      user_alias: [null, Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(50)])],
       password: [null, Validators.compose([Validators.required, Validators.minLength(7), Validators.maxLength(16)])],
       password_check: [null, Validators.compose([Validators.required, Validators.minLength(7), Validators.maxLength(16)])],
       race: [null, Validators.compose([Validators.required])],
       nationality: [null, Validators.compose([Validators.required])],
       gender: [null, Validators.compose([Validators.required])],
       age: [null, Validators.compose([Validators.required, Validators.min(18), Validators.max(100)])],
-      agree: [null, Validators.compose([Validators.required])]
+      agree: [null, Validators.compose([Validators.required])],
+      security_question: [null, Validators.compose([Validators.required, Validators.minLength(1)])],
+      security_question_answer: [null, Validators.compose([Validators.required, Validators.minLength(1)])]
+
     }, {validator: LoginPage.registerFormCheck});
 
   }
@@ -60,7 +65,7 @@ export class LoginPage implements OnInit {
   login : string = "assets/icon/log-in.svg";
   help : string = "help-circle-outline";
 
-  base_url : string = "https://crossfacerecognition.herokuapp.com/";
+  base_url : string = environment.backendBaseUrl;
   login_url : string = this.base_url + "login/";
   register_url : string = this.base_url + "register/";
 
@@ -149,13 +154,16 @@ export class LoginPage implements OnInit {
 
         let body = {
           "email": this.registerForm.value.username,
+          "username":this.registerForm.value.user_alias,
           "password": this.registerForm.value.password,
           "race": this.registerForm.value.race,
           "nationality": this.registerForm.value.nationality,
           "gender": this.registerForm.value.gender,
           "age": this.registerForm.value.age,
           "question": this.registerForm.value.question,
-          "agree": this.registerForm.value.agree
+          "agree": this.registerForm.value.agree,
+          "security_question": this.registerForm.value.security_question,
+          "security_question_answer": this.registerForm.value.security_question_answer
         }
         const httpOptions = {
           headers: new HttpHeaders({
@@ -229,6 +237,7 @@ export class LoginPage implements OnInit {
   static loginFormCheck(form: FormGroup): any {
     let email = form.get('username');
     let password = form.get('password');
+    let username = form.get('user_alias')
 
     if (!/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/.test(email.value)) {
       return { "INVALID_EMAIL" : true };
@@ -243,6 +252,7 @@ export class LoginPage implements OnInit {
 
   static registerFormCheck(form: FormGroup): any {
     let email = form.get('username');
+    let username = form.get('user_alias');
     let password = form.get('password');
     let password_confirm = form.get('password_check');
     let race = form.value['race'];

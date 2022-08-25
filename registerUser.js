@@ -7,6 +7,9 @@ function allDefined(req){
     if(typeof(req.email) === 'undefined'){
         return false;
     }
+    if(typeof(req.username) === 'undefined') {
+        return false;
+    }
     if(typeof(req.password) === 'undefined'){
         return false;
     }
@@ -25,6 +28,12 @@ function allDefined(req){
     if(typeof(req.agree) === 'undefined'){
         return false;
     }
+    if(typeof(req.security_question) === 'undefined'){
+        return false;
+    }
+    if(typeof(req.security_question_answer) === 'undefined'){
+        return false;
+    }
     return true;
 }
 
@@ -34,6 +43,9 @@ function allValid(req){
     var raceList = ["Caucasian", "Black", "Hispanic", "East Asian", "South Asian", "Middle Eastern", "Pacific Islander", "American Indian/Alaska Native", "Multi-racial", "Other"]
 
     if(!/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/.test(req.email.toLowerCase())){
+        return false;
+    }
+    if(req.username.length < 1) {
         return false;
     }
     if(!/[a-z]/.test(req.password) || !/[A-Z]/.test(req.password) || !/[0-9]/.test(req.password) || !req.password.indexOf(' ') < 0 || req.password.length < 7 || req.password.length > 16 || req.password == 'Passw0rd' || req.password == 'Password123'){
@@ -59,6 +71,7 @@ function allValid(req){
 
 module.exports = {
     user: async function(req){
+        console.log(req)
         if(!allDefined(req)){
             return new Promise(function(resolve, reject){
                 reject("Missing parameter");
@@ -71,7 +84,10 @@ module.exports = {
         }
         const pgClient = new Client({
             connectionString: process.env.DATABASE_URL,
-            ssl: true,
+            ssl: {
+                'sslmode': 'require',
+                'rejectUnauthorized': false,
+            },
         });
 
         pgClient.connect();
@@ -84,17 +100,26 @@ module.exports = {
             })
         }
 
-        await pgClient.query("INSERT INTO users(userid, email, hashedpassword, race, nationality, gender, age) VALUES (DEFAULT, $1, $2, $3, $4, $5, $6)", [req.email.toLowerCase(), null, req.race, req.nationality, req.gender, req.age])
+        res = await pgClient.query("SELECT COUNT(username) FROM users WHERE username = $1", [req.username.toLowerCase()]);
+        if(res.rows[0].count > 0) {
+            pgClient.end();
+            return new Promise(function(resolve, reject) {
+                reject("Username already used");
+            })
+        }
+
+        await pgClient.query("INSERT INTO users(userid, email, hashedpassword, race, nationality, gender, age, username, security_question) VALUES (DEFAULT, $1, $2, $3, $4, $5, $6, $7, $8)", [req.email.toLowerCase(), null, req.race, req.nationality, req.gender, req.age, req.username.toLowerCase(), req.security_question])
         
         let updated = await pgClient.query("SELECT userid FROM users WHERE email = $1",[req.email.toLowerCase()]);
         let userId = updated.rows[0].userid;
         let salt = await bcrypt.genSalt((userId%15)+1);
         let hash = await bcrypt.hash(req.password, salt);
+        let hashed_security_question_answer = await(bcrypt.hash(req.security_question_answer.toLowerCase(), salt));
         
         let now = new Date().toUTCString();
         await pgClient.query("INSERT INTO day(userid, level, race, date, nameface, whosnew, memory, shuffle, forcedchoice, samedifferent) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)", [userId, -1, "asian", now, -1, -1, -1, -1, -1, -1])
-
-        await pgClient.query("UPDATE users SET hashedpassword = $1 WHERE userid = $2", [hash, userId])
+        await pgClient.query("insert into preassessment (userid, score, race, date) VALUES ($1, $2, $3, $4)", [userId, 30, "asian", now]);
+        await pgClient.query("UPDATE users SET hashedpassword = $1, security_question_answer = $3 WHERE userid = $2", [hash, userId, hashed_security_question_answer])
             .then(res => {
                 pgClient.end();
                 return new Promise(function(resolve, reject){
@@ -102,6 +127,7 @@ module.exports = {
                 })
             })
             .catch(err => {
+                console.log(err)
                 pgClient.end();
                 return new Promise(function(resolve, reject){
                     reject(err);
